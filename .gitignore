@@ -75,10 +75,4 @@ regulations/static/regulations/js/built/*
 !regulations/static/regulations/js/built/lib/respond/respond.min.js
 docs/Makefile
 docs/make.bat
-
-# Buildout cruft
-.installed.cfg
-bin
-develop-eggs
-eggs
-regulations.egg-info
+.coverage

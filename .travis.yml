@@ -1,30 +1,10 @@
 language: python
+sudo: false
 python:
     - '2.6'
     - '2.7'
-env:
-    global:
-        - secure: QomIP0hJUGhGogDSlvUmxPezabPnfHMp8tpu6yj4f/R10JpUuj7qMQteOyoduf15f2/l8ecxQVqcYnFcvieah4ky5ZZb0u1QP+2tB7FXHilj/37PdvI8geJynbcU/yt3WfCIPbzw5guahfiKGcm3BngPm0ocxevgrAU6pLgMpFY=
-        - secure: gawGht7PKM+MNKYqPROAn4LC1VDSM9UAXXAIhZtK1/CzA3g4wanikuMdXuoqJhAODaa8dmOE57LRm+Ow79qW9ATY5PnvOp7pxnMZWlOatJtxFo3tGZgMsj5KPlptdPfxl1NTXbPPgFgwQycy1EG+FkZ7U0Z5RM7mvldVeCZc9pI=
-before_script:
-    - if [ "$TRAVIS_PULL_REQUEST" == false ] && [ "$SAUCE_USERNAME" ] && [ "$SAUCE_ACCESS_KEY" ]; then SAUCE_OK=1; else SAUCE_OK=0; fi 
-    - function START_SAUCE_CONNECT { curl -L https://gist.githubusercontent.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash & }
-    - if [ "$SAUCE_OK" == 1 ]; then START_SAUCE_CONNECT; fi;
 install:
-    - pip install zc.buildout distribute selenium nose-testconfig
-    - buildout
-    - echo "yes" | sudo add-apt-repository ppa:chris-lea/node.js
-    - sudo apt-get update
-    - sudo apt-get install nodejs phantomjs
-    - sudo npm install -g grunt-cli grunt-init bower
-    - sudo npm install
-    - bower install
-    - cp example-config.json config.json
+    - pip install -r requirements.txt
+    - pip install -r requirements_test.txt
 script:
-    - ./require.sh
-    - ./bin/test
-    - ./dummy_api/start.sh
-    - echo 'API_BASE = "http://localhost:8282/"' >> regulations/settings/local_settings.py
-    - ./run_server.sh &
-    - sleep 5
-    - if [ "$SAUCE_OK" == 1 ]; then grunt nose; fi
+    python manage.py test

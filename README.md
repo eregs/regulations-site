@@ -47,11 +47,8 @@ version of the Javascript assets.
 
 ### Python
 
-Requirements are retrieved and/or build automatically via buildout (see
-below).
+Requirements are retrieved and/or build automatically via pip (see below).
 
-* zc-buildout - Tool used for building the application and handling
-  dependencies
 * lxml - Used to convert strings into XML for processing
 * requests - Client library for reading data from an API
 
@@ -63,27 +60,21 @@ If running tests:
 * nose-testconfig - pass configuration data to tests; used to configure
   selenium tests
 * coverage - provides test-coverage metrics
-* selenium - functional testing via a headless web browser
 
-## Buildout
+## Setup & Running
 
-Buildout is a simple tool for building and distributing python applications
-quickly. We use it to get a version of the API up and running without
-needing all of the fuss usually associated with setting up Django. Just run
+This project uses `requirements*.txt` files for defining dependencies, so you
+can get up and running with `pip`:
 
 ```bash
-$ pip install zc.buildout
-$ buildout
+$ pip install -r requirements.txt       # modules required for execution
+$ pip install -r requirements_test.txt  # modules required for running tests
+$ pip install -r requirements_dev.txt   # helpful modules for developers
 ```
-
-After downloading the internet, you'll notice that some helpful scripts are
-located in ```bin```, including ```bin/django``` and ```bin/test```. The
-latter will run our test suite while the former is equivalent to running
-manage.py in a traditional Django environment.
 
 With that, you can start the development server:
 ```bash
-$ ./bin/django runserver
+$ python manage.py runserver
 ```
 
 ## JavaScript Application 
