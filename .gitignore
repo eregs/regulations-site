@@ -76,3 +76,6 @@ regulations/static/regulations/js/built/*
 docs/Makefile
 docs/make.bat
 .coverage
+
+# docs output
+docs/_build
