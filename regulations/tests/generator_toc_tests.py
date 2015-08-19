@@ -60,6 +60,26 @@ class TocTest(TestCase):
         self.assertEqual('Other', s2['sub_label'])
         self.assertEqual(['1001', '2'], s2['index'])
 
+    def test_toc_subpart_with_nondigits(self):
+        layer = {'1001-Subpart-A': [{'title': '1001.1a - Content',
+                                     'index': ['1001', '1a']},
+                                    {'title': '1001.2 - Other',
+                                     'index': ['1001', '2']}]}
+        data = {'title': u'General', 'index': ['1001', 'Subpart', 'A']}
+        result = toc.toc_subpart(data, [], layer)
+        self.assertEqual('Subpart A', result['label'])
+        self.assertEqual('General', result['sub_label'])
+        self.assertEqual(['1001', 'Subpart', 'A'], result['index'])
+        self.assertEqual('1001-Subpart-A', result['section_id'])
+        self.assertTrue(result.get('is_subpart'))
+        self.assertEqual(2, len(result['sub_toc']))
+
+        s1, s2 = result['sub_toc']
+        self.assertEqual('Content', s1['sub_label'])
+        self.assertEqual(['1001', '1a'], s1['index'])
+        self.assertEqual('Other', s2['sub_label'])
+        self.assertEqual(['1001', '2'], s2['index'])
+
     def test_toc_subpart_reserved(self):
         layer = {'1001-Subpart-A': [{'title': '1001.1 - Content',
                                      'index': ['1001', '1']},

@@ -39,7 +39,7 @@ def try_split(text, chars=(u'—', '-')):
 
 def section(data):
     """ Parse out parts of a section title. """
-    if len(data['index']) == 2 and data['index'][1].isdigit():
+    if len(data['index']) == 2 and data['index'][1][0].isdigit():
         element = {}
         element['is_section'] = True
         element['label'] = '.'.join(data['index'])
