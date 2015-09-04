@@ -25,7 +25,9 @@
             {% endif %}
 
             {% if level_one.children %}
-                <ol class="level-{{level_one.children.0.list_level}}" type="{{level_one.children.0.list_type}}">
+                {% with first_child=level_one.children|first %}
+                {% include "regulations/ol-tag.html" %}
+                {% endwith %}
                 {% for node in level_one.children  %}
                     {% include "regulations/tree-with-wrapper.html" %}
                 {% endfor %}

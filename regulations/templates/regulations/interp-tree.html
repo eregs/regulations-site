@@ -17,7 +17,9 @@
     {% endif %}
 
     {% if interp.par_children %}
-        <ol class="level-1" type="1">
+        {% with first_child=interp.par_children|first %}
+            {% include "regulations/ol-tag.html" %}
+        {% endwith %}
             {% for par_child in interp.par_children %}
                 {% with node=par_child %}
                     {% include "regulations/tree-with-wrapper.html" %}
