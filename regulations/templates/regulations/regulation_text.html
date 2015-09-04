@@ -11,7 +11,9 @@
         </p>
         {% endif %}
 
-        <ol class="level-1" type="a">
+        {% with first_child=c.children|first %}
+            {% include "regulations/ol-tag.html" %}
+        {% endwith %}
         {% if c.children %}
             {% for node in c.children %}
                 {% include "regulations/tree-with-wrapper.html"  %}

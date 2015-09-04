@@ -15,8 +15,9 @@
 </p>
 {% endif %}
 {% if node.children %}
-<ol class="level-{{node.children.0.list_level}}" 
-    type="{{node.children.0.list_type}}">
+    {% with first_child=node.children|first %}
+    {% include "regulations/ol-tag.html" %}
+    {% endwith %}
     {% for c in node.children %}
         {%with node=c template_name="regulations/tree-with-wrapper.html" %}
             {% include template_name %}
