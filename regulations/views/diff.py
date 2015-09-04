@@ -179,7 +179,7 @@ def diff_toc(older_version, newer_version, old_toc, diff, from_version):
 
     modified, deleted = modified_deleted_sections(diff)
     for el in compiled_toc:
-        if not 'Subpart' in el['index']:
+        if not 'Subpart' in el['index'] and not 'Subjgrp' in el['index']:
             el['url'] = reverse_chrome_diff_view(
                 el['section_id'], older_version, newer_version, from_version)
         # Deleted first, lest deletions in paragraphs affect the section
