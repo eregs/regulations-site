@@ -2,6 +2,7 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+var markerlessRE = /p\d+/;
 
 // indexOf polyfill
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
@@ -76,7 +77,7 @@ module.exports = {
     // **Returns** Reg entity marker formatted for human readability
     idToRef: function(id) {
         var ref = '';
-        var parts, i, len, dividers, item, interpIndex, interpParts, subpartIndex;
+        var parts, i, len, dividers, item, interpIndex, interpParts, subpartIndex, markerlessIndex;
         parts = id.split('-');
         len = parts.length - 1;
         subpartIndex = parts.indexOf('Subpart');
@@ -125,8 +126,14 @@ module.exports = {
         // the second part of a supplement to an appendix
         if (len === 1 && isNaN(parts[1])) {
             return ref += parts[1];
+        // we have a paragraph
         } else {
-            // we have a paragraph
+            // trim anything after a markerless paragraph
+            markerlessIndex = _.findIndex(parts, markerlessRE.test.bind(markerlessRE));
+            if (markerlessIndex !== -1) {
+              parts = parts.slice(0, markerlessIndex);
+              len = parts.length - 1;
+            }
             for (i = 0; i <= len; i++) {
                 // return part number alone
                 if (len < 1) {
