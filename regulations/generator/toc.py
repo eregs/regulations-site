@@ -16,6 +16,8 @@ def fetch_toc(reg_part, version, flatten=False):
         for data in toc[reg_part]:
             if 'Subpart' in data['index']:
                 toc_list.append(toc_subpart(data, toc_list, toc))
+            elif 'Subjgrp' in data['index']:
+                toc_list.append(toc_subjgrp(data, toc_list, toc))
             elif 'Interp' in data['index']:
                 toc_list.append(toc_interp(data, toc_list, toc))
             else:
@@ -64,6 +66,19 @@ def toc_subpart(data, so_far, toc):
         element['sub_toc'].append(toc_sect_appendix(sub, so_far))
     return element
 
+def toc_subjgrp(data, so_far, toc):
+    """Transforms a subpart, giving it sectional children"""
+    element = {
+        'label': data["title"],
+        'sub_label': "",
+        'index': data['index'],
+        'section_id': '-'.join(data['index']),
+        'is_subjgrp': True,
+        'sub_toc': []
+    }
+    for sub in toc.get('-'.join(data['index']), []):
+        element['sub_toc'].append(toc_sect_appendix(sub, so_far))
+    return element
 
 def toc_interp(data, so_far, toc):
     """Transforms a subpart, expanding it into subterps (collections of

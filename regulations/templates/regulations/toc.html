@@ -12,6 +12,8 @@
             {% for item in toc_items %}
                 {% if item.is_section %}
                     {% include "regulations/toc-section.html" %}
+                {% elif item.is_subjgrp %}
+                    {% include "regulations/toc-subjgrp.html" %}
                 {% elif item.is_subpart %}
                     {% include "regulations/toc-subpart.html" %}
                 {% elif item.is_supplement %}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#vim: set fileencoding=utf-8
+# vim: set fileencoding=utf-8
 import re
 
 from itertools import ifilter, ifilterfalse, takewhile
@@ -48,22 +48,15 @@ class HTMLBuilder():
     def list_level(self, parts, node_type):
         """ Return the list level and the list type. """
         if node_type == INTERP:
-            level_type_map = {1: '1', 2: 'i', 3: 'A', 4: '1'}
             prefix_length = parts.index('Interp')+1
         elif node_type == APPENDIX:
-            level_type_map = {1: 'a', 2: '1', 3: 'i', 4: 'A', 5: '1', 6: 'i'}
             prefix_length = 3
         else:
-            level_type_map = {1: 'a', 2: '1', 3: 'i', 4: 'A', 5: '1', 6: 'i'}
             prefix_length = 2
 
         if len(parts) > prefix_length:
-            list_level = len(parts) - prefix_length
-            list_type = level_type_map[list_level]
-
-            return (list_level, list_type)
-        else:
-            return (None, None)
+            return len(parts) - prefix_length
+        # implicit return None
 
     def process_node_title(self, node):
         if 'title' in node:
@@ -83,21 +76,9 @@ class HTMLBuilder():
         node['markup_id'] = "-".join(node['html_label'])
         node['tree_level'] = len(node['label']) - 1
 
-        list_level, list_type = self.list_level(
-            node['label'], node['node_type'])
+        list_level = self.list_level(node['label'], node['node_type'])
 
         node['list_level'] = list_level
-
-        # exception for situations in which we have unnumbered definitions
-        # unnumbered defs have the last part of their label in CamelCase
-        # and the word "means" in their text
-
-        if node.get('marker', '') == 'none':
-            node['list_type'] = 'no-marker'
-        elif re.search('([A-Z][a-z]+)+', node['label'][-1]) and re.search('means', node['text']):
-            node['list_type'] = 'no-marker'
-        else:
-            node['list_type'] = list_type
 
         if len(node['text']):
             inline_elements = self.inline_applier.get_layer_pairs(
