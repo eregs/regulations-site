@@ -6,6 +6,7 @@ APPENDIX = u'appendix'
 INTERP = u'interp'
 REGTEXT = u'regtext'
 SUBPART = u'subpart'
+SUBJGRP = u'subjgrp'
 EMPTYPART = u'emptypart'
 
 
@@ -31,6 +32,8 @@ def type_from_label(label):
         return EMPTYPART
     if 'Subpart' in label:  # but not the final segment
         return SUBPART
+    if 'Subjgrp' in label:
+        return SUBJGRP
     if len(label) > 1 and label[1][:1].isalpha():
         return APPENDIX
     return REGTEXT
