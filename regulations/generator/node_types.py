@@ -1,5 +1,6 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 from itertools import takewhile
+import re
 
 APPENDIX = u'appendix'
 INTERP = u'interp'
@@ -45,6 +46,22 @@ def label_to_text(label, include_section=True, include_marker=False):
             or _l2t_section(label, include_section, include_marker))
 
 
+_MARKERLESS_REGEX = re.compile(r'p\d+')
+
+
+def _paragraph_tail(label_parts, join_with, prefix='', suffix=''):
+    """Given the tail of paragraph markers in a label, convert them into a
+    string, separated by the appropriate strings (join_with). Also remove any
+    markers following a markerless paragraph"""
+    not_markerless = lambda l: not _MARKERLESS_REGEX.match(l)
+    label_parts = list(takewhile(not_markerless, label_parts))
+    if label_parts:
+        return prefix + join_with.join(label_parts) + suffix
+        pass
+    else:
+        return ""
+
+
 def _l2t_subterp(label):
     """Helper function converting subterp labels to text. Assumes label has
     more then one segment"""
@@ -70,8 +87,8 @@ def _l2t_interp(label):
         elif len(prefix) == 1:
             return 'Supplement I to Part %s' % prefix[0]
         elif suffix:
-            return 'Comment for %s-%s' % (label_to_text(prefix),
-                                          '.'.join(suffix))
+            suffix = _paragraph_tail(suffix, '.')
+            return 'Comment for %s-%s' % (label_to_text(prefix), suffix)
         else:
             return 'Comment for %s' % label_to_text(prefix)
 
@@ -86,8 +103,8 @@ def _l2t_appendix(label):
         elif len(label) == 3:  # e.g. 225-B-3
             return 'Appendix %s-%s' % tuple(label[1:])
         else:  # e.g. 225-B-3-a-4-i
-            return 'Appendix %s-%s(%s)' % (label[1], label[2],
-                                           ')('.join(label[3:]))
+            suffix = _paragraph_tail(label[3:], ')(', '(', ')')
+            return 'Appendix %s-%s%s' % (label[1], label[2], suffix)
 
 
 def _l2t_section(label, include_section, include_marker):
@@ -103,11 +120,12 @@ def _l2t_section(label, include_section, include_marker):
         if len(label) == 2:  # e.g. 225-2
             return marker + '.'.join(label)
         else:  # e.g. 225-2-b-4-i-A
-            return marker + '%s.%s(%s)' % (label[0], label[1],
-                                           ')('.join(label[2:]))
+            suffix = _paragraph_tail(label[2:], ')(', '(', ')')
+            return marker + '%s.%s%s' % (label[0], label[1], suffix)
     else:
         # Regulation Text without section number
         if len(label) == 2:  # e.g. 225-2
             return marker + label[1]
         else:  # e.g. 225-2-b-4-i-A
-            return marker + '%s(%s)' % (label[1], ')('.join(label[2:]))
+            suffix = _paragraph_tail(label[2:], ')(', '(', ')')
+            return marker + label[1] + suffix
