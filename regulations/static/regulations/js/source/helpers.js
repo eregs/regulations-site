@@ -76,7 +76,8 @@ module.exports = {
     //
     // **Returns** Reg entity marker formatted for human readability
     idToRef: function(id) {
-        var ref = '';
+        var ref = '',
+            isAppendix = this.isAppendix(id);
         var parts, i, len, dividers, item, interpIndex, interpParts, subpartIndex, markerlessIndex;
         parts = id.split('-');
         len = parts.length - 1;
@@ -109,7 +110,7 @@ module.exports = {
             ref += this.interpId(interpParts);
         }
         // if we have an appendix
-        else if (isNaN(parseInt(parts[1], 10))) {
+        else if (isAppendix) {
             return this.appendixId(parts[0], parts[1]);
         }
 
@@ -124,7 +125,7 @@ module.exports = {
         }
 
         // the second part of a supplement to an appendix
-        if (len === 1 && isNaN(parts[1])) {
+        if (len === 1 && isAppendix) {
             return ref += parts[1];
         // we have a paragraph
         } else {
@@ -261,7 +262,7 @@ module.exports = {
                 return false;
             }
 
-            if (isNaN(parts[1]) && parts[1].toLowerCase() !== 'interp') {
+            if (isNaN(parts[1].substr(0, 1)) && parts[1].toLowerCase() !== 'interp') {
                 return true;
             }
         }

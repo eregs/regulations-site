@@ -50,6 +50,8 @@ describe('Non-DOM Helper functions:', function() {
 
         expect('§234.4(a)(2)').to.equal(Helpers.idToRef('234-4-a-2'));
 
+        expect('§234.4a').to.equal(Helpers.idToRef('234-4a'));
+
         expect('§87324.34(b)(23)(iv)(H)').to.equal(Helpers.idToRef('87324-34-b-23-iv-H'));
 
         expect('§87324.34(b)(23)').to.equal(Helpers.idToRef('87324-34-b-23-p6-iv-H'));
