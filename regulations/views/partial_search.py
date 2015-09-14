@@ -1,8 +1,7 @@
 from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import title
 
-from regulations.generator import api_reader
-from regulations.generator.node_types import label_to_text
+from regulations.generator import api_reader, node_types
 from regulations.generator.section_url import SectionUrl
 from regulations.generator.versions import fetch_grouped_history
 from regulations.views.partial import PartialView
@@ -28,8 +27,10 @@ class PartialSearch(PartialView):
         return super(PartialSearch, self).get(request, *args, **kwargs)
 
     def add_prev_next(self, current_page, context):
-        context['current'] = { 'page': current_page + 1,
-                                'total': int(math.ceil(float(context['results']['total_hits']) / PAGE_SIZE))}
+        total = float(context['results']['total_hits']) / PAGE_SIZE
+        total = int(math.ceil(total))
+        context['current'] = {'page': current_page + 1, 'total': total}
+
         if current_page > 0:
             context['previous'] = {'length': PAGE_SIZE,
                                    'page': current_page - 1}
@@ -38,6 +39,24 @@ class PartialSearch(PartialView):
         if remaining > 0:
             context['next'] = {'page': current_page + 1,
                                'length': min(remaining, PAGE_SIZE)}
+
+    def reduce_results(self, results, page):
+        """Ignore results found in non-displayable nodes such as the root,
+        subparts, etc. Further, the page size returned by the API does not
+        match what we display, so we need to reduce the result count
+        accordingly. @TODO this is a hack -- we should be able to limit
+        results in the request instead"""
+        # API page size is API_PAGE_SIZE, but we show only PAGE_SIZE
+        page_idx = (page % (API_PAGE_SIZE/PAGE_SIZE)) * PAGE_SIZE
+        original_count = len(results['results'])
+        is_root = lambda r: len(r['label']) == 1
+        is_subpart = lambda r: node_types.type_from_label(r['label']) in (
+            node_types.EMPTYPART, node_types.SUBPART, node_types.SUBJGRP)
+        results['results'] = [r for r in results['results']
+                              if not is_root(r) and not is_subpart(r)]
+        num_results_ignored = original_count - len(results['results'])
+        results['total_hits'] -= num_results_ignored
+        results['results'] = results['results'][page_idx:page_idx + PAGE_SIZE]
 
     def get_context_data(self, **kwargs):
         # We don't want to run the content data of PartialView -- it assumes
@@ -50,26 +69,16 @@ class PartialSearch(PartialView):
         except ValueError:
             page = 0
 
-        # API page size is API_PAGE_SIZE, but we show only PAGE_SIZE
         api_page = page // (API_PAGE_SIZE/PAGE_SIZE)
-        page_idx = (page % (API_PAGE_SIZE/PAGE_SIZE)) * PAGE_SIZE
 
         results = api_reader.ApiReader().search(
             context['q'], context['version'], context['regulation'], api_page)
 
-        # Ignore results found in the root (i.e. not a section), adjust
-        # the number of results accordingly.
-        original_count = len(results['results'])
-        results['results'] = [r for r in results['results']
-                              if len(r['label']) > 1]
-        num_results_ignored = original_count - len(results['results'])
-        results['total_hits'] -= num_results_ignored
-        results['results'] = results['results'][page_idx:page_idx + PAGE_SIZE]
-
+        self.reduce_results(results, page)
         section_url = SectionUrl()
 
         for result in results['results']:
-            result['header'] = label_to_text(result['label'])
+            result['header'] = node_types.label_to_text(result['label'])
             if 'title' in result:
                 result['header'] += ' ' + title(result['title'])
             result['section_id'] = section_url.view_label_id(
