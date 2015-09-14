@@ -68,6 +68,7 @@ class HTMLBuilder():
             node['header'] = HTMLBuilder.section_space(node['header'])
 
     def process_node(self, node):
+
         node['label_id'] = '-'.join(node['label'])
         self.process_node_title(node)
 
