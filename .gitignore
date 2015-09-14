@@ -76,6 +76,8 @@ regulations/static/regulations/js/built/*
 docs/Makefile
 docs/make.bat
 .coverage
+regulations.egg-info
+
 
 # docs output
 docs/_build
