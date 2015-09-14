@@ -50,7 +50,11 @@ describe('Non-DOM Helper functions:', function() {
 
         expect('§234.4(a)(2)').to.equal(Helpers.idToRef('234-4-a-2'));
 
+        expect('§234.4a').to.equal(Helpers.idToRef('234-4a'));
+
         expect('§87324.34(b)(23)(iv)(H)').to.equal(Helpers.idToRef('87324-34-b-23-iv-H'));
+
+        expect('§87324.34(b)(23)').to.equal(Helpers.idToRef('87324-34-b-23-p6-iv-H'));
 
         expect('Appendix X to Part 983').to.equal(Helpers.idToRef('983-X-4'));
 
@@ -66,7 +70,7 @@ describe('Non-DOM Helper functions:', function() {
 
         expect('Appendix A1 to Part 345').to.equal(Helpers.idToRef('345-A1'));
 
-        expect ('Supplement I to Appendices').to.equal(Helpers.idToRef('Appendices-1'));
+        expect('Supplement I to Appendices').to.equal(Helpers.idToRef('Appendices-1'));
     });
 
     it('findBaseSection should find base sections of any id', function() {

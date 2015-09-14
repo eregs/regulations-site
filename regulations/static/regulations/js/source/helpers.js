@@ -2,6 +2,7 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+var markerlessRE = /p\d+/;
 
 // indexOf polyfill
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
@@ -75,8 +76,9 @@ module.exports = {
     //
     // **Returns** Reg entity marker formatted for human readability
     idToRef: function(id) {
-        var ref = '';
-        var parts, i, len, dividers, item, interpIndex, interpParts, subpartIndex;
+        var ref = '',
+            isAppendix = this.isAppendix(id);
+        var parts, i, len, dividers, item, interpIndex, interpParts, subpartIndex, markerlessIndex;
         parts = id.split('-');
         len = parts.length - 1;
         subpartIndex = parts.indexOf('Subpart');
@@ -108,7 +110,7 @@ module.exports = {
             ref += this.interpId(interpParts);
         }
         // if we have an appendix
-        else if (isNaN(parseInt(parts[1], 10))) {
+        else if (isAppendix) {
             return this.appendixId(parts[0], parts[1]);
         }
 
@@ -123,10 +125,16 @@ module.exports = {
         }
 
         // the second part of a supplement to an appendix
-        if (len === 1 && isNaN(parts[1])) {
+        if (len === 1 && isAppendix) {
             return ref += parts[1];
+        // we have a paragraph
         } else {
-            // we have a paragraph
+            // trim anything after a markerless paragraph
+            markerlessIndex = _.findIndex(parts, markerlessRE.test.bind(markerlessRE));
+            if (markerlessIndex !== -1) {
+              parts = parts.slice(0, markerlessIndex);
+              len = parts.length - 1;
+            }
             for (i = 0; i <= len; i++) {
                 // return part number alone
                 if (len < 1) {
@@ -254,7 +262,7 @@ module.exports = {
                 return false;
             }
 
-            if (isNaN(parts[1]) && parts[1].toLowerCase() !== 'interp') {
+            if (isNaN(parts[1].substr(0, 1)) && parts[1].toLowerCase() !== 'interp') {
                 return true;
             }
         }
