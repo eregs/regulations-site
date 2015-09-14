@@ -1,4 +1,4 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 from unittest import TestCase
 
 from regulations.generator.node_types import *
@@ -39,6 +39,9 @@ class NodeTypesTest(TestCase):
         self.assertEqual('2323.4', label_to_text(['2323', '4']))
         self.assertEqual('2323.5(r)(3)',
                          label_to_text(['2323', '5', 'r', '3']))
+        self.assertEqual('23.5(r)(3)(i)',
+                         label_to_text(['23', '5', 'r', '3', 'i', 'p12', 'A']))
+        self.assertEqual('23.5', label_to_text(['23', '5', 'p1', 'a']))
         self.assertEqual('4', label_to_text(['2323', '4'], False))
         self.assertEqual('5(r)(3)',
                          label_to_text(['2323', '5', 'r', '3'], False))

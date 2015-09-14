@@ -1,11 +1,10 @@
 from datetime import date
-import re
 from unittest import TestCase
 
 from django.test.client import Client
 from mock import patch
 
-from regulations.views.partial_search import *
+from regulations.views.partial_search import PartialSearch
 
 
 class PartialSearchTest(TestCase):
@@ -17,7 +16,8 @@ class PartialSearchTest(TestCase):
         api_reader.ApiReader.return_value.search.return_value = {
             'total_hits': 3333,
             'results': [
-                {'label': ['111', '22'], 'text': 'tttt', 'version': 'vvv', 'title':"consumer's"},
+                {'label': ['111', '22'], 'text': 'tttt', 'version': 'vvv',
+                 'title':"consumer's"},
                 {'label': ['111', '24', 'a'], 'text': 'o', 'version': 'vvv'},
                 {'label': ['111', '25'], 'text': 'more', 'version': 'vvv'}
             ]
@@ -47,7 +47,8 @@ class PartialSearchTest(TestCase):
         api_reader.ApiReader.return_value.search.return_value = {
             'total_hits': 3,
             'results': [
-                {'label': ['444', '22'], 'text': 'tttt', 'version': 'vvv', 'title':"consumer's"},
+                {'label': ['444', '22'], 'text': 'tttt', 'version': 'vvv',
+                 'title':"consumer's"},
                 {'label': ['444', '24', 'a'], 'text': 'o', 'version': 'vvv'},
                 {'label': ['444'], 'text': 'more', 'version': 'vvv'}
             ]
@@ -151,3 +152,21 @@ class PartialSearchTest(TestCase):
         view.add_prev_next(7, context)
         self.assertEqual(context['previous'], {'page': 6, 'length': 10})
         self.assertFalse('next' in context)
+
+    def test_reduce_results(self):
+        """Verify that root nodes, subparts, and subject groups get removed"""
+        results = {
+            'total_hits': 5,
+            'results': [
+                {'label': ['111'], 'text': 'Root'},
+                {'label': ['111', 'Subpart'], 'text': 'Empty Part'},
+                {'label': ['111', 'Subpart', 'A'], 'text': 'Subpart A'},
+                {'label': ['111', 'Subjgrp', 'ABC'], 'text': 'Subject group'},
+                {'label': ['111', '12', 'a'], 'text': '111.12(a)'}]
+        }
+        PartialSearch().reduce_results(results, 0)
+
+        self.assertEqual(results['results'], [
+            {'label': ['111', '12', 'a'], 'text': '111.12(a)'}
+        ])
+        self.assertEqual(results['total_hits'], 1)
