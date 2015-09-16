@@ -8,6 +8,21 @@ import subprocess
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 
+"""
+This command compiles the frontend for regulations-site after using the Django
+``collectstatic`` command to override specific files, and places the output in a
+directory named ``compiled`` at the root level of the project.
+
+For example, the atf-eregs project uses ``regulations-site`` as a library and
+overrides the contents of the
+``regulations/static/regulations/css/less/mixins.less`` file. The
+``atf_eregs/regulations/static/regulations/css/less/mixins.less`` file will be
+copied over the base file from ``regulations-site`` and put into a build
+directory by ``collectstatic``, and then the frontend build commands are run,
+and the results are copied into ``compiled``, which can then be used as the
+static directory for the CSS, font, JavaScript, and image assets.
+
+"""
 class Command(BaseCommand):
     help = 'Build the frontend, including local overrides.'
 
@@ -17,8 +32,7 @@ class Command(BaseCommand):
         return os.path.split(child_dir)[0]
 
     def run_collectstatic(self):
-        return_code = subprocess.call(["python", "manage.py", "collectstatic",
-                                       "--noinput"])
+        subprocess.call(["python", "manage.py", "collectstatic", "--noinput"])
 
     def handle(self, *args, **options):
         build_dir = "./frontend_build"
@@ -29,18 +43,20 @@ class Command(BaseCommand):
         os.environ["TMPDIR"] = build_dir
         self.run_collectstatic()
         regulations_directory = self.find_regulations_directory()
-        for f in (
+        frontend_files = (
             "package.json",
             "bower.json",
             "Gruntfile.js",
             ".eslintrc"
-        ):
-            shutil.copy("%s/%s" %(regulations_directory, f),
-                        "%s/" % build_dir)
-        with codecs.open("%s/config.json" % build_dir, "w", encoding="utf-8") as f:
+        )
+        for f_file in frontend_files:
+            source = "%s/%s" %(regulations_directory, f_file)
+            shutil.copy(source, "%s/" % build_dir)
+        with codecs.open("%s/config.json" % build_dir, "w",
+                         encoding="utf-8") as f:
             f.write('{"frontEndPath": "static/regulations"}')
         os.chdir(build_dir)
-        return_code = subprocess.call(["npm", "install", "grunt-cli", "bower"])
-        return_code = subprocess.call(["npm", "install"])
+        subprocess.call(["npm", "install", "grunt-cli", "bower"])
+        subprocess.call(["npm", "install"])
         os.chdir("..")
         shutil.copytree("%s/static/regulations" % build_dir, target_dir)
