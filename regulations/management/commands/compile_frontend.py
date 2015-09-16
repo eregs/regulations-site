@@ -31,9 +31,6 @@ class Command(BaseCommand):
         child_dir = os.path.split(child)[0]
         return os.path.split(child_dir)[0]
 
-    def run_collectstatic(self):
-        subprocess.call(["python", "manage.py", "collectstatic", "--noinput"])
-
     def handle(self, *args, **options):
         build_dir = "./frontend_build"
         target_dir = "./compiled"
@@ -41,7 +38,7 @@ class Command(BaseCommand):
             if os.path.exists(dirpath):
                 shutil.rmtree(dirpath)
         os.environ["TMPDIR"] = build_dir
-        self.run_collectstatic()
+        subprocess.call(["python", "manage.py", "collectstatic", "--noinput"])
         regulations_directory = self.find_regulations_directory()
         frontend_files = (
             "package.json",
