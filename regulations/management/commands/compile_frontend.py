@@ -1,7 +1,7 @@
 import codecs
 import distutils
-from os import environ, mkdir, path
 import regulations
+import os
 import shutil
 import subprocess
 
@@ -13,8 +13,8 @@ class Command(BaseCommand):
 
     def find_regulations_directory(self):
         child = regulations.__file__
-        child_dir = path.split(child)[0]
-        return path.split(child_dir)[0]
+        child_dir = os.path.split(child)[0]
+        return os.path.split(child_dir)[0]
 
     def run_collectstatic(self):
         call_command("collectstatic", noinput=True)
@@ -37,11 +37,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         import rlcompleter; import pdb; zcomp = locals(); zcomp.update(globals()); pdb.Pdb.complete = rlcompleter.Completer(zcomp).complete; pdb.set_trace()
-        """
         target = "./frontend_build"
         # put in some checks before this?
         shutil.rmtree("./compiled")
-        environ["TMDDIR"] = target
+        os.environ["TMDDIR"] = target
         self.run_collectstatic()
         regulations_directory = self.find_regulations_directory()
         for f in (
@@ -58,4 +57,3 @@ class Command(BaseCommand):
         return_code = subprocess.call(["npm", "install"])
         shutil.copytree("./static/regulations", "../compiled")
         os.chdir("..")
-        """
