@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 
 class Command(BaseCommand):
-    help = 'Build the frontend, including overrides.'
+    help = 'Build the frontend, including local overrides.'
 
     def find_regulations_directory(self):
         child = regulations.__file__
@@ -17,30 +17,16 @@ class Command(BaseCommand):
         return os.path.split(child_dir)[0]
 
     def run_collectstatic(self):
-        call_command("collectstatic", noinput=True)
-
-    def write_file(self, filename, markup):
-        """ Write out a file using the UTF-8 codec. """
-        f = codecs.open(filename, 'w', encoding='utf-8')
-        f.write(markup)
-        f.close()
-
-    def get_regulation_version(self, **options):
-        """ Get the regulation part and regulation version from the command line arguments. """
-        regulation_part = options.get('regulation_part')
-        regulation_version = options.get('regulation_version')
-
-        if not regulation_part or not regulation_version:
-            usage_string = "Usage: python manage.py generate_regulation  %s\n"  % Command.args
-            raise CommandError(usage_string)
-        return (regulation_part, regulation_version)
+        return_code = subprocess.call(["python", "manage.py", "collectstatic",
+                                       "--noinput"])
 
     def handle(self, *args, **options):
-        import rlcompleter; import pdb; zcomp = locals(); zcomp.update(globals()); pdb.Pdb.complete = rlcompleter.Completer(zcomp).complete; pdb.set_trace()
-        target = "./frontend_build"
-        # put in some checks before this?
-        shutil.rmtree("./compiled")
-        os.environ["TMDDIR"] = target
+        build_dir = "./frontend_build"
+        target_dir = "./compiled"
+        for dirpath in (build_dir, target_dir):
+            if os.path.exists(dirpath):
+                shutil.rmtree(dirpath)
+        os.environ["TMPDIR"] = build_dir
         self.run_collectstatic()
         regulations_directory = self.find_regulations_directory()
         for f in (
@@ -49,11 +35,12 @@ class Command(BaseCommand):
             "Gruntfile.js",
             ".eslintrc"
         ):
-            shutil.copy("%s/%s" %(regulations_directory, f), target)
-        with codecs.open("%s/config.json" % target, "w", encoding="utf-8") as f:
+            shutil.copy("%s/%s" %(regulations_directory, f),
+                        "%s/" % build_dir)
+        with codecs.open("%s/config.json" % build_dir, "w", encoding="utf-8") as f:
             f.write('{"frontEndPath": "static/regulations"}')
-        os.chdir(target)
+        os.chdir(build_dir)
         return_code = subprocess.call(["npm", "install", "grunt-cli", "bower"])
         return_code = subprocess.call(["npm", "install"])
-        shutil.copytree("./static/regulations", "../compiled")
         os.chdir("..")
+        shutil.copytree("%s/static/regulations" % build_dir, target_dir)
