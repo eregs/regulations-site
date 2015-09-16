@@ -15,7 +15,7 @@ CSS/Javascript etc., should inherit from this template.
         {{meta.cfr_title_number}} CFR Part {{reg_part}} | eRegulations
         {% endblock %}
         </title>
-        <link rel="shortcut icon" type="image/x-icon" href="{%static "eregsip/favicon.ico" %}"/>
+        {% include "regulations/favicon.html" %}
         {% block app_js %}
         <script>
             window.APP_PREFIX = "{{ APP_PREFIX }}";
