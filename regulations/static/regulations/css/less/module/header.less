@@ -4,7 +4,7 @@
 
 .reg-header {
     width: 100%;
-    color: @dark_field;
+    color: @white;
     .avenir-next;
     position: absolute;
     height: 94px;
@@ -21,8 +21,8 @@
 }
 
 .main-head {
-    .border-bottom-dark(@width: 3px);
-    background: #fff;
+    .border-bottom-light(@width: 3px);
+    background: @main_head_background;
     position: fixed;
     top: 0;
     width: 100%;
@@ -74,7 +74,7 @@
             content: "|";
             .avenir-next;
             padding: 0 12px;
-            color: @medium_gray;
+            color: @main_head_text_color;
         }
     }
 }
@@ -82,7 +82,7 @@
 .title a:link,
 .title a:visited {
     border-bottom: none;
-    color: @dark_field;
+    color: @main_head_text_color;
     text-decoration: none;
 }
 
@@ -95,8 +95,8 @@
     position: fixed;
     top: 60px;
     min-width: 100%;
-    background: @grey;
-    color: @black;
+    background: @sub_head_background;
+    color: @sub_head_text_color;
     line-height: 34px;
     height: 2.125em;
     .border-bottom-medium(@width: 1px);
@@ -177,13 +177,13 @@ Application Nav
 
     a:link,
     a:visited {
-        color: @dark_gray;
+        color: @main_head_text_color;
     }
 
     a:hover,
     a:active,
     a:focus {
-        color: @pacific;
+        color: @main_head_hover_color;
     }
 }
 
@@ -231,6 +231,11 @@ BIG SCREENS
         .logo {
             display: inline;
             margin: 13px 10px 0 15px;
+        }
+
+        img {
+          margin-top: 6px;
+          width: 45px;
         }
     }
 

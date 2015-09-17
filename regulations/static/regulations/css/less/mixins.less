@@ -9,19 +9,19 @@ mixins.less contains any mixins or variables to be used throughout the LESS file
  ----------------
  */
 
-@green: #2CB34A;
-@green_midtone: #ADDC91;
-@green_light: #DBEDD4;
+@green: #071635; //#2CB34A;
+@green_midtone: #50627a; //#ADDC91;
+@green_light: #bfd5e2; //#DBEDD4; /* hover bg color of panel sections */
 @black: #101820;
 @dark_field: #5C6065;
 @light_field: #D1D3D5;
 @grey: #E6E7E9;
+@white: #FFFFFF;
 @red_orange: #D12124;
-@pacific: #0072CE;
+@pacific: #50627a; //#0072CE; /* see more carrots */
 @link_blue: #348dc9; /* blue used for link borders and search results */
 @light_neutral: #D7D2CB;
-@dark_gray: #797D81
-; /* dark border */
+@dark_gray: #797D81; /* dark border */
 @bg_gray: #F7F8F9; /* background header */
 @medium_gray: #B8BABD; /* light border */
 @80_gray: #9A9DA1;
@@ -34,29 +34,52 @@ mixins.less contains any mixins or variables to be used throughout the LESS file
 @red_orange_80: #D96A4F;
 @red_orange_50: #E9A193;
 
+@main_head_background: #071635;
+@main_head_text_color: #ffffff;
+@main_head_hover_color: #bfd5e2;
+
+@sub_head_background: #50627a;
+@sub_head_text_color: #ffffff;
+
+@hero_background: #50627a;
+@hero_text_color: #ffffff;
 /*
  Type Variables/Mixins
  ----------------------
 */
 
-@body-font: Georgia, serif;
+@body-font: "Work Sans",Arial,Helvetica,Verdana,Geneva,sans-serif;
 
-.avenir-next {
-    font-family: "Avenir Next", Arial, sans-serif;
-    font-weight: normal;
-    font-style: normal;
-}
+// .avenir-next {
+//     font-family: "Avenir Next", Arial, sans-serif;
+//     font-weight: normal;
+//     font-style: normal;
+// }
 
-.avenir-next-demi {
-    font-family: "Avenir Next Demi", Arial, sans-serif;
-    font-weight: 600;
-    font-style: normal;
-}
+// .avenir-next-demi {
+//     font-family: "Avenir Next Demi", Arial, sans-serif;
+//     font-weight: 600;
+//     font-style: normal;
+// }
 
 .avenir-next-demi-italic {
     font-family: "Avenir Next Demi Italic", Arial, sans-serif;
     font-weight: 600;
     font-style: italic;
+}
+
+.slabo {
+  font-family: "Slabo 13px",Palatino Linotype,Georgia,Times New Roman,Times,serif;
+}
+
+.avenir-next {
+  font-family: "Work Sans",Arial,Helvetica,Verdana,Geneva,sans-serif;
+  font-weight: 500;
+}
+
+.avenir-next-demi {
+  font-family: "Work Sans",Arial,Helvetica,Verdana,Geneva,sans-serif;
+  font-weight: 500;
 }
 
 /*
