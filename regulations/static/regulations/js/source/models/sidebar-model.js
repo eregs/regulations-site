@@ -1,9 +1,12 @@
-define('sidebar-model', ['underscore', 'backbone', 'meta-model'], function(_, Backbone, MetaModel) {
-    'use strict';
+'use strict';
+var _ = require('underscore');
+var Backbone = require('backbone');
+var MetaModel = require('./meta-model');
 
-    var SidebarModel = MetaModel.extend({
-        supplementalPath: 'sidebar'
-    });
+Backbone.SidebarModel = MetaModel.extend({});
 
-    return SidebarModel;
+var sidebarModel = new Backbone.SidebarModel({
+    supplementalPath: 'sidebar'
 });
+
+module.exports = sidebarModel;

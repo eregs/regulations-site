@@ -1,0 +1,9 @@
+{% comment %}
+    Extracts and Notes are visually separate from the rest of the text, used
+    as block quotes, examples, etc.
+{% endcomment %}
+<div class="appendix-note inline-interpretation">
+    {% for line in lines %}
+    <p>{{ line }}</p>
+    {% endfor %}
+</div>

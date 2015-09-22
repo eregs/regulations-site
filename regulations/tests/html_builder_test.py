@@ -1,4 +1,4 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 from unittest import TestCase
 from mock import Mock
 
@@ -64,15 +64,15 @@ class HTMLBuilderTest(TestCase):
         node_type = INTERP
 
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (1, '1'))
+        self.assertEquals(result, 1)
 
         parts.append('j')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (2, 'i'))
+        self.assertEquals(result, 2)
 
         parts.append('B')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (3, 'A'))
+        self.assertEquals(result, 3)
 
     def test_list_level_appendices(self):
         builder = HTMLBuilder(None, None, None)
@@ -81,19 +81,19 @@ class HTMLBuilderTest(TestCase):
         node_type = APPENDIX
 
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (1, 'a'))
+        self.assertEquals(result, 1)
 
         parts.append('2')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (2, '1'))
+        self.assertEquals(result, 2)
 
         parts.append('k')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (3, 'i'))
+        self.assertEquals(result, 3)
 
         parts.append('B')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (4, 'A'))
+        self.assertEquals(result, 4)
 
     def test_list_level_regulations(self):
         builder = HTMLBuilder(None, None, None)
@@ -102,19 +102,19 @@ class HTMLBuilderTest(TestCase):
         node_type = REGTEXT
 
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (1, 'a'))
+        self.assertEquals(result, 1)
 
         parts.append('2')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (2, '1'))
+        self.assertEquals(result, 2)
 
         parts.append('k')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (3, 'i'))
+        self.assertEquals(result, 3)
 
         parts.append('B')
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (4, 'A'))
+        self.assertEquals(result, 4)
 
     def test_list_level_regulations_no_level(self):
         builder = HTMLBuilder(None, None, None)
@@ -123,7 +123,7 @@ class HTMLBuilderTest(TestCase):
         node_type = REGTEXT
 
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, (None, None))
+        self.assertEquals(result, None)
 
     def test_interp_node_with_citations(self):
         inline, p, sr = Mock(), Mock(), Mock()
