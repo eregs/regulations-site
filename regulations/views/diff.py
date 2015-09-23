@@ -8,8 +8,6 @@ from regulations.generator.section_url import SectionUrl
 from regulations.generator.toc import fetch_toc
 from regulations.views import error_handling, utils
 from regulations.views.chrome import ChromeView
-from regulations.views.navigation import choose_next_section
-from regulations.views.navigation import choose_previous_section
 from regulations.views.partial import PartialView
 
 from django.core.urlresolvers import reverse
@@ -49,20 +47,17 @@ class PartialSectionDiffView(PartialView):
             if toc_entry['section_id'] != label:
                 continue
 
-            p_sect = choose_previous_section(idx, toc)
-            n_sect = choose_next_section(idx, toc)
+            if idx > 0:
+                nav['previous'] = toc[idx - 1]
 
-            if p_sect:
-                nav['previous'] = p_sect
-                nav['previous']['url'] = reverse_chrome_diff_view(
-                    p_sect['section_id'], old_version,
-                    new_version, from_version)
+            if idx < len(toc) - 1:
+                nav['next'] = toc[idx + 1]
 
-            if n_sect:
-                nav['next'] = n_sect
-                nav['next']['url'] = reverse_chrome_diff_view(
-                    n_sect['section_id'], old_version,
-                    new_version, from_version)
+        # Add the url
+        for toc_entry in nav.values():
+            toc_entry['url'] = reverse_chrome_diff_view(
+                toc_entry['section_id'], old_version, new_version,
+                from_version)
         return nav
 
     def get_context_data(self, **kwargs):
