@@ -3,7 +3,7 @@ from unittest import TestCase
 from django.test import RequestFactory
 from mock import patch
 
-from regulations.views.diff import *
+from regulations.views import diff as views_diff
 
 
 class ChromeSectionDiffViewTests(TestCase):
@@ -18,7 +18,7 @@ class ChromeSectionDiffViewTests(TestCase):
             'sub_toc': sub},
             {'section_id': '8888-Interp', 'index': ['8888', 'Interp']}]
 
-        sections = extract_sections(toc)
+        sections = views_diff.extract_sections(toc)
         self.assertEqual(['8888', '1'], sections[0]['index'])
         self.assertEqual(['8888', '3'], sections[1]['index'])
         self.assertEqual(['8888', 'Interp'], sections[2]['index'])
@@ -26,7 +26,7 @@ class ChromeSectionDiffViewTests(TestCase):
     def test_extract_sections(self):
         toc = [{'section_id': '8888-1', 'index': ['8888', '1']},
                {'section_id': '8888-3', 'index': ['8888', '3']}]
-        sections = extract_sections(toc)
+        sections = views_diff.extract_sections(toc)
 
         self.assertEqual(['8888', '1'], sections[0]['index'])
         self.assertEqual(['8888', '3'], sections[1]['index'])
@@ -56,7 +56,8 @@ class ChromeSectionDiffViewTests(TestCase):
             '8888-B-1': {'op': 'modified'}
         }
 
-        result = diff_toc('oldold', 'newnew', old_toc, diff, 'from_ver')
+        result = views_diff.diff_toc('oldold', 'newnew', old_toc, diff,
+                                     'from_ver')
         self.assertEqual(8, len(result))
         self.assertTrue('8888-1' in result[0]['url'])
         self.assertTrue('?from_version=from_ver' in result[0]['url'])
@@ -118,9 +119,9 @@ class ChromeSectionDiffViewTests(TestCase):
             'label_id': '111-222',
             'version': '2'}
         request = RequestFactory().get('?new_version=1')
-        csdv = ChromeSectionDiffView()
+        csdv = views_diff.ChromeSectionDiffView()
         csdv.request = request
-        
+
         csdv.add_diff_content(context)
         self.assertEqual(context['from_version'], '2')
         self.assertEqual(context['left_version'], '2')
@@ -134,7 +135,7 @@ class ChromeSectionDiffViewTests(TestCase):
 
 class PartialSectionDiffViewTests(TestCase):
     def test_footer_nav(self):
-        view = PartialSectionDiffView()
+        view = views_diff.PartialSectionDiffView()
         toc = [{'section_id': '9898-1'}, {'section_id': '9898-5'},
                {'section_id': '9898-A'}, {'section_id': '9898-Interp'}]
         self.assertEqual({}, view.footer_nav(

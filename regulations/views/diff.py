@@ -1,4 +1,4 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
@@ -40,7 +40,7 @@ class PartialSectionDiffView(PartialView):
         try:
             return super(PartialSectionDiffView, self).get(request, *args,
                                                            **kwargs)
-        except error_handling.MissingContentException, e:
+        except error_handling.MissingContentException:
             return error_handling.handle_generic_404(request)
 
     def footer_nav(self, label, toc, old_version, new_version, from_version):
@@ -77,8 +77,8 @@ class PartialSectionDiffView(PartialView):
         tree = generator.get_tree_paragraph(label_id, older)
 
         if tree is None:
-            #TODO We need a more complicated check here to see if the diffs
-            #add the requested section. If not -> 404
+            # TODO We need a more complicated check here to see if the diffs
+            # add the requested section. If not -> 404
             tree = {}
 
         appliers = get_appliers(label_id, older, newer)
@@ -161,7 +161,7 @@ def extract_sections(toc):
 
 
 def diff_toc(older_version, newer_version, old_toc, diff, from_version):
-    #We work around Subparts in the TOC for now.
+    # We work around Subparts in the TOC for now.
     compiled_toc = extract_sections(old_toc)
 
     for node in (v['node'] for v in diff.values() if v['op'] == 'added'):
@@ -179,7 +179,7 @@ def diff_toc(older_version, newer_version, old_toc, diff, from_version):
 
     modified, deleted = modified_deleted_sections(diff)
     for el in compiled_toc:
-        if not 'Subpart' in el['index'] and not 'Subjgrp' in el['index']:
+        if 'Subpart' not in el['index'] and 'Subjgrp' not in el['index']:
             el['url'] = reverse_chrome_diff_view(
                 el['section_id'], older_version, newer_version, from_version)
         # Deleted first, lest deletions in paragraphs affect the section
