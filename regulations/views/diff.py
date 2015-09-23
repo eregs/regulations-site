@@ -1,5 +1,7 @@
 # vim: set encoding=utf-8
 
+from collections import namedtuple
+
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
 from regulations.generator.layers.toc_applier import TableOfContentsLayer
@@ -13,17 +15,22 @@ from regulations.views.partial import PartialView
 from django.core.urlresolvers import reverse
 
 
-def get_appliers(label_id, older, newer):
-    diff = generator.get_diff_applier(label_id, older, newer)
+class Versions(namedtuple('Versions', ['older', 'newer', 'return_to'])):
+    def __init__(self, older, newer, return_to=None):
+        if return_to is None:
+            return_to = older
+        super(Versions, self).__init__(older, newer, return_to)
+
+
+def get_appliers(label_id, versions):
+    diff = generator.get_diff_applier(label_id, versions.older, versions.newer)
 
     if diff is None:
         raise error_handling.MissingContentException()
 
     appliers = utils.handle_diff_layers(
         'graphics,paragraph,keyterms,defined',
-        label_id,
-        older,
-        newer)
+        label_id, versions.older, versions.newer)
     appliers += (diff,)
     return appliers
 
@@ -41,7 +48,7 @@ class PartialSectionDiffView(PartialView):
         except error_handling.MissingContentException:
             return error_handling.handle_generic_404(request)
 
-    def footer_nav(self, label, toc, old_version, new_version, from_version):
+    def footer_nav(self, label, toc, versions):
         nav = {}
         for idx, toc_entry in enumerate(toc):
             if toc_entry['section_id'] != label:
@@ -54,10 +61,9 @@ class PartialSectionDiffView(PartialView):
                 nav['next'] = toc[idx + 1]
 
         # Add the url
-        for toc_entry in nav.values():
-            toc_entry['url'] = reverse_chrome_diff_view(
-                toc_entry['section_id'], old_version, new_version,
-                from_version)
+        for entry in nav.values():
+            entry['url'] = reverse_chrome_diff_view(
+                entry['section_id'], *versions)
         return nav
 
     def get_context_data(self, **kwargs):
@@ -66,17 +72,17 @@ class PartialSectionDiffView(PartialView):
         context = super(PartialView, self).get_context_data(**kwargs)
 
         label_id = context['label_id']
-        older = context['version']
-        newer = context['newer_version']
+        versions = Versions(context['version'], context['newer_version'],
+                            self.request.GET.get('from_version'))
 
-        tree = generator.get_tree_paragraph(label_id, older)
+        tree = generator.get_tree_paragraph(label_id, versions.older)
 
         if tree is None:
             # TODO We need a more complicated check here to see if the diffs
             # add the requested section. If not -> 404
             tree = {}
 
-        appliers = get_appliers(label_id, older, newer)
+        appliers = get_appliers(label_id, versions)
 
         builder = HTMLBuilder(*appliers)
         builder.tree = tree
@@ -91,12 +97,11 @@ class PartialSectionDiffView(PartialView):
         context['markup_page_type'] = 'diff'
 
         regpart = label_id.split('-')[0]
-        old_toc = fetch_toc(regpart, older)
-        diff = generator.get_diff_json(regpart, older, newer)
-        from_version = self.request.GET.get('from_version', older)
-        context['TOC'] = diff_toc(older, newer, old_toc, diff, from_version)
-        context['navigation'] = self.footer_nav(label_id, context['TOC'],
-                                                older, newer, from_version)
+        old_toc = fetch_toc(regpart, versions.older)
+        diff = generator.get_diff_json(regpart, versions.older, versions.newer)
+        context['TOC'] = diff_toc(versions, old_toc, diff)
+        context['navigation'] = self.footer_nav(
+            label_id, context['TOC'], versions)
         return context
 
 
@@ -155,7 +160,7 @@ def extract_sections(toc):
     return compiled_toc
 
 
-def diff_toc(older_version, newer_version, old_toc, diff, from_version):
+def diff_toc(versions, old_toc, diff):
     # We work around Subparts in the TOC for now.
     compiled_toc = extract_sections(old_toc)
 
@@ -175,8 +180,7 @@ def diff_toc(older_version, newer_version, old_toc, diff, from_version):
     modified, deleted = modified_deleted_sections(diff)
     for el in compiled_toc:
         if 'Subpart' not in el['index'] and 'Subjgrp' not in el['index']:
-            el['url'] = reverse_chrome_diff_view(
-                el['section_id'], older_version, newer_version, from_version)
+            el['url'] = reverse_chrome_diff_view(el['section_id'], *versions)
         # Deleted first, lest deletions in paragraphs affect the section
         if tuple(el['index']) in deleted and 'op' not in el:
             el['op'] = 'deleted'
