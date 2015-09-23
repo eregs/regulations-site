@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         build_dir = "./frontend_build"
-        target_dir = "./compiled"
+        target_dir = "./compiled/regulations"
         for dirpath in (build_dir, target_dir):
             if os.path.exists(dirpath):
                 shutil.rmtree(dirpath)
