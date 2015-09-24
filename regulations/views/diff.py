@@ -153,7 +153,7 @@ def reverse_chrome_diff_view(sect_id, left_ver, right_ver, from_version):
 def extract_sections(toc):
     compiled_toc = []
     for i in toc:
-        if 'Subpart' in i['index']:
+        if 'Subpart' in i['index'] or 'Subjgrp' in i['index']:
             compiled_toc.extend(i['sub_toc'])
         else:
             compiled_toc.append(i)

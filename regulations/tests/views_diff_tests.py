@@ -9,19 +9,25 @@ from regulations.views import diff as views_diff
 class ChromeSectionDiffViewTests(TestCase):
 
     def test_extract_sections_subparts(self):
-        sub = [{'section_id': '8888-1', 'index': ['8888', '1']},
-               {'section_id': '8888-3', 'index': ['8888', '3']}]
+        sub1 = [{'section_id': '8888-1', 'index': ['8888', '1']},
+                {'section_id': '8888-3', 'index': ['8888', '3']}]
+        sub2 = [{'section_id': '8888-7', 'index': ['8888', '7']}]
 
-        toc = [{
-            'section_id': '8888-Subpart-A',
-            'index': ['8888', 'Subpart', 'A'],
-            'sub_toc': sub},
-            {'section_id': '8888-Interp', 'index': ['8888', 'Interp']}]
+        toc = [
+            {'section_id': '8888-Subpart-A',
+             'index': ['8888', 'Subpart', 'A'],
+             'sub_toc': sub1},
+            {'section_id': '8888-Subjgrp-IND',
+             'index': ['8888', 'Subjgrp', 'IND'],
+             'sub_toc': sub2},
+            {'section_id': '8888-Interp', 'index': ['8888', 'Interp']},
+        ]
 
         sections = views_diff.extract_sections(toc)
         self.assertEqual(['8888', '1'], sections[0]['index'])
         self.assertEqual(['8888', '3'], sections[1]['index'])
-        self.assertEqual(['8888', 'Interp'], sections[2]['index'])
+        self.assertEqual(['8888', '7'], sections[2]['index'])
+        self.assertEqual(['8888', 'Interp'], sections[3]['index'])
 
     def test_extract_sections(self):
         toc = [{'section_id': '8888-1', 'index': ['8888', '1']},
@@ -143,7 +149,7 @@ class PartialSectionDiffViewTests(TestCase):
     def assert_url_contains_versions(self, url, section_id):
         """The provided url should contain the appropriate strings for the
         old, new, and return_to urls"""
-        from_version = '?from_versions=' + self.versions.return_to
+        from_version = '?from_version=' + self.versions.return_to
         self.assertTrue(self.versions.older in url)
         self.assertTrue(self.versions.newer in url)
         self.assertTrue(from_version in url)
