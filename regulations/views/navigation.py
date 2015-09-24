@@ -6,20 +6,6 @@ def get_labels(current):
     return current.split('-')
 
 
-def is_last(i, l):
-    return i+1 == len(l)
-
-
-def choose_next_section(i, toc_up):
-    if not is_last(i, toc_up):
-        return toc_up[i+1]
-
-
-def choose_previous_section(i, toc_up):
-    if i > 0:
-        return toc_up[i-1]
-
-
 def _add_extra(el, version):
     """Add extra fields to a TOC element -- only added to elements we will
     use for prev/next"""
