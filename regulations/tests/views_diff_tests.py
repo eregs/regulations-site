@@ -174,3 +174,14 @@ class PartialSectionDiffViewTests(TestCase):
         self.assertTrue('new' in result['previous']['url'])
         self.assertTrue('?from_version=from' in result['previous']['url'])
         self.assertFalse('next' in result)
+
+
+class ViewsDiffTests(TestCase):
+    def test_make_sortable(self):
+        """Verify that strings get decomposed correctly into sortable tuples"""
+        self.assertEqual(views_diff.make_sortable("abc"), ("abc",))
+        self.assertEqual(views_diff.make_sortable("123"), (123,))
+        self.assertEqual(views_diff.make_sortable("abc123def456"),
+                         ("abc", 123, "def", 456))
+        self.assertEqual(views_diff.make_sortable("123abc456"),
+                         (123, "abc", 456))
