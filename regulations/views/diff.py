@@ -1,5 +1,7 @@
 # vim: set encoding=utf-8
 
+from itertools import takewhile
+
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
 from regulations.generator.layers.toc_applier import TableOfContentsLayer
@@ -188,35 +190,36 @@ def diff_toc(older_version, newer_version, old_toc, diff, from_version):
         if tuple(el['index']) in modified and 'op' not in el:
             el['op'] = 'modified'
 
-    return sort_toc(compiled_toc)
+    return sorted(compiled_toc, key=normalize_toc)
 
 
-def sort_toc(toc):
-    """ Sort the Table of Contents elements. """
+def make_sortable(string):
+    """Split a string into components, converting digits into ints so sorting
+    works as we would expect"""
+    if not string:      # base case
+        return tuple()
+    elif string[0].isdigit():
+        prefix = "".join(takewhile(lambda c: c.isdigit(), string))
+        return (int(prefix),) + make_sortable(string[len(prefix):])
+    else:
+        prefix = "".join(takewhile(lambda c: not c.isdigit(), string))
+        return (prefix,) + make_sortable(string[len(prefix):])
 
-    def normalize(element):
-        """ Return a sorting order for a TOC element, primarily based
-        on the index, and the type of content. """
 
-        # The general order of a regulation is: regulation text sections,
-        # appendices, and then the interpretations.
+def normalize_toc(toc_element):
+    """Return a sorting order for a TOC element, primarily based on the
+    index, and the type of content. General order is regulation text,
+    appendices, then interpretations."""
 
-        normalized = []
-        if element.get('is_section'):
-            normalized.append(0)
-        elif element.get('is_appendix'):
-            normalized.append(1)
-        elif element.get('is_supplement'):
-            normalized.append(2)
-
-        for part in element['index']:
-            if part.isdigit():
-                normalized.append(int(part))
-            else:
-                normalized.append(part)
-        return normalized
-
-    return sorted(toc, key=lambda el: tuple(normalize(el)))
+    sortable_index = tuple(make_sortable(l) for l in toc_element['index'])
+    if toc_element.get('is_section'):
+        return (0,) + sortable_index
+    elif toc_element.get('is_appendix'):
+        return (1,) + sortable_index
+    elif toc_element.get('is_supplement'):
+        return (2,) + sortable_index
+    else:
+        return (3,) + sortable_index
 
 
 def modified_deleted_sections(diff):
