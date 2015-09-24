@@ -1,5 +1,4 @@
 import codecs
-import logging
 import os
 import shutil
 import subprocess
@@ -86,7 +85,8 @@ class Command(BaseCommand):
                 prefixed_path = path
 
             if prefixed_path in files_seen:
-                logging.info("Using override for %s", prefixed_path)
+                self.stdout.write(
+                    "Using override for {}\n".format(prefixed_path))
             else:
                 files_seen.add(prefixed_path)
                 with storage.open(path) as source_file:
