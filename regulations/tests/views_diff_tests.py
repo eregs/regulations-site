@@ -134,43 +134,39 @@ class ChromeSectionDiffViewTests(TestCase):
 
 
 class PartialSectionDiffViewTests(TestCase):
+    def setUp(self):
+        self.versions = views_diff.Versions('old', 'new', 'from')
+        self.toc = [{'section_id': '9898-1'}, {'section_id': '9898-5'},
+                    {'section_id': '9898-A'}, {'section_id': '9898-Interp'}]
+        self.view = views_diff.PartialSectionDiffView()
+
+    def assert_url_contains_versions(self, url, section_id):
+        """The provided url should contain the appropriate strings for the
+        old, new, and return_to urls"""
+        from_version = '?from_versions=' + self.versions.return_to
+        self.assertTrue(self.versions.older in url)
+        self.assertTrue(self.versions.newer in url)
+        self.assertTrue(from_version in url)
+        self.assertTrue(section_id in url)
+
+    def assert_correct_nav(self, section_id, prev, following):
+        """Verify that the generated nav contains the appropriate url entries
+        for prev and next"""
+        nav = self.view.footer_nav(section_id, self.toc, self.versions)
+        if prev:
+            self.assert_url_contains_versions(nav['previous']['url'], prev)
+        else:
+            self.assertFalse('previous' in nav)
+
+        if following:
+            self.assert_url_contains_versions(nav['next']['url'], following)
+        else:
+            self.assertFalse('next' in nav)
+
     def test_footer_nav(self):
-        view = views_diff.PartialSectionDiffView()
-        versions = views_diff.Versions('old', 'new', 'from')
-        toc = [{'section_id': '9898-1'}, {'section_id': '9898-5'},
-               {'section_id': '9898-A'}, {'section_id': '9898-Interp'}]
-        self.assertEqual({}, view.footer_nav('9898-2', toc, versions))
-
-        result = view.footer_nav('9898-1', toc, versions)
-        self.assertFalse('previous' in result)
-        self.assertTrue('9898-5' in result['next']['url'])
-        self.assertTrue('old' in result['next']['url'])
-        self.assertTrue('new' in result['next']['url'])
-        self.assertTrue('?from_version=from' in result['next']['url'])
-
-        result = view.footer_nav('9898-5', toc, versions)
-        self.assertTrue('9898-1' in result['previous']['url'])
-        self.assertTrue('old' in result['previous']['url'])
-        self.assertTrue('new' in result['previous']['url'])
-        self.assertTrue('?from_version=from' in result['previous']['url'])
-        self.assertTrue('9898-A' in result['next']['url'])
-        self.assertTrue('old' in result['next']['url'])
-        self.assertTrue('new' in result['next']['url'])
-        self.assertTrue('?from_version=from' in result['next']['url'])
-
-        result = view.footer_nav('9898-A', toc, versions)
-        self.assertTrue('9898-5' in result['previous']['url'])
-        self.assertTrue('old' in result['previous']['url'])
-        self.assertTrue('new' in result['previous']['url'])
-        self.assertTrue('?from_version=from' in result['previous']['url'])
-        self.assertTrue('9898-Interp' in result['next']['url'])
-        self.assertTrue('old' in result['next']['url'])
-        self.assertTrue('new' in result['next']['url'])
-        self.assertTrue('?from_version=from' in result['next']['url'])
-
-        result = view.footer_nav('9898-Interp', toc, versions)
-        self.assertTrue('9898-A' in result['previous']['url'])
-        self.assertTrue('old' in result['previous']['url'])
-        self.assertTrue('new' in result['previous']['url'])
-        self.assertTrue('?from_version=from' in result['previous']['url'])
-        self.assertFalse('next' in result)
+        self.assert_correct_nav('9898-2', prev=None, following=None)
+        self.assert_correct_nav('9898-1', prev=None, following='9898-5')
+        self.assert_correct_nav('9898-5', prev='9898-1', following='9898-A')
+        self.assert_correct_nav('9898-A', prev='9898-5',
+                                following='9898-Interp')
+        self.assert_correct_nav('9898-Interp', prev='9898-A', following=None)
