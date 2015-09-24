@@ -176,3 +176,14 @@ class PartialSectionDiffViewTests(TestCase):
         self.assert_correct_nav('9898-A', prev='9898-5',
                                 following='9898-Interp')
         self.assert_correct_nav('9898-Interp', prev='9898-A', following=None)
+
+
+class ViewsDiffTests(TestCase):
+    def test_make_sortable(self):
+        """Verify that strings get decomposed correctly into sortable tuples"""
+        self.assertEqual(views_diff.make_sortable("abc"), ("abc",))
+        self.assertEqual(views_diff.make_sortable("123"), (123,))
+        self.assertEqual(views_diff.make_sortable("abc123def456"),
+                         ("abc", 123, "def", 456))
+        self.assertEqual(views_diff.make_sortable("123abc456"),
+                         (123, "abc", 456))
