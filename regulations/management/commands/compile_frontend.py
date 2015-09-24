@@ -1,10 +1,16 @@
 import codecs
-import regulations
+import logging
 import os
 import shutil
 import subprocess
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.contrib.staticfiles.finders import get_finders
+from django.contrib.staticfiles.storage import StaticFilesStorage
+
+import regulations
+
 
 """
 This command compiles the frontend for regulations-site after using the Django
@@ -31,13 +37,14 @@ class Command(BaseCommand):
     def find_regulations_directory(self):
         child = regulations.__file__
         child_dir = os.path.split(child)[0]
-        return os.path.split(child_dir)[0]
+        return os.path.split(child_dir)[0] or "."   # if regulations is local
 
     def remove_dirs(self):
         """Remove existing output dirs"""
         for dirpath in (self.BUILD_DIR, self.TARGET_DIR):
             if os.path.exists(dirpath):
                 shutil.rmtree(dirpath)
+        os.mkdir(self.BUILD_DIR)
 
     def copy_configs(self):
         """Copy over configs from regulations"""
@@ -55,11 +62,35 @@ class Command(BaseCommand):
                          encoding="utf-8") as f:
             f.write('{"frontEndPath": "static/regulations"}')
 
+    def _input_files(self):
+        """Fetch all of the static files from the installed apps. Yield them
+        as pairs of (path, file)"""
+        files_seen = set()
+        pairs = (pr for finder in get_finders() for pr in finder.list([".*"]))
+        for path, storage in pairs:
+            # Prefix the relative path if the source storage contains it
+            if getattr(storage, 'prefix', None):
+                prefixed_path = os.path.join(storage.prefix, path)
+            else:
+                prefixed_path = path
+
+            if prefixed_path in files_seen:
+                logging.info("Using override for %s", prefixed_path)
+            else:
+                files_seen.add(prefixed_path)
+                with storage.open(path) as source_file:
+                    yield (prefixed_path, source_file)
+
     def collect_files(self):
-        """Fetch all of the static files from the installed apps -- put them
-        into a specific directory"""
-        os.environ["TMPDIR"] = self.BUILD_DIR
-        subprocess.call(["python", "manage.py", "collectstatic", "--noinput"])
+        """Find and write static files. Along the way ignore the "compiled"
+        directory, if present"""
+        write_storage = StaticFilesStorage(self.BUILD_DIR + "/static/")
+        original_dirs = settings.STATICFILES_DIRS
+        settings.STATICFILES_DIRS = [s for s in original_dirs
+                                     if s != 'compiled']
+        for prefixed_path, source_file in self._input_files():
+            write_storage.save(prefixed_path, source_file)
+        settings.STATICFILES_DIRS = original_dirs
 
     def build_frontend(self):
         """Shell out to npm for building the frontend files"""
