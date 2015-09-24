@@ -41,10 +41,21 @@ class Command(BaseCommand):
 
     def remove_dirs(self):
         """Remove existing output dirs"""
-        for dirpath in (self.BUILD_DIR, self.TARGET_DIR):
-            if os.path.exists(dirpath):
-                shutil.rmtree(dirpath)
-        os.mkdir(self.BUILD_DIR)
+        if os.path.exists(self.TARGET_DIR):
+            shutil.rmtree(self.TARGET_DIR)
+        # Delete everything in BUILD_DIR except node_modules, which we use for
+        # caching the downloaded node libraries
+        if os.path.exists(self.BUILD_DIR):
+            files = filter(os.path.isfile, os.listdir(self.BUILD_DIR))
+            dirs = filter(os.path.isdir, os.listdir(self.BUILD_DIR))
+            for f in files:
+                os.rm(os.path.join(self.BUILD_DIR, f))
+
+            for d in dirs:
+                if d != 'node_modules':
+                    shutil.rmtree(os.path.join(self.BUILD_DIR, d))
+        else:
+            os.mkdir(self.BUILD_DIR)
 
     def copy_configs(self):
         """Copy over configs from regulations"""
@@ -95,7 +106,6 @@ class Command(BaseCommand):
     def build_frontend(self):
         """Shell out to npm for building the frontend files"""
         os.chdir(self.BUILD_DIR)
-        subprocess.call(["npm", "install", "grunt-cli", "bower"])
         subprocess.call(["npm", "install"])
         os.chdir("..")
 
