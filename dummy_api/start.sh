@@ -1,5 +1,5 @@
 #!/bin/bash
-git clone https://github.com/cfpb/regulations-core.git
+git clone https://github.com/18f/regulations-core.git
 cd regulations-core
 pip install -r requirements.txt
 
