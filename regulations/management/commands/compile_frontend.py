@@ -46,13 +46,12 @@ class Command(BaseCommand):
         # caching the downloaded node libraries
         if os.path.exists(self.BUILD_DIR):
             files = filter(os.path.isfile, os.listdir(self.BUILD_DIR))
-            dirs = filter(os.path.isdir, os.listdir(self.BUILD_DIR))
+            dirs = filter(os.path.isdir, [os.path.join(self.BUILD_DIR, f) for f in os.listdir(self.BUILD_DIR)])
             for f in files:
                 os.rm(os.path.join(self.BUILD_DIR, f))
-
             for d in dirs:
-                if d != 'node_modules':
-                    shutil.rmtree(os.path.join(self.BUILD_DIR, d))
+                if d != os.path.join(self.BUILD_DIR, 'node_modules'):
+                    shutil.rmtree(d)
         else:
             os.mkdir(self.BUILD_DIR)
 
@@ -77,13 +76,12 @@ class Command(BaseCommand):
         as pairs of (path, file)"""
         files_seen = set()
         pairs = (pr for finder in get_finders() for pr in finder.list([".*"]))
-        for path, storage in pairs:
+        for path, storage in pairs:            
             # Prefix the relative path if the source storage contains it
             if getattr(storage, 'prefix', None):
                 prefixed_path = os.path.join(storage.prefix, path)
             else:
                 prefixed_path = path
-
             if prefixed_path in files_seen:
                 self.stdout.write(
                     "Using override for {}\n".format(prefixed_path))
