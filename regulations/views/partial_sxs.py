@@ -1,8 +1,6 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 from collections import defaultdict
 
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseBadRequest
 from django.template import Context, loader
 from django.views.generic.base import TemplateView
 

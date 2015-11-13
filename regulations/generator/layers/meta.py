@@ -1,5 +1,6 @@
 from regulations.generator.layers.utils import convert_to_python
 
+
 class MetaLayer(object):
     shorthand = 'meta'
 

@@ -1,6 +1,7 @@
 from django.template import loader
 import utils
 
+
 class ParagraphMarkersLayer(object):
     shorthand = 'paragraph'
 

@@ -25,7 +25,8 @@ class EregsCache():
             if req.status_code != 200:
                 status_txt = "Failed"
 
-            msg = "{0} (status {1}): {2}".format(status_txt, str(req.status_code), req.url)
+            msg = "{0} (status {1}): {2}".format(
+                status_txt, str(req.status_code), req.url)
             self.write(msg)
         except Exception, errtxt:
             self.write_error("Failed: " + args[0])
@@ -47,7 +48,7 @@ class EregsCache():
             self.write_error("Main Page Failed To Load")
             self.write_error(str(errtxt))
 
-    #figure out the partial path depending on root location of eregs
+    # figure out the partial path depending on root location of eregs
     def get_partial_url(self,  href):
 
         href = href.split("/")
@@ -92,26 +93,30 @@ class EregsCache():
                 reg_soup = soup.findAll("a")
 
                 for a in reg_soup:
-                    if a.has_key('data-section-id'):
+                    if 'data-section-id' in a:
                         partial = self.get_partial_url(a["href"])
 
                         thread_count = len(threading.enumerate())
 
-                        #process 5 web pages at time. Some servers hate a lot of requests at once.
-                        #slow it down so the threads can catch up
-                        #if there are too many threads being processed, end process and exit out
+                        # process 5 web pages at time. Some servers hate a lot
+                        # of requests at once.  slow it down so the threads
+                        # can catch up if there are too many threads being
+                        # processed, end process and exit out
                         if thread_count <= 5:
-                            threading.Thread(target=self.access_url, args=(partial, )).start()
+                            threading.Thread(target=self.access_url,
+                                             args=(partial, )).start()
                         elif thread_count >= 12:
-                            self.write("URLs currently at " + str(thread_count) + ". Server too slow")
+                            self.write("URLs currently at " + str(thread_count)
+                                       + ". Server too slow")
                             self.write("Shutting down")
                             raise Exception("Thread Count Too High")
                         else:
-                            self.write("Currently Processing " + str(thread_count) + " Urls")
+                            self.write("Currently Processing "
+                                       + str(thread_count) + " Urls")
                             self.write("Waiting...")
                             time.sleep(thread_count * 2)
 
-                #let the threads catch up before doing the next batch
+                # let the threads catch up before doing the next batch
                 if len(threading.enumerate()) > 1:
                     time.sleep(len(threading.enumerate()) * 2)
 
@@ -124,4 +129,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 3:
         regulations_arg = sys.argv[3]
 
-    EregsCache(sys.argv[1],regulations_arg)
+    EregsCache(sys.argv[1], regulations_arg)

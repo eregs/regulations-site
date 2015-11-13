@@ -1,10 +1,9 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 import itertools
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from regulations.generator import generator
-from regulations.generator.layers.toc_applier import TableOfContentsLayer
 from regulations.generator.layers.meta import MetaLayer
 from regulations.generator.layers.tree_builder import roman_nums
 from regulations.generator.toc import fetch_toc
@@ -68,8 +67,8 @@ def add_extras(context):
             ga_index = "EREGS_GA_" + site + '_' + val
             context[ga_index] = ga_settings[site][val]
 
-    if (not 'EREGS_GA_EREGS_SITE' in context
-            and not 'EREGS_GA_EREGS_ID' in context):
+    if ('EREGS_GA_EREGS_SITE' not in context
+            and 'EREGS_GA_EREGS_ID' not in context):
         for attr in ('GOOGLE_ANALYTICS_SITE', 'GOOGLE_ANALYTICS_ID'):
             new_index = attr.replace('GOOGLE_ANALYTICS', 'EREGS_GA_EREGS')
             context[new_index] = getattr(settings, attr, '')

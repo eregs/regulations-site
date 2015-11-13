@@ -3,7 +3,7 @@ from unittest import TestCase
 from django.test import RequestFactory
 from mock import patch
 
-from regulations.views.redirect import *
+from regulations.views import redirect
 
 
 class ViewsRedirectTest(TestCase):
@@ -16,59 +16,59 @@ class ViewsRedirectTest(TestCase):
         ]}
 
         with patch('regulations.views.redirect.handle_generic_404') as handle:
-            redirect_by_date(None, '8888', '1999', '10', '10')
+            redirect.redirect_by_date(None, '8888', '1999', '10', '10')
             self.assertTrue(handle.called)
 
             handle.reset_mock()
-            redirect_by_date(None, '8888', '', '', '')
+            redirect.redirect_by_date(None, '8888', '', '', '')
             self.assertTrue(handle.called)
 
-        response = redirect_by_date(None, '8888', '2000', '01', '01')
+        response = redirect.redirect_by_date(None, '8888', '2000', '01', '01')
         self.assertEqual(302, response.status_code)
         self.assertTrue('aaa' in response['Location'])
-        response = redirect_by_date(None, '8888', '2006', '06', '06')
+        response = redirect.redirect_by_date(None, '8888', '2006', '06', '06')
         self.assertEqual(302, response.status_code)
         self.assertTrue('bbb' in response['Location'])
-        response = redirect_by_date(None, '8888', '2010', '06', '08')
+        response = redirect.redirect_by_date(None, '8888', '2010', '06', '08')
         self.assertEqual(302, response.status_code)
         self.assertTrue('ccc' in response['Location'])
 
     @patch('regulations.views.redirect.redirect_by_date')
     def test_redirect_by_date_get(self, redirect_by_date):
         request = RequestFactory().get('?year=2222&month=11&day=20')
-        redirect_by_date_get(request, 'lablab')
+        redirect.redirect_by_date_get(request, 'lablab')
         self.assertTrue(redirect_by_date.called)
         self.assertEqual(('lablab', '2222', '11', '20'),
                          redirect_by_date.call_args[0][1:])
 
         request = RequestFactory().get('?year=-2222&month=-11&day=-20')
-        redirect_by_date_get(request, 'lablab')
+        redirect.redirect_by_date_get(request, 'lablab')
         self.assertTrue(redirect_by_date.called)
         self.assertEqual(('lablab', '2222', '11', '20'),
                          redirect_by_date.call_args[0][1:])
 
         request = RequestFactory().get('?year=123&month=1&day=2')
         redirect_by_date.reset_mock()
-        redirect_by_date_get(request, 'lablab')
+        redirect.redirect_by_date_get(request, 'lablab')
         self.assertTrue(redirect_by_date.called)
         self.assertEqual(('lablab', '0123', '01', '02'),
                          redirect_by_date.call_args[0][1:])
 
         request = RequestFactory().get('?year=22&month=1&day=2')
         redirect_by_date.reset_mock()
-        redirect_by_date_get(request, 'lablab')
+        redirect.redirect_by_date_get(request, 'lablab')
         self.assertTrue(redirect_by_date.called)
         self.assertEqual(('lablab', '2022', '01', '02'),
                          redirect_by_date.call_args[0][1:])
 
         with patch('regulations.views.redirect.handle_generic_404') as handle:
             request = RequestFactory().get('?year=bad&month=data&day=here')
-            redirect_by_date_get(request, 'lablab')
+            redirect.redirect_by_date_get(request, 'lablab')
             self.assertTrue(handle.called)
 
     def test_diff_redirect_bad_version(self):
         request = RequestFactory().get('?new_version=A+Bad+Version')
-        response = diff_redirect(request, 'lablab', 'verver')
+        response = redirect.diff_redirect(request, 'lablab', 'verver')
         self.assertEqual(404, response.status_code)
 
     @patch('regulations.views.redirect.fetch_grouped_history')
@@ -77,25 +77,25 @@ class ViewsRedirectTest(TestCase):
             {'notices': [{'document_number': '3'}, {'document_number': '2'}]},
             {'notices': [{'document_number': '1'}]}]
         request = RequestFactory().get('?new_version=3')
-        response = diff_redirect(request, '1111-22', '1')
+        response = redirect.diff_redirect(request, '1111-22', '1')
         self.assertTrue('diff/1111-22/1/3' in response['Location'])
         self.assertTrue('from_version=1' in response['Location'])
-        response = diff_redirect(request, '1111-22', '2')
+        response = redirect.diff_redirect(request, '1111-22', '2')
         self.assertTrue('diff/1111-22/2/3' in response['Location'])
         self.assertTrue('from_version=2' in response['Location'])
 
         request = RequestFactory().get('?new_version=2')
-        response = diff_redirect(request, '1111-22', '1')
+        response = redirect.diff_redirect(request, '1111-22', '1')
         self.assertTrue('diff/1111-22/1/2' in response['Location'])
         self.assertTrue('from_version=1' in response['Location'])
-        response = diff_redirect(request, '1111-22', '3')
+        response = redirect.diff_redirect(request, '1111-22', '3')
         self.assertTrue('diff/1111-22/2/3' in response['Location'])
         self.assertTrue('from_version=3' in response['Location'])
 
         request = RequestFactory().get('?new_version=1')
-        response = diff_redirect(request, '1111-22', '2')
+        response = redirect.diff_redirect(request, '1111-22', '2')
         self.assertTrue('diff/1111-22/1/2' in response['Location'])
         self.assertTrue('from_version=2' in response['Location'])
-        response = diff_redirect(request, '1111-22', '3')
+        response = redirect.diff_redirect(request, '1111-22', '3')
         self.assertTrue('diff/1111-22/1/3' in response['Location'])
         self.assertTrue('from_version=3' in response['Location'])

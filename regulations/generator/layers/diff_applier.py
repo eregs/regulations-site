@@ -18,8 +18,8 @@ class DiffApplier(object):
 
     def __init__(self, diff_json, label_requested):
         self.diff = diff_json
-        #label_requested is the regulation label for which a diff is
-        #requested.
+        # label_requested is the regulation label for which a diff is
+        # requested.
         self.label_requested = label_requested
 
     def deconstruct_text(self, original):

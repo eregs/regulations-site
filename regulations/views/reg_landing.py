@@ -47,7 +47,6 @@ def regulation(request, label_id):
         True)
     context['meta'] = regulation_meta
 
-
     c = RequestContext(request, context)
 
     t = select_template([

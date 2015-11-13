@@ -2,7 +2,9 @@
 from unittest import TestCase
 from mock import Mock
 
-from regulations.generator.html_builder import *
+from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator.layers.internal_citation import (
+    InternalCitationLayer)
 from regulations.generator.layers.layers_applier import InlineLayersApplier
 from regulations.generator.layers.layers_applier import ParagraphLayersApplier
 from regulations.generator.node_types import REGTEXT, APPENDIX, INTERP
