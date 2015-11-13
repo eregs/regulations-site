@@ -74,3 +74,7 @@ class FormattingLayerTest(TestCase):
     def test_apply_layer_dash(self):
         data = {'text': 'This is an fp-dash'}
         self.assert_context_contains('dash', 'dash_data', data)
+
+    def test_apply_layer_footnote(self):
+        data = {'ref': '123', 'note': "Here's the note"}
+        self.assert_context_contains('footnote', 'footnote_data', data)
