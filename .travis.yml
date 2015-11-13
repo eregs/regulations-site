@@ -28,3 +28,4 @@ script:
     - ./run_server.sh &
     - sleep 5
     - if [ "$SAUCE_OK" == 1 ]; then grunt nose; fi
+    - flake8 .
