@@ -23,9 +23,9 @@ install:
 script:
     - grunt test-js
     - python manage.py test
+    - flake8 .
     - ./dummy_api/start.sh
     - echo 'API_BASE = "http://localhost:8282/"' >> regulations/settings/local_settings.py
     - ./run_server.sh &
     - sleep 5
     - if [ "$SAUCE_OK" == 1 ]; then grunt nose; fi
-    - flake8 .
