@@ -130,8 +130,8 @@ OFFLINE_OUTPUT_DIR = ''
 
 DATE_FORMAT = 'n/j/Y'
 
-EREGS_GA_ID = ''
-EREGS_GA_SITE = ''
+# Google Analytics UA-xxxxxx-x code
+EREGS_GA_SITE_ID = ''
 
 #   Use the 'source' directory; useful for development
 JS_DEBUG = False

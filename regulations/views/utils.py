@@ -61,18 +61,7 @@ def add_extras(context):
     prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
     prefix = prefix.replace('9999', '')
     context['APP_PREFIX'] = prefix
-    ga_settings = getattr(settings, 'EREGS_GA', {})
-
-    for site in ga_settings:
-        for val in ga_settings[site]:
-            ga_index = "EREGS_GA_" + site + '_' + val
-            context[ga_index] = ga_settings[site][val]
-
-    if (not 'EREGS_GA_EREGS_SITE' in context
-            and not 'EREGS_GA_EREGS_ID' in context):
-        for attr in ('GOOGLE_ANALYTICS_SITE', 'GOOGLE_ANALYTICS_ID'):
-            new_index = attr.replace('GOOGLE_ANALYTICS', 'EREGS_GA_EREGS')
-            context[new_index] = getattr(settings, attr, '')
+    context['eregs_ga_site_id'] = getattr(settings, 'EREGS_GA_SITE_ID', '')
     return context
 
 
