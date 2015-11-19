@@ -62,11 +62,6 @@ class FormattingLayerTest(TestCase):
                 'lines': ['def double(x):', '    return x + x']}
         self.assert_context_contains('code', 'fence_data', data)
 
-    def test_apply_layer_extract(self):
-        data = {'type': 'extract',
-                'lines': ['Some Notes:', 'More content']}
-        self.assert_context_contains('extract', 'fence_data', data)
-
     def test_apply_layer_subscript(self):
         data = {'variable': 'abc', 'subscript': '123'}
         self.assert_context_contains('subscript', 'subscript_data', data)
