@@ -130,8 +130,17 @@ OFFLINE_OUTPUT_DIR = ''
 
 DATE_FORMAT = 'n/j/Y'
 
+# Analytics settings
+
+# Google Tag Manager ipmlementations
+EREGS_GTM_SITE_ID = ''
+
 # Google Analytics UA-xxxxxx-x code
 EREGS_GA_SITE_ID = ''
+
+#DAP Universal Analytics
+EREGS_DAP_AGENCY = ''
+EREGS_DAP_SUBAGENCY = ''
 
 #   Use the 'source' directory; useful for development
 JS_DEBUG = False
