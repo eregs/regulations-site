@@ -133,7 +133,7 @@ DATE_FORMAT = 'n/j/Y'
 # Analytics settings
 
 # Google Tag Manager ipmlementations
-EREGS_GTM_SITE_ID = ''
+EREGS_GTM_SITE_ID = 'GTM-KMMLRS'
 
 # Google Analytics UA-xxxxxx-x code
 EREGS_GA_SITE_ID = ''
