@@ -61,7 +61,10 @@ def add_extras(context):
     prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
     prefix = prefix.replace('9999', '')
     context['APP_PREFIX'] = prefix
-    context['eregs_ga_site_id'] = getattr(settings, 'EREGS_GA_SITE_ID', '')
+    context['EREGS_GA_SITE_ID'] = getattr(settings, 'EREGS_GA_SITE_ID', '')
+    context['EREGS_GTM_SITE_ID'] = getattr(settings, 'EREGS_GTM_SITE_ID', '')
+    context['EREGS_DAP_AGENCY'] = getattr(settings, 'EREGS_DAP_AGENCY', '')
+    context['EREGS_DAP_SUBAGENCY'] = getattr(settings, 'EREGS_DAP_SUBAGENCY', '')
     return context
 
 
