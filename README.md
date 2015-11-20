@@ -61,7 +61,6 @@ $ $ ./bin/django runserver
 
 Requirements are retrieved and/or build automatically via pip (see below).
 
-* lxml - Used to convert strings into XML for processing
 * requests - Client library for reading data from an API
 
 If running tests:
