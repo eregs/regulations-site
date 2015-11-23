@@ -1,5 +1,6 @@
 #vim: set encoding=utf-8
 import itertools
+import urllib
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -61,12 +62,20 @@ def add_extras(context):
     prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
     prefix = prefix.replace('9999', '')
     context['APP_PREFIX'] = prefix
-    context['EREGS_GA_SITE_ID'] = getattr(settings, 'EREGS_GA_SITE_ID', '')
-    context['EREGS_GTM_SITE_ID'] = getattr(settings, 'EREGS_GTM_SITE_ID', '')
-    context['EREGS_DAP_AGENCY'] = getattr(settings, 'EREGS_DAP_AGENCY', '')
-    context['EREGS_DAP_SUBAGENCY'] = getattr(settings, 'EREGS_DAP_SUBAGENCY', '')
+    context['ANALYTICS'] = getattr(settings, 'ANALYTICS', {})
+    if 'DAP' in context['ANALYTICS']:
+        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(context['ANALYTICS']['DAP'])
     return context
 
+def create_dap_url_params(dap_settings):
+    """ Create the DAP url string to append to script tag """
+    dap_params = {}
+    if 'AGENCY' in dap_settings and dap_settings['AGENCY']:
+        dap_params['agency'] = dap_settings['AGENCY']
+        if 'SUBAGENCY' in dap_settings and dap_settings['SUBAGENCY']:
+            dap_params['subagency'] = dap_settings['SUBAGENCY']
+
+    return urllib.urlencode(dap_params)
 
 def first_section(reg_part, version):
     """ Use the table of contents for a regulation, to get the label of the

@@ -132,6 +132,17 @@ DATE_FORMAT = 'n/j/Y'
 
 # Analytics settings
 
+ANALYTICS = {
+    'GOOGLE': {
+       'GTM_SITE_ID': 'GTM-KMMLRS',
+       'GA_SITE_ID': 'UA-xxxxxx-x',
+    },
+    'DAP': {
+        'AGENCY': 'DOJ',
+        'SUBAGENCY': 'ATF',
+    },
+}
+
 # Google Tag Manager ipmlementations
 EREGS_GTM_SITE_ID = 'GTM-KMMLRS'
 
