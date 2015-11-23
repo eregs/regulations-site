@@ -134,24 +134,14 @@ DATE_FORMAT = 'n/j/Y'
 
 ANALYTICS = {
     'GOOGLE': {
-       'GTM_SITE_ID': 'GTM-KMMLRS',
-       'GA_SITE_ID': 'UA-xxxxxx-x',
+       'GTM_SITE_ID': '',
+       'GA_SITE_ID': '',
     },
     'DAP': {
-        'AGENCY': 'DOJ',
-        'SUBAGENCY': 'ATF',
+        'AGENCY': '',
+        'SUBAGENCY': '',
     },
 }
-
-# Google Tag Manager ipmlementations
-EREGS_GTM_SITE_ID = 'GTM-KMMLRS'
-
-# Google Analytics UA-xxxxxx-x code
-EREGS_GA_SITE_ID = ''
-
-#DAP Universal Analytics
-EREGS_DAP_AGENCY = ''
-EREGS_DAP_SUBAGENCY = ''
 
 #   Use the 'source' directory; useful for development
 JS_DEBUG = False
