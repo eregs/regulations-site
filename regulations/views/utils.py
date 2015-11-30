@@ -1,11 +1,10 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 import itertools
 import urllib
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from regulations.generator import generator
-from regulations.generator.layers.toc_applier import TableOfContentsLayer
 from regulations.generator.layers.meta import MetaLayer
 from regulations.generator.layers.tree_builder import roman_nums
 from regulations.generator.toc import fetch_toc
@@ -64,8 +63,10 @@ def add_extras(context):
     context['APP_PREFIX'] = prefix
     context['ANALYTICS'] = getattr(settings, 'ANALYTICS', {})
     if 'DAP' in context['ANALYTICS']:
-        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(context['ANALYTICS']['DAP'])
+        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(
+            context['ANALYTICS']['DAP'])
     return context
+
 
 def create_dap_url_params(dap_settings):
     """ Create the DAP url string to append to script tag """
@@ -77,6 +78,7 @@ def create_dap_url_params(dap_settings):
 
     return urllib.urlencode(dap_params)
 
+
 def first_section(reg_part, version):
     """ Use the table of contents for a regulation, to get the label of the
     first section of the regulation. In most regulations, this is -1, but in
@@ -84,3 +86,17 @@ def first_section(reg_part, version):
 
     toc = fetch_toc(reg_part, version, flatten=True)
     return toc[0]['section_id']
+
+
+def make_sortable(string):
+    """Split a string into components, converting digits into ints so sorting
+    works as we would expect"""
+    if not string:      # base case
+        return tuple()
+    elif string[0].isdigit():
+        prefix = "".join(itertools.takewhile(lambda c: c.isdigit(), string))
+        return (int(prefix),) + make_sortable(string[len(prefix):])
+    else:
+        prefix = "".join(itertools.takewhile(lambda c: not c.isdigit(),
+                                             string))
+        return (prefix,) + make_sortable(string[len(prefix):])

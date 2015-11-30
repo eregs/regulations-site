@@ -31,3 +31,6 @@ class UniversalLandingTest(TestCase):
         filtered = universal.filter_future_amendments(versions)
         self.assertEqual(len(filtered), 4)
         self.assertEqual(futures, filtered)
+
+    def test_get_regulations_list(self):
+        pass
