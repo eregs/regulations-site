@@ -9,8 +9,8 @@ from regulations.generator import versions
 
 
 def filter_future_amendments(versions):
-    """ Take a list of amendments, and only return a list of those that 
-    are in the future. """
+    """ Take a list of amendments, and only return a list of those that are in
+    the future. """
     today = datetime.today()
     amendments = [v for v in versions if v['by_date'] > today]
     amendments.sort(key=lambda v: v['by_date'])
@@ -22,10 +22,10 @@ def get_regulations_list(all_versions):
     to that list. """
 
     regs = []
-    reg_parts = sorted(all_versions.keys())
+    reg_parts = sorted(all_versions.keys(), key=utils.make_sortable)
 
     for part in reg_parts:
-        version = all_versions.get(part)[0]['version']
+        version = all_versions[part][0]['version']
         reg_meta = utils.regulation_meta(part, version, True)
         first_section = utils.first_section(part, version)
         amendments = filter_future_amendments(all_versions.get(part, None))

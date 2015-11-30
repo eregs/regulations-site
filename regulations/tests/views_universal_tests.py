@@ -32,5 +32,13 @@ class UniversalLandingTest(TestCase):
         self.assertEqual(len(filtered), 4)
         self.assertEqual(futures, filtered)
 
-    def test_get_regulations_list(self):
-        pass
+    def test_get_regulations_list_sort(self):
+        """Verify that part numbers are sorted numerically rather than
+        lexicographically"""
+        version_info = [{'version': 'v', 'by_date': datetime(2001, 1, 1)}]
+        versions = {'1': version_info, '2': version_info, '100': version_info}
+        with patch('regulations.views.utils.regulation_meta'):
+            with patch('regulations.views.utils.first_section'):
+                results = universal.get_regulations_list(versions)
+                self.assertEqual(['1', '2', '100'],
+                                 [r['part'] for r in results])
