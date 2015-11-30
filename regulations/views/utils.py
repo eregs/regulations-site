@@ -1,5 +1,6 @@
 # vim: set encoding=utf-8
 import itertools
+import urllib
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -60,19 +61,22 @@ def add_extras(context):
     prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
     prefix = prefix.replace('9999', '')
     context['APP_PREFIX'] = prefix
-    ga_settings = getattr(settings, 'EREGS_GA', {})
-
-    for site in ga_settings:
-        for val in ga_settings[site]:
-            ga_index = "EREGS_GA_" + site + '_' + val
-            context[ga_index] = ga_settings[site][val]
-
-    if ('EREGS_GA_EREGS_SITE' not in context
-            and 'EREGS_GA_EREGS_ID' not in context):
-        for attr in ('GOOGLE_ANALYTICS_SITE', 'GOOGLE_ANALYTICS_ID'):
-            new_index = attr.replace('GOOGLE_ANALYTICS', 'EREGS_GA_EREGS')
-            context[new_index] = getattr(settings, attr, '')
+    context['ANALYTICS'] = getattr(settings, 'ANALYTICS', {})
+    if 'DAP' in context['ANALYTICS']:
+        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(
+            context['ANALYTICS']['DAP'])
     return context
+
+
+def create_dap_url_params(dap_settings):
+    """ Create the DAP url string to append to script tag """
+    dap_params = {}
+    if 'AGENCY' in dap_settings and dap_settings['AGENCY']:
+        dap_params['agency'] = dap_settings['AGENCY']
+        if 'SUBAGENCY' in dap_settings and dap_settings['SUBAGENCY']:
+            dap_params['subagency'] = dap_settings['SUBAGENCY']
+
+    return urllib.urlencode(dap_params)
 
 
 def first_section(reg_part, version):

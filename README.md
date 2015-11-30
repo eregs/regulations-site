@@ -8,7 +8,7 @@ data from a parsed regulation and generates navigable, accessible HTML,
 complete with associated information.
 
 This repository is part of a larger project. To read about it, please see
-[http://cfpb.github.io/eregulations/](http://cfpb.github.io/eRegulations/).
+[https://eregs.github.io/eRegulations/](https://eregs.github.io/eRegulations/).
 
 ## Features
 

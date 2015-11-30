@@ -7,6 +7,14 @@
     {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
     {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
 >
+    {% if node.node_type == "extract" %}
+    <div class="extract">
+    {% endif %}
+
     {% include "regulations/tree.html" %}
+
+    {% if node.node_type == "extract" %}
+    </div>
+    {% endif %}
 </li>
 

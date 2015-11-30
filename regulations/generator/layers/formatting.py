@@ -8,8 +8,8 @@ class FormattingLayer(object):
         self.layer_data = layer_data
         self.tpls = {
             key: loader.get_template('regulations/layers/{}.html'.format(key))
-            for key in ('table', 'note', 'extract', 'code', 'subscript',
-                        'dash', 'footnote')}
+            for key in ('table', 'note', 'code', 'subscript', 'dash',
+                        'footnote')}
 
     def render_table(self, table, data_type=None):
         max_width = 0
@@ -41,9 +41,6 @@ class FormattingLayer(object):
                      for l in lines]
             lines = [l for l in lines if l.strip()]
             tpl = self.tpls['note']
-        elif _type == 'extract':    # @todo can be removed soon
-            lines = [l for l in lines if l.strip()]
-            tpl = self.tpls['extract']
         else:   # Generic "code"/ preformatted
             strip_nl = False
             tpl = self.tpls['code']

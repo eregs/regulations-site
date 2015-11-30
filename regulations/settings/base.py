@@ -130,8 +130,18 @@ OFFLINE_OUTPUT_DIR = ''
 
 DATE_FORMAT = 'n/j/Y'
 
-EREGS_GA_ID = ''
-EREGS_GA_SITE = ''
+# Analytics settings
+
+ANALYTICS = {
+    'GOOGLE': {
+       'GTM_SITE_ID': '',
+       'GA_SITE_ID': '',
+    },
+    'DAP': {
+        'AGENCY': '',
+        'SUBAGENCY': '',
+    },
+}
 
 #   Use the 'source' directory; useful for development
 JS_DEBUG = False
