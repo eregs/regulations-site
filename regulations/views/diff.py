@@ -11,7 +11,6 @@ from regulations.generator.toc import fetch_toc
 from regulations.views import error_handling, utils
 from regulations.views.chrome import ChromeView
 from regulations.views.partial import PartialView
-from regulations.utils import make_sortable
 
 from django.core.urlresolvers import reverse
 
@@ -196,7 +195,8 @@ def normalize_toc(toc_element):
     index, and the type of content. General order is regulation text,
     appendices, then interpretations."""
 
-    sortable_index = tuple(make_sortable(l) for l in toc_element['index'])
+    sortable_index = tuple(utils.make_sortable(l)
+                           for l in toc_element['index'])
     if toc_element.get('is_section'):
         return (0,) + sortable_index
     elif toc_element.get('is_appendix'):
