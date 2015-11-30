@@ -1,7 +1,6 @@
 # vim: set encoding=utf-8
 
 from collections import namedtuple
-from itertools import takewhile
 
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
@@ -12,6 +11,7 @@ from regulations.generator.toc import fetch_toc
 from regulations.views import error_handling, utils
 from regulations.views.chrome import ChromeView
 from regulations.views.partial import PartialView
+from regulations.utils import make_sortable
 
 from django.core.urlresolvers import reverse
 
@@ -189,19 +189,6 @@ def diff_toc(versions, old_toc, diff):
             el['op'] = 'modified'
 
     return sorted(compiled_toc, key=normalize_toc)
-
-
-def make_sortable(string):
-    """Split a string into components, converting digits into ints so sorting
-    works as we would expect"""
-    if not string:      # base case
-        return tuple()
-    elif string[0].isdigit():
-        prefix = "".join(takewhile(lambda c: c.isdigit(), string))
-        return (int(prefix),) + make_sortable(string[len(prefix):])
-    else:
-        prefix = "".join(takewhile(lambda c: not c.isdigit(), string))
-        return (prefix,) + make_sortable(string[len(prefix):])
 
 
 def normalize_toc(toc_element):
