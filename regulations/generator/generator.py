@@ -225,5 +225,5 @@ def get_diff_json(regulation, older, newer):
 def get_diff_applier(label_id, older, newer):
     regulation = label_id.split('-')[0]
     diff_json = get_diff_json(regulation, older, newer)
-    if diff_json:
+    if diff_json is not None:
         return DiffApplier(diff_json, label_id)
