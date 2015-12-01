@@ -159,8 +159,9 @@ class DiffApplierTest(TestCase):
     def test_add_nodes_child_ops(self):
         """If we don't know the correct order of children, attempt to use data
         from `child_ops`"""
-        mk_node = lambda section: {
-            'label': ['100', section], 'node_type': 'regtext', 'children': []}
+        def mk_node(section):
+            return {'label': ['100', section], 'node_type': 'regtext',
+                    'children': []}
         node_1, node_2 = mk_node('1'), mk_node('2')
         node_2a, node_3 = mk_node('2a'), mk_node('3')
         original = {'label': ['100'], 'node_type': 'regtext', 'children': [
