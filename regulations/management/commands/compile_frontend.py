@@ -50,7 +50,7 @@ class Command(BaseCommand):
             files = filter(os.path.isfile, all_content)
             dirs = filter(os.path.isdir, all_content)
             for f in files:
-                os.rm(os.path.join(self.BUILD_DIR, f))
+                os.remove(f)
             for d in dirs:
                 if d != os.path.join(self.BUILD_DIR, 'node_modules'):
                     shutil.rmtree(d)
