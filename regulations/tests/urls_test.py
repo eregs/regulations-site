@@ -1,5 +1,5 @@
 from unittest import TestCase
-from django.core.urlresolvers import reverse, resolve
+from django.core.urlresolvers import reverse
 
 
 class UrlTests(TestCase):

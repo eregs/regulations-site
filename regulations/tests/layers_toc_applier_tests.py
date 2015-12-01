@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from regulations.generator.layers.toc_applier import *
+from regulations.generator.layers.toc_applier import (
+    TableOfContentsLayer)
 
 
 class TableOfContentsLayerTest(TestCase):

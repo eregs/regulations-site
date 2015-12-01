@@ -4,7 +4,6 @@ from regulations.generator import api_reader
 from regulations.generator.node_types import label_to_text
 from regulations.views import utils
 from regulations.views.chrome import ChromeView
-from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
 
 

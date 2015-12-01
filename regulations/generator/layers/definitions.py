@@ -1,4 +1,4 @@
-from django.template import loader, Context
+from django.template import loader
 
 from regulations.generator.section_url import SectionUrl
 from ..node_types import to_markup_id

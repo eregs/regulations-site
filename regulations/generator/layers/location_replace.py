@@ -66,7 +66,7 @@ class LocationReplace(object):
         # tail of unrelated text
         text_segments.append(text[text_begin:])
 
-        # offset_starter is shared between segments of xml nodes (in 
+        # offset_starter is shared between segments of xml nodes (in
         # location_replace, below)
         if original not in replacement:
             self.offset_starter += len(locations)

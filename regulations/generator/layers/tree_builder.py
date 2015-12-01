@@ -177,7 +177,7 @@ def add_child(parent_node, node):
                         paragraph[-1], roman=(len(paragraph) == 2))
 
                 if len(parent_node['label']) == 2:
-                    #Highest interpretation node in the land
+                    # Highest interpretation node in the land
                     p = len(list(itertools.takewhile(lambda l: l != 'Interp',
                                                      c['label'])))
                     prefix_length = (p, )

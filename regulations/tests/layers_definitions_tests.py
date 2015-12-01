@@ -10,8 +10,8 @@ class DefinitionsLayerTest(TestCase):
             'referenced': {'account:202-2-a': {'reference': '202-2-a'}}
             }
         dl = DefinitionsLayer(layer)
-        definition_link = dl.create_definition_link('account',
-                                            ['202', '3'], 'account')
+        definition_link = dl.create_definition_link(
+            'account', ['202', '3'], 'account')
 
         url = '<a href="#202-3" class="citation definition" '
         url += 'data-definition="202-3" data-defined-term="account">'

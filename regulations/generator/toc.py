@@ -66,6 +66,7 @@ def toc_subpart(data, so_far, toc):
         element['sub_toc'].append(toc_sect_appendix(sub, so_far))
     return element
 
+
 def toc_subjgrp(data, so_far, toc):
     """Transforms a subpart, giving it sectional children"""
     element = {
@@ -79,6 +80,7 @@ def toc_subjgrp(data, so_far, toc):
     for sub in toc.get('-'.join(data['index']), []):
         element['sub_toc'].append(toc_sect_appendix(sub, so_far))
     return element
+
 
 def toc_interp(data, so_far, toc):
     """Transforms a subpart, expanding it into subterps (collections of

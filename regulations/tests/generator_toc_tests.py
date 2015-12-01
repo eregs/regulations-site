@@ -1,7 +1,5 @@
-#vim: set fileencoding=utf-8
+# vim: set fileencoding=utf-8
 from unittest import TestCase
-
-from mock import patch
 
 from regulations.generator import toc
 
