@@ -43,7 +43,7 @@ setup(
     version="2.0.0",
     packages=find_packages(),
     install_requires=[
-        'django==1.8',
+        'django>=1.8,<1.9',
         'lxml',
         'requests'
     ],
