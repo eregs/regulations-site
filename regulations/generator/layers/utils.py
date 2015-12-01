@@ -2,11 +2,6 @@ from datetime import datetime
 import re
 
 from django.template import Context
-from django.core import cache
-from django.core.urlresolvers import reverse, NoReverseMatch
-from django.template import Context
-
-from regulations.generator.node_types import to_markup_id
 
 
 def convert_to_python(data):

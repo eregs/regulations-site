@@ -5,7 +5,7 @@ from django.http import HttpResponseGone
 from django.test import Client, RequestFactory
 from mock import patch
 
-from regulations.views.chrome import *
+from regulations.views import chrome
 
 
 class ViewsChromeTest(TestCase):
@@ -27,11 +27,11 @@ class ViewsChromeTest(TestCase):
         generator.get_tree_paragraph.return_value = {}
         set_chrome_context.return_value = None
 
-        class InnerView(TemplateView):
+        class InnerView(chrome.TemplateView):
             def get(self, request, *args, **kwargs):
                 return HttpResponseGone()
 
-        class FakeView(ChromeView):
+        class FakeView(chrome.ChromeView):
             partial_class = InnerView
 
         view = FakeView()
@@ -47,7 +47,7 @@ class ViewsChromeTest(TestCase):
         content (much), test it in the sidebar"""
         sbv.as_view.return_value.return_value = HttpResponseGone()
 
-        class FakeView(ChromeView):
+        class FakeView(chrome.ChromeView):
             def add_main_content(self, context):
                 pass
 
@@ -75,7 +75,7 @@ class ViewsChromeTest(TestCase):
 
 class ViewsChromeRegulationTest(TestCase):
     def test_diff_redirect_label(self):
-        view = ChromeRegulationView()
+        view = chrome.ChromeRegulationView()
         toc = [{'section_id': '199-Subpart-A',
                 'sub_toc': [{'section_id': '199-4'}, {'section_id': '199-6'}]},
                {'section_id': '199-Subpart-B',
@@ -85,7 +85,7 @@ class ViewsChromeRegulationTest(TestCase):
 
 class ViewsChromeParagraphView(TestCase):
     def test_diff_redirect_label(self):
-        view = ChromeParagraphView()
+        view = chrome.ChromeParagraphView()
         self.assertEqual('199-4', view.diff_redirect_label('199-4-b', []))
         self.assertEqual('199-4', view.diff_redirect_label('199-4-b-3', []))
         self.assertEqual('199-A', view.diff_redirect_label('199-A', []))
@@ -100,7 +100,7 @@ class ViewsChromeParagraphView(TestCase):
 
 class ViewsChromeSubterpTest(TestCase):
     def test_diff_redirect_label(self):
-        view = ChromeSubterpView()
+        view = chrome.ChromeSubterpView()
         for label in ('199-Subpart-Interp', '199-Subpart-A-Interp',
                       '199-Appendices-Interp'):
             self.assertEqual('199-Interp',
@@ -109,13 +109,13 @@ class ViewsChromeSubterpTest(TestCase):
     @patch('regulations.views.chrome.generator')
     @patch('regulations.views.chrome.filter_by_subterp')
     def test_check_tree(self, filter_by_subterp, generator):
-        view = ChromeSubterpView()
+        view = chrome.ChromeSubterpView()
 
         generator.get_tree_paragraph.return_value = None
         try:
             view.check_tree({'version': 'vvvv', 'label_id': 'llll'})
             self.assertTrue(False)
-        except error_handling.MissingSectionException:
+        except chrome.error_handling.MissingSectionException:
             pass
 
         generator.get_tree_paragraph.return_value = {'children': []}
@@ -123,7 +123,7 @@ class ViewsChromeSubterpTest(TestCase):
         try:
             view.check_tree({'version': 'vvvv', 'label_id': 'llll'})
             self.assertTrue(False)
-        except error_handling.MissingSectionException:
+        except chrome.error_handling.MissingSectionException:
             pass
 
         filter_by_subterp.return_value = ["something"]

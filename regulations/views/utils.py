@@ -1,11 +1,10 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 import itertools
 import urllib
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from regulations.generator import generator
-from regulations.generator.layers.toc_applier import TableOfContentsLayer
 from regulations.generator.layers.meta import MetaLayer
 from regulations.generator.layers.tree_builder import roman_nums
 from regulations.generator.toc import fetch_toc
@@ -64,8 +63,10 @@ def add_extras(context):
     context['APP_PREFIX'] = prefix
     context['ANALYTICS'] = getattr(settings, 'ANALYTICS', {})
     if 'DAP' in context['ANALYTICS']:
-        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(context['ANALYTICS']['DAP'])
+        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(
+            context['ANALYTICS']['DAP'])
     return context
+
 
 def create_dap_url_params(dap_settings):
     """ Create the DAP url string to append to script tag """
@@ -76,6 +77,7 @@ def create_dap_url_params(dap_settings):
             dap_params['subagency'] = dap_settings['SUBAGENCY']
 
     return urllib.urlencode(dap_params)
+
 
 def first_section(reg_part, version):
     """ Use the table of contents for a regulation, to get the label of the
