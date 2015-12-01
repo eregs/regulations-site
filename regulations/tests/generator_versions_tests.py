@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from mock import patch
 
-from regulations.generator.versions import *
+from regulations.generator import versions
 
 
 class VersionsTest(TestCase):
@@ -30,7 +30,7 @@ class VersionsTest(TestCase):
         n6 = {'effective_on': future, 'publication_date': '2005-07-05'}
         client.notices.return_value = {'results': [n1, n2, n3, n5, n4, n6]}
 
-        history = fetch_grouped_history('111')
+        history = versions.fetch_grouped_history('111')
         self.assertEqual(3, len(history))
         v1, v2, v3 = history
 
@@ -38,6 +38,7 @@ class VersionsTest(TestCase):
         self.assertEqual('current', v2['timeline'])
         self.assertEqual('past', v3['timeline'])
 
-        self.assertEqual(convert_to_python([n6, n5, n4]), v1['notices'])
-        self.assertEqual(convert_to_python([n3, n2]), v2['notices'])
-        self.assertEqual(convert_to_python([n1]), v3['notices'])
+        self.assertEqual(versions.convert_to_python([n6, n5, n4]),
+                         v1['notices'])
+        self.assertEqual(versions.convert_to_python([n3, n2]), v2['notices'])
+        self.assertEqual(versions.convert_to_python([n1]), v3['notices'])

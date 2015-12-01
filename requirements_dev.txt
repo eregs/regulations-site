@@ -1,3 +1,2 @@
 ipython
 sphinx
-flake8

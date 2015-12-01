@@ -99,7 +99,8 @@ class NoticesTest(TestCase):
             {'labels': ['204-2'], 'children': [{
                 'labels': ['204-2-a', '204-2-b'],
                 'children': [
-                    {'labels': ['204-3'], 'children': [], 'paragraphs': ['x']}],
+                    {'labels': ['204-3'], 'children': [],
+                     'paragraphs': ['x']}],
                 'paragraphs': ['abc']}]}]
 
         s = notices.find_label_in_sxs(sxs_list, '204-2-b')

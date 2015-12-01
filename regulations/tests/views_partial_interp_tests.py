@@ -56,7 +56,7 @@ class PartialSubterpViewTest(TestCase):
         request = RequestFactory().get('/fake-path')
         view = partial_interp.PartialSubterpView.as_view()
         try:
-            response = view(request, label_id='lablab', version='verver')
+            view(request, label_id='lablab', version='verver')
             self.assertTrue(False)
         except Http404:
             pass
@@ -65,7 +65,7 @@ class PartialSubterpViewTest(TestCase):
         filter_by_subterp.return_value = []
         view = partial_interp.PartialSubterpView.as_view()
         try:
-            response = view(request, label_id='lablab', version='verver')
+            view(request, label_id='lablab', version='verver')
             self.assertTrue(False)
         except Http404:
             pass

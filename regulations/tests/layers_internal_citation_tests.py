@@ -1,6 +1,8 @@
-from regulations.generator.layers.internal_citation import InternalCitationLayer
+from regulations.generator.layers.internal_citation import (
+    InternalCitationLayer)
 from mock import patch
 from unittest import TestCase
+
 
 class InternalCitationLayerTest(TestCase):
 

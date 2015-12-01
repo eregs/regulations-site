@@ -2,8 +2,6 @@ import logging
 import re
 from threading import Thread
 
-from django.conf import settings
-
 import api_reader
 from layers.defined import DefinedLayer
 from layers.definitions import DefinitionsLayer
@@ -40,7 +38,7 @@ class LayerCreator(object):
 
     LAYERS = {
         DEFINED: ('terms', 'inline', DefinedLayer),
-        #EXTERNAL: ('external-citations', 'inline', ExternalCitationLayer),
+        # EXTERNAL: ('external-citations', 'inline', ExternalCitationLayer),
         GRAPHICS: ('graphics', 'search_replace', GraphicsLayer),
         INTERNAL: ('internal-citations', 'inline', InternalCitationLayer),
         INTERP: ('interpretations', 'paragraph', InterpretationsLayer),
@@ -90,41 +88,41 @@ class LayerCreator(object):
         """Request a list of layers. As this might spawn multiple HTTP
         requests, we wrap the requests in threads so they can proceed
         concurrently."""
-        #This doesn't deal with sectional interpretations yet.
-        #we'll have to do that.
+        # This doesn't deal with sectional interpretations yet.
+        # we'll have to do that.
         layer_names = set(filter(lambda l: l.lower() in LayerCreator.LAYERS,
                                  layer_names))
         results = []
         procs = []
- 
+
         def one_layer(layer_name):
             api_name, applier_type,\
                 layer_class = LayerCreator.LAYERS[layer_name]
             layer_json = self.get_layer_json(api_name, regulation, version)
             results.append((api_name, applier_type, layer_class, layer_json))
- 
+
         #   Spawn threads
         for layer_name in layer_names:
             proc = Thread(target=one_layer, args=(layer_name,))
             procs.append(proc)
             proc.start()
- 
+
         #   Join them (once their work is done)
         for proc in procs:
             proc.join()
-            
+
         for api_name, applier_type, layer_class, layer_json in results:
             if layer_json is None:
                 logging.warning("No data for %s/%s/%s"
                                 % (api_name, regulation, version))
             else:
                 layer = layer_class(layer_json)
- 
+
                 if sectional and hasattr(layer, 'sectional'):
                     layer.sectional = sectional
                 if hasattr(layer, 'version'):
                     layer.version = version
- 
+
                 self.appliers[applier_type].add_layer(layer)
 
     def get_appliers(self):
@@ -227,5 +225,5 @@ def get_diff_json(regulation, older, newer):
 def get_diff_applier(label_id, older, newer):
     regulation = label_id.split('-')[0]
     diff_json = get_diff_json(regulation, older, newer)
-    if diff_json:
+    if diff_json is not None:
         return DiffApplier(diff_json, label_id)

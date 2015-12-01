@@ -1,4 +1,3 @@
-from datetime import date
 import re
 
 from django.shortcuts import redirect

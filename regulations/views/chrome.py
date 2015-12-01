@@ -1,5 +1,3 @@
-from datetime import date
-
 from django.views.generic.base import TemplateView
 
 from regulations.generator import generator

@@ -1,7 +1,5 @@
 from django.template import loader, Context
 
-from regulations.generator.layers.utils import convert_to_python
-
 
 def fetch_all(api_client):
     """Pull down all known notices from the API"""
@@ -17,7 +15,7 @@ def get_notice(api_client, document_number):
 
 def markup(notice):
     """Convert a notice's JSON into associated markup"""
-    #makes a copy
+    # makes a copy
     context_dict = dict(notice)
     sxs_template = loader.get_template('regulations/notice-sxs.html')
     context_dict['sxs_markup'] = [
@@ -30,7 +28,7 @@ def markup(notice):
 
 def sxs_markup(sxs, depth, template):
     """Markup for one node in the sxs tree."""
-    #makes a copy
+    # makes a copy
     context_dict = dict(sxs)
     context_dict['depth'] = depth
     context_dict['children'] = [

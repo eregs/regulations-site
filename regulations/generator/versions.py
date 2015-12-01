@@ -13,7 +13,7 @@ def fetch_regulations_and_future_versions():
 
     regulations_future = {}
 
-    #We're only interested in future endpoint versions
+    # We're only interested in future endpoint versions
     for v in all_versions['versions']:
         if v['regulation'] not in regulations_future:
             regulations_future[v['regulation']] = []

@@ -53,8 +53,12 @@
                     <a href="{% url 'regulation_landing_view' regulation.part %}">
                         <span class="title-num">{{regulation.part}}</span>
                         <div class="reg-sub-title">
-                            <span class="reg-letter">Regulation {{regulation.meta.reg_letter}}</span>
-                            <span class="reg-title">{{regulation.meta.statutory_name|title}}</span>
+                            {% if regulation.meta.reg_letter %}
+                                <span class="reg-major-text">Regulation {{regulation.meta.reg_letter}}</span>
+                                <span class="reg-title">{{regulation.meta.statutory_name|title}}</span>
+                            {% else %}
+                                <span class="reg-major-text">{{regulation.meta.statutory_name|title}}</span>
+                            {% endif %}
                         </div>
                         <span class="cf-icon cf-icon-right-round"></span>
                     </a>
