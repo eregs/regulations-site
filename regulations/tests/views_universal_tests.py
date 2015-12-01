@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import random
-
 from unittest import TestCase
+
 from mock import patch
 
 from regulations.views import universal_landing as universal

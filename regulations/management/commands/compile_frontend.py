@@ -45,8 +45,10 @@ class Command(BaseCommand):
         # Delete everything in BUILD_DIR except node_modules, which we use for
         # caching the downloaded node libraries
         if os.path.exists(self.BUILD_DIR):
-            files = filter(os.path.isfile, os.listdir(self.BUILD_DIR))
-            dirs = filter(os.path.isdir, [os.path.join(self.BUILD_DIR, f) for f in os.listdir(self.BUILD_DIR)])
+            all_content = [os.path.join(self.BUILD_DIR, f)
+                           for f in os.listdir(self.BUILD_DIR)]
+            files = filter(os.path.isfile, all_content)
+            dirs = filter(os.path.isdir, all_content)
             for f in files:
                 os.rm(os.path.join(self.BUILD_DIR, f))
             for d in dirs:
@@ -76,7 +78,7 @@ class Command(BaseCommand):
         as pairs of (path, file)"""
         files_seen = set()
         pairs = (pr for finder in get_finders() for pr in finder.list([".*"]))
-        for path, storage in pairs:            
+        for path, storage in pairs:
             # Prefix the relative path if the source storage contains it
             if getattr(storage, 'prefix', None):
                 prefixed_path = os.path.join(storage.prefix, path)

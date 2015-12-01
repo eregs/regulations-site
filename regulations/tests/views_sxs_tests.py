@@ -3,7 +3,7 @@ from unittest import TestCase
 from django.template import Template
 from mock import patch
 
-from regulations.views.partial_sxs import *
+from regulations.views.partial_sxs import ParagraphSXSView
 from regulations.generator.layers.utils import convert_to_python
 
 

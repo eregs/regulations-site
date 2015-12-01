@@ -2,7 +2,9 @@ from unittest import TestCase
 
 from mock import patch
 
-from regulations.generator.layers.paragraph_markers import *
+from regulations.generator.layers.paragraph_markers import (
+    ParagraphMarkersLayer)
+
 
 class ParagraphMarkersLayerTest(TestCase):
 
@@ -13,7 +15,7 @@ class ParagraphMarkersLayerTest(TestCase):
             '1001-12-q': [{'text': 'q.', 'locations': [1]}]
         })
         self.assertEqual([], pml.apply_layer('1002-01-01'))
-        
+
         a = pml.apply_layer('1001-12-a')
         self.assertEqual(1, len(a))
         self.assertEqual('(a)', a[0][0])

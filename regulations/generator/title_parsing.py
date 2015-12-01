@@ -1,4 +1,4 @@
-#vim: set fileencoding=utf-8
+# vim: set fileencoding=utf-8
 import re
 
 from regulations.generator import node_types

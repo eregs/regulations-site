@@ -29,7 +29,7 @@ def get_appliers(label_id, versions):
         raise error_handling.MissingContentException()
 
     appliers = utils.handle_diff_layers(
-        'graphics,paragraph,keyterms,defined',
+        'graphics,paragraph,keyterms,defined,formatting',
         label_id, versions.older, versions.newer)
     appliers += (diff,)
     return appliers

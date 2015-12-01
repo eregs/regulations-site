@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from regulations.generator.layers.location_replace import *
+from regulations.generator.layers.location_replace import LocationReplace
 
 
 class LayersLocationReplaceTest(TestCase):

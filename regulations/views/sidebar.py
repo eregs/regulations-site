@@ -1,5 +1,4 @@
 from django.views.generic.base import TemplateView
-from django.http import Http404
 
 from regulations.generator import api_reader
 from regulations.generator.layers.analyses import SectionBySectionLayer
