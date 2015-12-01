@@ -146,7 +146,8 @@ var ChildView = Backbone.View.extend({
         }
     },
 
-    route: function(options) {        if (Router.hasPushState && typeof options.noRoute === 'undefined') {
+    route: function(options) {
+        if (Router.hasPushState && typeof options.noRoute === 'undefined') {
             var url = this.url,
                 hashPosition;
 
@@ -156,18 +157,8 @@ var ChildView = Backbone.View.extend({
                 this.navigate(url);
                 $('html, body').scrollTop($('#' + options.scrollToId).offset().top);
             } else {
-                if (typeof Backbone.history.fragment === 'undefined') {
-                    hashPosition = -1;
-                } else {
-                    hashPosition = Backbone.history.fragment.indexOf('#');
-                }
-
-                if (hashPosition !== -1) {
-                    url = url.slice(0, hashPosition) + '#' + options.id;
-                } else if (options.type !== 'diff') {
-                    url += '#' + options.id;
-                }
-            this.navigate(url);
+                url += '#' + options.id;
+                this.navigate(url);
             }
         }
     },
