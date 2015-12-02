@@ -9,6 +9,8 @@ var Router = require('./router');
 var SidebarView = require('./views/sidebar/sidebar-view');
 var HeaderView = require('./views/header/header-view');
 var DrawerView = require('./views/drawer/drawer-view');
+var LandingView = require('./views/main/landing-view');
+
 var AnalyticsHandler = require('./views/analytics-handler-view');
 Backbone.$ = $;
 
@@ -29,7 +31,8 @@ Backbone.$ = $;
             main = new MainView(),
             sidebar = new SidebarView(),
             header = new HeaderView(),  // Header before Drawer as Drawer sends Header events
-            drawer = new DrawerView();
+            drawer = new DrawerView(),
+            landing = new LandingView();
         setTimeout(function() {
             $('html').addClass('selenium-start');
         }, 5000);
