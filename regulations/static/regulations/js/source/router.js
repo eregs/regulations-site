@@ -2,7 +2,6 @@
 var _ = require('underscore');
 var Backbone = require('backbone');
 var MainView = require('./views/main/main-view');
-var LandingView = require('./views/main/landing-view');
 var MainEvents = require('./events/main-events');
 var BreakawayEvents = require('./events/breakaway-events');
 require('backbone-query-parameters');
@@ -22,13 +21,8 @@ else {
             'sxs/:section/:version': 'loadSxS',
             'search/:reg': 'loadSearchResults',
             'diff/:section/:baseVersion/:newerVersion': 'loadDiffSection',
-            ':section/:version': 'loadSection',
-            ':section': 'loadHome',
+            ':section/:version': 'loadSection'
         },
-        loadHome: function() {
-            MainEvents.trigger('landing:open');
-        },
-
         loadSection: function(section) {
             var options = {id: section};
 
@@ -83,9 +77,6 @@ else {
                 silent: true,
                 root: root
             });
-            if (Backbone.history.fragment.indexOf("/" == -1)) {
-                MainEvents.trigger('landing:set');
-            }
         },
 
         hasPushState: true
