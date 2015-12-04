@@ -23,7 +23,6 @@ else {
             'diff/:section/:baseVersion/:newerVersion': 'loadDiffSection',
             ':section/:version': 'loadSection'
         },
-
         loadSection: function(section) {
             var options = {id: section};
 
