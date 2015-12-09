@@ -63,8 +63,12 @@ class FormattingLayerTest(TestCase):
         self.assert_context_contains('code', 'fence_data', data)
 
     def test_apply_layer_subscript(self):
-        data = {'variable': 'abc', 'subscript': '123'}
+        data = {'subscript': '123'}
         self.assert_context_contains('subscript', 'subscript_data', data)
+
+    def test_apply_layer_superscript(self):
+        data = {'superscript': '123'}
+        self.assert_context_contains('superscript', 'superscript_data', data)
 
     def test_apply_layer_dash(self):
         data = {'text': 'This is an fp-dash'}
