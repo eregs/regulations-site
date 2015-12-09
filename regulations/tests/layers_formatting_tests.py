@@ -72,9 +72,8 @@ class FormattingLayerTest(TestCase):
         self.assert_context_contains('table', 'table_data', data)
         output = self.render_html('table', data)
         tree = html.fromstring(output)
-        tree_elements = tree.xpath("//*")
-        tags = [_.tag for _ in tree_elements]
-        self.assertTrue("caption" in tags)
+        self.assertEqual(1, len(tree.xpath("table/caption")))
+        self.assertEqual('Caption', tree.xpath("table/caption")[0].text)
 
     def test_apply_layer_note(self):
         data = {'type': 'note',
