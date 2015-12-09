@@ -3,6 +3,9 @@
 {% endcomment %}
 <div class="table-wrap">
     <table>
+        {% if caption %}
+            <caption>{{ caption }}</caption>
+        {% endif %}
         <thead>
         {% for row in header %}
             <tr>
