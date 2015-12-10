@@ -1,61 +1,39 @@
+from importlib import import_module
 import logging
 import re
 from threading import Thread
 
+from django.conf import settings
+
 import api_reader
-from layers.defined import DefinedLayer
-from layers.definitions import DefinitionsLayer
-from layers.external_citation import ExternalCitationLayer
-from layers.formatting import FormattingLayer
-from layers.internal_citation import InternalCitationLayer
-from layers.interpretations import InterpretationsLayer
-from layers.key_terms import KeyTermsLayer
-from layers.meta import MetaLayer
-from layers.layers_applier import InlineLayersApplier
-from layers.layers_applier import ParagraphLayersApplier
-from layers.layers_applier import SearchReplaceLayersApplier
-from layers.paragraph_markers import ParagraphMarkersLayer
-from layers.toc_applier import TableOfContentsLayer
-from layers.graphics import GraphicsLayer
+from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.layers_applier import (
+    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from layers.diff_applier import DiffApplier
 from html_builder import HTMLBuilder
 import notices
 
 
+def _data_layers():
+    """Index all configured data layers by their "shorthand". This doesn't
+    have any error checking -- it'll explode if configured improperly"""
+    layers = {}
+    for class_path in settings.DATA_LAYERS:
+        module, class_name = class_path.rsplit('.', 1)
+        klass = getattr(import_module(module), class_name)
+        layers[klass.shorthand] = klass
+    return layers
+
+
 class LayerCreator(object):
     """ This lets us dynamically load layers by shorthand. """
-    DEFINED = DefinedLayer.shorthand
-    EXTERNAL = ExternalCitationLayer.shorthand
-    GRAPHICS = GraphicsLayer.shorthand
-    INTERNAL = InternalCitationLayer.shorthand
-    INTERP = InterpretationsLayer.shorthand
-    KEY_TERMS = KeyTermsLayer.shorthand
-    META = MetaLayer.shorthand
-    PARAGRAPH = ParagraphMarkersLayer.shorthand
-    FORMATTING = FormattingLayer.shorthand
-    TERMS = DefinitionsLayer.shorthand
-    TOC = TableOfContentsLayer.shorthand
-
-    LAYERS = {
-        DEFINED: ('terms', 'inline', DefinedLayer),
-        # EXTERNAL: ('external-citations', 'inline', ExternalCitationLayer),
-        GRAPHICS: ('graphics', 'search_replace', GraphicsLayer),
-        INTERNAL: ('internal-citations', 'inline', InternalCitationLayer),
-        INTERP: ('interpretations', 'paragraph', InterpretationsLayer),
-        KEY_TERMS: ('keyterms', 'search_replace', KeyTermsLayer),
-        META: ('meta', 'paragraph', MetaLayer),
-        PARAGRAPH: (
-            'paragraph-markers', 'search_replace', ParagraphMarkersLayer),
-        FORMATTING: ('formatting', 'search_replace', FormattingLayer),
-        TERMS: ('terms', 'inline', DefinitionsLayer),
-        TOC: ('toc', 'paragraph', TableOfContentsLayer),
-    }
+    LAYERS = _data_layers()
 
     def __init__(self):
         self.appliers = {
-            'inline': InlineLayersApplier(),
-            'paragraph': ParagraphLayersApplier(),
-            'search_replace': SearchReplaceLayersApplier()}
+            LayerBase.INLINE: InlineLayersApplier(),
+            LayerBase.PARAGRAPH: ParagraphLayersApplier(),
+            LayerBase.SEARCH_REPLACE: SearchReplaceLayersApplier()}
 
         self.api = api_reader.ApiReader()
 
@@ -68,8 +46,9 @@ class LayerCreator(object):
         """
 
         if layer_name.lower() in LayerCreator.LAYERS:
-            api_name, applier_type,\
-                layer_class = LayerCreator.LAYERS[layer_name]
+            layer_class = LayerCreator.LAYERS[layer_name]
+            api_name = layer_class.data_source
+            applier_type = layer_class.layer_type
             layer_json = self.get_layer_json(api_name, regulation, version)
             if layer_json is None:
                 logging.warning("No data for %s/%s/%s"
@@ -90,14 +69,15 @@ class LayerCreator(object):
         concurrently."""
         # This doesn't deal with sectional interpretations yet.
         # we'll have to do that.
-        layer_names = set(filter(lambda l: l.lower() in LayerCreator.LAYERS,
-                                 layer_names))
+        layer_names = set(l for l in layer_names
+                          if l.lower() in LayerCreator.LAYERS)
         results = []
         procs = []
 
         def one_layer(layer_name):
-            api_name, applier_type,\
-                layer_class = LayerCreator.LAYERS[layer_name]
+            layer_class = LayerCreator.LAYERS[layer_name]
+            api_name = layer_class.data_source
+            applier_type = layer_class.layer_type
             layer_json = self.get_layer_json(api_name, regulation, version)
             results.append((api_name, applier_type, layer_class, layer_json))
 
@@ -127,9 +107,9 @@ class LayerCreator(object):
 
     def get_appliers(self):
         """ Return the appliers. """
-        return (self.appliers['inline'],
-                self.appliers['paragraph'],
-                self.appliers['search_replace'])
+        return (self.appliers[LayerBase.INLINE],
+                self.appliers[LayerBase.PARAGRAPH],
+                self.appliers[LayerBase.SEARCH_REPLACE])
 
 
 class DiffLayerCreator(LayerCreator):

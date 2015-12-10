@@ -1,9 +1,13 @@
 from django.template import loader
 import utils
 
+from regulations.generator.layers.base import LayerBase
 
-class GraphicsLayer(object):
+
+class GraphicsLayer(LayerBase):
     shorthand = 'graphics'
+    data_source = 'graphics'
+    layer_type = LayerBase.SEARCH_REPLACE
 
     def __init__(self, layer_data):
         self.layer_data = layer_data

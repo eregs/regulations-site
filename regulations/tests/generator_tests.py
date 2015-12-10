@@ -88,12 +88,6 @@ class GeneratorTest(TestCase):
             ('204', 'old', 'new'),
             get_diff_json.call_args[0])
 
-    def test_layercreator_layers(self):
-        """ A LAYER entry must have three pieces of information specified. """
-
-        for l, v in generator.LayerCreator.LAYERS.items():
-            self.assertEqual(len(v), 3)
-
     def test_layercreator_getappliers(self):
         creator = generator.LayerCreator()
         appliers = creator.get_appliers()

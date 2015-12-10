@@ -1,12 +1,15 @@
 # vim: set fileencoding=utf-8
 from regulations.generator import title_parsing
+from regulations.generator.layers.base import LayerBase
 from regulations.generator.section_url import SectionUrl
 from regulations.generator.toc import (
     toc_interp, toc_sect_appendix, toc_subpart)
 
 
-class TableOfContentsLayer(object):
+class TableOfContentsLayer(LayerBase):
     shorthand = 'toc'
+    data_source = 'toc'
+    layer_type = LayerBase.PARAGRAPH
 
     def __init__(self, layer):
         self.layer = layer

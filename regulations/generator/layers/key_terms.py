@@ -2,9 +2,13 @@ import string
 import utils
 from django.template import loader
 
+from regulations.generator.layers.base import LayerBase
 
-class KeyTermsLayer(object):
+
+class KeyTermsLayer(LayerBase):
     shorthand = 'keyterms'
+    data_source = 'keyterms'
+    layer_type = LayerBase.SEARCH_REPLACE
 
     def __init__(self, layer):
         self.layer = layer

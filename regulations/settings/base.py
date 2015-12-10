@@ -204,3 +204,21 @@ LOGGING = {
         },
     }
 }
+
+
+# Where should we look for data?
+DATA_LAYERS = (
+    'regulations.generator.layers.defined.DefinedLayer',
+    'regulations.generator.layers.definitions.DefinitionsLayer',
+    # Commented out of the defaults until the feature is considered complete
+    # 'regulations.generator.layers.external_citation.ExternalCitationLayer',
+    'regulations.generator.layers.formatting.FormattingLayer',
+    'regulations.generator.layers.internal_citation.InternalCitationLayer',
+    # Should likely be moved to a CFPB-specific module
+    'regulations.generator.layers.interpretations.InterpretationsLayer',
+    'regulations.generator.layers.key_terms.KeyTermsLayer',
+    'regulations.generator.layers.meta.MetaLayer',
+    'regulations.generator.layers.paragraph_markers.ParagraphMarkersLayer',
+    'regulations.generator.layers.toc_applier.TableOfContentsLayer',
+    'regulations.generator.layers.graphics.GraphicsLayer',
+)

@@ -1,9 +1,13 @@
 from django.template import loader
 import utils
 
+from regulations.generator.layers.base import LayerBase
 
-class ParagraphMarkersLayer(object):
+
+class ParagraphMarkersLayer(LayerBase):
     shorthand = 'paragraph'
+    data_source = 'paragraph-markers'
+    layer_type = LayerBase.SEARCH_REPLACE
 
     def __init__(self, layer):
         self.layer = layer
