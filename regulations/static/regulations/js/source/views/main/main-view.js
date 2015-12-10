@@ -231,7 +231,6 @@ var MainView = Backbone.View.extend({
     loading: function() {
         // visually indicate that a new section is loading
         $('.main-content').addClass('loading');
-
     },
 
     loaded: function() {
@@ -239,6 +238,7 @@ var MainView = Backbone.View.extend({
 
         // change focus to main content area when new sections are loaded
         $('.section-focus').focus();
+        $('table').stickyTableHeaders();
     }
 });
 module.exports = MainView;
