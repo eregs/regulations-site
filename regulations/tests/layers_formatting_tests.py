@@ -63,6 +63,7 @@ class FormattingLayerTest(TestCase):
         output = self.render_html('table', data)
         tree = html.fromstring(output)
         self.assertEqual(1, len(tree.xpath("table/thead")))
+        self.assertEqual(0, len(tree.xpath("table/caption")))
         self.assertEqual('Title', tree.xpath("table/thead/tr/th")[0].text)
 
     def test_apply_layer_table_with_caption(self):
