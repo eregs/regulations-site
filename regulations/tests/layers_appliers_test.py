@@ -29,12 +29,12 @@ class LayersApplierTest(TestCase):
 
     def test_replace_all(self):
         applier = layers_applier.LayersApplier()
-        applier.text = ('Prefix test <a href="url" data="test">link test</a> '
-                        'postfix text')
+        applier.text = ('Prefix test <a \nhref="url" data="test">link '
+                        '\ntest</a> postfix text')
         applier.replace_all('test', 'linksecondword')
 
-        replaced = ('Prefix linksecondword <a href="url" data="test">link '
-                    'linksecondword</a> postfix text')
+        replaced = ('Prefix linksecondword <a \nhref="url" data="test">link '
+                    '\nlinksecondword</a> postfix text')
         self.assertEquals(applier.text, replaced)
 
     def test_find_all_offsets(self):
