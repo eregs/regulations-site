@@ -2,9 +2,13 @@ import urllib
 from django.template import loader
 import utils
 
+from regulations.generator.layers.base import LayerBase
 
-class ExternalCitationLayer():
+
+class ExternalCitationLayer(LayerBase):
     shorthand = 'external'
+    data_source = 'terms'
+    layer_type = LayerBase.INLINE
 
     def __init__(self, layer):
         self.layer = layer

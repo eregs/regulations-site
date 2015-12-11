@@ -1,8 +1,12 @@
 from django.template import loader, Context
 
+from regulations.generator.layers.base import LayerBase
 
-class FormattingLayer(object):
+
+class FormattingLayer(LayerBase):
     shorthand = 'formatting'
+    data_source = 'formatting'
+    layer_type = LayerBase.SEARCH_REPLACE
 
     def __init__(self, layer_data):
         self.layer_data = layer_data

@@ -1,7 +1,7 @@
 from itertools import takewhile
 
-from regulations.generator.node_types import label_to_text
 from regulations.generator.layers.tree_builder import make_label_sortable
+from regulations.generator.node_types import label_to_text
 
 
 def sort_regtext_label(label):
@@ -39,9 +39,8 @@ def sort_analyses(analyses):
         return sorted_analyses
 
 
+# This is unlike other layers in that it is only used in the right sidebar
 class SectionBySectionLayer(object):
-    shorthand = 'sxs'
-
     def __init__(self, layer):
         self.layer = layer
         # Perform the computations we'll use when applying the layer only once

@@ -1,12 +1,15 @@
 from django.template import loader
 
+from regulations.generator.layers.base import LayerBase
 from regulations.generator.section_url import SectionUrl
 from ..node_types import to_markup_id
 import utils
 
 
-class DefinitionsLayer(object):
+class DefinitionsLayer(LayerBase):
     shorthand = 'terms'
+    data_source = 'terms'
+    layer_type = LayerBase.INLINE
 
     def __init__(self, layer):
         self.layer = layer
