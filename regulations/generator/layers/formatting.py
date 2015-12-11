@@ -9,7 +9,7 @@ class FormattingLayer(object):
         self.tpls = {
             key: loader.get_template('regulations/layers/{}.html'.format(key))
             for key in ('table', 'note', 'code', 'subscript', 'dash',
-                        'footnote')}
+                        'footnote', 'superscript')}
 
     def render_table(self, table, data_type=None):
         max_width = 0
@@ -59,7 +59,8 @@ class FormattingLayer(object):
     def apply_layer(self, text_index):
         """Convert all plaintext tables into html tables"""
         layer_pairs = []
-        data_types = ['table', 'fence', 'subscript', 'dash', 'footnote']
+        data_types = ['table', 'fence', 'subscript', 'dash', 'footnote',
+                      'superscript']
         for data in self.layer_data.get(text_index, []):
             for data_type in data_types:
                 processor = getattr(self, 'render_' + data_type,

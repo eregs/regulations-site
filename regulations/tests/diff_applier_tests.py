@@ -156,6 +156,45 @@ class DiffApplierTest(TestCase):
 
         da.add_nodes_to_tree(tree, adds)
 
+    def test_add_nodes_child_ops(self):
+        """If we don't know the correct order of children, attempt to use data
+        from `child_ops`"""
+        def mk_node(section):
+            return {'label': ['100', section], 'node_type': 'regtext',
+                    'children': []}
+        node_1, node_2 = mk_node('1'), mk_node('2')
+        node_2a, node_3 = mk_node('2a'), mk_node('3')
+        original = {'label': ['100'], 'node_type': 'regtext', 'children': [
+            node_1, node_2
+        ]}
+
+        diff = {
+            '100': {
+                'op': diff_applier.DiffApplier.MODIFIED_OP,
+                'child_ops': [[diff_applier.DiffApplier.EQUAL, 0, 1],
+                              [diff_applier.DiffApplier.DELETE, 1, 2],
+                              [diff_applier.DiffApplier.INSERT, 1, ['100-2a']],
+                              [diff_applier.DiffApplier.INSERT, 2, ['100-3']]]
+            },
+            '100-2': {'op': diff_applier.DiffApplier.DELETED_OP},
+            '100-2a': {
+                'op': diff_applier.DiffApplier.ADDED_OP,
+                'node': node_2a
+            },
+            '100-3': {
+                'op': diff_applier.DiffApplier.ADDED_OP,
+                'node': node_3
+            }
+        }
+
+        adds = tree_builder.AddQueue()
+        adds.insert_all([('100-2a', node_2a), ('100-3', node_3)])
+
+        da = diff_applier.DiffApplier(diff, None)
+        da.add_nodes_to_tree(original, adds)
+        self.assertEqual(original['child_labels'],
+                         ['100-1', '100-2', '100-2a', '100-3'])
+
     def test_child_picking(self):
         da = self.create_diff_applier()
         da.label_requested = '204-3'

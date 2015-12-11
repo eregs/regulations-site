@@ -21,9 +21,10 @@ else {
             'sxs/:section/:version': 'loadSxS',
             'search/:reg': 'loadSearchResults',
             'diff/:section/:baseVersion/:newerVersion': 'loadDiffSection',
-            ':section/:version': 'loadSection'
-        },
+            ':section/:version': 'loadSection',
+            ':section': 'loadSection'
 
+        },
         loadSection: function(section) {
             var options = {id: section};
 

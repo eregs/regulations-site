@@ -1,9 +1,14 @@
 from collections import defaultdict
 from unittest import TestCase
 
+from django.template import Context
+from django.template.loader import get_template
+from lxml import html
 from mock import Mock, patch
 
 from regulations.generator.layers.formatting import FormattingLayer
+
+template_loc = 'regulations/layers/{}.html'
 
 
 class FormattingLayerTest(TestCase):
@@ -27,7 +32,7 @@ class FormattingLayerTest(TestCase):
             expected_context = dict(data_value)
         data = {'111-3': [{'text': 'original', 'locations': [0, 2],
                            data_key: data_value}]}
-        template_file = 'regulations/layers/{}.html'.format(template_name)
+        template_file = template_loc.format(template_name)
         with patch('regulations.generator.layers.formatting.loader') as ldr:
             # we will want to reference these templates later
             templates = defaultdict(Mock)
@@ -46,10 +51,30 @@ class FormattingLayerTest(TestCase):
             self.assertTrue(key in context)
             self.assertEqual(context[key], value)
 
+    def render_html(self, template_name, data):
+        template_file = template_loc.format(template_name)
+        template = get_template(template_file)
+        return template.render(Context(data))
+
     def test_apply_layer_table(self):
         data = {'header': [[{'colspan': 2, 'rowspan': 1, 'text': 'Title'}]],
                 'rows': [['cell 11', 'cell 12'], ['cell 21', 'cell 22']]}
         self.assert_context_contains('table', 'table_data', data)
+        output = self.render_html('table', data)
+        tree = html.fromstring(output)
+        self.assertEqual(1, len(tree.xpath("table/thead")))
+        self.assertEqual(0, len(tree.xpath("table/caption")))
+        self.assertEqual('Title', tree.xpath("table/thead/tr/th")[0].text)
+
+    def test_apply_layer_table_with_caption(self):
+        data = {'header': [[{'colspan': 2, 'rowspan': 1, 'text': 'Title'}]],
+                'rows': [['cell 11', 'cell 12'], ['cell 21', 'cell 22']],
+                'caption': 'Caption'}
+        self.assert_context_contains('table', 'table_data', data)
+        output = self.render_html('table', data)
+        tree = html.fromstring(output)
+        self.assertEqual(1, len(tree.xpath("table/caption")))
+        self.assertEqual('Caption', tree.xpath("table/caption")[0].text)
 
     def test_apply_layer_note(self):
         data = {'type': 'note',
@@ -63,8 +88,12 @@ class FormattingLayerTest(TestCase):
         self.assert_context_contains('code', 'fence_data', data)
 
     def test_apply_layer_subscript(self):
-        data = {'variable': 'abc', 'subscript': '123'}
+        data = {'subscript': '123'}
         self.assert_context_contains('subscript', 'subscript_data', data)
+
+    def test_apply_layer_superscript(self):
+        data = {'superscript': '123'}
+        self.assert_context_contains('superscript', 'superscript_data', data)
 
     def test_apply_layer_dash(self):
         data = {'text': 'This is an fp-dash'}

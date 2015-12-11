@@ -38,6 +38,7 @@ var MainView = Backbone.View.extend({
 
         var childViewOptions = {},
             appendixOrSupplement;
+
         this.$topSection = this.$el.find('section[data-page-type]');
 
         // which page are we starting on?
@@ -95,6 +96,7 @@ var MainView = Backbone.View.extend({
 
     modelmap: {
         'reg-section': RegModel,
+        'landing-page': RegModel,
         'search-results': SearchModel,
         'diff': DiffModel,
         'appendix': RegModel,
@@ -103,6 +105,7 @@ var MainView = Backbone.View.extend({
 
     viewmap: {
         'reg-section': RegView,
+        'landing-page': RegView,
         'search-results': SearchResultsView,
         'diff': DiffView,
         'appendix': RegView,
@@ -228,7 +231,6 @@ var MainView = Backbone.View.extend({
     loading: function() {
         // visually indicate that a new section is loading
         $('.main-content').addClass('loading');
-
     },
 
     loaded: function() {
@@ -236,6 +238,7 @@ var MainView = Backbone.View.extend({
 
         // change focus to main content area when new sections are loaded
         $('.section-focus').focus();
+        $('table').stickyTableHeaders();
     }
 });
 module.exports = MainView;

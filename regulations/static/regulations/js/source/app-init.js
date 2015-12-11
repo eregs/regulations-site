@@ -3,6 +3,7 @@
 
 var $ = require('jquery');
 var _ = require('underscore');
+var StickyTableHeaders = require('StickyTableHeaders');
 var Backbone = require('backbone');
 var MainView = require('./views/main/main-view');
 var Router = require('./router');
@@ -25,6 +26,7 @@ Backbone.$ = $;
     init: function() {
         Router.start();
         this.bindEvents();
+        $('table').stickyTableHeaders();
         var gaview = new AnalyticsHandler(),
             main = new MainView(),
             sidebar = new SidebarView(),
