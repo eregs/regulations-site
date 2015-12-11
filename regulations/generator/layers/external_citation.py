@@ -2,13 +2,12 @@ import urllib
 from django.template import loader
 import utils
 
-from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.base import InlineLayer
 
 
-class ExternalCitationLayer(LayerBase):
+class ExternalCitationLayer(InlineLayer):
     shorthand = 'external'
     data_source = 'terms'
-    layer_type = LayerBase.INLINE
 
     def __init__(self, layer):
         self.layer = layer
@@ -79,19 +78,7 @@ class ExternalCitationLayer(LayerBase):
         generator = generator_map[citation_type]
         return generator
 
-    def create_link(self, text, layer_element):
-        generator = self.citation_type_to_generator(
-            layer_element['citation_type'])
-        return generator(text, layer_element['citation'])
-
-    def apply_layer(self, text, text_index):
-        if text_index in self.layer:
-            layer_elements = self.layer[text_index]
-
-            layer_pairs = []
-            for layer_element in layer_elements:
-                for start, end in layer_element['offsets']:
-                    ot = text[int(start):int(end)]
-                    rt = self.create_link(ot, layer_element)
-                    layer_pairs.append((ot, rt, (start, end)))
-            return layer_pairs
+    def replacement_for(self, original, data):
+        """Given link text and relevant data, create an appropriate link"""
+        generator = self.citation_type_to_generator(data['citation_type'])
+        return generator(original, data['citation'])

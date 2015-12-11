@@ -30,3 +30,27 @@ class LayerBase(object):
         node, replacing text based on offset, or replacing text based on
         searching. Which type is this layer?"""
         raise NotImplementedError
+
+
+class InlineLayer(LayerBase):
+    """Represents a layer which replaces text by looking at offsets"""
+    layer_type = LayerBase.INLINE
+
+    @abc.abstractmethod
+    def replacement_for(self, original, data):
+        """Given the original text and the relevant data from a layer, create
+        a (string) replacement, by, for example, running the data through a
+        template"""
+        raise NotImplementedError
+
+    def apply_layer(self, text, text_index):
+        """Entry point when processing the regulation tree. Given the node's
+        text and its index, yield all replacement text"""
+        data_with_offsets = ((entry, start, end)
+                             for entry in self.layer.get(text_index, [])
+                             for (start, end) in entry['offsets'])
+        for data, start, end in data_with_offsets:
+            start, end = int(start), int(end)
+            original = text[start:end]
+            replacement = self.replacement_for(original, data)
+            yield (original, replacement, (start, end))

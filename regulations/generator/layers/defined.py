@@ -3,6 +3,7 @@ from django.template import loader, Context
 from regulations.generator.layers.base import LayerBase
 
 
+# Does not extend InlineLayer as this retrieves its data in a different way
 class DefinedLayer(LayerBase):
     shorthand = 'defined'
     data_source = 'terms'

@@ -107,7 +107,7 @@ class InlineLayersApplier(LayersBase):
     def get_layer_pairs(self, text_index, original_text):
         layer_pairs = []
         for layer in self.layers.values():
-            applied = layer.apply_layer(original_text, text_index)
+            applied = list(layer.apply_layer(original_text, text_index))
             if applied:
                 layer_pairs += applied
 
