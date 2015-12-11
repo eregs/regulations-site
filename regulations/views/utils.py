@@ -86,3 +86,17 @@ def first_section(reg_part, version):
 
     toc = fetch_toc(reg_part, version, flatten=True)
     return toc[0]['section_id']
+
+
+def make_sortable(string):
+    """Split a string into components, converting digits into ints so sorting
+    works as we would expect"""
+    if not string:      # base case
+        return tuple()
+    elif string[0].isdigit():
+        prefix = "".join(itertools.takewhile(lambda c: c.isdigit(), string))
+        return (int(prefix),) + make_sortable(string[len(prefix):])
+    else:
+        prefix = "".join(itertools.takewhile(lambda c: not c.isdigit(),
+                                             string))
+        return (prefix,) + make_sortable(string[len(prefix):])

@@ -62,6 +62,7 @@ class UtilsTest(TestCase):
                 'SUBAGENCY': 'sub-agency',
             }
         }
+
         utils.add_extras(context)
 
         self.assertTrue('APP_PREFIX' in context)
@@ -84,3 +85,11 @@ class UtilsTest(TestCase):
             {'section_id': '204-101', 'index': ['204', '101']}]
         first = utils.first_section('204', '2')
         self.assertEqual(first, '204-100')
+
+    def test_make_sortable(self):
+        """Verify that strings get decomposed correctly into sortable tuples"""
+        self.assertEqual(utils.make_sortable("abc"), ("abc",))
+        self.assertEqual(utils.make_sortable("123"), (123,))
+        self.assertEqual(utils.make_sortable("abc123def456"),
+                         ("abc", 123, "def", 456))
+        self.assertEqual(utils.make_sortable("123abc456"), (123, "abc", 456))

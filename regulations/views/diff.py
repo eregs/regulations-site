@@ -1,7 +1,6 @@
 # vim: set encoding=utf-8
 
 from collections import namedtuple
-from itertools import takewhile
 
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
@@ -191,25 +190,13 @@ def diff_toc(versions, old_toc, diff):
     return sorted(compiled_toc, key=normalize_toc)
 
 
-def make_sortable(string):
-    """Split a string into components, converting digits into ints so sorting
-    works as we would expect"""
-    if not string:      # base case
-        return tuple()
-    elif string[0].isdigit():
-        prefix = "".join(takewhile(lambda c: c.isdigit(), string))
-        return (int(prefix),) + make_sortable(string[len(prefix):])
-    else:
-        prefix = "".join(takewhile(lambda c: not c.isdigit(), string))
-        return (prefix,) + make_sortable(string[len(prefix):])
-
-
 def normalize_toc(toc_element):
     """Return a sorting order for a TOC element, primarily based on the
     index, and the type of content. General order is regulation text,
     appendices, then interpretations."""
 
-    sortable_index = tuple(make_sortable(l) for l in toc_element['index'])
+    sortable_index = tuple(utils.make_sortable(l)
+                           for l in toc_element['index'])
     if toc_element.get('is_section'):
         return (0,) + sortable_index
     elif toc_element.get('is_appendix'):

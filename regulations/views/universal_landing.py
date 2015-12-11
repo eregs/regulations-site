@@ -22,10 +22,10 @@ def get_regulations_list(all_versions):
     to that list. """
 
     regs = []
-    reg_parts = sorted(all_versions.keys())
+    reg_parts = sorted(all_versions.keys(), key=utils.make_sortable)
 
     for part in reg_parts:
-        version = all_versions.get(part)[0]['version']
+        version = all_versions[part][0]['version']
         reg_meta = utils.regulation_meta(part, version, True)
         first_section = utils.first_section(part, version)
         amendments = filter_future_amendments(all_versions.get(part, None))
