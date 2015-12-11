@@ -2,5 +2,6 @@ coverage
 coveralls
 django-nose
 flake8
+lxml
 mock
 nose-exclude
