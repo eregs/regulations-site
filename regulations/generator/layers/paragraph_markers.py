@@ -1,30 +1,20 @@
 from django.template import loader
 import utils
 
-from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.base import SearchReplaceLayer
 
 
-class ParagraphMarkersLayer(LayerBase):
+class ParagraphMarkersLayer(SearchReplaceLayer):
     shorthand = 'paragraph'
     data_source = 'paragraph-markers'
-    layer_type = LayerBase.SEARCH_REPLACE
 
     def __init__(self, layer):
         self.layer = layer
         self.template = loader.get_template(
             'regulations/layers/paragraph_markers.html')
 
-    def apply_layer(self, text_index):
-        elements = []
-        if text_index in self.layer:
-            for layer_element in self.layer[text_index]:
-                to_replace = layer_element['text']
-                stripped = to_replace.replace('(', '').replace(')', '')
-                stripped = stripped.replace('.', '')
+    def replacements_for(self, original, data):
+        stripped = original.replace('(', '').replace(')', '').replace('.', '')
 
-                context = {'paragraph': to_replace,
-                           'paragraph_stripped': stripped}
-                replace_with = utils.render_template(self.template, context)
-                elements.append(
-                    (to_replace, replace_with, layer_element['locations']))
-        return elements
+        context = {'paragraph': original, 'paragraph_stripped': stripped}
+        yield utils.render_template(self.template, context)

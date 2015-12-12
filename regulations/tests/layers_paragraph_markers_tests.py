@@ -14,9 +14,9 @@ class ParagraphMarkersLayerTest(TestCase):
             '1001-12-a': [{'text': '(a)', 'locations': [0]}],
             '1001-12-q': [{'text': 'q.', 'locations': [1]}]
         })
-        self.assertEqual([], pml.apply_layer('1002-01-01'))
+        self.assertEqual([], list(pml.apply_layer('1002-01-01')))
 
-        a = pml.apply_layer('1001-12-a')
+        a = list(pml.apply_layer('1001-12-a'))
         self.assertEqual(1, len(a))
         self.assertEqual('(a)', a[0][0])
         self.assertEqual([0], a[0][2])
@@ -24,7 +24,7 @@ class ParagraphMarkersLayerTest(TestCase):
         self.assertEqual('(a)', call_args['paragraph'])
         self.assertEqual('a', call_args['paragraph_stripped'])
 
-        q = pml.apply_layer('1001-12-q')
+        q = list(pml.apply_layer('1001-12-q'))
         self.assertEqual(1, len(q))
         self.assertEqual('q.', q[0][0])
         self.assertEqual([1], q[0][2])

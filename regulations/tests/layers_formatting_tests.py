@@ -14,13 +14,13 @@ template_loc = 'regulations/layers/{}.html'
 class FormattingLayerTest(TestCase):
     def test_empty(self):
         """FormattingLayer ignores empty of missing node labels"""
-        data = {'111-1': [], '111-2': [{}]}
+        data = {'111-1': [], '111-2': [{'text': ''}]}
         with patch('regulations.generator.layers.formatting.loader') as ldr:
             render = ldr.get_template.return_value.render
             fl = FormattingLayer(data)
-        self.assertEqual([], fl.apply_layer('111-0'))
-        self.assertEqual([], fl.apply_layer('111-1'))
-        self.assertEqual([], fl.apply_layer('111-2'))
+        self.assertEqual([], list(fl.apply_layer('111-0')))
+        self.assertEqual([], list(fl.apply_layer('111-1')))
+        self.assertEqual([], list(fl.apply_layer('111-2')))
         self.assertFalse(render.called)
 
     def assert_context_contains(self, template_name, data_key, data_value,
@@ -38,7 +38,7 @@ class FormattingLayerTest(TestCase):
             templates = defaultdict(Mock)
             ldr.get_template.side_effect = templates.__getitem__
             fl = FormattingLayer(data)
-            result = fl.apply_layer('111-3')
+            result = list(fl.apply_layer('111-3'))
             render = templates[template_file].render
 
         self.assertEqual(len(result), 1)

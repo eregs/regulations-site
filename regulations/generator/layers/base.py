@@ -43,14 +43,37 @@ class InlineLayer(LayerBase):
         template"""
         raise NotImplementedError
 
-    def apply_layer(self, text, text_index):
+    def apply_layer(self, text, label_id):
         """Entry point when processing the regulation tree. Given the node's
-        text and its index, yield all replacement text"""
+        text and its label_id, yield all replacement text"""
         data_with_offsets = ((entry, start, end)
-                             for entry in self.layer.get(text_index, [])
+                             for entry in self.layer.get(label_id, [])
                              for (start, end) in entry['offsets'])
         for data, start, end in data_with_offsets:
             start, end = int(start), int(end)
             original = text[start:end]
             replacement = self.replacement_for(original, data)
             yield (original, replacement, (start, end))
+
+
+class SearchReplaceLayer(LayerBase):
+    """Represents a layer which replaces text by searching for and replacing a
+    specific substring. Also accounts for the string appearing multiple times
+    (via the 'locations' field)"""
+    layer_type = LayerBase.SEARCH_REPLACE
+    _text_field = 'text'    # All but key terms follow this convention...
+
+    @abc.abstractmethod
+    def replacements_for(self, text, data):
+        """Given the original text and the relevant data from a layer, create
+        a (string) replacement, by, for example, running the data through a
+        template. Returns a generator"""
+        raise NotImplementedError
+
+    def apply_layer(self, label_id):
+        """Entry point when processing the regulation tree. Given the node's
+        label_id, attempt to find relevant layer data in self.layer"""
+        for entry in self.layer.get(label_id, []):
+            text = entry[self._text_field]
+            for replacement in self.replacements_for(text, entry):
+                yield (text, replacement, entry['locations'])
