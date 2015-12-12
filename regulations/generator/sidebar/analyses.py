@@ -1,20 +1,32 @@
-from regulations.generator.layers.analyses import SectionBySectionLayer
+from collections import namedtuple
+
+from regulations.generator.label import Label
 from regulations.generator.node_types import label_to_text
 from regulations.generator.sidebar.base import SidebarBase
+
+
+class SxSEntry(namedtuple('SxSEntry', ['label', 'doc_number'])):
+    def template_context(self):
+        return {'doc_number': self.doc_number,
+                'label_id': self.label.id,
+                'text': label_to_text(self.label.parts, include_section=False,
+                                      include_marker=True)}
 
 
 class Analyses(SidebarBase):
     shorthand = 'analyses'
 
     def context(self, http_client):
-        data = self.fetch_layer_data(http_client)
         analyses = []
+        data = self.fetch_data(http_client)
         if data:
-            layer = SectionBySectionLayer(data)
-            for tree in self.fetch_relevant_trees(http_client):
-                result = layer.apply_layer('-'.join(tree['label']))
-                if result:
-                    analyses.extend(result[1])
+            tree_labels = [Label(parts=t['label'])
+                           for t in self.fetch_relevant_trees(http_client)]
+            analyses.extend(
+                sxs for sxs in data
+                if any(sxs.label in label for label in tree_labels))
+        analyses = [analysis.template_context()
+                    for analysis in sorted(analyses)]
         return {
             'analyses': analyses,
             'human_label_id': label_to_text(
@@ -22,10 +34,15 @@ class Analyses(SidebarBase):
             'version': self.version
         }
 
-    def fetch_layer_data(self, http_client):
+    def fetch_data(self, http_client):
+        """Retrieves SxSEntry data from the server"""
         if 'Interp' in self.label_id:
             reg_part = self.label_parts[0]
-            return http_client.layer(
+            data = http_client.layer(
                 'analyses', reg_part + '-Interp', self.version)
         else:
-            return http_client.layer('analyses', self.label_id, self.version)
+            data = http_client.layer('analyses', self.label_id, self.version)
+
+        return [
+            SxSEntry(Label(label_id), doc_number=subdata[-1]['reference'][0])
+            for label_id, subdata in data.iteritems()]
