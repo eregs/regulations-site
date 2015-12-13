@@ -73,3 +73,6 @@ class Label(object):
 
     def __lt__(self, other):
         return self.sort_key < other.sort_key
+
+    def __eq__(self, other):
+        return isinstance(other, Label) and self.id == other.id
