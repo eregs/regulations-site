@@ -14,6 +14,8 @@ class SxSEntry(namedtuple('SxSEntry', ['label', 'doc_number'])):
 
 
 class Analyses(SidebarBase):
+    """Section-by-Section analyses information, which describes the reasons
+    for _why_ a section/paragraph has been modified."""
     shorthand = 'analyses'
 
     def context(self, http_client):

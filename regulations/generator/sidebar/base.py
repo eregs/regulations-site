@@ -4,6 +4,7 @@ from regulations.generator.subterp import filter_by_subterp
 
 
 class SidebarBase(object):
+    """Base class for Sidebar components. Provides an interface"""
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, label_id, version):
@@ -14,6 +15,12 @@ class SidebarBase(object):
 
     @abc.abstractproperty
     def shorthand(self):
+        """Used for deriving templates, etc."""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def context(self, http_client):
+        """Create a context dictionary specific to this sidebar type"""
         raise NotImplementedError
 
     def full_context(self, http_client):
