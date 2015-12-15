@@ -1,6 +1,7 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+var DataTable = require('datatables.net')();
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
@@ -28,7 +29,6 @@ var MainView = Backbone.View.extend({
 
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
-        this.initHandlers();
 
         if (Router.hasPushState) {
             this.externalEvents.on('search-results:open', this.createView, this);
@@ -36,7 +36,7 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('diff:open', this.createView, this);
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
-            this.externalEvents.on('section:sethandlers', this.setHandlers);
+            this.externalEvents.on('section:sethandlers', this.setHandlers, this);
         }
 
         var childViewOptions = {},
@@ -244,19 +244,13 @@ var MainView = Backbone.View.extend({
         this.setHandlers();
     },
 
-    initHandlers: function() {
-        $.extend($.fn.dataTable.defaults, {
+    setHandlers: function() {
+        this.$el.find('table').DataTable({
                 paging: false,
                 searching: false,
                 scrollY: 400,
                 scrollX: true,
                 info: false
-        });
-    },
-
-    setHandlers: function() {
-        $('table', this.$el).each(function(index, element) {
-            $(element).DataTable();
         });
     }
 

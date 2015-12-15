@@ -3,7 +3,6 @@
 
 var $ = require('jquery');
 var _ = require('underscore');
-var dataTable = require('datatables.net')();
 var Backbone = require('backbone');
 var MainView = require('./views/main/main-view');
 var Router = require('./router');
