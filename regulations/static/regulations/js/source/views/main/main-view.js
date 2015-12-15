@@ -25,8 +25,10 @@ var MainView = Backbone.View.extend({
     el: '#content-body',
 
     initialize: function() {
+
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
+        this.initHandlers();
 
         if (Router.hasPushState) {
             this.externalEvents.on('search-results:open', this.createView, this);
@@ -34,6 +36,7 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('diff:open', this.createView, this);
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
+            this.externalEvents.on('section:sethandlers', this.setHandlers);
         }
 
         var childViewOptions = {},
@@ -238,7 +241,24 @@ var MainView = Backbone.View.extend({
 
         // change focus to main content area when new sections are loaded
         $('.section-focus').focus();
-        $('table').stickyTableHeaders();
+        this.setHandlers();
+    },
+
+    initHandlers: function() {
+        $.extend($.fn.dataTable.defaults, {
+                paging: false,
+                searching: false,
+                scrollY: 400,
+                scrollX: true,
+                info: false
+        });
+    },
+
+    setHandlers: function() {
+        $('table', this.$el).each(function(index, element) {
+            $(element).DataTable();
+        });
     }
+
 });
 module.exports = MainView;

@@ -49,7 +49,7 @@ var ChildView = Backbone.View.extend({
         }
         else if (this.options.id) {
             this.attachWayfinding();
-
+            MainEvents.trigger('section:sethandlers');
             DrawerEvents.trigger('section:open', this.id);
         }
 
