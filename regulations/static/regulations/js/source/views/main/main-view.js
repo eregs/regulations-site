@@ -36,8 +36,8 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('diff:open', this.createView, this);
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
-            this.externalEvents.on('section:sethandlers', this.setHandlers, this);
         }
+        this.externalEvents.on('section:sethandlers', this.setHandlers, this);
 
         var childViewOptions = {},
             appendixOrSupplement;
