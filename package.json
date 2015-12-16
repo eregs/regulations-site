@@ -67,6 +67,7 @@
     "backbone": "1.0.0",
     "backbone-query-parameters": "^0.4.0",
     "jquery": "1.11.3",
+    "datatables.net": "1.10.10",
     "jquery-scrollstop": "^1.2.0",
     "underscore": "1.8.3"
   },
