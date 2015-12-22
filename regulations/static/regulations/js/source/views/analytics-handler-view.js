@@ -21,9 +21,8 @@ var AnalyticsHandler = Backbone.View.extend({
         this.externalEvents.on('drawer:close', this.sendEvent, 'close');
         this.externalEvents.on('drawer:switchTab', this.sendEvent, 'switch tab');
 
-        // not sure if this works
+        // not sure if this works 
         $('#timeline .stop-button').on('click', function() {
-            console.log('sending stop comparing event');
             this.sendEvent({type: 'diff'}).bind('click stop comparing');
         }.bind(this));
     },
