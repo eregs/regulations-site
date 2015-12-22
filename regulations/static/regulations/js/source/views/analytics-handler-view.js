@@ -23,6 +23,7 @@ var AnalyticsHandler = Backbone.View.extend({
 
         // not sure if this works
         $('#timeline .stop-button').on('click', function() {
+            console.log('sending stop comparing event');
             this.sendEvent({type: 'diff'}).bind('click stop comparing');
         }.bind(this));
     },
