@@ -140,7 +140,7 @@ sudo apt-get install python-software-properties
 ```
 
 #### Global npm packages
-You will need to install the Grunt command line interface using npm.
+You will need to install the Grunt command line interface globally using npm.
 ```
 cd regulations-site
 npm install -g grunt-cli
