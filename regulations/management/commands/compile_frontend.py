@@ -62,7 +62,6 @@ class Command(BaseCommand):
         regulations_directory = self.find_regulations_directory()
         frontend_files = (
             "package.json",
-            "bower.json",
             "Gruntfile.js",
             ".eslintrc"
         )
