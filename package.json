@@ -26,7 +26,6 @@
     "postinstall": "grunt"
   },
   "devDependencies": {
-    "bower": "~1.3.9",
     "browserify": "^9.0.3",
     "browserify-shim": "^3.8.3",
     "chai": "^2.1.1",
@@ -35,7 +34,6 @@
     "debowerify": "^1.2.0",
     "expect.js": "~0.2.0",
     "grunt": "^0.4.5",
-    "grunt-bower-task": "~0.4.0",
     "grunt-browserify": "^3.4.0",
     "grunt-contrib-cssmin": "^0.12.3",
     "grunt-contrib-less": "~1.0.0",
