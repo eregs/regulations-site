@@ -12,7 +12,8 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var ChildView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         var cb;
 
         this.model = this.options.model;

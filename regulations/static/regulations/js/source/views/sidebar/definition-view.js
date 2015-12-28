@@ -26,7 +26,8 @@ var DefinitionView = SidebarModuleView.extend({
         'click .update-definition': 'updateDefinition'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         this.externalEvents = SidebarEvents;
         this.listenTo(this.externalEvents, 'definition:outOfScope', this.displayScopeMsg);
         this.listenTo(this.externalEvents, 'definition:inScope', this.removeScopeMsg);

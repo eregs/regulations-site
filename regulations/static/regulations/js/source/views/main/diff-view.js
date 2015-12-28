@@ -12,7 +12,8 @@ var ChildView = require('./child-view');
 Backbone.$ = $;
 
 var DiffView = ChildView.extend({
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         this.id = this.options.id;
         this.baseVersion = this.options.baseVersion;
         this.newerVersion = this.options.newerVersion || Helpers.findDiffVersion(Resources.versionElements, this.baseVersion);
