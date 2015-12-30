@@ -73,7 +73,7 @@ module.exports = function(grunt) {
           '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js','<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
-          transform: ['browserify-shim', 'debowerify'],
+          transform: ['browserify-shim'],
           browserifyOptions: {
             debug: true
           }
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
           '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
-          transform: ['browserify-shim', 'debowerify'],
+          transform: ['browserify-shim'],
           browserifyOptions: {
             debug: false
           }
@@ -132,15 +132,6 @@ module.exports = function(grunt) {
             stderr: true
         }
       }
-    },
-
-    // https://github.com/yatskevich/grunt-bower-task
-    bower: {
-        install: {
-            options: {
-                targetDir: '<%= env.frontEndPath %>/js/source/lib'
-            }
-        }
     },
 
     /**
