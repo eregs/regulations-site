@@ -35,22 +35,12 @@ def regulation_meta(regulation_part, version, sectional=False):
     return applied_layer[1]
 
 
-def handle_specified_layers(
-        layer_names, regulation_id, version, sectional=False):
-
-    layer_list = get_layer_list(layer_names)
-    layer_creator = generator.LayerCreator()
-    layer_creator.add_layers(layer_list, regulation_id, version, sectional)
-    return layer_creator.get_appliers()
-
-
-def handle_diff_layers(
-        layer_names, regulation_id, older, newer, sectional=False):
-
-    layer_list = get_layer_list(layer_names)
-    layer_creator = generator.DiffLayerCreator(newer)
-    layer_creator.add_layers(layer_list, regulation_id, older, sectional)
-    return layer_creator.get_appliers()
+def layer_names(request):
+    """Determine which layers are currently active by looking at the request"""
+    if 'layers' in request.GET.keys():
+        return get_layer_list(request.GET['layers'])
+    else:
+        return generator.LayerCreator.LAYERS.keys()
 
 
 def add_extras(context):

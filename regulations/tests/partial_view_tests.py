@@ -42,13 +42,14 @@ class PartialParagraphViewTests(TestCase):
 
 
 class PartialSectionViewTests(TestCase):
-    @patch('regulations.views.partial.generator')
+    @patch('regulations.generator.generator.get_tree_paragraph')
     @patch('regulations.views.partial.navigation')
     @patch('regulations.generator.generator.LayerCreator.get_layer_json')
-    def test_get_context_data(self, get_layer_json, navigation, generator):
+    def test_get_context_data(self, get_layer_json, navigation,
+                              get_tree_paragraph):
         get_layer_json.return_value = {'layer': 'layer'}
         navigation.nav_sections.return_value = None, None
-        generator.get_tree_paragraph.return_value = {
+        get_tree_paragraph.return_value = {
             'text': 'Some Text',
             'children': [],
             'label': ['205'],
@@ -67,7 +68,7 @@ class PartialSectionViewTests(TestCase):
         root = response.context_data['tree']
         subpart = root['children'][0]
         self.assertEqual(subpart['children'][0],
-                         generator.get_tree_paragraph.return_value)
+                         get_tree_paragraph.return_value)
 
 
 class PartialViewTest(TestCase):

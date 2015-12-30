@@ -3,6 +3,7 @@ from unittest import TestCase
 from mock import patch
 
 from django.conf import settings
+from django.test import RequestFactory
 
 from regulations.views import utils
 
@@ -27,13 +28,15 @@ class UtilsTest(TestCase):
         layer_list = utils.get_layer_list(names)
         self.assertEquals(set(['meta', 'internal', 'graphics']), layer_list)
 
-    @patch('regulations.generator.generator.LayerCreator.get_layer_json')
-    def test_handle_specified_layers(self, get_layer_json):
-        get_layer_json.return_value = {'layer': 'layer'}
+    def test_layer_names(self):
+        request = RequestFactory().get('/?layers=graphics,meta,other')
+        self.assertEqual(utils.layer_names(request), set(['graphics', 'meta']))
 
-        layer_names = 'graphics,meta'
-        appliers = utils.handle_specified_layers(layer_names, '205', '2013-1')
-        self.assertEquals(3, len(appliers))
+        request = RequestFactory().get('/?layers=')
+        self.assertEqual(utils.layer_names(request), set())
+
+        request = RequestFactory().get('/')
+        self.assertTrue(len(utils.layer_names(request)) > 4)
 
     def test_add_extras_env(self):
         context = {}
