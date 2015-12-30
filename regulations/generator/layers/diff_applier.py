@@ -76,7 +76,8 @@ class DiffApplier(object):
             counts[label_op.label] += 1
 
         return [label_op for label_op in label_ops
-                if counts[label_op.label] == 1 or label_op.op == 'insert']
+                if counts[label_op.label] == 1
+                or label_op.op == DiffApplier.INSERT]
 
     def add_nodes_to_tree(self, original, adds):
         """ Add all the nodes from new_nodes into the original tree. """
