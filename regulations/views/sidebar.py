@@ -21,6 +21,7 @@ class SideBarView(TemplateView):
             module, class_name = class_path.rsplit('.', 1)
             klass = getattr(import_module(module), class_name)
             sidebar = klass(context['label_id'], context['version'])
-            context['sidebars'].append(sidebar.full_context(client))
+            context['sidebars'].append(
+                sidebar.full_context(client, self.request))
 
         return context

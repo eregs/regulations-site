@@ -19,12 +19,12 @@ class SidebarBase(object):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def context(self, http_client):
+    def context(self, http_client, request):
         """Create a context dictionary specific to this sidebar type"""
         raise NotImplementedError
 
-    def full_context(self, http_client):
-        subcontext = self.context(http_client)
+    def full_context(self, http_client, request):
+        subcontext = self.context(http_client, request)
         subcontext.update(
             template_name='regulations/sidebar/{}.html'.format(self.shorthand)
         )
