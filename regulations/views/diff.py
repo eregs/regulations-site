@@ -32,7 +32,7 @@ def get_appliers(label_id, versions):
     layer_creator.add_layers(
         ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting'],
         label_id, versions.older)
-    return layer_creator.get_appliers + (diff, )
+    return layer_creator.get_appliers() + (diff, )
 
 
 class PartialSectionDiffView(PartialView):
