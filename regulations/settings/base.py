@@ -116,7 +116,7 @@ ROOT_URLCONF = 'regulations.urls'
 
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
-    'regulations',
+    'regulations.apps.RegulationsConfig',
 )
 
 # eregs specific settings
