@@ -107,7 +107,7 @@ class HTMLBuilder():
         node = self.p_applier.apply_layers(node)
 
         node['template_name'] = RegulationsConfig.precomputed_templates[
-            node['markup_id']]
+            node['label_id']]
 
         if 'TOC' in node:
             for l in node['TOC']:
