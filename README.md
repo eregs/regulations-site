@@ -222,3 +222,21 @@ After you create a [Sauce Labs](https://saucelabs.com) account:
 - Unit tests do not require running the dummy API.
 - To run the unit tests along with the functional tests: ```grunt test``` from the root of the repo.
 - To run unit tests individually: ```grunt mocha_istanbul``` from the root of the repo.
+
+## Customization
+
+Note that this section is incomplete
+
+### Individual Paragraphs
+
+The templates used to generate paragraphs can be replaced selectively, a
+useful technique if you want to emphasize a particular paragraph or add links
+to external sources that don't exist in the regulation proper. Note that this
+mechanism is intended for one-offs; consider method of modifying the data
+structures instead if you find yourself using it often.
+
+To use this override mechanism, create a `templates/regulations/custom_nodes`
+directory in your Django application if it doesn't already exist. Inside that
+folder, create files corresponding to node labels, e.g. `478-103-b.html`.
+These templates will be used **in place** of the `tree-with-wrapper.html`
+template, so be sure to provide the functionality alreay present there.
