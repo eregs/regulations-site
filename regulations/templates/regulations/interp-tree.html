@@ -22,7 +22,7 @@
         {% endwith %}
             {% for par_child in interp.par_children %}
                 {% with node=par_child %}
-                    {% include "regulations/tree-with-wrapper.html" %}
+                    {% include node.template_name %}
                 {% endwith %}
             {% endfor %}
         </ol>

@@ -16,7 +16,7 @@
         {% endwith %}
         {% if c.children %}
             {% for node in c.children %}
-                {% include "regulations/tree-with-wrapper.html"  %}
+              {% include node.template_name %}
             {% endfor %}
         {% endif %}
         </ol>
