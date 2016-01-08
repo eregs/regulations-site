@@ -2,7 +2,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var DataTable = require('datatables.net')();
-var DataTableResponsive = require('datatables.net-responsive');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
