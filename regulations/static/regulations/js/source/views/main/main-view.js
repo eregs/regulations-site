@@ -28,10 +28,9 @@ var MainView = Backbone.View.extend({
     initialize: function() {
 
 
-        this.dataTable = null;
+        this.dataTables = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
-        this.drawerEvents = DrawerEvents;
 
         if (Router.hasPushState) {
             this.externalEvents.on('search-results:open', this.createView, this);
@@ -253,11 +252,11 @@ var MainView = Backbone.View.extend({
     },
 
     applyTablePlugin: function() {
-        if (this.dataTable) {
-            this.dataTable.destroy();
+        if (this.dataTables) {
+            this.dataTables.destroy();
         }
         if (this.$el.find('table').length) {
-            this.dataTable = this.$el.find('table').DataTable({
+            this.dataTables = this.$el.find('table').DataTable({
                     paging: false,
                     searching: false,
                     scrollY: 400,
