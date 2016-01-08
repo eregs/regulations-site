@@ -40,7 +40,7 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
         }
-        this.externalEvents.on('section:resize', this.redrawTables, this);
+        this.externalEvents.on('section:resize', this.applyTablePlugin, this);
         this.externalEvents.on('section:sethandlers', this.setHandlers, this);
 
         var childViewOptions = {},
@@ -249,10 +249,6 @@ var MainView = Backbone.View.extend({
     },
 
     setHandlers: function() {
-        this.applyTablePlugin();
-    },
-
-    redrawTables: function() {
         this.applyTablePlugin();
     },
 
