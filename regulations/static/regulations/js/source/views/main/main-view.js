@@ -2,6 +2,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var DataTable = require('datatables.net')();
+var DataTableResponsive = require('datatables.net-responsive');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
@@ -27,8 +28,11 @@ var MainView = Backbone.View.extend({
 
     initialize: function() {
 
+
+        this.dataTable = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
+        this.drawerEvents = DrawerEvents;
 
         if (Router.hasPushState) {
             this.externalEvents.on('search-results:open', this.createView, this);
@@ -37,6 +41,7 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
         }
+        this.externalEvents.on('section:resize', this.redrawTables, this);
         this.externalEvents.on('section:sethandlers', this.setHandlers, this);
 
         var childViewOptions = {},
@@ -245,13 +250,27 @@ var MainView = Backbone.View.extend({
     },
 
     setHandlers: function() {
-        this.$el.find('table').DataTable({
-                paging: false,
-                searching: false,
-                scrollY: 400,
-                scrollX: true,
-                info: false
-        });
+        this.applyTablePlugin();
+    },
+
+    redrawTables: function() {
+        this.applyTablePlugin();
+    },
+
+    applyTablePlugin: function() {
+        if (this.dataTable) {
+            this.dataTable.destroy();
+        }
+        if (this.$el.find('table').length) {
+            this.dataTable = this.$el.find('table').DataTable({
+                    paging: false,
+                    searching: false,
+                    scrollY: 400,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    info: false
+            });
+        }
     }
 
 });
