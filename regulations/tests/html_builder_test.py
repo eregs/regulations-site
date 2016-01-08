@@ -276,3 +276,15 @@ class HTMLBuilderTest(TestCase):
         self.assertTrue(exex.preprocess_root.called)
         self.assertEqual(exex.preprocess_root.call_args[0][0],
                          builder.tree)
+
+    def test_is_collapsed(self):
+        for label, text in ((['111', '22', 'a'], '(a) '),
+                            (['111', '22', 'xx'], ' (xx) '),
+                            (['111', '22', 'a', '5'], '(5)')):
+            node = {'label': label, 'text': text}
+            self.assertTrue(HTMLBuilder.is_collapsed(node))
+
+        for label, text in ((['111', '22', 'a'], '(b) '),
+                            (['111', '22', ''], '(a) Some text')):
+            node = {'label': label, 'text': text}
+            self.assertFalse(HTMLBuilder.is_collapsed(node))
