@@ -5,16 +5,12 @@
     Expects a `first_child` variable
 {% endcomment %}
 {% with m=first_child.label|last %}
-    {% comment %}
-        Note that there isn't a built-in inclusion check in django, so
-        spelling it out with `or`s.
-    {% endcomment %}
-    {% if m == 'a' or m == 'A' or m == 'i' or m == 'I' or m == '1' %}
-        <ol class="level-{{first_child.list_level}}" type="{{m}}"
-                                                     extra="{{first_child.label}}">
-    {% else %}
-        <ol class="level-{{first_child.list_level}}"
-            {% comment %}TODO: Move into stylesheet{% endcomment %}
-            style="list-style: none;">
-    {% endif %}
+    <ol class="level-{{first_child.list_level}}
+               {% if m == 'a' %}lower
+               {% elif m == 'A' %}upper
+               {% elif m == 'i' %}roman
+               {% elif m == 'I' %}upper-roman
+               {% elif m == '1' %}int
+               {% else %}markerless
+               {% endif %}">
 {% endwith %}
