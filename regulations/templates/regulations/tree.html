@@ -6,7 +6,7 @@
 {% endif %}
 
 {%if node.marked_up %}
-<p> 
+<p {% if node.is_collapsed %}class="collapsed"{% endif %}>
 {% if node.node_type == "appendix" %}
     {{node.marked_up|safe|linebreaksbr}}
 {% else  %}
