@@ -285,6 +285,7 @@ class HTMLBuilderTest(TestCase):
             self.assertTrue(HTMLBuilder.is_collapsed(node))
 
         for label, text in ((['111', '22', 'a'], '(b) '),
-                            (['111', '22', ''], '(a) Some text')):
+                            (['111', '22', ''], '(a) Some text'),
+                            (['111', '22', 'a'], '  ')):
             node = {'label': label, 'text': text}
             self.assertFalse(HTMLBuilder.is_collapsed(node))
