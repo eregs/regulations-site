@@ -222,3 +222,24 @@ After you create a [Sauce Labs](https://saucelabs.com) account:
 - Unit tests do not require running the dummy API.
 - To run the unit tests along with the functional tests: ```grunt test``` from the root of the repo.
 - To run unit tests individually: ```grunt mocha_istanbul``` from the root of the repo.
+
+## Customization
+
+Note that this section is incomplete
+
+### System-wide Styles
+
+The `compile_frontend` command (i.e. `python manage.py. compile_frontend`)
+uses a variant of Django's `collectstatic` to combine static assets between
+the base application (regulations-site) and any custom Django application you
+develop. It is designed as a simple file **override** scheme -- create an
+identically named file in your `static/regulations/` directory and it will
+replace the file in the base application. In this way, you can modify
+stylesheets, images, etc. when building the frontend.
+
+There is also a key extension point for stylesheets:
+`static/regulations/css/less/module/custom.less` exists to be overridden. Use
+it to declare your own custom style sheet modules for additional structure.
+
+The `compile_frontend` command generates output indicating which files are
+being overridden.

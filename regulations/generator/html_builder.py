@@ -67,10 +67,22 @@ class HTMLBuilder():
 
             node['header'] = HTMLBuilder.section_space(node['header'])
 
+    @staticmethod
+    def is_collapsed(node):
+        """A "collapsed" paragraph is one which has no text, immediately
+        starting a subparagraph. For example:
+        (a)(1) Some text    <- (a) is collapsed
+        (a) Some text - (1) Other text   <- (a) is not collapsed
+        """
+        marker = '({})'.format(node['label'][-1])
+        text_without_marker = node['text'].replace(marker, '')
+        return not text_without_marker.strip()
+
     def process_node(self, node):
 
         node['label_id'] = '-'.join(node['label'])
         self.process_node_title(node)
+        node['is_collapsed'] = self.is_collapsed(node)
 
         node['html_label'] = to_markup_id(node['label'])
         node['markup_id'] = "-".join(node['html_label'])
