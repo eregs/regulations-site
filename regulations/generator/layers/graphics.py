@@ -1,34 +1,21 @@
 from django.template import loader
 import utils
 
-from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.base import SearchReplaceLayer
 
 
-class GraphicsLayer(LayerBase):
+class GraphicsLayer(SearchReplaceLayer):
     shorthand = 'graphics'
     data_source = 'graphics'
-    layer_type = LayerBase.SEARCH_REPLACE
 
-    def __init__(self, layer_data):
-        self.layer_data = layer_data
+    def __init__(self, layer):
+        self.layer = layer
         self.template = loader.get_template('regulations/layers/graphics.html')
 
-    def apply_layer(self, text_index):
+    def replacements_for(self, original, data):
         """Replace all instances of graphics with an img tag"""
-        layer_pairs = []
-        if text_index in self.layer_data:
-            for graphic_info in self.layer_data[text_index]:
+        context = {'url': data['url'], 'alt': data['alt']}
+        if 'thumb_url' in data:
+            context['thumb_url'] = data['thumb_url']
 
-                context = {
-                    'url': graphic_info['url'],
-                    'alt': graphic_info['alt']
-                }
-
-                if 'thumb_url' in graphic_info:
-                    context['thumb_url'] = graphic_info['thumb_url']
-
-                replacement = utils.render_template(self.template, context)
-                layer_pairs.append((
-                    graphic_info['text'], replacement,
-                    graphic_info['locations']))
-        return layer_pairs
+        yield utils.render_template(self.template, context)

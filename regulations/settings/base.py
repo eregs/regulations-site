@@ -222,3 +222,8 @@ DATA_LAYERS = (
     'regulations.generator.layers.toc_applier.TableOfContentsLayer',
     'regulations.generator.layers.graphics.GraphicsLayer',
 )
+
+SIDEBARS = (
+    'regulations.generator.sidebar.analyses.Analyses',
+    'regulations.generator.sidebar.help.Help',
+)
