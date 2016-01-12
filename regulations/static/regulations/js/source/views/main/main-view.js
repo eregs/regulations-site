@@ -1,6 +1,7 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+var DataTable = require('datatables.net')();
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
@@ -25,6 +26,9 @@ var MainView = Backbone.View.extend({
     el: '#content-body',
 
     initialize: function() {
+
+
+        this.dataTables = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
 
@@ -35,6 +39,8 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
         }
+        this.externalEvents.on('section:resize', this.applyTablePlugin, this);
+        this.externalEvents.on('section:sethandlers', this.setHandlers, this);
 
         var childViewOptions = {},
             appendixOrSupplement;
@@ -238,7 +244,28 @@ var MainView = Backbone.View.extend({
 
         // change focus to main content area when new sections are loaded
         $('.section-focus').focus();
-        $('table').stickyTableHeaders();
+        this.setHandlers();
+    },
+
+    setHandlers: function() {
+        this.applyTablePlugin();
+    },
+
+    applyTablePlugin: function() {
+        if (this.dataTables) {
+            this.dataTables.destroy();
+        }
+        if (this.$el.find('table').length) {
+            this.dataTables = this.$el.find('table').DataTable({
+                    paging: false,
+                    searching: false,
+                    scrollY: 400,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    info: false
+            });
+        }
     }
+
 });
 module.exports = MainView;

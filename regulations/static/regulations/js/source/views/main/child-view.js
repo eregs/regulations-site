@@ -12,7 +12,8 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var ChildView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         var cb;
 
         this.model = this.options.model;
@@ -49,7 +50,7 @@ var ChildView = Backbone.View.extend({
         }
         else if (this.options.id) {
             this.attachWayfinding();
-
+            MainEvents.trigger('section:sethandlers');
             DrawerEvents.trigger('section:open', this.id);
         }
 
@@ -157,7 +158,9 @@ var ChildView = Backbone.View.extend({
                 this.navigate(url);
                 $('html, body').scrollTop($('#' + options.scrollToId).offset().top);
             } else {
-                url += '#' + options.id;
+                if (options.type !== 'diff') {
+                    url += '#' + options.id;
+                }
                 this.navigate(url);
             }
         }

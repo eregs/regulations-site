@@ -1,4 +1,5 @@
 import itertools
+import logging
 
 
 class AddQueue(object):
@@ -165,6 +166,8 @@ def add_child(parent_node, node):
             lookup['-'.join(c['label'])] = c
         parent_node['children'] = [lookup[label_id] for label_id in order]
     else:   # Explicit sort order not present/doesn't match nodes
+        logging.warning(
+            "No child_labels field. Guessing at child order (probably wrong)")
         for c in parent_node['children']:
             if c['node_type'].upper() == 'INTERP':
                 if c['label'][-1] == 'Interp':

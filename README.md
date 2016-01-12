@@ -54,7 +54,7 @@ $ mkvirtualenv regsite
 $ workon regsite
 $ pip install zc.buildout
 $ buildout
-$ npm install # this also runs bower install and the default grunt task post install
+$ npm install # this also runs the default grunt task post install
 $ $ ./bin/django runserver
 ```
 
@@ -117,7 +117,7 @@ The front end of the site uses a number of JavaScript libraries and frameworks t
 
 If you run the application with ```env = "built"``` in your ```local_settings.py``` and would like to use the UI as it ships with this project, you can skip this.
 
-The application's UI itself uses a number of dependencies that you can see in package.json and bower.json. To start, we are going to be concerned with the foundations of the environment:
+The application's UI itself uses a number of dependencies that you can see in package.json. To start, we are going to be concerned with the foundations of the environment:
 
 ## Front end environment setup
 
@@ -140,17 +140,16 @@ sudo apt-get install python-software-properties
 ```
 
 #### Global npm packages
-You will need to install the Grunt command line interface and Bower globally using npm.
+You will need to install the Grunt command line interface globally using npm.
 ```
 cd regulations-site
-npm install -g grunt-cli bower
+npm install -g grunt-cli
 ```
 
 #### Installing dependencies
-The rest of the dependencies you will need are managed by Bower and npm. Do:
+The rest of the dependencies you will need are managed by npm. Do:
 ```
 npm install
-bower install
 ```
 
 #### Configuration JSON
@@ -196,11 +195,10 @@ The front end of the site uses a number of JavaScript libraries and frameworks t
 
 If you run the application with ```env = "built"``` in your ```local_settings.py``` and would like to use the UI as it ships with this project, you can skip this.
 
-The application's UI itself uses a number of dependencies that you can see in package.json and bower.json. To start, we are going to be concerned with the foundations of the environment:
+The application's UI itself uses a number of dependencies that you can see in package.json. To start, we are going to be concerned with the foundations of the environment:
 
 - npm, a package manager to install dependencies in the development environment: <https://npmjs.org/>
 - Grunt, a task runner that modules to build and run tests depend on: <http://gruntjs.com/>
-- Bower, a utility to fetch dependencies for the: UI <http://bower.io/>
 
 ## Additional front end information
 
@@ -224,3 +222,24 @@ After you create a [Sauce Labs](https://saucelabs.com) account:
 - Unit tests do not require running the dummy API.
 - To run the unit tests along with the functional tests: ```grunt test``` from the root of the repo.
 - To run unit tests individually: ```grunt mocha_istanbul``` from the root of the repo.
+
+## Customization
+
+Note that this section is incomplete
+
+### System-wide Styles
+
+The `compile_frontend` command (i.e. `python manage.py. compile_frontend`)
+uses a variant of Django's `collectstatic` to combine static assets between
+the base application (regulations-site) and any custom Django application you
+develop. It is designed as a simple file **override** scheme -- create an
+identically named file in your `static/regulations/` directory and it will
+replace the file in the base application. In this way, you can modify
+stylesheets, images, etc. when building the frontend.
+
+There is also a key extension point for stylesheets:
+`static/regulations/css/less/module/custom.less` exists to be overridden. Use
+it to declare your own custom style sheet modules for additional structure.
+
+The `compile_frontend` command generates output indicating which files are
+being overridden.

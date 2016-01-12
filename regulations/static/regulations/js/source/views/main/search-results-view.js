@@ -16,7 +16,8 @@ var SearchResultsView = ChildView.extend({
         'click h3 .internal': 'openResult'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         this.query = this.options.query;
         // the TOC may link to a different reg version than this.options.resultsRegVersion
         // because the user can select a different version to pull search results from

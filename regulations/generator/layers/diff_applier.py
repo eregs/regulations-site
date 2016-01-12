@@ -1,6 +1,6 @@
 import types
 import copy
-from collections import deque
+from collections import defaultdict, deque, namedtuple
 
 from regulations.generator.layers import tree_builder
 
@@ -49,6 +49,8 @@ class DiffApplier(object):
         """ Mark all the text passed in as deleted. """
         return '<ins>' + text + '</ins>'
 
+    _LabelOp = namedtuple('LabelOp', ['label', 'op'])
+
     def set_child_labels(self, node):
         """As we display removed, added, and unchanged nodes, the children of
         a node will contain all three types. Pull the 'child_ops' data to
@@ -56,13 +58,26 @@ class DiffApplier(object):
         instructs = self.diff.get('-'.join(node['label']), {})
         if 'child_labels' not in instructs and 'child_ops' in instructs:
             original_labels = ['-'.join(c['label']) for c in node['children']]
-            new_labels = []
-            for op, start, end_or_nodes in instructs['child_ops']:
-                if isinstance(end_or_nodes, list):
-                    new_labels.extend(end_or_nodes)
+            label_ops = []
+            for op, start, end_or_labels in instructs['child_ops']:
+                if isinstance(end_or_labels, list):
+                    labels = end_or_labels
                 else:
-                    new_labels.extend(original_labels[start:end_or_nodes])
-            node['child_labels'] = new_labels
+                    labels = original_labels[start:end_or_labels]
+                label_ops.extend(DiffApplier._LabelOp(l, op) for l in labels)
+            label_ops = self.remove_moved_labels(label_ops)
+            node['child_labels'] = [lo.label for lo in label_ops]
+
+    def remove_moved_labels(self, label_ops):
+        """If a label has been moved, meaning deleted in one position, but
+        added in another, we will display it in the second position"""
+        counts = defaultdict(int)
+        for label_op in label_ops:
+            counts[label_op.label] += 1
+
+        return [label_op for label_op in label_ops
+                if counts[label_op.label] == 1
+                or label_op.op == DiffApplier.INSERT]
 
     def add_nodes_to_tree(self, original, adds):
         """ Add all the nodes from new_nodes into the original tree. """
