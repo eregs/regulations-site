@@ -1,6 +1,6 @@
 import types
 import copy
-from collections import defaultdict, deque, namedtuple
+from collections import Counter, deque, namedtuple
 
 from regulations.generator.layers import tree_builder
 
@@ -68,16 +68,20 @@ class DiffApplier(object):
             label_ops = self.remove_moved_labels(label_ops)
             node['child_labels'] = [lo.label for lo in label_ops]
 
-    def remove_moved_labels(self, label_ops):
-        """If a label has been moved, meaning deleted in one position, but
-        added in another, we will display it in the second position"""
-        counts = defaultdict(int)
-        for label_op in label_ops:
-            counts[label_op.label] += 1
+    @classmethod
+    def has_moved(cls, label_op, seen_count):
+        """A label is moved if it's been deleted in one position but added int
+        another"""
+        if seen_count[label_op.label] == 1:
+            return False
+        else:   # We want to keep the final destination (INSERT)
+            return label_op.op != cls.INSERT
 
-        return [label_op for label_op in label_ops
-                if counts[label_op.label] == 1
-                or label_op.op == DiffApplier.INSERT]
+    def remove_moved_labels(self, label_ops):
+        """If a label has been moved, we will display it in the new position"""
+        seen_count = Counter(label_op.label for label_op in label_ops)
+
+        return [lo for lo in label_ops if not self.has_moved(lo, seen_count)]
 
     def add_nodes_to_tree(self, original, adds):
         """ Add all the nodes from new_nodes into the original tree. """

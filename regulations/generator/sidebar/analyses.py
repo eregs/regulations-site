@@ -18,7 +18,7 @@ class Analyses(SidebarBase):
     for _why_ a section/paragraph has been modified."""
     shorthand = 'analyses'
 
-    def context(self, http_client):
+    def context(self, http_client, request):
         analyses = []
         data = self.fetch_data(http_client)
         if data:
