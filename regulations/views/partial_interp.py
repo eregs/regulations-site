@@ -2,7 +2,6 @@ from django.http import Http404
 
 from regulations.generator import generator, node_types
 from regulations.generator.subterp import filter_by_subterp
-from regulations.views import utils
 from regulations.views.partial import (
     PartialSectionView, PartialView, generate_html)
 
@@ -18,8 +17,11 @@ class PartialInterpView(PartialView):
     @staticmethod
     def mk_appliers(root_label, version):
         """Function to generate a shared set of appliers"""
-        return utils.handle_specified_layers(
-            'terms,internal,keyterms,paragraph', root_label, version, True)
+        layer_creator = generator.LayerCreator()
+        layer_creator.add_layers(
+            ['terms', 'internal', 'keyterms', 'paragraph'], root_label,
+            version, sectional=True)
+        return layer_creator.get_appliers()
 
     def determine_appliers(self, label_id, version):
         """Don't generate new appliers"""
