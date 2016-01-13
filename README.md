@@ -243,3 +243,19 @@ it to declare your own custom style sheet modules for additional structure.
 
 The `compile_frontend` command generates output indicating which files are
 being overridden.
+
+### Individual Paragraphs
+
+The templates used to generate paragraphs can be replaced selectively, a
+useful technique if you want to emphasize a particular paragraph or add links
+to external sources that don't exist in the regulation proper. Note that this
+mechanism is intended for one-offs; consider method of modifying the data
+structures instead if you find yourself using it often.
+
+To use this override mechanism, create a `templates/regulations/custom_nodes`
+directory in your Django application if it doesn't already exist. Inside that
+folder, create files corresponding to node labels, e.g. `478-103-b.html`.
+These templates will be used **in place** of the `tree-with-wrapper.html`
+template, so be sure to provide the functionality already present there.
+Should you need to use this functionality only on specific versions, your
+template can make use of the `version` context variable.

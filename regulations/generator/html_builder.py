@@ -7,6 +7,7 @@ from itertools import ifilter, ifilterfalse, takewhile
 from node_types import to_markup_id, APPENDIX, INTERP
 from layers.layers_applier import LayersApplier
 from layers.internal_citation import InternalCitationLayer
+from regulations.apps import RegulationsConfig
 
 
 class HTMLBuilder():
@@ -65,7 +66,7 @@ class HTMLBuilder():
                 node['header'] = self.diff_applier.apply_diff(
                     node['header'], node['label_id'], component='title')
 
-            node['header'] = HTMLBuilder.section_space(node['header'])
+            node['header'] = self.section_space(node['header'])
 
     @staticmethod
     def is_collapsed(node):
@@ -79,6 +80,11 @@ class HTMLBuilder():
         return node['text'].strip() and not text_without_marker.strip()
 
     def process_node(self, node):
+        """Every node passes through this function on the way to being
+        rendered. Importantly, this adds the `marked_up` field, which contains
+        the HTML version of node's text (after applying all relevant
+        layers) and the `template_name` field, which defines how this node
+        should be rendered."""
 
         node['label_id'] = '-'.join(node['label'])
         self.process_node_title(node)
@@ -106,21 +112,21 @@ class HTMLBuilder():
             layers_applier.enqueue_from_list(inline_elements)
             layers_applier.enqueue_from_list(search_elements)
 
-            if 'marked_up' in node:
-                node['marked_up'] = layers_applier.apply_layers(
-                    node['marked_up'])
-            else:
-                node['marked_up'] = layers_applier.apply_layers(node['text'])
-            node['marked_up'] = HTMLBuilder.section_space(node['marked_up'])
+            node['marked_up'] = layers_applier.apply_layers(
+                node.get('marked_up', node['text']))
+            node['marked_up'] = self.section_space(node['marked_up'])
 
         node = self.p_applier.apply_layers(node)
 
+        node['template_name'] = RegulationsConfig.precomputed_templates[
+            node['label_id']]
+
         if 'TOC' in node:
             for l in node['TOC']:
-                l['label'] = HTMLBuilder.section_space(l['label'])
+                l['label'] = self.section_space(l['label'])
 
         if 'interp' in node and 'markup' in node['interp']:
-            node['interp']['markup'] = HTMLBuilder.section_space(
+            node['interp']['markup'] = self.section_space(
                 node['interp']['markup'])
 
         if node['node_type'] == INTERP:
