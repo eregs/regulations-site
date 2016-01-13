@@ -1,6 +1,7 @@
 coverage
 coveralls
 django-nose
+pep8==1.5.7
 flake8
 lxml
 mock

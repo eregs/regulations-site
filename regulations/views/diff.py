@@ -28,11 +28,11 @@ def get_appliers(label_id, versions):
     if diff is None:
         raise error_handling.MissingContentException()
 
-    appliers = utils.handle_diff_layers(
-        'graphics,paragraph,keyterms,defined,formatting',
-        label_id, versions.older, versions.newer)
-    appliers += (diff,)
-    return appliers
+    layer_creator = generator.DiffLayerCreator(versions.newer)
+    layer_creator.add_layers(
+        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting'],
+        label_id, versions.older)
+    return layer_creator.get_appliers() + (diff, )
 
 
 class PartialSectionDiffView(PartialView):

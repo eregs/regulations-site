@@ -23,7 +23,7 @@ class AnalysesSidebarTests(TestCase):
     def test_context_section(self):
         self.client.regulation.return_value = {'label': ['111', '22']}
         self.assertEqual(
-            analyses.Analyses('111-22', 'vvv').context(self.client),
+            analyses.Analyses('111-22', 'vvv').context(self.client, None),
             {'version': 'vvv',
              'human_label_id': u'§ 111.22',
              'analyses': [
@@ -36,7 +36,7 @@ class AnalysesSidebarTests(TestCase):
     def test_context_paragraph(self):
         self.client.regulation.return_value = {"label": ['111', '22', 'a']}
         self.assertEqual(
-            analyses.Analyses('111-22-a', 'vvv').context(self.client),
+            analyses.Analyses('111-22-a', 'vvv').context(self.client, None),
             {'version': 'vvv',
              'human_label_id': u'§ 111.22(a)',
              'analyses': [
@@ -47,7 +47,7 @@ class AnalysesSidebarTests(TestCase):
     def test_context_other_section(self):
         self.client.regulation.return_value = {"label": ['222', '22']}
         self.assertEqual(
-            analyses.Analyses('222-22', 'vvv').context(self.client),
+            analyses.Analyses('222-22', 'vvv').context(self.client, None),
             {'version': 'vvv',
              'human_label_id': u'§ 222.22',
              'analyses': []})
@@ -56,7 +56,8 @@ class AnalysesSidebarTests(TestCase):
         self.client.regulation.return_value = {
             "label": ['111', '22', 'Interp']}
         self.assertEqual(
-            analyses.Analyses('111-22-Interp', 'vvv').context(self.client),
+            analyses.Analyses('111-22-Interp', 'vvv').context(self.client,
+                                                              None),
             {'version': 'vvv',
              'human_label_id': 'Comment for 111.22',
              'analyses': [
@@ -70,7 +71,8 @@ class AnalysesSidebarTests(TestCase):
         self.client.regulation.return_value = {
             "label": ['111', '22', 'Interp', '2']}
         self.assertEqual(
-            analyses.Analyses('111-22-Interp-2', 'vvv').context(self.client),
+            analyses.Analyses('111-22-Interp-2', 'vvv').context(self.client,
+                                                                None),
             {'version': 'vvv',
              'human_label_id': 'Comment for 111.22-2',
              'analyses': [
