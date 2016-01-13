@@ -76,7 +76,7 @@ class HTMLBuilder():
         """
         marker = '({})'.format(node['label'][-1])
         text_without_marker = node['text'].replace(marker, '')
-        return not text_without_marker.strip()
+        return node['text'].strip() and not text_without_marker.strip()
 
     def process_node(self, node):
 

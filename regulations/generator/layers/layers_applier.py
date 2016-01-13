@@ -89,9 +89,7 @@ class SearchReplaceLayersApplier(LayersBase):
     def get_layer_pairs(self, text_index):
         elements = []
         for layer in self.layers.values():
-            applied = layer.apply_layer(text_index)
-            if applied:
-                elements += applied
+            elements += list(layer.apply_layer(text_index))
         return elements
 
 
@@ -107,9 +105,7 @@ class InlineLayersApplier(LayersBase):
     def get_layer_pairs(self, text_index, original_text):
         layer_pairs = []
         for layer in self.layers.values():
-            applied = layer.apply_layer(original_text, text_index)
-            if applied:
-                layer_pairs += applied
+            layer_pairs += list(layer.apply_layer(original_text, text_index))
 
         # convert from offset-based to a search and replace layer.
         layer_elements = []

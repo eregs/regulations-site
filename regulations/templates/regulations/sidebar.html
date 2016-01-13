@@ -1,46 +1,9 @@
-{% load static from staticfiles %}
+{% load in_context %}
 
-<section id="sxs-list" class="regs-meta">
-    <header id="sxs-expandable-header" class="expandable sxs-expand group">
-        <h4 tabindex="0">Section-by-section Analysis</h4>
-        <a href="#" tabindex="0"><span class="icon-text">Show/Hide Contents</span></a>
-    </header>
-    <div class="chunk expand-drawer">
-    {% if analyses %}
-        <h5 class="subtitle">Most Recent Analysis</h5>
-        <a class="what" href="{% url 'about' %}#related-info" target="_blank">(What's this?)</a>
-        <ul class="sxs-list">
-            {% for analysis in analyses %}
-                <li><a class="sidebar-full sxs-link" href="{% url 'chrome_sxs_view' analysis.label_id analysis.doc_number %}?from_version={{ version }}" data-sxs-paragraph-id="{{analysis.label_id}}" data-doc-number="{{analysis.doc_number}}">{{analysis.text}}<span class="cf-icon cf-icon-right"></span></a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        No analyses available for {{ human_label_id }} in this tool. <a class="what" href="{% url 'about' %}#related-info" target="_blank">(What's this?)</a>
-    {% endif %}
-    </div>
-</section> <!-- /.regs-meta -->
-<section id="help" class="regs-meta">
-     {% include "regulations/generic_help.html" %}
-        <div class="sidebar-subsection">
-            <h5 class="help-title">Textual Help</h5>
-            <a class="what" href="{% url 'about' %}#related-info" target="_blank">(What's this?)</a>
+{% for sidebar in sidebars %}
+  {% begincontext sidebar %}
+    {% include template_name %}
+  {% endcontext %}
+{% endfor %}
 
-            <ul class="help-list">
-                <li class="group">
-                    <div class="help-sample"><a class="definition">term</a></div>
-                    <div class="help-text">Defined Term</div>
-                </li>
-                <li class="group">
-                    <div class="help-sample"><a class="internal">citation</a></div>
-                    <div class="help-text">Link within a regulation <br/>
-                    (example: 1005.8(b))</div>
-                </li>
-                <li>
-                    <img src="{%static "regulations/img/supplement-sample.png" %}" class="block-image" />
-                    Inline interpretations/commentary from Supplement I
-                </li>
-            </ul>
-        </div> <!-- /.sidebar-subsection-->
-    </div> <!-- /.expand-drawer-->
-</section> <!-- /.regs-meta -->
 {% block additional-rhs %}{% endblock %}
