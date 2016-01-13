@@ -256,6 +256,6 @@ To use this override mechanism, create a `templates/regulations/custom_nodes`
 directory in your Django application if it doesn't already exist. Inside that
 folder, create files corresponding to node labels, e.g. `478-103-b.html`.
 These templates will be used **in place** of the `tree-with-wrapper.html`
-template, so be sure to provide the functionality alreay present there. Should
-you need to use this functionality only on specific versions, your template
-can make use of the `version` context variable.
+template, so be sure to provide the functionality already present there.
+Should you need to use this functionality only on specific versions, your
+template can make use of the `version` context variable.
