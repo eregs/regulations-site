@@ -257,17 +257,14 @@ var MainView = Backbone.View.extend({
         }
         // Only apply the datatables plugin if there is a table header present
         if (this.$el.find('table').length) {
-            this.dataTables = this.$el.find('table').filter(
-                function() {
-                    return $('thead', this).children().length > 0;
-                }).DataTable({
-                    paging: false,
-                    searching: false,
-                    scrollY: 400,
-                    scrollCollapse: true,
-                    scrollX: true,
-                    info: false
-                });
+            this.dataTables = this.$el.find('table').has('thead *').DataTable({
+                paging: false,
+                searching: false,
+                scrollY: 400,
+                scrollCollapse: true,
+                scrollX: true,
+                info: false
+            });
         }
     }
 
