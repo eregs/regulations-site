@@ -255,15 +255,19 @@ var MainView = Backbone.View.extend({
         if (this.dataTables) {
             this.dataTables.destroy();
         }
+        // Only apply the datatables plugin if there is a table header present
         if (this.$el.find('table').length) {
-            this.dataTables = this.$el.find('table').DataTable({
+            this.dataTables = this.$el.find('table').filter(
+                function() {
+                    return $('thead', this).children().length > 0;
+                }).DataTable({
                     paging: false,
                     searching: false,
                     scrollY: 400,
                     scrollCollapse: true,
                     scrollX: true,
                     info: false
-            });
+                });
         }
     }
 
