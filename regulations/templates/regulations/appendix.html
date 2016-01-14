@@ -29,7 +29,7 @@
                 {% include "regulations/ol-tag.html" %}
                 {% endwith %}
                 {% for node in level_one.children  %}
-                    {% include "regulations/tree-with-wrapper.html" %}
+                    {% include node.template_name %}
                 {% endfor %}
                 </ol>
             {% endif %}

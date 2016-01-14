@@ -19,8 +19,8 @@
     {% include "regulations/ol-tag.html" %}
     {% endwith %}
     {% for c in node.children %}
-        {%with node=c template_name="regulations/tree-with-wrapper.html" %}
-            {% include template_name %}
+        {% with node=c %}
+            {% include node.template_name %}
         {% endwith %}
     {% endfor %}
 </ol>
