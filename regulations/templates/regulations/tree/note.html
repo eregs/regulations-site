@@ -1,0 +1,15 @@
+{% comment %}
+    Wrapper for NOTE nodes. Wraps them in an appropriate DIV, surrounded by
+    an LI
+{% endcomment %}
+
+<li
+    {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
+    {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
+    {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
+>
+    <div class="note">
+        <h4>Note{% if node.children %}{{ node.children|pluralize }}{% endif %}:</h4>
+        {% include "regulations/node.html" %}
+    </div>
+</li>
