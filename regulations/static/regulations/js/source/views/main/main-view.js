@@ -2,6 +2,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var DataTable = require('datatables.net')();
+var Clipboard = require('clipboard');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
@@ -29,6 +30,7 @@ var MainView = Backbone.View.extend({
 
 
         this.dataTables = null;
+        this.clipboardLinks = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
 
@@ -249,6 +251,11 @@ var MainView = Backbone.View.extend({
 
     setHandlers: function() {
         this.applyTablePlugin();
+        this.clipboardLinks = new Clipboard('.clipboard-link', {
+            target: function(trigger) {
+                return trigger.nextElementSibling;
+            }
+        });
     },
 
     applyTablePlugin: function() {
