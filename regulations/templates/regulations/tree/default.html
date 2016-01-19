@@ -1,5 +1,5 @@
 {% comment %}
-    Wrap tree.html in a list item. 
+    Default wrapper for nodes -- put them in a LI
 {% endcomment %}
 
 <li
@@ -7,14 +7,7 @@
     {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
     {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
 >
-    {% if node.node_type == "extract" %}
-    <div class="extract">
-    {% endif %}
-
-    {% include "regulations/tree.html" %}
-
-    {% if node.node_type == "extract" %}
-    </div>
-    {% endif %}
+    {% include "regulations/node.html" %}
 </li>
+
 
