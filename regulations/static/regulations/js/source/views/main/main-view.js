@@ -258,13 +258,13 @@ var MainView = Backbone.View.extend({
         // Create anchor tag for copy to clipboard
         this.$el.find('.poster').before(
            $('<a>', {
-                class: 'clipboard-link',
+                'class': 'clipboard-link',
                 text: 'Copy this text to your clipboard',
                 title: 'Copy this text to your clipboard',
-                href: '#',
+                href: '#'
             })
-        )
-        new Clipboard('.clipboard-link', {
+        );
+        var links = new Clipboard('.clipboard-link', {
             target: function(trigger) {
                 return trigger.nextElementSibling;
             }
