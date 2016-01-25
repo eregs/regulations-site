@@ -31,7 +31,6 @@ var MainView = Backbone.View.extend({
 
 
         this.dataTables = null;
-        this.clipboardLinks = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
 
