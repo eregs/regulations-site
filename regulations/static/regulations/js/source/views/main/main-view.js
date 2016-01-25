@@ -2,6 +2,8 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var DataTable = require('datatables.net')();
+var Clipboard = require('clipboard');
+var QueryCommand = require('query-command-supported');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
@@ -249,6 +251,28 @@ var MainView = Backbone.View.extend({
 
     setHandlers: function() {
         this.applyTablePlugin();
+        this.applyClipboardPlugin();
+    },
+
+    applyClipboardPlugin: function() {
+    // Create anchor tag for copy to clipboard
+        if (document.queryCommandSupported('copy')) {
+            this.$el.find('*[data-copyable="true"]').each(function(index, copyable) {
+                var link = $('<a>', {
+                    'class': 'clipboard-link',
+                    text: 'Copy this text to your clipboard',
+                    title: 'Copy this text to your clipboard',
+                    id: '#copyable-' + index,
+                    href:'#copyable-' + index
+                });
+                var copylink = new Clipboard(link[0], {
+                    target: function(trigger) {
+                        return copyable;
+                    }
+                });
+                $(copyable).before(link);
+            });
+        }
     },
 
     applyTablePlugin: function() {
