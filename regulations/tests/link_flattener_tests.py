@@ -22,11 +22,18 @@ class LinkFlattenerTest(TestCase):
             "<a href=foo> Fee  Fie  Foe </a>",
             flatten_links("<a href=foo> Fee <a href=bar> Fie </a> Foe </a>"))
 
-    def test_multiple_embedded_links(self):
+    def test_multiple_serial_embedded_links(self):
         self.assertEqual(
             "<a href=foo>FeeFieFoe</a>",
             flatten_links(
                 "<a href=foo>Fee<a href=bar>Fie</a><a href=baz>Foe</a></a>")
+        )
+
+    def test_multiple_level_embedded_links(self):
+        self.assertEqual(
+            '<a href="1">A B C D E</a>',
+            flatten_links(
+                '<a href="1">A <a href="2">B <a href="3">C</a> D</a> E</a>')
         )
 
     def test_real_world_example(self):
