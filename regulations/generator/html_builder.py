@@ -8,6 +8,7 @@ from node_types import to_markup_id, APPENDIX, INTERP
 from layers.layers_applier import LayersApplier
 from layers.internal_citation import InternalCitationLayer
 from regulations.apps import RegulationsConfig
+from .link_flattener import flatten_links
 
 
 class HTMLBuilder():
@@ -115,6 +116,7 @@ class HTMLBuilder():
             node['marked_up'] = layers_applier.apply_layers(
                 node.get('marked_up', node['text']))
             node['marked_up'] = self.section_space(node['marked_up'])
+            node['marked_up'] = flatten_links(node['marked_up'])
 
         node = self.p_applier.apply_layers(node)
 
