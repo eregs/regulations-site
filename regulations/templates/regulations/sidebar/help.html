@@ -3,7 +3,7 @@
   <div class="sidebar-subsection">
     <h5 class="help-title">Textual Help</h5>
       <a class="what" href="{% url 'about' %}#related-info"
-         target="_blank">(What's this?)</a>
+         aria-label="Link opens in a new window" target="_blank">(What's this?)</a>
       <ul class="help-list">
         {% for subtemplate_content in subtemplates %}
           {{ subtemplate_content|safe }}
