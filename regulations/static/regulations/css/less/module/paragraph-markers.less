@@ -1,4 +1,6 @@
 ol, li {
+  list-style-type: none;
+
   &.lower {
     list-style-type: lower-alpha;
   }
@@ -27,5 +29,16 @@ ol, li {
   .collapsed {
     float: left;
   }
-}
 
+  p {
+    position: relative;
+
+    .paragraph-marker {
+      display: block;
+      left: -10em;
+      position: absolute;
+      text-align: right;
+      width: 9.5em;
+    }
+  }
+}
