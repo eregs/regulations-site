@@ -1,5 +1,6 @@
 {% comment %}
-    Wrap tree.html in a list item. 
+    Wrapper for NOTE nodes. Wraps them in an appropriate DIV, surrounded by
+    an LI
 {% endcomment %}
 
 <li
@@ -7,14 +8,8 @@
     {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
     {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
 >
-    {% if node.node_type == "extract" %}
-    <div class="extract">
-    {% endif %}
-
-    {% include "regulations/tree.html" %}
-
-    {% if node.node_type == "extract" %}
+    <div class="note">
+        <h4>Note{% if node.children %}{{ node.children|pluralize }}{% endif %}:</h4>
+        {% include "regulations/node.html" %}
     </div>
-    {% endif %}
 </li>
-

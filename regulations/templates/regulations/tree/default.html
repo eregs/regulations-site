@@ -1,0 +1,13 @@
+{% comment %}
+    Default wrapper for nodes -- put them in a LI
+{% endcomment %}
+
+<li
+    {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
+    {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
+    {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
+>
+    {% include "regulations/node.html" %}
+</li>
+
+

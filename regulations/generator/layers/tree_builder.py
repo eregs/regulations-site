@@ -152,19 +152,20 @@ def all_children_are_roman(parent_node):
     return len(roman_children) > 0 and all(roman_children)
 
 
+# @todo - this function is _very_ similar to one in regparser.notice.compiler.
+# Can it be removed or pulled into a shared library?
 def add_child(parent_node, node):
     "Add a child node to a parent, maintaining the order of the children."
 
     children = parent_node['children']
     children.append(node)
+    child_labels = set('-'.join(c['label']) for c in children)
     order = parent_node.get('child_labels', [])
 
-    if (len(order) == len(children) and
-            set(order) == set('-'.join(c['label']) for c in children)):
-        lookup = {}
-        for c in children:
-            lookup['-'.join(c['label'])] = c
-        parent_node['children'] = [lookup[label_id] for label_id in order]
+    if child_labels.issubset(set(order)):
+        lookup = {'-'.join(c['label']): c for c in children}
+        parent_node['children'] = [lookup[label_id] for label_id in order
+                                   if label_id in child_labels]
     else:   # Explicit sort order not present/doesn't match nodes
         logging.warning(
             "No child_labels field. Guessing at child order (probably wrong)")
