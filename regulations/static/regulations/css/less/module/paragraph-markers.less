@@ -30,10 +30,19 @@ ol, li {
     float: left;
   }
 
+  .collapsed + ol {
+    margin-top: 0;
+
+    p:first-child {
+      margin-top: 0;
+    }
+
+  }
+
   p {
     position: relative;
 
-    .paragraph-marker {
+    .stripped-marker {
       display: block;
       left: -10em;
       position: absolute;
