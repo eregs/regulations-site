@@ -1,0 +1,65 @@
+/*
+  Table Styles
+ ========================================================================== */
+table {
+    margin: 1em 0;
+    padding: 0;
+    font-size: .75em;
+    table-layout: auto;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+th,
+td {
+    padding: 15px;
+    line-height: 20px;
+    border: 1px solid @80_gray;
+}
+
+th {
+    font-weight: bold;
+    font-style: normal;
+    text-align: left;
+}
+
+td {
+    font-weight: normal;
+}
+
+thead {
+    background-color: #fff;
+}
+    
+.table-wrap {
+    -webkit-overflow-scrolling: touch; // smoother scrolling
+}
+
+
+/*
+    Datatables-specific css
+*/
+
+.dataTable {
+    table& {
+        margin-top:0;
+        thead {
+            height:0;
+        }
+        tr:first-child td {
+            border-top: none;
+        }
+    }
+}
+
+.dataTables_scrollHeadInner {
+    div& {
+        table {
+            margin-bottom: 0px; 
+        }
+    }
+}
+table.dataTable, table.dataTable th, table.dataTable td {
+-webkit-box-sizing: content-box;
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+}
