@@ -1,0 +1,188 @@
+/*
+Table of Contents Drawer
+========================
+This contains all of the styles specific to the TOC
+*/
+.regulation-nav {
+
+    ol {
+        margin: 0;
+        padding: 40px 0 0 0;
+    }
+
+    li {
+        .regulation-nav-item-font;
+        margin: 0;
+        text-indent: 0;
+    }
+
+    .toc-section-marker {
+      .regulation-nav-section-marker-font;
+      display: block;
+    }
+
+    /* Interpretation Subparts in the TOC are styled differently */
+    .toc-interp-heading {
+        font-family: @font_family_regular;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .toc-interp-title {
+        font-family: @font_family_bold;
+        font-size: 14px;
+    }
+
+    a {
+        display: block;
+        padding: 10px 15px;
+        line-height: 1.3;
+    }
+
+    a:link,
+    a:visited {
+        color: @black;
+        .border-bottom-light (@width: 1px);
+        text-decoration: none;
+    }
+
+    a:hover,
+    a:active,
+    .current {
+        color: @black;
+        background-color: @green_light;
+    }
+
+    /*
+    TOC in Diff View
+    -----------------
+    */
+
+    .modified a,
+    .modified a:link,
+    .modified a:visited,
+    .added a,
+    .added a:link,
+    .added a:visited {
+        border-right: 8px solid @green_midtone;
+    }
+
+    .deleted a,
+    .deleted a:link,
+    .deleted a:visited {
+        border-right: 8px solid @red_orange_80;
+        text-decoration: line-through;
+        color: @80_gray;
+    }
+}
+
+/* Highlight the History tab in diff view */
+.active-tab a:link,
+.active-tab a:visited,
+.active-tab a:hover,
+.active-tab a:active {
+    color: #d14124;
+}
+
+.subpart-heading {
+    .regulation-nav-subpart-heading-font;
+    margin: 0;
+    padding: 10px 15px;
+    display: block;
+    background-color: #F8F8F8;
+    .border-bottom-light (@width: 1px);
+    .border-top-light (@width: 1px);
+    text-transform: uppercase;
+}
+
+.subpart-subhead {
+    font-family: @font_family_bold;
+    text-transform: none;
+}
+
+
+.js {
+   .timeline-content-wrap {
+        display: none;
+   }
+
+   .current .timeline-content-wrap {
+        display: block;
+   }
+
+   /*
+   date input
+   ----------
+   */
+   .form-wrap {
+        margin: 15px;
+        background-color: #fff;
+        line-height: 32px;
+        border-top: 1px solid @light_field;
+        border-bottom: 1px solid @light_field;
+        border-left: 1px solid @light_field;
+   }
+
+   input[type=text]{
+        border: none;
+        text-align: center;
+        line-height: 32px;
+    }
+    input[name=month],
+    input[name=day] {
+        width: 15%;
+    }
+
+    input[name=year] {
+        width: 25%;
+    }
+
+    .find-button {
+        float: right;
+        padding: 0 10px;
+        margin-top: -1px;
+        margin-bottom: -1px;
+        height: 34px;
+    }
+}
+
+/*IE8 refuses to apply the link hovers*/
+.lt-ie9 {
+    #history {
+        li:hover,
+        li.current {
+            background-color: @green_light;
+        }
+    }
+}
+
+/* when ie7 users do visit, the drawer header won't stick out */
+.lt-ie8 {
+    .drawer-header .toc-type {
+        width: 210px;
+    }
+}
+
+.stop-button {
+    display: block;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    margin: 15px;
+    background-color: @red_orange;
+    padding: 10px;
+    text-align: center;
+}
+
+.stop-button:link,
+.stop-button:visited {
+    color: #fff;
+}
+
+.stop-button:hover,
+.stop-button:active,
+.stop-button:focus {
+    background-color: @red_orange_50;
+    color: @black;
+}
+

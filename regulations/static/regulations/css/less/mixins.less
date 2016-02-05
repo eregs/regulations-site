@@ -1,12 +1,12 @@
 /*
-LESS Mixins & Variables
+LESS Mixins 
  ==========================================================================
-mixins.less contains any mixins or variables to be used throughout the LESS files
+mixins.less contains any mixins to be used throughout the LESS files
 */
 
 
 /*
- Type Variables/Mixins
+ Type Mixins
  ----------------------
 */
 
@@ -28,6 +28,41 @@ mixins.less contains any mixins or variables to be used throughout the LESS file
     font-family: "Avenir Next Demi Italic", Arial, sans-serif;
     font-weight: 600;
     font-style: italic;
+}
+
+.panel-font {   /* todo: consolidate drawer / panel type and color sytles */
+    font-familY: @font_family_bold;
+    font-size: .875em;
+}
+
+.drawer-header-font {
+    font-family: @font_family_bold;
+    font-size: 12px;
+    font-weight: 400;
+    color: #43484e;
+    line-height: 40px;
+
+}
+.regulation-nav-item-font {
+    font-family: @font_family_regular;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+.regulation-nav-section-marker-font {
+    font-family: @font_family_bold;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+.regulation-nav-subpart-heading-font {
+    font-family: @font_family_bold;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #75787b;
 }
 
 /*
