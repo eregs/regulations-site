@@ -14,7 +14,6 @@ Type & Layout
 @import "cf-icons.less";
 @import "mixins.less";
 @import "custom-mixins.less";
-
 @import "fonts.less";
 @import "typography.less";
 @import "layout.less";
@@ -24,8 +23,10 @@ Modules
 ------- */
 @import "module/about.less";
 @import "module/app-nav.less";
+@import "module/buttons.less";
 @import "module/custom.less";
 @import "module/diffs.less";
+@import "module/drawer.less";
 @import "module/drawer.less";
 @import "module/error.less";
 @import "module/expandables.less";
@@ -36,6 +37,7 @@ Modules
 @import "module/helpers.less";
 @import "module/interpretations.less";
 @import "module/header.less";
+@import "module/links.less";
 @import "module/lists.less";
 @import "module/navigation.less";
 @import "module/note.less";
@@ -48,7 +50,7 @@ Modules
 
 /* credit */
 #modal {
-    .avenir-next-demi;
+    font-family: @font_family_bold;
     color: @dark_gray;
     width: 400px;
     height: 400px;
@@ -63,7 +65,7 @@ Modules
         margin-top: 0;
 
         li {
-            .avenir-next;
+            font-family: @font_family_regular;
             margin-top: .75em;
         }
     }
@@ -95,7 +97,7 @@ Modules
 }
 
 #sig {
-    .avenir-next;
+    font-family: @font_family_regular;
 }
 
 .love {

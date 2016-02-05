@@ -1,3 +1,41 @@
+/* (imported from main) */
+
+/*  Lists 
+    ------
+    <ul>
+        <li>List item</li>
+        <li>List item</li>
+        <li>List item</li>
+    </ul>
+*/
+
+ul li {
+  list-style: none;
+}
+
+.bullet li {
+    list-style: disc;
+}
+
+li {
+    margin-top: 1em; /*16px*/
+}
+
+address {
+    font-style: normal;
+}
+
+ol[type="no-marker"] {
+    list-style-type: none;
+    padding-left: 0;
+}
+/* end import from main */
+
+/* todo - consolidate the above and below  */
+
+
+
+
 /*  List Styles
     ==========================================================================
 Regulations are essentially a giant nested list.
@@ -55,7 +93,7 @@ The `<ol>` tag needs to have the appropriate list type applied
 }
 
 .main-content p {
-  font-family: @body-font;
+  font-family: @body_font_family;
   font-weight: 400;
 }
 
