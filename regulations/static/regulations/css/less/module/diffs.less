@@ -6,33 +6,33 @@
 
 
 del {
-    color: @medium_gray;
+    color: @diff_delete_font_color;
     text-decoration: line-through;
 
     img {
-        border: 2px solid @red_orange_50;
+        border: 2px solid @diff_delete_image_border_color;
         opacity: .7;
     }
 }
 
 ins {
-    background-color: @green_light;
+    background-color: @diff_background_color;
     text-decoration: none;
     font-style: italic;
 
     .key-term {
-        background-color: @green_light;
+        background-color: @diff_background_color;
         text-decoration: none;
-        .avenir-next-demi-italic;
+        font-family: @font_family_italic;
 
         .level-2 &,
         .supplement-section .level-1 & {
-          .avenir-next-demi-italic; 
+          font-family: @font_family_italic; 
         }
     }
 
     img {
-        border: 2px solid @green_light;
+        border: 2px solid @diff_insert_image_border_color;
     }
 }
 
@@ -40,6 +40,6 @@ h2,
 h3,
 h4 {
     ins {
-        .avenir-next-demi-italic
+        font-family: @font_family_italic;
     }
 }

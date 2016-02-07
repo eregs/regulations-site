@@ -13,8 +13,7 @@ Universal drawer styles
 .panel {
     background-color: @bg_gray;
     border-right: 2px solid @medium_gray;
-    .avenir-next-demi;
-    font-size: .875em;
+    .panel-font;
     overflow-y: scroll; /* allow content to be scrollable */
 }
 
@@ -47,7 +46,6 @@ Panel Header
         margin: 0;
         width: 240px;
         height: 40px;
-        line-height: 40px;
         background-color: @bg_gray;
         border-right: 2px solid @medium_gray;
         z-index: 100;
@@ -56,9 +54,7 @@ Panel Header
     }
 
     h2 {
-        color: @mid_text;
-        font-size: .875em; /* 12px / (26px * .875em) */
-        .avenir-next-demi;
+        .drawer-header-font;
         text-transform: uppercase;
     }
 }
@@ -265,4 +261,6 @@ Drawer default closed state
 Small resolution drawer state
 ============================= */
 
-@import "drawer-content.less";
+@import "drawer-content-navigation.less";
+@import "drawer-content-search.less";
+@import "drawer-content-history.less";
