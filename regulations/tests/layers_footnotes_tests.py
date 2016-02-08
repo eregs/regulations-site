@@ -66,3 +66,37 @@ class FootnotesLayerTest(TestCase):
                              {'ref': '2', 'note': 'Second notes'},
                              {'ref': '3', 'note': 'Third notes'},
                          ]))
+
+    def test_multiple_children(self):
+        layer = {
+            "555-220-p1": [
+                {
+                    "footnote_data": {
+                        "note": "First notes",
+                        "ref": "1"
+                    },
+                    "locations": [
+                        0
+                    ],
+                    "text": "[^1]Some actual text"
+                }
+            ],
+            "555-220-p2": [
+                {
+                    "footnote_data": {
+                        "note": "Second notes",
+                        "ref": "2"
+                    },
+                    "locations": [
+                        0
+                    ],
+                    "text": "[^1]Some actual text"
+                }
+            ]
+        }
+        fl = FootnotesLayer(layer)
+        self.assertEqual(fl.apply_layer('555-220'), ('footnotes',
+                         [
+                             {'ref': '1', 'note': 'First notes'},
+                             {'ref': '2', 'note': 'Second notes'},
+                         ]))
