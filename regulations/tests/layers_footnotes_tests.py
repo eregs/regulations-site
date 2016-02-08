@@ -20,7 +20,7 @@ class FootnotesLayerTest(TestCase):
             ]
         }
         fl = FootnotesLayer(layer)
-        self.assertEqual(fl.apply_layer('555-220-p1'), ('footnotes',
+        self.assertEqual(fl.apply_layer('555-220'), ('footnotes',
                          [{'ref': '1',
                            'note': 'Some notes'}]))
 
@@ -60,7 +60,7 @@ class FootnotesLayerTest(TestCase):
             ]
         }
         fl = FootnotesLayer(layer)
-        self.assertEqual(fl.apply_layer('555-220-p1'), ('footnotes',
+        self.assertEqual(fl.apply_layer('555-220'), ('footnotes',
                          [
                              {'ref': '1', 'note': 'First notes'},
                              {'ref': '2', 'note': 'Second notes'},
