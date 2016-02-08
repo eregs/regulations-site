@@ -52,10 +52,9 @@ If you're familiar with Python and Node environments, after cloning this repo:
 ```bash
 $ mkvirtualenv regsite
 $ workon regsite
-$ pip install zc.buildout
-$ buildout
+$ pip install -r requirements.txt
 $ npm install # this also runs the default grunt task post install
-$ $ ./bin/django runserver
+$ python manage.py runserver
 ```
 
 ### Python
