@@ -4,10 +4,10 @@ regulations.generator.layers package
 Submodules
 ----------
 
-regulations.generator.layers.analyses module
---------------------------------------------
+regulations.generator.layers.base module
+----------------------------------------
 
-.. automodule:: regulations.generator.layers.analyses
+.. automodule:: regulations.generator.layers.base
     :members:
     :undoc-members:
     :show-inheritance:

@@ -20,14 +20,6 @@ regulations.settings.dev module
     :undoc-members:
     :show-inheritance:
 
-regulations.settings.local_settings module
-------------------------------------------
-
-.. automodule:: regulations.settings.local_settings
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 regulations.settings.production module
 --------------------------------------
 

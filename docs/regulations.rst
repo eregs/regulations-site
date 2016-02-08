@@ -17,10 +17,10 @@ Subpackages
 Submodules
 ----------
 
-regulations.models module
--------------------------
+regulations.apps module
+-----------------------
 
-.. automodule:: regulations.models
+.. automodule:: regulations.apps
     :members:
     :undoc-members:
     :show-inheritance:
