@@ -88,13 +88,14 @@ With that, you can start the development server:
 $ python manage.py runserver
 ```
 
-## Building the documentation
+## Building the Python documentation
 
 For most tweaks, you will simply need to run the Sphinx documentation
 builder again.
 
 ```
-$ ./bin/sphinx-build -b dirhtml -d docs/_build/doctrees/ docs/ docs/_build/dirhtml/
+$ pip install -r requirements_dev.txt
+$ sphinx-build -b dirhtml -d docs/_build/doctrees/ docs/ docs/_build/dirhtml/
 ```
 
 The output will be in ```docs/_build/dirhtml```.
@@ -104,7 +105,7 @@ script first:
 
 ```
 $ rm docs/regulations*.rst
-$ ./bin/sphinx-apidoc -F -o docs regulations
+$ sphinx-apidoc -F -o docs regulations
 ```
 
 ## JavaScript Application 
