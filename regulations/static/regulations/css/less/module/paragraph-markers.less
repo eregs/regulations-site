@@ -27,16 +27,14 @@ ol, li {
 
   /* Paragraphs without content. We may want to display their paragraph marker */
   .collapsed {
-    float: left;
+    position: absolute;
   }
 
   .collapsed + ol {
-    margin-top: 0;
 
     p:first-child {
       margin-top: 0;
     }
-
   }
 
   p {
@@ -50,4 +48,16 @@ ol, li {
       width: 9.5em;
     }
   }
+}
+
+ol {
+  margin-top: 0;
+
+  &.level-1 {
+    margin-top: 1em;
+  }
+}
+
+.level-2 > li > p {
+    margin-top: 0;
 }
