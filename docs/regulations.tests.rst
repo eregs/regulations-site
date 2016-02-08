@@ -20,6 +20,14 @@ regulations.tests.api_reader_tests module
     :undoc-members:
     :show-inheritance:
 
+regulations.tests.apps_tests module
+-----------------------------------
+
+.. automodule:: regulations.tests.apps_tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 regulations.tests.base_template_test module
 -------------------------------------------
 
@@ -32,14 +40,6 @@ regulations.tests.diff_applier_tests module
 -------------------------------------------
 
 .. automodule:: regulations.tests.diff_applier_tests
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-regulations.tests.external_citations_tests module
--------------------------------------------------
-
-.. automodule:: regulations.tests.external_citations_tests
     :members:
     :undoc-members:
     :show-inheritance:
@@ -92,10 +92,10 @@ regulations.tests.html_builder_test module
     :undoc-members:
     :show-inheritance:
 
-regulations.tests.layers_analyses_tests module
-----------------------------------------------
+regulations.tests.label_tests module
+------------------------------------
 
-.. automodule:: regulations.tests.layers_analyses_tests
+.. automodule:: regulations.tests.label_tests
     :members:
     :undoc-members:
     :show-inheritance:
@@ -172,6 +172,14 @@ regulations.tests.layers_utils_tests module
     :undoc-members:
     :show-inheritance:
 
+regulations.tests.link_flattener_tests module
+---------------------------------------------
+
+.. automodule:: regulations.tests.link_flattener_tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 regulations.tests.node_types_tests module
 -----------------------------------------
 
@@ -200,6 +208,22 @@ regulations.tests.runner module
 -------------------------------
 
 .. automodule:: regulations.tests.runner
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations.tests.sidebar_analyses_tests module
+-----------------------------------------------
+
+.. automodule:: regulations.tests.sidebar_analyses_tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations.tests.sidebar_help_tests module
+-------------------------------------------
+
+.. automodule:: regulations.tests.sidebar_help_tests
     :members:
     :undoc-members:
     :show-inheritance:

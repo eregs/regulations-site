@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     regulations.generator.layers
+    regulations.generator.sidebar
 
 Submodules
 ----------
@@ -39,6 +40,22 @@ regulations.generator.html_builder module
 -----------------------------------------
 
 .. automodule:: regulations.generator.html_builder
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations.generator.label module
+----------------------------------
+
+.. automodule:: regulations.generator.label
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations.generator.link_flattener module
+-------------------------------------------
+
+.. automodule:: regulations.generator.link_flattener
     :members:
     :undoc-members:
     :show-inheritance:
