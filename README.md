@@ -52,10 +52,9 @@ If you're familiar with Python and Node environments, after cloning this repo:
 ```bash
 $ mkvirtualenv regsite
 $ workon regsite
-$ pip install zc.buildout
-$ buildout
+$ pip install -r requirements.txt
 $ npm install # this also runs the default grunt task post install
-$ $ ./bin/django runserver
+$ python manage.py runserver
 ```
 
 ### Python
@@ -89,13 +88,14 @@ With that, you can start the development server:
 $ python manage.py runserver
 ```
 
-## Building the documentation
+## Building the Python documentation
 
 For most tweaks, you will simply need to run the Sphinx documentation
 builder again.
 
 ```
-$ ./bin/sphinx-build -b dirhtml -d docs/_build/doctrees/ docs/ docs/_build/dirhtml/
+$ pip install -r requirements_dev.txt
+$ sphinx-build -b dirhtml -d docs/_build/doctrees/ docs/ docs/_build/dirhtml/
 ```
 
 The output will be in ```docs/_build/dirhtml```.
@@ -105,7 +105,7 @@ script first:
 
 ```
 $ rm docs/regulations*.rst
-$ ./bin/sphinx-apidoc -F -o docs regulations
+$ sphinx-apidoc -F -o docs regulations
 ```
 
 ## JavaScript Application 
