@@ -75,7 +75,7 @@ content and one for the sidebar content.
 
 The "chrome" endpoints wrap these two other types of views with navigation,
 CSS includes, headers, etc. (i.e. the application's "chrome"). These endpoints
-are crucial for users without Javascript (or modern implementations of the URL
+are crucial for users without JavaScript (or modern implementations of the URL
 push API) and for initial loading (e.g. via hard refreshes, bookmarks, etc.).
 
   We currently have far too many *different* views, despite them performing
@@ -104,12 +104,45 @@ functionality is rarely used.
 
 Layers fall into three categories:
 
-- "inline", where the layer defines exact text offsets in the Node's text
+- "inline", where the layer defines exact text offsets in the Node's text.
+  Internal citations (linking to another paragraph or section within the
+  current regulation) are an example. They have data like:
+
+  .. code-block:: python
+
+    {"111-22-c": [{"offsets": [[44, 52], ...],  # string index into the text
+                   # Layer specific fields
+                   "citation": ["111", "33", "e"]},
+                  ...],
+     ...}
+
 
 - "search-and-replace", where the layer includes snippets of text (rather than
-  offsets)
+  offsets). External citations (linking to content outside of eRegs) are an
+  example. They look like:
 
-- "paragraph", where the layer data is scoped to the full paragraph
+  .. code-block:: python
+
+    {"111-22-c": [{"text": "27 CFR Part 478", # exact text match
+                   "locations": [0, 2, 3],    # skips the second reference
+                   # Layer specific fields
+                   "citation_type": "CFR",
+                   "components": {...},
+                   "url": "http://example.com/..."},
+                  ...],
+     ...}
+
+- "paragraph", where the layer data is scoped to the full paragraph. The
+  table-of-contents layer is an example here. All fields are specific to the
+  individual layer. For example:
+
+  .. code-block:: python
+
+    {"111-Subpart-C": [{"title": "Section 111.22 A Title",
+                        "index": ["111", "22"]},
+                       ...]
+     ...}
+    
 
 The first two categories are needed when we want to modify some component of a
 Node's text (e.g. a citation, definition, or formatting adjustment). In these
