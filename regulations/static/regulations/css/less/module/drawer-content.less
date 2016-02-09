@@ -11,26 +11,23 @@ This contains all of the styles specific to the TOC
     }
 
     li {
+        .regulation-nav-item-font;
         margin: 0;
         text-indent: 0;
     }
 
     .toc-section-marker {
-      .font-bold;
-      display: block;
-      font-size: 18px;
+        .regulation-nav-section-marker-font;
+        display: block;
     }
 
     /* Interpretation Subparts in the TOC are styled differently */
     .toc-interp-heading {
-        .font-regular;
-        text-transform: uppercase;
-        font-size: 12px;
+        .regulation-nav-interp-heading;
     }
 
     .toc-interp-title {
-        .font-bold;
-        font-size: 14px;
+        .regulation-nav-interp-title;
     }
 
     a {
@@ -88,12 +85,11 @@ This contains all of the styles specific to the TOC
     margin: 0;
     padding: 10px 15px;
     display: block;
-    color: @mid_text;
     background-color: #F8F8F8;
-    font-size: 1em;
     .border-bottom-light (@width: 1px);
     .border-top-light (@width: 1px);
-    text-transform: uppercase;
+    .regulation-nav-subpart-heading-font;
+
 }
 
 .subpart-subhead {
