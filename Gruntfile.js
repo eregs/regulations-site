@@ -2,8 +2,6 @@
 
 module.exports = function(grunt) {
 
-  var env = grunt.file.readJSON('config.json');
-
   grunt.initConfig({
 
     /**
@@ -16,7 +14,7 @@ module.exports = function(grunt) {
      *  Pull in environment-specific vars
      *
      */
-    env: env,
+    env: grunt.file.readJSON('config.json'),
 
     /**
      * https://github.com/gruntjs/grunt-contrib-less
@@ -94,10 +92,10 @@ module.exports = function(grunt) {
             [function(b) {
               b.plugin('minifyify', {
                 map: '/static/regulations/js/built/regulations.min.map',
-                output: env.frontEndPath + '/js/built/regulations.min.map'
+                output: grunt.template.process('<%= env.frontEndPath %>/js/built/regulations.min.map')
               });
             }]
-          ],
+          ]
         }
       }
     },
