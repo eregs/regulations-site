@@ -1,5 +1,6 @@
 {% extends "regulations/base.html" %}
 {% load static from staticfiles %}
+{% load macros %}
 
 
 {% block title %}
@@ -103,9 +104,11 @@
                             <ul class="rule-list">
                             {% for notice in version.notices %}
                                 {% if notice.fr_url %}
-                                    <li><a class="fr-notice external" href="{{notice.fr_url}}" aria-label="Link opens in a new window" target="_blank">Published {{notice.publication_date|date}}</a></li>
+                                  {% with pub_date=notice.publication_date|date %}
+                                    <li>{% external_link classes="fr-notice" url=notice.fr_url text="Published "|add:pub_date %}</li>
+                                  {% endwith %}
                                 {% else %}
-                                    <li>Published {{notice.publication_date|date}}</li>
+                                    <li>Published {{pub_date}}</li>
                                 {% endif %}
                             {% endfor %}
                                 </ul>
