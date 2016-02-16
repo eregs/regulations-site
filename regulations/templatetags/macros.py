@@ -5,8 +5,8 @@ register = template.Library()
 
 
 @register.inclusion_tag('regulations/macros/external_link.html')
-def external_link(url, text, classes=""):
-    return {"url": url, "text": text, "classes": classes}
+def external_link(url, text, classes="", title=""):
+    return {"url": url, "text": text, "classes": classes, "title": title}
 
 
 @register.inclusion_tag('regulations/macros/search_for.html')
