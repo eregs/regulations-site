@@ -83,9 +83,9 @@
                 <div class="form-wrap group">
                 <form action="{% url 'redirect_by_date_get' label_id %}"
                       method="GET" class="date-input">
-                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" />
-                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" />
-                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" />
+                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" title="Effective month" />
+                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" title="Effective day"/>
+                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" title="Effective year" />
                   <button type="submit" class="find-button">Find</button>
                 </form>
                 </div><!--./date-form-->
@@ -113,7 +113,7 @@
                                 <h4 class="compare-title">Compare this with</h4>
                                 <div class="select-content">
                                 <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
-                                    <select name="new_version" onChange="this.form.submit();">
+                                    <select name="new_version" onChange="this.form.submit();" title="Compare version">
                                         <option value="default" disabled="disabled" selected="selected">regulation effective</option>
                                         {% for version in history %}
                                             {% if active_version != version.version %}
@@ -138,12 +138,15 @@
         <div class="drawer-content">
             <form action="{% url 'chrome_search' reg_part %}" method="GET" role="search">
                 <div class="search-box">
-                    <input type="text" name="q" value="{{ q }}" id="search-input" /><button type="submit"><i class="cf-icon cf-icon-search"></i><strong class="icon-text">Search</strong></button>
+                    <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/>
+                    <button type="submit">
+                        <i class="cf-icon cf-icon-search"></i><strong class="icon-text">Search</strong>
+                    </button>
                 </div><!--/.search-box-->
                 <div class="version-search">
                     <h4>Search in regulation effective:</h4>
                     <div class="select-content">
-                        <select name="version" id="version-select">
+                        <select name="version" id="version-select" title="Effective version">
                         {% for version in history %}
                             <option value="{{version.version}}"{% if active_version == version.version %} selected="selected"{% endif %}>{{version.by_date|date}}</option>
                         {% endfor %}
