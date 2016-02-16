@@ -54,7 +54,6 @@
         </div>
         {% block header-secondary %}
         <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date }}</span>
-        <h2> </h2>
         {% endblock %}
     </div>
 </div>
@@ -76,7 +75,7 @@
     {% block drawer-history %}
         <div id="timeline" class="history-drawer toc-container hidden">
             <div class="drawer-header">
-                <h2 class="toc-type">Regulation Timeline</h2>
+                <h3 class="toc-type">Regulation Timeline</h3>
             </div><!-- /.drawer-header -->
             <div class="drawer-content">
                 <p class="effective-label">Find the regulation effective on this date:</p>
@@ -133,15 +132,12 @@
     {% endblock %}
     <div id="search" class="search-drawer toc-container hidden">
         <div class="drawer-header">
-            <h2 class="toc-type">Search</h2>
+            <h3 class="toc-type">Search</h3>
         </div><!-- /.drawer-header -->
         <div class="drawer-content">
             <form action="{% url 'chrome_search' reg_part %}" method="GET" role="search">
                 <div class="search-box">
-                    <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/>
-                    <button type="submit">
-                        <i class="cf-icon cf-icon-search"></i><strong class="icon-text">Search</strong>
-                    </button>
+                    <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/><button type="submit"><i class="cf-icon cf-icon-search"></i><strong class="icon-text">Search</strong></button>
                 </div><!--/.search-box-->
                 <div class="version-search">
                     <h4>Search in regulation effective:</h4>
