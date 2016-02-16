@@ -55,9 +55,9 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
             <div class="form-wrap group">
             <form action="{% url 'redirect_by_date_get' label_id %}"
                   method="GET" class="date-input">
-              <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" />
-              / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" />
-              / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" />
+              <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" title="Effective month" />
+              / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" title="Effective day"/>
+              / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" title="Effective year"/>
               <button type="submit" class="find-button">Find</button>
             </form>
             </div><!--./date-form-->
