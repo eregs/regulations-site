@@ -112,15 +112,21 @@ Panel Slide Button
 }
 
 /* use the icon font for the drawer toggle arrow in browsers that support it */
-.panel-slide:before {
-    .cf-icon;
-    content: "\e000";
+.panel-slide {
+    img:first-child { display:none; }
+    img:last-child { display:inline-block; }
 
-    .close & {        
-        content: "\e002";
+    .close & {
+        img:first-child { display:inline-block; }
+        img:last-child { display:none; }
     }
 }
 
+.drawer-toggle-icon {
+    height:16px;
+    vertical-align:middle;
+    margin-bottom:2px;
+}
 
 /*
 TOC Nav Links
@@ -161,23 +167,12 @@ currently these are TOC, History, and Search
         }
     }
 
-    .cf-icon-table-of-contents {
-        html.no-fontface & {
-            background: url(../img/nav-link.png) center center no-repeat;
-        }
-    }
-
     .cf-icon-search {
         html.no-fontface & {
             background: url(../img/search.png) center center no-repeat;
         }
     }
 
-    .cf-icon-history {
-        html.no-fontface & {
-            background: url(../img/history.png) center center no-repeat;
-        }
-    }
 }
 
 .close {
