@@ -4,7 +4,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var RegModel = require('../../models/reg-model');
 var SxSList = require('./sxs-list-view');
-var HelpView = require('./help-view');
 var SidebarModel = require('../../models/sidebar-model');
 var DefinitionModel = require('../../models/definition-model');
 var Breakaway = require('../breakaway/breakaway-view');
@@ -24,6 +23,7 @@ var SidebarView = Backbone.View.extend({
     },
 
     initialize: function() {
+        var cache;
         this.openRegFolders = _.bind(this.openRegFolders, this);
         this.externalEvents = SidebarEvents;
         this.listenTo(this.externalEvents, 'update', this.updateChildViews);
@@ -34,10 +34,16 @@ var SidebarView = Backbone.View.extend({
         this.listenTo(this.externalEvents, 'breakaway:open', this.hideChildren);
 
         this.childViews = {};
+        this.viewlessChildren = {};  /* Children that don't have unique views */
         this.openRegFolders();
 
         this.model = SidebarModel;
+        cache = this.model;
         this.definitionModel = DefinitionModel;
+        this.$el.find('[data-cache-key=sidebar]').each(function(idx, el) {
+            var $el = $(el);
+            cache.set($el.data('cache-value'), $el.html());
+        });
     },
 
     openDefinition: function(config) {
@@ -103,42 +109,19 @@ var SidebarView = Backbone.View.extend({
         // close all except definition
         this.closeChildren('definition');
 
-        if (arguments.length > 1) {
-            // if we've already downloaded the sidebar
-            this.insertChild(html);
-        }
-        else {
-            this.createPlaceholders();
+        if (arguments.length > 0) {
+            this.$el.find('[data-cache-key=sidebar]').remove();
+            this.$el.append(html);
         }
 
         // new views to bind to new html
         this.childViews.sxs = new SxSList();
-        this.childViews.help = new HelpView();
-
+        this.viewlessChildren = this.$el.find('.regs-meta').toArray();
         this.loaded();
     },
 
     removeLandingSidebar: function() {
         $('.landing-sidebar').hide();
-    },
-
-    createPlaceholders: function() {
-        if (this.$el.find('#sxs-list').length === 0) {
-            this.$el.append('<section id="sxs-list" class="regs-meta"></section>');
-        }
-
-        if (this.$el.find('#help').length === 0) {
-            this.$el.append('<section id="help" class="regs-meta"></section>');
-        }
-    },
-
-    // open whatever content should populate the sidebar
-    insertChild: function(el) {
-        this.$el.append(el);
-    },
-
-    removeChild: function(el) {
-        $(el).remove();
     },
 
     insertDefinition: function(el) {
@@ -185,6 +168,10 @@ var SidebarView = Backbone.View.extend({
                 }
             }
         }
+        for (k in this.viewlessChildren) {
+            this.viewlessChildren[k].remove();
+        }
+        this.viewlessChildren = [];
     },
 
     loading: function() {
