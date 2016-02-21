@@ -35,16 +35,21 @@
 <div class="sub-head">
     <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
     <div class="toc-head">
-        <a href="#" id="panel-link" class="toc-toggle panel-slide"><span class="icon-text">Navigation</span></a>
+        <a href="#" id="panel-link" class="toc-toggle panel-slide"><img src="{%static "regulations/img/open-caret.svg" %}"
+       class="drawer-toggle-icon" alt="Open navigation drawer" /><img src="{%static "regulations/img/close-caret.svg" %}"
+       class="drawer-toggle-icon" alt="Close navigation drawer"/></a>
         <ul class="drawer-toggles">
             {% block sidebar-toc-link %}
-            <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><span class="cf-icon cf-icon-table-of-contents"></span></a></li>
+            <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
+       class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
             {% endblock %}
             {% block sidebar-history-link %}
-            <li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline"><span class="icon-text">Regulation Timeline</span><span class="cf-icon cf-icon-history"></span></a></li>
+            <li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline"><span class="icon-text">Regulation Timeline</span><img src="{%static "regulations/img/timeline.svg" %}"
+       class="drawer-toggle-icon" alt="Regulation Timeline toggle"/></a></li>
             {% endblock %}
             {% block sidebar-search-link %}
-            <li><a href="#search" id="search-link" class="toc-nav-link" title="Search"><span class="icon-text">Search</span><span class="cf-icon cf-icon-search"></span></a></li>
+            <li><a href="#search" id="search-link" class="toc-nav-link" title="Search"><span class="icon-text">Search</span><img src="{%static "regulations/img/search.svg" %}"
+       class="drawer-toggle-icon" alt="Search toggle"/></a></li>
             {% endblock %}
         </ul>
     </div> <!-- /toc-head-->
@@ -55,7 +60,6 @@
         </div>
         {% block header-secondary %}
         <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date }}</span>
-        <h2> </h2>
         {% endblock %}
     </div>
 </div>
@@ -77,16 +81,16 @@
     {% block drawer-history %}
         <div id="timeline" class="history-drawer toc-container hidden">
             <div class="drawer-header">
-                <h2 class="toc-type">Regulation Timeline</h2>
+                <h3 class="toc-type">Regulation Timeline</h3>
             </div><!-- /.drawer-header -->
             <div class="drawer-content">
                 <p class="effective-label">Find the regulation effective on this date:</p>
                 <div class="form-wrap group">
                 <form action="{% url 'redirect_by_date_get' label_id %}"
                       method="GET" class="date-input">
-                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" />
-                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" />
-                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" />
+                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" title="Effective month" />
+                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" title="Effective day"/>
+                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" title="Effective year" />
                   <button type="submit" class="find-button">Find</button>
                 </form>
                 </div><!--./date-form-->
@@ -116,7 +120,7 @@
                                 <h4 class="compare-title">Compare this with</h4>
                                 <div class="select-content">
                                 <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
-                                    <select name="new_version" onChange="this.form.submit();">
+                                    <select name="new_version" onChange="this.form.submit();" title="Compare version">
                                         <option value="default" disabled="disabled" selected="selected">regulation effective</option>
                                         {% for version in history %}
                                             {% if active_version != version.version %}
@@ -136,17 +140,17 @@
     {% endblock %}
     <div id="search" class="search-drawer toc-container hidden">
         <div class="drawer-header">
-            <h2 class="toc-type">Search</h2>
+            <h3 class="toc-type">Search</h3>
         </div><!-- /.drawer-header -->
         <div class="drawer-content">
             <form action="{% url 'chrome_search' reg_part %}" method="GET" role="search">
                 <div class="search-box">
-                    <input type="text" name="q" value="{{ q }}" id="search-input" /><button type="submit"><i class="cf-icon cf-icon-search"></i><strong class="icon-text">Search</strong></button>
+                    <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/><button type="submit"><span class="cf-icon cf-icon-search"></span><strong class="icon-text">Search</strong></button>
                 </div><!--/.search-box-->
                 <div class="version-search">
                     <h4>Search in regulation effective:</h4>
                     <div class="select-content">
-                        <select name="version" id="version-select">
+                        <select name="version" id="version-select" title="Effective version">
                         {% for version in history %}
                             <option value="{{version.version}}"{% if active_version == version.version %} selected="selected"{% endif %}>{{version.by_date|date}}</option>
                         {% endfor %}

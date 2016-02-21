@@ -81,21 +81,21 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js']
+          '<%= env.frontEndPath %>/js/built/regulations.min.js': ['<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
           transform: ['browserify-shim'],
           browserifyOptions: {
-            debug: false
-          }
-        }
-      }
-    },
-
-    uglify: {
-      dist: {
-        files: {
-          '<%= env.frontEndPath %>/js/built/regulations.min.js': ['<%= env.frontEndPath %>/js/built/regulations.js']
+            debug: true
+          },
+          plugin: [
+            [function(b) {
+              b.plugin('minifyify', {
+                map: '/static/regulations/js/built/regulations.min.map',
+                output: grunt.template.process('<%= env.frontEndPath %>/js/built/regulations.min.map')
+              });
+            }]
+          ]
         }
       }
     },
@@ -176,6 +176,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
   grunt.registerTask('build', ['default', 'test-js']);
-  grunt.registerTask('squish', ['browserify', 'uglify', 'less', 'cssmin']);
-  grunt.registerTask('default', ['browserify', 'uglify', 'less', 'cssmin']);
+  grunt.registerTask('squish', ['browserify', 'less', 'cssmin']);
+  grunt.registerTask('default', ['browserify', 'less', 'cssmin']);
 };
