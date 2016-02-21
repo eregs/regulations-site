@@ -78,15 +78,15 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
                     </a>
                     <div class="timeline-content-wrap">
                     <ul class="rule-list">
-                        {% for notice in version.notices %}
-                            {% if notice.fr_url %}
-                              {% with pub_date=notice.publication_date|date %}
-                                <li>{% external_link classes="fr-notice" url=notice.fr_url text="Final Rule –  "|add:pub_date %}</li>
-                              {% endwith %}
-                            {% else %}
-                                <li>Final Rule &#8211; {{pub_date}}</li>
-                            {% endif %}
-                        {% endfor %}
+                      {% for notice in version.notices %}
+                        {% with pub_date=notice.publication_date|date %}
+                          {% if notice.fr_url %}
+                            <li>{% external_link classes="fr-notice" url=notice.fr_url text="Final Rule –  "|add:pub_date %}</li>
+                          {% else %}
+                            <li>Final Rule &#8211; {{pub_date}}</li>
+                          {% endif %}
+                        {% endwith %}
+                      {% endfor %}
                     </ul>
                         {% if version.version == left_version %}
                         <h4 class="compare-title">Compare this with</h4>

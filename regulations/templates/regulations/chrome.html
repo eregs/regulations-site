@@ -107,13 +107,13 @@
                             <h5 class="final-rule">Final Rule</h5>
                             <ul class="rule-list">
                             {% for notice in version.notices %}
+                              {% with pub_date=notice.publication_date|date %}
                                 {% if notice.fr_url %}
-                                  {% with pub_date=notice.publication_date|date %}
-                                    <li>{% external_link classes="fr-notice" url=notice.fr_url text="Published "|add:pub_date %}</li>
-                                  {% endwith %}
+                                  <li>{% external_link classes="fr-notice" url=notice.fr_url text="Published "|add:pub_date %}</li>
                                 {% else %}
-                                    <li>Published {{pub_date}}</li>
+                                  <li>Published {{pub_date}}</li>
                                 {% endif %}
+                              {% endwith %}
                             {% endfor %}
                                 </ul>
                                 <div class="diff-selector group">
