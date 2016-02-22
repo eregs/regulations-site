@@ -27,7 +27,8 @@ var SubHeadView = Backbone.View.extend({
         this.$subpartLabel = this.$el.find('.subpart');
     },
 
-    // populates subhead with new title
+    // populates subhead (.header-label) with new title depending on viewport location
+    // ex: §478.1(a) to §478.1(b)
     changeTitle: function(id) {
         this.$activeTitle.html(RegsHelpers.idToRef(id));
     },
