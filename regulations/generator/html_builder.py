@@ -58,7 +58,7 @@ class HTMLBuilder():
 
         if len(parts) > prefix_length:
             return len(parts) - prefix_length
-        # implicit return None
+        return 0
 
     def process_node_title(self, node):
         if 'title' in node:

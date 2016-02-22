@@ -11,9 +11,7 @@
         </p>
         {% endif %}
 
-        {% with first_child=c.children|first %}
-            {% include "regulations/ol-tag.html" %}
-        {% endwith %}
+        <ol class="level-{{c.list_level|add:1}}">
         {% if c.children %}
             {% for node in c.children %}
               {% include node.template_name %}

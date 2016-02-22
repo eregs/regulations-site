@@ -1,4 +1,5 @@
 {% comment %}
     Links to external documents from within the regulation text, like to the US Code, etc
 {% endcomment %}
-<a href="{{url}}" class="citation external" aria-label="Link opens in a new window" target="_blank">{{text}}</a>
+{% load macros %}
+{% external_link url=url classes="citation" text=text %}
