@@ -125,7 +125,7 @@ class HTMLBuilderTest(TestCase):
         node_type = REGTEXT
 
         result = builder.list_level(parts, node_type)
-        self.assertEquals(result, None)
+        self.assertEquals(result, 0)
 
     def test_interp_node_with_citations(self):
         inline, p, sr = Mock(), Mock(), Mock()

@@ -4,16 +4,14 @@
 
 {%if c.node_type == 'regtext' %}
 <section id="{{c.markup_id}}" class="reg-section section-focus" tabindex="0" data-permalink-section data-base-version="{{version}}" data-page-type="{{markup_page_type}}" {% if newer_version %}data-newer-version="{{newer_version}}"{% endif %}>
-    <h2 class="section-title" tabindex="0"> {{c.header|safe}} </h2>
+    <h3 class="section-title" tabindex="0"> {{c.header|safe}} </h3>
         {% if c.marked_up %}
         <p> 
         {{c.marked_up|safe}} 
         </p>
         {% endif %}
 
-        {% with first_child=c.children|first %}
-            {% include "regulations/ol-tag.html" %}
-        {% endwith %}
+        <ol class="level-{{c.list_level|add:1}}">
         {% if c.children %}
             {% for node in c.children %}
               {% include node.template_name %}
