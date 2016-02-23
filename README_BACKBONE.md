@@ -59,7 +59,7 @@ There is one of these for each area of the UI:
 
 It builds the configuration object that is passed into the child view’s constructor. In Backbone, this is ```this.options``` in the child view’s constructor. This object is used for many things, including context to events that occur during the creation of a new child view.
 
-**Content area views are, by convention, singletons.** They are initialized when they are first loaded as dependencies by [Require.js](http://requirejs.org/).
+**Content area views are, by convention, singletons.** They are initialized on app initialization.
 
 #### Content views (child views)
 All main content area child views inherit from [ChildView](regulations/static/regulations/js/source/views/main/child-view.js). **Content views are responsible for reacting to user input on the data.** A content view is created to display a particular piece of content and is removed once a user navigates away from that content.
@@ -71,7 +71,7 @@ Each content area view has an associated events router. By convention, each view
 
 **To understand the cycle of any view, look at the methods bound to events in the view’s constructor.** Event handlers are bound with [Backbone’s on()](http://backbonejs.org/#Events-on). Events are triggered using [Backbone’s trigger()](http://backbonejs.org/#Events-trigger). Event names follow the [Backbone convention.](http://backbonejs.org/#Events-on)
 
-There are five distinct modules, one for each content area, but this is just for ease when including them as dependencies with [Require.js](http://requirejs.org/). They are all clones of [Backbone.Events](http://backbonejs.org/#Events) with no modifications.
+There are five distinct modules, one for each content area. They are all clones of [Backbone.Events](http://backbonejs.org/#Events) with no modifications.
 
 ## How should I add a new feature?
 The intention for this JS application is that, as new ways to parse, glean context and display the data become possible, it can easily flex to meet these needs.
