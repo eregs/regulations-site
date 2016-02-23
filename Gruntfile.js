@@ -17,6 +17,23 @@ module.exports = function(grunt) {
     env: grunt.file.readJSON('config.json'),
 
     /**
+     * Copy dependencies into static paths
+     */
+    copy: {
+      main: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['node_modules/respond.js/dest/*'],
+            dest: '<%= env.frontEndPath %>/js/built/lib/respond/',
+            filter: 'isFile'
+          }
+        ]
+      }
+    },
+
+    /**
      * https://github.com/gruntjs/grunt-contrib-less
      */
     less: {
@@ -168,14 +185,12 @@ module.exports = function(grunt) {
    */
   require('load-grunt-tasks')(grunt);
 
-    /**
-    * Create task aliases by registering new tasks
-    * Let's remove `squish` since it's a duplicate task
-    */
+  /**
+   * Create task aliases by registering new tasks
+   */
   grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie10']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
   grunt.registerTask('build', ['default', 'test-js']);
-  grunt.registerTask('squish', ['browserify', 'less', 'cssmin']);
-  grunt.registerTask('default', ['browserify', 'less', 'cssmin']);
+  grunt.registerTask('default', ['copy', 'browserify', 'less', 'cssmin']);
 };
