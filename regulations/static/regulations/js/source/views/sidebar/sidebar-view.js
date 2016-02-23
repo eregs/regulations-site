@@ -33,7 +33,7 @@ var SidebarView = Backbone.View.extend({
         this.listenTo(this.externalEvents, 'section:error', this.loaded);
         this.listenTo(this.externalEvents, 'breakaway:open', this.hideChildren);
 
-        this.childViews = {"sxs": new SxSList()};
+        this.childViews = {'sxs': new SxSList()};
         this.definitionModel = DefinitionModel;
         this.model = SidebarModel;
         /* Cache the initial sidebar */
