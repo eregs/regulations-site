@@ -34,6 +34,7 @@
     "expect.js": "~0.2.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.4.0",
+    "grunt-contrib-copy": "^0.8.2",
     "grunt-contrib-cssmin": "^0.12.3",
     "grunt-contrib-less": "~1.0.0",
     "grunt-contrib-watch": "~0.6.1",
@@ -62,13 +63,14 @@
   },
   "dependencies": {
     "backbone": "1.2.3",
-    "backbone-query-parameters": "^0.4.0",
+    "backbone-query-parameters": "0.4.0",
     "clipboard": "1.5.5",
     "datatables.net": "1.10.10",
     "jquery": "1.11.3",
     "jquery-lazyload": "1.9.7",
-    "jquery-scrollstop": "^1.2.0",
+    "jquery-scrollstop": "1.2.0",
     "query-command-supported": "1.0.0",
+    "respond.js": "1.4.2",
     "underscore": "1.8.3"
   },
   "config": {
