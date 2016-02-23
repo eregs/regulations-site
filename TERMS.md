@@ -41,28 +41,3 @@ author or the affirmer.
 [policy]: http://github.com/cfpb/source-code-policy/
 [CC0]: http://creativecommons.org/publicdomain/zero/1.0/legalcode
 
-
-## Exceptions
-
-- [Require.js](http://requirejs.org/) by Dojo Foundation is licensed under 
-  both MIT and BSD licenses.
-- [Expect.js](https://github.com/LearnBoost/expect.js/) by Guillermo Rauch, is
-  licensed under the MIT license.
-- [Mocha](http://visionmedia.github.io/mocha/) by TJ Holowaychuk, is licensed
-  under the MIT license.
-- [jQuery](http://jquery.com/) and [Sizzle](http://sizzlejs.com/) by The jQuery
-  Foundation are licensed under the MIT License.
-- [Unveil.js](http://luis-almeida.github.io/unveil/) by Luís Almeida is
-  licensed under the MIT license.
-- [jQuery Scrollstop](https://github.com/ssorallen/jquery-scrollstop) by Ross
-  Allen is public domain/under the Unlicense.
-- [Backbone.js](http://backbonejs.org/) and
-  [Underscore.js](http://underscorejs.org/) by Jeremy Ashkenas, et al., are
-  licensed under the MIT license.
-- [Backbone.Queryparams] by Joe Hudson is licensed under the BSD license.
-- [Konami.js](http://code.snaptortoise.com/konami-js/) by Snaptortoise, is
-  licensed under the MIT license.
-- [The HTML5 Shiv](https://github.com/aFarkas/html5shiv) by Alexander Farkas,
-  et al., is licensed under MIT/GPL2.
-- [Respond.js](https://github.com/scottjehl/Respond) by Scott Jehl is licensed
-  under the MIT license.
