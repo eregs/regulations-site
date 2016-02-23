@@ -34,7 +34,6 @@ var SidebarView = Backbone.View.extend({
         this.listenTo(this.externalEvents, 'breakaway:open', this.hideChildren);
 
         this.childViews = {};
-        this.viewlessChildren = {};  /* Children that don't have unique views */
         this.openRegFolders();
 
         this.model = SidebarModel;
@@ -116,7 +115,6 @@ var SidebarView = Backbone.View.extend({
 
         // new views to bind to new html
         this.childViews.sxs = new SxSList();
-        this.viewlessChildren = this.$el.find('.regs-meta').toArray();
         this.loaded();
     },
 
@@ -168,10 +166,9 @@ var SidebarView = Backbone.View.extend({
                 }
             }
         }
-        for (k in this.viewlessChildren) {
-            this.viewlessChildren[k].remove();
-        }
-        this.viewlessChildren = [];
+        /* Also remove any components of the sidebar which don't have a
+         * Backbone view */
+        this.$el.find('.regs-meta').remove();
     },
 
     loading: function() {
