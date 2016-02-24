@@ -4,7 +4,6 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var RegModel = require('../../models/reg-model');
 var SxSList = require('./sxs-list-view');
-var HelpView = require('./help-view');
 var SidebarModel = require('../../models/sidebar-model');
 var DefinitionModel = require('../../models/definition-model');
 var Breakaway = require('../breakaway/breakaway-view');
@@ -24,6 +23,7 @@ var SidebarView = Backbone.View.extend({
     },
 
     initialize: function() {
+        var cache;
         this.openRegFolders = _.bind(this.openRegFolders, this);
         this.externalEvents = SidebarEvents;
         this.listenTo(this.externalEvents, 'update', this.updateChildViews);
@@ -33,11 +33,14 @@ var SidebarView = Backbone.View.extend({
         this.listenTo(this.externalEvents, 'section:error', this.loaded);
         this.listenTo(this.externalEvents, 'breakaway:open', this.hideChildren);
 
-        this.childViews = {};
-        this.openRegFolders();
-
-        this.model = SidebarModel;
+        this.childViews = {'sxs': new SxSList()};
         this.definitionModel = DefinitionModel;
+        this.model = SidebarModel;
+        /* Cache the initial sidebar */
+        this.$el.find('[data-cache-key=sidebar]').each(function(idx, el) {
+            var $el = $(el);
+            SidebarModel.set($el.data('cache-value'), $el.html());
+        });
     },
 
     openDefinition: function(config) {
@@ -85,60 +88,36 @@ var SidebarView = Backbone.View.extend({
 
                 break;
             case 'search':
-                this.closeChildren();
+                this.removeChildren();
                 this.loaded();
                 break;
             case 'diff':
                 this.loaded();
                 break;
             default:
-                this.closeChildren();
+                this.removeChildren();
                 this.loaded();
         }
 
         this.removeLandingSidebar();
     },
 
+    /* AJAX retrieved a sidebar. Replace the relevant portions of the
+     * existing sidebar */
     openRegFolders: function(success, html) {
-        // close all except definition
-        this.closeChildren('definition');
+        // remove all except definition
+        this.removeChildren('definition');
 
-        if (arguments.length > 1) {
-            // if we've already downloaded the sidebar
-            this.insertChild(html);
-        }
-        else {
-            this.createPlaceholders();
-        }
+        this.$el.find('[data-cache-key=sidebar]').remove();
+        this.$el.append(html);
 
         // new views to bind to new html
         this.childViews.sxs = new SxSList();
-        this.childViews.help = new HelpView();
-
         this.loaded();
     },
 
     removeLandingSidebar: function() {
         $('.landing-sidebar').hide();
-    },
-
-    createPlaceholders: function() {
-        if (this.$el.find('#sxs-list').length === 0) {
-            this.$el.append('<section id="sxs-list" class="regs-meta"></section>');
-        }
-
-        if (this.$el.find('#help').length === 0) {
-            this.$el.append('<section id="help" class="regs-meta"></section>');
-        }
-    },
-
-    // open whatever content should populate the sidebar
-    insertChild: function(el) {
-        this.$el.append(el);
-    },
-
-    removeChild: function(el) {
-        $(el).remove();
     },
 
     insertDefinition: function(el) {
@@ -176,7 +155,7 @@ var SidebarView = Backbone.View.extend({
         Helpers.toggleExpandable($expandable, 400);
     },
 
-    closeChildren: function(except) {
+    removeChildren: function(except) {
         var k;
         for (k in this.childViews) {
             if (this.childViews.hasOwnProperty(k)) {
@@ -185,6 +164,9 @@ var SidebarView = Backbone.View.extend({
                 }
             }
         }
+        /* Also remove any components of the sidebar which don't have a
+         * Backbone view */
+        this.$el.find('.regs-meta').remove();
     },
 
     loading: function() {
