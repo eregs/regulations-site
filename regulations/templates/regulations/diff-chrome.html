@@ -89,7 +89,6 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
                       {% endfor %}
                     </ul>
                         {% if version.version == left_version %}
-                        <h4 class="compare-title">Compare this with</h4>
                         <a data-first-subterp="{{first_subterp.section_id}}" class="stop-button" data-version="{{ from_version }}"
                             {% if "Interp" in label_id %}
                             href="{{first_subterp.url}}"
