@@ -1,4 +1,4 @@
-{% extends "regulations/chrome-empty-sidebar.html" %}
+{% extends "regulations/chrome.html" %}
 {% load macros %}
 
 {% comment %}
@@ -89,7 +89,6 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
                       {% endfor %}
                     </ul>
                         {% if version.version == left_version %}
-                        <h4 class="compare-title">Compare this with</h4>
                         <a data-first-subterp="{{first_subterp.section_id}}" class="stop-button" data-version="{{ from_version }}"
                             {% if "Interp" in label_id %}
                             href="{{first_subterp.url}}"
@@ -104,25 +103,4 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
             </ul>
         </div>
     </div> <!--/#history-->
-{% endblock %}
-
-{% block help-subsection %}
-    <div class="sidebar-subsection">
-        <h5 class="help-title">Comparison Help</h5>
-        <a class="what" href="{% url 'about' %}#timeline">(What's this?)</a>
-
-        <ul class="help-list">
-            <li>
-                <ins>text added in later revision</ins>
-            </li>
-            <li>
-                <del>text removed in later revision</del>
-            </li>
-            <li>
-                <div class="sample-menu modified">Section modified</div>
-                <div class="sample-menu deleted">Section deleted</div>
-                Indication of modified section in the table of contents
-            </li>
-        </ul>
-    </div> <!-- /.sidebar-subsection-->
 {% endblock %}

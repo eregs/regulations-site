@@ -1,0 +1,22 @@
+<section id="help" class="regs-meta">
+  {% include "regulations/generic_help.html" %}
+  <div class="sidebar-subsection">
+      <h5 class="help-title">Comparison Help</h5>
+      <a class="what" href="{% url 'about' %}#timeline">(What's this?)</a>
+
+      <ul class="help-list">
+          <li>
+              <ins>text added in later revision</ins>
+          </li>
+          <li>
+              <del>text removed in later revision</del>
+          </li>
+          <li>
+              <div class="sample-menu modified">Section modified</div>
+              <div class="sample-menu deleted">Section deleted</div>
+              Indication of modified section in the table of contents
+          </li>
+      </ul>
+  </div> <!-- /.sidebar-subsection-->
+</section> <!-- /.regs-meta -->
+

@@ -8,20 +8,26 @@ from regulations.generator import api_reader
 
 class SideBarView(TemplateView):
     """ View for handling the right-side sidebar """
-    def get_template_names(self):
-        return ['regulations/custom-sidebar.html', 'regulations/sidebar.html']
+    template_name = 'regulations/sidebar.html'
+    # contains either class paths or class objects (not instances)
+    components = settings.SIDEBARS
 
     def get_context_data(self, **kwargs):
         context = super(SideBarView, self).get_context_data(**kwargs)
 
         client = api_reader.ApiReader()
 
-        context['sidebars'] = []
-        for class_path in settings.SIDEBARS:
-            module, class_name = class_path.rsplit('.', 1)
-            klass = getattr(import_module(module), class_name)
-            sidebar = klass(context['label_id'], context['version'])
-            context['sidebars'].append(
-                sidebar.full_context(client, self.request))
+        klasses = []
+        for class_or_class_path in self.components:
+            if isinstance(class_or_class_path, basestring):
+                module, class_name = class_or_class_path.rsplit('.', 1)
+                klasses.append(getattr(import_module(module), class_name))
+            else:
+                klasses.append(class_or_class_path)
+
+        sidebars = [klass(context['label_id'], context['version'])
+                    for klass in klasses]
+        context['sidebars'] = [sidebar.full_context(client, self.request)
+                               for sidebar in sidebars]
 
         return context
