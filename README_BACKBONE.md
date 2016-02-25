@@ -23,7 +23,7 @@ eRegulations uses Backbone in a non-standard fashion. It uses the following Back
 - [Events](http://backbonejs.org/#Events)
 
 ### Models
-eRegulations’ Backbone Models do not sync data in a standard Backbone way. Because data only needs to travel one direction, from the server to the client, we do not use built-in events to trigger standard data sync processes. 
+eRegulations’ Backbone Models do not sync data in a standard Backbone way. Because data only needs to travel one direction, from the server to the client, we do not use built-in events to trigger standard data sync processes.
 
 **The model caches data in a key-value pair**. The key is the id of the section and the value is a string of HTML containing the content. Example:
 
@@ -45,7 +45,7 @@ If it is:
 - The model retrieves the relevant value from its key-value store by the id passed in and returns the value
 
 ### Views
-There are two levels of views: content area views and content views. 
+There are two levels of views: content area views and content views.
 
 #### Content area views
 There is one of these for each area of the UI:
@@ -55,7 +55,7 @@ There is one of these for each area of the UI:
 - [Sidebar](regulations/static/regulations/js/source/views/sidebar/sidebar-view.js)
 - [Breakaway (used when opening a Section by Section Analysis)](regulations/static/regulations/js/source/views/breakaway/breakaway-view.js)
 
-**These views are responsible for creating and removing subchildren that hold content.** It also handles loading states as applicable (ex: translucent overlays over loading content). 
+**These views are responsible for creating and removing subchildren that hold content.** It also handles loading states as applicable (ex: translucent overlays over loading content).
 
 It builds the configuration object that is passed into the child view’s constructor. In Backbone, this is ```this.options``` in the child view’s constructor. This object is used for many things, including context to events that occur during the creation of a new child view.
 
@@ -63,6 +63,42 @@ It builds the configuration object that is passed into the child view’s constr
 
 #### Content views (child views)
 All main content area child views inherit from [ChildView](regulations/static/regulations/js/source/views/main/child-view.js). **Content views are responsible for reacting to user input on the data.** A content view is created to display a particular piece of content and is removed once a user navigates away from that content.
+
+#### View Document Structure
+
+![eRegs Views](/docs/eregs-views.png)
+
+* `/header`
+  Contains top header banner and sub header that is in line with drawer/navigation
+   - `header-view.js`
+       - `sub-head-view.js` (Subpart "X")
+
+* `/drawer`
+  This is the left-hand navigation listing of regulations.
+    - `drawer.js`
+        - `drawer-tabs-view.js` (top tab icons)
+        - `toc-view.js` (default drawer view, table of contents)
+        - `history-view.js` (regulation timeline)
+        - `search-view.js` (search)
+
+* `/main`
+   This presents the main content area (right of drawer/navigation)
+    - `main-view.js`
+        - `reg-view.js` (regulation page)
+        - `diff-view.js` (diff version of regulation)
+        - `search-results-view.js` ("Searching for 'foo'")
+        - `child-view.js` (base class for main-view.js child views)
+
+* `/sidebar`
+   This is the sidebar on the right hand side
+    - `sidebar-view.js`
+        - `definition-view.js`
+        - `sxs-list-view.js` (section by section analysis)
+
+* `/breakaway`
+    - `breakaway-view.js`
+        - `sxs-view.js`
+
 
 ### Events
 None of the events built into Backbone are used. As the flow of the eRegulations application is different from a vanilla Backbone application, we use custom events.
@@ -72,6 +108,8 @@ Each content area view has an associated events router. By convention, each view
 **To understand the cycle of any view, look at the methods bound to events in the view’s constructor.** Event handlers are bound with [Backbone’s on()](http://backbonejs.org/#Events-on). Events are triggered using [Backbone’s trigger()](http://backbonejs.org/#Events-trigger). Event names follow the [Backbone convention.](http://backbonejs.org/#Events-on)
 
 There are five distinct modules, one for each content area. They are all clones of [Backbone.Events](http://backbonejs.org/#Events) with no modifications.
+
+
 
 ## How should I add a new feature?
 The intention for this JS application is that, as new ways to parse, glean context and display the data become possible, it can easily flex to meet these needs.
