@@ -181,6 +181,8 @@ Regs Meta contains the sub-content meta data found in the sidebar
         .font-bold;
     }
 
+    /* We either use a subtitle + "What's this?" or an inline explanation
+       paragraph to describe what this panel is used for */
     .subtitle {
         display: inline-block;
         margin: 0;
@@ -190,48 +192,51 @@ Regs Meta contains the sub-content meta data found in the sidebar
         padding-right: 10px;
     }
 
-    .sxs-list {
+    .explanation {
+        color: @dark_gray;
+        margin: 0;
+    }
+
+    .divided-list {
         margin-top: 12px;
         border-top: 1px solid @light_neutral;
+
+        li {
+            display: block;
+            .border-bottom-light;
+            padding: .5em;
+        }
     }
 
     .chunk {
         padding: 1em;
 
-        .sidebar-full:link,
-        .sidebar-full:visited {
-            display: block;
-            .font-bold;
-            color: @black;
-            .border-bottom-light;
-            padding: .5em;
-            text-decoration: none;
-
-            .cf-icon-right {
-                float: right;
-                font-size: 0.875em;
-                line-height: 2;
-                color: @dark_gray;
-            }
-
-            &:hover, &:active {
-                text-decoration: none;
-                color: @pacific;
-
-                .cf-icon-right {
-                    color: @pacific;
-                }
-            }
-        }
-
-        /*li:last-child a:link {
-            border: none;
-        }*/
-
         /* add a top border to IE8 since it does not recognize .last-child to remove the bottom border*/
         .lt-ie9 & {
             li:first-child a:link {
                 .border-top-light;
+            }
+        }
+    }
+
+    #sxs-list .sxs-link {
+        .font-bold;
+        color: @black;
+        text-decoration: none;
+
+        .cf-icon-right {
+            float: right;
+            font-size: 0.875em;
+            line-height: 2;
+            color: @dark_gray;
+        }
+
+        &:hover, &:active {
+            text-decoration: none;
+            color: @pacific;
+
+            .cf-icon-right {
+                color: @pacific;
             }
         }
     }
@@ -471,7 +476,7 @@ Small screens
         }
     }
 
-    #sxs-list {
+    .regs-meta {
         border-top: 1px solid @light_neutral;
     }
 
