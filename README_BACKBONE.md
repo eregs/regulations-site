@@ -66,6 +66,8 @@ All main content area child views inherit from [ChildView](regulations/static/re
 
 #### View Document Structure
 
+![eRegs Views](/docs/eregs-views.png)
+
 * `/header`
   Contains top header banner and sub header that is in line with drawer/navigation
    - `header-view.js`
