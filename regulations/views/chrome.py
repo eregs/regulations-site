@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateView
 from regulations.generator import generator
 from regulations.generator.node_types import label_to_text, type_from_label
 from regulations.generator.section_url import SectionUrl
+from regulations.generator.sidebar.help import Help as HelpSideBar
 from regulations.generator.subterp import filter_by_subterp
 from regulations.generator.toc import fetch_toc
 from regulations.generator.versions import fetch_grouped_history
@@ -21,9 +22,9 @@ from regulations.views import error_handling
 class ChromeView(TemplateView):
     """ Base class for views which wish to include chrome. """
     template_name = 'regulations/chrome.html'
-    has_sidebar = True
     #   Which view name to use when switching versions
     version_switch_view = 'chrome_section_view'
+    sidebar_components = SideBarView.components
 
     def check_tree(self, context):
         """Throw an exception if the requested section doesn't exist"""
@@ -102,16 +103,19 @@ class ChromeView(TemplateView):
 
         self.check_tree(context)
         self.add_main_content(context)
-
-        if self.has_sidebar:
-            sidebar_view = SideBarView.as_view()
-            response = sidebar_view(self.request, label_id=label_id,
-                                    version=version)
-            self._assert_good(response)
-            response.render()
-            context['sidebar_content'] = response.content
+        context['sidebar_content'] = self.sidebar(label_id, version)
 
         return context
+
+    def sidebar(self, label_id, version):
+        """Generate the sidebar content for this label_id+version. This
+        involves passing through to the SideBarView"""
+        sidebar_view = SideBarView.as_view(components=self.sidebar_components)
+        response = sidebar_view(self.request, label_id=label_id,
+                                version=version)
+        self._assert_good(response)
+        response.render()
+        return response.content
 
 
 class ChromeInterpView(ChromeView):
@@ -185,7 +189,7 @@ class ChromeSearchView(ChromeView):
     """Search results with chrome"""
     template_name = 'regulations/chrome-search.html'
     partial_class = PartialSearch
-    has_sidebar = False
+    sidebar_components = [HelpSideBar]
 
     def check_tree(self, context):
         pass    # Search doesn't perform this check
@@ -209,10 +213,13 @@ class ChromeLandingView(ChromeView):
     """Landing page with chrome"""
     template_name = 'regulations/landing-chrome.html'
     partial_class = PartialSectionView  # Needed to know sectional status
-    has_sidebar = False
 
     def check_tree(self, context):
         pass    # Landing page doesn't perform this check
+
+    def sidebar(self, label_id, version):
+        """Landing pages don't have a sidebar generated this way"""
+        return None
 
     def add_main_content(self, context):
         """Landing page isn't a TemplateView"""
