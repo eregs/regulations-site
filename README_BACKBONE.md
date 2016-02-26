@@ -75,7 +75,7 @@ All main content area child views inherit from [ChildView](regulations/static/re
 
 * `/drawer`
   This is the left-hand navigation listing of regulations.
-    - `drawer.js`
+    - `drawer-view.js`
         - `drawer-tabs-view.js` (top tab icons)
         - `toc-view.js` (default drawer view, table of contents)
         - `history-view.js` (regulation timeline)
