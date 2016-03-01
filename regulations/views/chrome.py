@@ -11,7 +11,6 @@ from regulations.views import utils
 from regulations.views.partial_interp import PartialSubterpView
 from regulations.views.reg_landing import regulation_exists, get_versions
 from regulations.views.reg_landing import regulation as landing_page
-from regulations.views.partial import PartialParagraphView
 from regulations.views.partial import PartialSectionView
 from regulations.views.partial_search import PartialSearch
 from regulations.views.sidebar import SideBarView
@@ -66,6 +65,12 @@ class ChromeView(TemplateView):
             while toc:
                 label_id = toc[0]['section_id']
                 toc = toc[0].get('sub_toc')
+        # We only show diffs for the whole interpretation at once
+        elif 'Interp' in label_parts:
+            label_id = label_parts[0] + '-Interp'
+        # Non-section paragraph; link to the containing section
+        elif len(label_parts) > 2:
+            label_id = '-'.join(label_parts[:2])
         return label_id
 
     def set_chrome_context(self, context, reg_part, version):
@@ -122,21 +127,6 @@ class ChromeView(TemplateView):
         return response.content
 
 
-class ChromeParagraphView(ChromeView):
-    """Regtext paragraph with chrome"""
-    partial_class = PartialParagraphView
-    version_switch_view = 'chrome_paragraph_view'
-
-    def diff_redirect_label(self, label_id, toc):
-        """We don't do diffs for individual paragraphs; instead, link to the
-        containing section"""
-        label = label_id.split('-')
-        if 'Interp' in label:
-            return label[0] + '-Interp'
-        else:
-            return '-'.join(label[:2])
-
-
 class ChromeSubterpView(ChromeView):
     """Corresponding chrome class for subterp partial view"""
     partial_class = PartialSubterpView
@@ -158,11 +148,6 @@ class ChromeSubterpView(ChromeView):
         if not subterp_sects:
             raise error_handling.MissingSectionException(label_id, version,
                                                          context)
-
-    def diff_redirect_label(self, label_id, toc):
-        """We don't do diffs for subterps. Instead, link to diff of the
-        whole interp"""
-        return label_id.split('-', 1)[0] + '-Interp'
 
 
 class ChromeSearchView(ChromeView):
