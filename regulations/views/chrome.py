@@ -8,8 +8,7 @@ from regulations.generator.subterp import filter_by_subterp
 from regulations.generator.toc import fetch_toc
 from regulations.generator.versions import fetch_grouped_history
 from regulations.views import utils
-from regulations.views.partial_interp import (
-    PartialInterpView, PartialSubterpView)
+from regulations.views.partial_interp import PartialSubterpView
 from regulations.views.reg_landing import regulation_exists, get_versions
 from regulations.views.reg_landing import regulation as landing_page
 from regulations.views.partial import PartialParagraphView
@@ -25,6 +24,7 @@ class ChromeView(TemplateView):
     #   Which view name to use when switching versions
     version_switch_view = 'chrome_section_view'
     sidebar_components = SideBarView.components
+    partial_class = None
 
     def check_tree(self, context):
         """Throw an exception if the requested section doesn't exist"""
@@ -116,16 +116,6 @@ class ChromeView(TemplateView):
         self._assert_good(response)
         response.render()
         return response.content
-
-
-class ChromeInterpView(ChromeView):
-    """Interpretation of regtext section/paragraph or appendix with chrome"""
-    partial_class = PartialInterpView
-
-
-class ChromeSectionView(ChromeView):
-    """Regtext section with chrome"""
-    partial_class = PartialSectionView
 
 
 class ChromeParagraphView(ChromeView):
