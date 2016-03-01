@@ -1,9 +1,8 @@
-{% load in_context %}
+{% load render_nested %}
+
 <section data-cache-key="sidebar" data-cache-value={{label_id}}">
 {% for sidebar in sidebars %}
-  {% begincontext sidebar %}
-    {% include template_name %}
-  {% endcontext %}
+  {% render_nested template=sidebar.template_name context=sidebar %}
 {% endfor %}
 
 {% block additional-rhs %}{% endblock %}
