@@ -20,7 +20,6 @@ var SxSListView = SidebarListView.extend({
 
     initialize: function() {
         this.render = _.bind(this.render, this);
-        this.modifyListDisplay();
 
         // if the browser doesn't support pushState, don't
         // trigger click events for links
@@ -55,27 +54,7 @@ var SxSListView = SidebarListView.extend({
         var $html = $(html),
             list = $html.find('#sxs-list').html();
         this.$el.html(list);
-
-        this.modifyListDisplay();
-    },
-
-    modifyListDisplay: function() {
-        var $folderContent = this.$el.find('.expand-drawer');
-        if ($folderContent.children().length > 1) {
-            this.highlightHeader();
-            // toggle the SxS slider open if there is content
-            this.toggleSxS();
-        }
-    },
-
-    highlightHeader: function() {
-        this.$el.find('header').addClass('has-content');
-    },
-
-    toggleSxS: function() {
-      Helpers.toggleExpandable($('#sxs-expandable-header'), 0);
     }
-
 });
 
 module.exports = SxSListView;

@@ -94,6 +94,7 @@
                   <button type="submit" class="find-button">Find</button>
                 </form>
                 </div><!--./date-form-->
+                {% comment %}TODO: Indentation here is all kinds of funky {% endcomment %}
                 <ul class="version-list" id="history-toc-list">
                 {% for version in history %}
                     <li class="{% if version.version == active_version %}current {% endif %}status-list" data-base-version="{{version.version}}">
@@ -115,23 +116,25 @@
                                 {% endif %}
                               {% endwith %}
                             {% endfor %}
-                                </ul>
-                                <div class="diff-selector group">
-                                <h4 class="compare-title">Compare this with</h4>
-                                <div class="select-content">
+                            </ul>
+                            <div class="diff-selector group">
+                                <h4 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date}} with</h4>
                                 <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
-                                    <select name="new_version" onChange="this.form.submit();" title="Compare version">
-                                        <option value="default" disabled="disabled" selected="selected">regulation effective</option>
+                                  <div class="select-content">
+                                    <select name="new_version" title="Compare version">
                                         {% for version in history %}
                                             {% if active_version != version.version %}
                                                 <option value="{{version.version}}">{{version.by_date|date}}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
+                                  </div> <!--/.select-content-->
+                                  <div class="diff-button-wrapper">
+                                      <button>Show Differences</button>
+                                  </div>
                                 </form>
-                            </div> <!--/.select-content-->
-                        </div><!--/.diff-selector-->
-                    </div><!--/.timeline-content-wrap-->
+                            </div><!--/.diff-selector-->
+                        </div><!--/.timeline-content-wrap-->
                     </li>
                 {% endfor %}
                 </ul>
