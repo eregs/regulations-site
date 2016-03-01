@@ -12,7 +12,7 @@ from regulations.views.partial_interp import PartialSubterpView
 from regulations.views.reg_landing import regulation_exists, get_versions
 from regulations.views.reg_landing import regulation as landing_page
 from regulations.views.partial import PartialParagraphView
-from regulations.views.partial import PartialRegulationView, PartialSectionView
+from regulations.views.partial import PartialSectionView
 from regulations.views.partial_search import PartialSearch
 from regulations.views.sidebar import SideBarView
 from regulations.views import error_handling
@@ -59,9 +59,13 @@ class ChromeView(TemplateView):
         context['main_content_template'] = view.template_name
 
     def diff_redirect_label(self, label_id, toc):
-        """Most of the time, we want diff_redirect to link to *this*
-        section's label. This gives us an out for when we need to link
-        somewhere else."""
+        """We only display diffs for sections and appendices. All other types
+        of content must be converted to an appropriate diff label"""
+        label_parts = label_id.split('-')
+        if len(label_parts) == 1:   # whole CFR part. link to first section
+            while toc:
+                label_id = toc[0]['section_id']
+                toc = toc[0].get('sub_toc')
         return label_id
 
     def set_chrome_context(self, context, reg_part, version):
@@ -131,20 +135,6 @@ class ChromeParagraphView(ChromeView):
             return label[0] + '-Interp'
         else:
             return '-'.join(label[:2])
-
-
-class ChromeRegulationView(ChromeView):
-    """Entire regulation with chrome"""
-    partial_class = PartialRegulationView
-    version_switch_view = 'chrome_regulation_view'
-
-    def diff_redirect_label(self, label_id, toc):
-        """We don't do diffs of the whole reg; instead link to the first
-        section"""
-        while toc:
-            label_id = toc[0]['section_id']
-            toc = toc[0].get('sub_toc')
-        return label_id
 
 
 class ChromeSubterpView(ChromeView):

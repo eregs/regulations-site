@@ -72,10 +72,10 @@ class ViewsChromeTest(TestCase):
         response = Client().get('/regulation/111/222')
         self.assertEqual(404, response.status_code)
 
-
-class ViewsChromeRegulationTest(TestCase):
-    def test_diff_redirect_label(self):
-        view = chrome.ChromeRegulationView()
+    def test_diff_redirect_label_regulation(self):
+        """If viewing a full regulation, the redirect for diffs should point
+        to the first section"""
+        view = chrome.ChromeView()
         toc = [{'section_id': '199-Subpart-A',
                 'sub_toc': [{'section_id': '199-4'}, {'section_id': '199-6'}]},
                {'section_id': '199-Subpart-B',

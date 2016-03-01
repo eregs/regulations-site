@@ -6,7 +6,7 @@ from regulations.views.about import about
 from regulations.views.chrome_breakaway import ChromeSXSView
 from regulations.views.chrome import (
     ChromeView, ChromeLandingView, ChromeParagraphView,
-    ChromeRegulationView, ChromeSearchView,
+    ChromeSearchView,
     ChromeSubterpView)
 from regulations.views.diff import ChromeSectionDiffView
 from regulations.views.diff import PartialSectionDiffView
@@ -91,7 +91,9 @@ urlpatterns = patterns(
     # The whole regulation with chrome
     # Example: http://.../201/2013-10704
     url(r'^%s/%s$' % (reg_pattern, version_pattern),
-        lt_cache(ChromeRegulationView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=PartialRegulationView,
+            version_switch_view='chrome_regulation_view')),
         name='chrome_regulation_view'),
     # A regulation paragraph with chrome
     # Example: http://.../201-2-g/2013-10704
