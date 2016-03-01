@@ -1,10 +1,8 @@
-from django import template
+from django.template import Library, Context, loader
 
-register = template.Library()
+register = Library()
 
 
-@register.inclusion_tag('regulations/macros/nested.html')
+@register.simple_tag()
 def render_nested(template, context=None):
-    ret = {'template': template}
-    ret.update(context or {})
-    return ret
+    return loader.get_template(template).render(Context(context))
