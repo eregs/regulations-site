@@ -149,8 +149,7 @@ var ChildView = Backbone.View.extend({
 
     route: function(options) {
         if (Router.hasPushState && typeof options.noRoute === 'undefined') {
-            var url = this.url,
-                hashPosition;
+            var url = this.url;
 
             // if a hash has been passed in
             if (options && typeof options.scrollToId !== 'undefined') {

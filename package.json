@@ -71,7 +71,8 @@
     "jquery-scrollstop": "1.2.0",
     "query-command-supported": "1.0.0",
     "respond.js": "1.4.2",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "urijs": "1.17.1"
   },
   "config": {
     "travis-cov": {

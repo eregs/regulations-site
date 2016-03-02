@@ -1,6 +1,7 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+var URI = require('urijs');
 var DataTable = require('datatables.net')();
 var Clipboard = require('clipboard');
 var QueryCommand = require('query-command-supported');
@@ -75,9 +76,8 @@ var MainView = Backbone.View.extend({
 
         // find search query
         if (this.contentType === 'search-results') {
-            childViewOptions.id = Helpers.parseURL(window.location.href);
-            childViewOptions.params = childViewOptions.id.params;
-            childViewOptions.query = childViewOptions.id.params.q;
+            childViewOptions.params = URI.parseQuery(window.location.search);
+            childViewOptions.query = childViewOptions.params.q;
         }
 
         if (this.contentType === 'landing-page') {
