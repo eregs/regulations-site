@@ -158,7 +158,7 @@ var ChildView = Backbone.View.extend({
                 this.navigate(url);
                 $('html, body').scrollTop($('#' + options.scrollToId).offset().top);
             } else {
-                if (options.type !== 'diff') {
+                if (['diff', 'search-results'].indexOf(options.type) === -1) {
                     url += '#' + options.id;
                 }
                 this.navigate(url);
