@@ -1,8 +1,12 @@
 {% comment %}
-Partial Search Results. 
+Partial Search Results.
 {% endcomment %}
 
 <div id="content-wrapper" class="search-results">
+    {% for warning in warnings %}
+    <div class="error">{{ warning }}</div>
+    {% endfor %}
+
     <section data-page-type="search-results" data-base-version="{{ version }}">
         <h2 class="search-term">Searching for “{{ q }}”</h2>
         {% if not skip_count %}
@@ -30,7 +34,7 @@ Partial Search Results.
     {% if next %}
     <a class="next" href="{% url 'chrome_search' regulation %}?q={{ q|urlencode }}&version={{ version|urlencode }}&page={{ next.page }}"><span class="cf-icon cf-icon-right"></span>Next {{ next.length }} Results</a>
     {% endif %}
-    
+
     <div class="pager">Page {{ current.page }} of {{ current.total }}</div>
     </footer>
     {% endif %}
