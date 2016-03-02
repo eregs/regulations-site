@@ -124,7 +124,7 @@ class PartialSearchTest(TestCase):
         self.assertIn('4/5/2003', response.content)
 
     @patch('regulations.views.partial_search.fetch_grouped_history')
-    def test_get_400(self, fetch_grouped_history):
+    def test_null_params(self, fetch_grouped_history):
         response = Client().get('/partial/search/111?version=vvv')
         self.assertIn('provide a query', response.content)
         response = Client().get('/partial/search/111?q=vvv')
