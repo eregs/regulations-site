@@ -121,13 +121,14 @@ class PartialSearchTest(TestCase):
              'timeline': 'timeytimey'}
         ]
         response = Client().get('/partial/search/121?version=vvv&q=none')
-        self.assertTrue('4/5/2003' in response.content)
+        self.assertIn('4/5/2003', response.content)
 
-    def test_get_400(self):
+    @patch('regulations.views.partial_search.fetch_grouped_history')
+    def test_null_params(self, fetch_grouped_history):
         response = Client().get('/partial/search/111?version=vvv')
-        self.assertEqual(400, response.status_code)
+        self.assertIn('provide a query', response.content)
         response = Client().get('/partial/search/111?q=vvv')
-        self.assertEqual(400, response.status_code)
+        self.assertIn('provide a version', response.content)
 
     def test_add_prev_next(self):
         view = PartialSearch()
