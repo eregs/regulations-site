@@ -72,20 +72,21 @@ class ViewsChromeTest(TestCase):
         response = Client().get('/regulation/111/222')
         self.assertEqual(404, response.status_code)
 
-
-class ViewsChromeRegulationTest(TestCase):
-    def test_diff_redirect_label(self):
-        view = chrome.ChromeRegulationView()
+    def test_diff_redirect_label_regulation(self):
+        """If viewing a full regulation, the redirect for diffs should point
+        to the first section"""
+        view = chrome.ChromeView()
         toc = [{'section_id': '199-Subpart-A',
                 'sub_toc': [{'section_id': '199-4'}, {'section_id': '199-6'}]},
                {'section_id': '199-Subpart-B',
                 'sub_toc': [{'section_id': '199-8'}, {'section_id': '199-9'}]}]
         self.assertEqual('199-4', view.diff_redirect_label('199', toc))
 
-
-class ViewsChromeParagraphView(TestCase):
-    def test_diff_redirect_label(self):
-        view = chrome.ChromeParagraphView()
+    def test_diff_redirect_label_paragraph(self):
+        """If viewing a single paragraph, the redirect for diffs should point
+        to that paragraph's section. Similarly, all diffs for interpretations
+        should point to the root interpretation"""
+        view = chrome.ChromeView()
         self.assertEqual('199-4', view.diff_redirect_label('199-4-b', []))
         self.assertEqual('199-4', view.diff_redirect_label('199-4-b-3', []))
         self.assertEqual('199-A', view.diff_redirect_label('199-A', []))

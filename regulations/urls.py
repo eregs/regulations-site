@@ -5,8 +5,8 @@ from django.views.decorators.cache import cache_page
 from regulations.views.about import about
 from regulations.views.chrome_breakaway import ChromeSXSView
 from regulations.views.chrome import (
-    ChromeInterpView, ChromeLandingView, ChromeParagraphView,
-    ChromeRegulationView, ChromeSearchView, ChromeSectionView,
+    ChromeView, ChromeLandingView,
+    ChromeSearchView,
     ChromeSubterpView)
 from regulations.views.diff import ChromeSectionDiffView
 from regulations.views.diff import PartialSectionDiffView
@@ -73,7 +73,7 @@ urlpatterns = patterns(
     # A regulation section with chrome
     # Example: http://.../201-4/2013-10704
     url(r'^%s/%s$' % (section_pattern, version_pattern),
-        lt_cache(ChromeSectionView.as_view()),
+        lt_cache(ChromeView.as_view(partial_class=PartialSectionView)),
         name='chrome_section_view'),
     # Subterp, interpretations of a while subpart, emptypart or appendices
     # Example: http://.../201-Subpart-A-Interp/2013-10706
@@ -85,17 +85,22 @@ urlpatterns = patterns(
     # Interpretation of a section/paragraph or appendix
     # Example: http://.../201-4-Interp/2013-10704
     url(r'^%s/%s$' % (interp_pattern, version_pattern),
-        lt_cache(ChromeInterpView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=partial_interp.PartialInterpView)),
         name='chrome_interp_view'),
     # The whole regulation with chrome
     # Example: http://.../201/2013-10704
     url(r'^%s/%s$' % (reg_pattern, version_pattern),
-        lt_cache(ChromeRegulationView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=PartialRegulationView,
+            version_switch_view='chrome_regulation_view')),
         name='chrome_regulation_view'),
     # A regulation paragraph with chrome
     # Example: http://.../201-2-g/2013-10704
     url(r'^%s/%s$' % (paragraph_pattern, version_pattern),
-        lt_cache(ChromeParagraphView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=PartialParagraphView,
+            version_switch_view='chrome_paragraph_view')),
         name='chrome_paragraph_view'),
     # A regulation landing page
     # Example: http://.../201
