@@ -194,9 +194,12 @@ var MainView = Backbone.View.extend({
     },
 
     displayError: function() {
+        // prevent error warning stacking
+        $('.error-network').remove();
+
         // get ID of still rendered last section
         var oldId = this.$el.find('section[data-page-type]').attr('id'),
-            $error = this.$el.prepend('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>');
+            $error = this.$el.prepend('<div class="error error-network"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>').hide().fadeIn('slow');
 
         DrawerEvents.trigger('section:open', oldId);
         HeaderEvents.trigger('section:open', oldId);
@@ -205,7 +208,6 @@ var MainView = Backbone.View.extend({
         SidebarEvents.trigger('section:error');
 
         window.scrollTo($error.offset().top, 0);
-
     },
 
     render: function(html, options) {
