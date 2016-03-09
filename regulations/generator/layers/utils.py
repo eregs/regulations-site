@@ -27,3 +27,15 @@ def convert_to_python(data):
 def render_template(template, context):
     c = Context(context)
     return template.render(c).strip('\n')
+
+
+def is_contained_in(child, parent):
+    '''
+        Return True if child is a child node of the parent.
+
+        Node labels are hierarchical paths, with segments separated
+        by '-'. As an edge case, a node label is also a child of itself.
+    '''
+    child_segments = child.split('-')
+    parent_segments = parent.split('-')
+    return child_segments[:len(parent_segments)] == parent_segments

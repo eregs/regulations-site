@@ -1,4 +1,5 @@
 from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.utils import is_contained_in
 
 
 class FootnotesLayer(LayerBase):
@@ -15,15 +16,13 @@ class FootnotesLayer(LayerBase):
         """
         Return a tuple of 'footnotes' and collection of footnotes.
         Footnotes are "collected" from the node and its children.
-        In the layer data, child nodes have their label prefix equal
-        to that of their parent.
         .. note::
            This does not handle the case where the same note reference
            is used in multiple children.
         """
         footnotes = []
         for label in self.layer.keys():
-            if label.startswith(text_index):
+            if is_contained_in(label, text_index):
                 footnotes += [x['footnote_data']
                               for x in self.layer[label]
                               if 'footnote_data' in x]

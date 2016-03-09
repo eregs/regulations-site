@@ -17,3 +17,9 @@ class LayerUtilsTest(TestCase):
         self.assertEqual({'some': 3, 'then': datetime(1999, 10, 21)},
                          utils.convert_to_python({'some': 3,
                                                   'then': '1999-10-21'}))
+
+    def test_is_contained_in(self):
+        self.assertTrue(utils.is_contained_in('22-51-12', '22-51'))
+        self.assertTrue(utils.is_contained_in('22-51-13', '22-51'))
+        self.assertTrue(utils.is_contained_in('22-51', '22-51'))
+        self.assertFalse(utils.is_contained_in('22-512', '22-51'))
