@@ -1,5 +1,9 @@
 language: python
 sudo: false
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/node_modules
 python:
   - '2.7'
 addons:
@@ -9,6 +13,7 @@ env:
     - secure: "gfM12hKPeSrbtJmQ4E2rBUxozxT8S6bwcEWOIrYqYFqfYph1830IvvCW1PmHKvGMLzjJnmo7luBeWPPQqDG74y65M2PG6p8tHHnklyHpp/pb2mknB1o8y2lgrSNMUurLiJxkzNZnIvUi8QNNHWl7GxzetAmeDO4xttY+uVAUucdnapFSu8GLsM5rYrDyu/47pYaxd3LrzUXV9vfdLenU5pFoO1apznfhr083TaPl3hgtz6M4ZAJ3jvmB3FvBt3YcJaG2K5aAgqlna0sAwVpDdSLpCluDOVnevEX2JNFjzv8c/Rf465shblJpvCuMoX6E+3DPeCFxUSiRmB7FOLtngqL/SX6vH4MkSEUYjPJXJwWsbD3BaxuXBXO9lBHQxx37s5AWIu+YBfSVyopPVDSgQPf2CUbZvl2i0VUjHNMx+skk/mWpCQHDLH5taDwZLsdl6RayFeHkhbA6AZWAN8cAqOsRsUudfYDEzxxXpwJ6tJnHM9ITYKKf+tBcNzEFC4DXPPucBxXFFnn/kbh2oQFk+8QJoiizVU8uf8rAGPGAJcVSgg1z306VcKHWvIQA+iYSD0172nCcVFk6fmD2GWEIep/V5gKw3P/nG5V7akbMvvz1iu/9wrlp+5KNkqwP6IuXmv5XLaSqzz+Y8LLyAzqryam4veBYcdlCst/tft7AvMI="
     - secure: "wyqtVQksUk93hHXBnXFZLLtPt4aJWyy6TUnVChLO2M0T3TX2TdDZJN454SFi7SmIvTYNvzyokyRZxCGHvPC2QLEEGIIzpkjZenHXWJs2s00WrKPzEmoEC5O44BHBHbxK35BmUj+H/0wi9DyjEwmvad4JCjujh//0ngXJRPqTK+shPZdZnCZ7jZFO8CRtkuUbt97IIVFmPnOg1ZGYb1E83vAoXdnHnkIXgRWezOMFtMVOtnszlZrU391CZD6ETLpKEWm0mHuSWaXP3+um5okKgQJ9pIay3NiXJsSAy0kNHAT+2cNrdyjghpoug+fTlzLwDxOtAp2zXGSe3Uo5PDxoZoIsLtLOiqwnEdSRlAGNR3oJI8VkkdpnN4hN3dSBQsPeAVLTTCmRpHBA2pPZliEnpn+THhbOGzqiLHBSWCtkoy1K/6DAHOmm76+xqe9FQ3zqpfETA9VUe8PkL3q6kfI8iFw/pEKUMvmepqlm9IhAklf2OpSzIq7gNTbzOzLNyPPdJ0vQFf8xLhqaKBLV3+4bEeBYazO26/b//v78uPhZ27ALFPIZYNH9siiuX62nRupCoJXwAWt5QJJwb2arRWyjMxoURz42f2gIzsJ1YP7LzK92RIAEPyaJsZcPNY356PLVQAeOwxqXYqszQYfebWTHTrt3RaE0u4MHqrKL+bWw+QM="
 before_install:
+  - pip install -U pip wheel
   - rm -rf ~/.nvm
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash
   - source ~/.nvm/nvm.sh
