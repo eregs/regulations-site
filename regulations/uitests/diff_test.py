@@ -29,10 +29,11 @@ class DiffTest(BaseTest, unittest.TestCase):
         # drawer button should be active
         self.assertTrue('current' in drawer_button.get_attribute('class'))
 
-        diff_field = Select(self.driver.find_element_by_xpath(
-            '//*[@id="timeline"]/div[2]/ul/li[1]/div/div/div/form/select'))
+        diff_field = self.driver.find_element_by_css_selector(
+            '#timeline .status-list:nth-child(2) form select')
         # select version to compare to
-        diff_field.select_by_value('2012-12121')
+        Select(diff_field).select_by_value('2012-12121')
+        diff_field.submit()
 
         # wait until diff view has loaded
         html = self.driver.find_element_by_tag_name('html')
