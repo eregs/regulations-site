@@ -130,10 +130,6 @@ module.exports = function(grunt) {
      },
 
     shell: {
-      'build-require': {
-        command: './require.sh'
-      },
-
       'nose-chrome': {
         command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:chrome --tc=testUrl:<%= env.testUrl %>',
         options: {
