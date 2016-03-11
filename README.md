@@ -138,39 +138,6 @@ $ grunt
 $ ./bin/django runserver
 ```
 
-## Building the documentation
-
-For most tweaks, you will simply need to run the Sphinx documentation
-builder again.
-
-```
-$ ./bin/sphinx-build -b dirhtml -d docs/_build/doctrees/ docs/ docs/_build/dirhtml/
-```
-
-The output will be in ```docs/_build/dirhtml```.
-
-If you are adding new modules, you may need to re-run the skeleton build
-script first:
-
-```
-$ rm docs/regulations*.rst
-$ ./bin/sphinx-apidoc -F -o docs regulations
-```
-
-## JavaScript Application
-### Code
-The application code in JavaScript uses [Backbone.js](http://backbonejs.org/) as a foundation, though in some non-standard ways. If you plan to do work on this layer, it is recommended that you acquaint yourself with this [starter documentation](README_BACKBONE.md).
-
-### Environment
-The front end of the site uses a number of JavaScript libraries and frameworks to create the unique experience of navigating and reading a regulation, as you can see at http://consumerfinance.gov/eregulations. If you'd like to modify the JavaScript layer, you should set up the build and testing environment.
-
-If you run the application with ```env = "built"``` in your ```local_settings.py``` and would like to use the UI as it ships with this project, you can skip this.
-
-The application's UI itself uses a number of dependencies that you can see in package.json. To start, we are going to be concerned with the foundations of the environment:
-
-- npm, a package manager to install dependencies in the development environment: <https://npmjs.org/>
-- Grunt, a task runner that modules to build and run tests depend on: <http://gruntjs.com/>
-
 ## Additional front end information
 
 ### Running Grunt tasks
