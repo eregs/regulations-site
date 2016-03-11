@@ -141,7 +141,7 @@ $ ./bin/django runserver
 ## Additional front end information
 
 ### Running Grunt tasks
-There are a number of tasks configured in [Gruntfile.js](https://github.com/cfpb/regulations-site/blob/master/Gruntfile.js). On the last lines, you will find tasks that group subtasks into common goals. Running ```grunt build``` will run unit, functional and lint tests, and compress static assets. Its recommended that you run this task before deploying changes.
+There are a number of tasks configured in [Gruntfile.js](regulations-site/blob/master/Gruntfile.js). On the last lines, you will find tasks that group subtasks into common goals. Running ```grunt build``` will run unit, functional and lint tests, and compress static assets. Its recommended that you run this task before deploying changes.
 
 ### Unit and Functional Tests
 The Grunt build will run a suite of Selenium tests written in Python and a small suite of [Mocha.js](http://visionmedia.github.io/mocha/) unit tests. All tests run in [Sauce Labs](https://saucelabs.com). These tests run as part of the ```grunt build``` tasks. To use these, a little extra environment setup is required.
