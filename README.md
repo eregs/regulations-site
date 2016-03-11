@@ -8,41 +8,12 @@ An interface for viewing regulations data. This project combines all of the
 data from a parsed regulation and generates navigable, accessible HTML,
 complete with associated information.
 
-This repository is part of a larger project. To read about it, please see
-[https://eregs.github.io/eRegulations/](https://eregs.github.io/eRegulations/).
-
-## Features
-
-* Navigability: Instead of the monolithic text usually used to represent
-  regulations, proper indentation, spacing, etc., this presents the text in a
-  clean, readable form.
-* Inline Interpretations: Associated interpretations are displayed right
-  along side the paragraph/section/appendix they are interpreting.
-* Definitions: Defined terms are highlighted in the regulation text;
-  clicking them opens the term's definition in the sidebar.
-* Internal Citations: Citations to other parts of the same regulation are
-  clickable links, allowing easy navigation within a regulation
-* Alternate Versions of the Regulation: Quick access to versions of the
-  regulation by browsing effective dates, or typing in an arbitrary date is
-  provided.
-* Comparing Versions: A "Diff-view" is provided to highlight additions and
-  deletions between versions of the regulation.
-* Section-by-Section Analysis: Analysis for regulation
-  paragraphs/sections/appendices are provided in the sidebar. This analysis
-  comes from Federal Register notice preambles.
-* Additional Formatting Concerns: Tables, subscripts, notes, and even source
-  code found within a regulation are rendered as appropriate markup.
-* Responsive Design: The application design is responsive, adjusting to the
-  device and screen size of the user.
-
-## Screenshot
-
-![eRegs](/regulations/static/regulations/img/easy-01.png)
+This repository is part of a larger eRegulations project. To read about it, please see
+[https://eregs.github.io/](https://eregs.github.io/).
 
 ## Requirements
 
-This application lives in two worlds, roughly translating to a Python,
-Django app, and a Backbone, Javascript app, which communicate through the
+This application lives in two worlds, roughly translating to a Python Django app and a Backbone Javascript app, which communicate through the
 Django templates.
 
 ## Quick start
