@@ -14,8 +14,8 @@ var TOCView = Backbone.View.extend({
     el: '#table-of-contents',
 
     events: {
-        'click a.diff': 'sendDiffClickEvent',
-        'click a:not(.diff)': 'sendClickEvent'
+        'click a.diff[data-section-id]': 'sendDiffClickEvent',
+        'click a[data-section-id]:not(.diff)': 'sendClickEvent'
     },
 
     initialize: function() {
