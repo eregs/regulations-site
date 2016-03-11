@@ -7,15 +7,13 @@ from regulations.views import preamble
 
 
 class PreambleViewTests(TestCase):
-    _mock_preamble = {
-        'text': '1', 'label': ['1'], 'children': [
-            {'text': '2', 'label': ['1', 'c'], 'children': [
-                {'text': '3', 'label': ['1', 'c', 'i'], 'children': []},
-                {'text': '4', 'label': ['1', 'c', 'x'], 'children': []}
-            ]},
-            {'text': '5', 'label': ['1', '1'], 'children': []}
-        ]
-    }
+    _mock_preamble = dict(text='1', label=['1'], node_type='', children=[
+        dict(text='2', label=['1', 'c'], node_type='', children=[
+            dict(text='3', label=['1', 'c', 'i'], node_type='', children=[]),
+            dict(text='4', label=['1', 'c', 'x'], node_type='', children=[])
+        ]),
+        dict(text='5', label=['1', '1'], node_type='', children=[])
+    ])
 
     def test_find_subtree(self):
         """When a node is present in a tree, we should be able to find it.
