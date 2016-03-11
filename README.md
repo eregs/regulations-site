@@ -59,8 +59,11 @@ With that, you can start the development server:
 $ python manage.py runserver
 ```
 
-## Building the Python documentation
+## Python Django app documentation
 
+For information about the Django architecture of this app, see [regulations-site on Read the Docs](http://regulations-site.readthedocs.org/en/latest/index.html).
+
+### Building the documentation
 For most tweaks, you will simply need to run the Sphinx documentation
 builder again.
 
