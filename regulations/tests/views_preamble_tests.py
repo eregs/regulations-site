@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+from django.http import Http404
 from django.test import RequestFactory
 from mock import patch
 
@@ -59,3 +60,12 @@ class PreambleViewTests(TestCase):
         response = view(request, paragraphs='1/c/x')
         self.assertNotIn('sub_context', response.context_data)
         self.assertEqual(response.context_data['node']['text'], '4')
+
+    @patch('regulations.views.preamble.ApiReader')
+    def test_get_404(self, ApiReader):
+        """When a requested doc is not present, we should return a 404"""
+        ApiReader.return_value.preamble.return_value = None
+        view = preamble.PreambleView.as_view()
+        self.assertRaises(Http404, view,
+                          RequestFactory().get('/preamble/1/c/x'),
+                          paragraphs='1/c/x')

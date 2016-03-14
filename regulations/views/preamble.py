@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
@@ -38,6 +39,8 @@ class PreambleView(View):
     def get(self, request, *args, **kwargs):
         label_parts = kwargs.get('paragraphs', '').split('/')
         preamble = ApiReader().preamble(label_parts[0])
+        if preamble is None:
+            raise Http404
 
         subtree = find_subtree(preamble, label_parts)
         context = generate_html_tree(subtree)
