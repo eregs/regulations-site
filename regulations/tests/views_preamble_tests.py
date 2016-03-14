@@ -69,3 +69,12 @@ class PreambleViewTests(TestCase):
         self.assertRaises(Http404, view,
                           RequestFactory().get('/preamble/1/c/x'),
                           paragraphs='1/c/x')
+
+    @patch('regulations.views.preamble.ApiReader')
+    def test_get_subtree_404(self, ApiReader):
+        """When a requested _subtree_ is not present, we should 404"""
+        ApiReader.return_value.preamble.return_value = self._mock_preamble
+        view = preamble.PreambleView.as_view()
+        self.assertRaises(Http404, view,
+                          RequestFactory().get('/preamble/1/not/here'),
+                          paragraphs='1/not/here')

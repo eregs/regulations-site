@@ -43,6 +43,9 @@ class PreambleView(View):
             raise Http404
 
         subtree = find_subtree(preamble, label_parts)
+        if subtree is None:
+            raise Http404
+
         context = generate_html_tree(subtree)
         template = context['node']['template_name']
 
