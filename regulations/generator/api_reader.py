@@ -114,3 +114,7 @@ class ApiReader(object):
         if regulation:
             params['regulation'] = regulation
         return self.client.get('search', params)
+
+    def preamble(self, doc_number):
+        return self._get(
+            ['preamble', doc_number], 'preamble/{}'.format(doc_number))
