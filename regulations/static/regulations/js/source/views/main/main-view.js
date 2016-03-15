@@ -100,7 +100,7 @@ var MainView = Backbone.View.extend({
             this.childView = new this.viewmap[this.contentType](childViewOptions);
         }
 
-        this.commentViews = this.$el.find('.comment').map(function(idx, elm) {
+        this.commentViews = this.$el.find('.comment-wrapper').map(function(idx, elm) {
             return new CommentView({el: elm});
         });
 

@@ -12,23 +12,30 @@ var CommentView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.$content = this.$el.find('.content');
+    this.$content = this.$el.find('.comment');
+    this.$toggle = this.$el.find('.toggle');
     this.$comment = this.$el.find('textarea');
     this.section = this.$el.data('section');
+
+    this.$content.hide();
+
     this.key = 'comment:' + this.section;
 
     this.load();
-    this.toggle();
   },
 
   render: function() {},
 
   toggle: function() {
+
+    this.$content.fadeToggle();
+
     if (this.$content.is(':visible')) {
-      this.$content.hide();
-    } else {
-      this.$content.show();
+      $('html, body').animate({
+        scrollTop: this.$comment.offset().top
+      }, 2000);
     }
+
   },
 
   submit: function(e) {
