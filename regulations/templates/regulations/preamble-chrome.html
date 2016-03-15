@@ -49,22 +49,18 @@
 <main role="main">
   <div id="content-body" class="main-content">
 
-    <div id="preamble-content">
+    {% render_nested template=sub_template context=sub_context %}
 
-      {% render_nested template=sub_template context=sub_context %}
-
-      <div class="comment" data-section="{{ sub_context.node.markup_id }}">
-        <span class="toggle">Show</span>
-        <div class="content">
-          <h3>Enter your comment below:</h3>
-          <form>
-            <textarea role="textbox" aria-multiline="true"></textarea>
-            <button type="submit">Submit</button>
-          </form>
-          <span class="toggle">Hide</span>
-        </div>
+    <div class="comment" data-section="{{ sub_context.node.markup_id }}">
+      <span class="toggle">Show</span>
+      <div class="content">
+        <h3>Enter your comment below:</h3>
+        <form>
+          <textarea role="textbox" aria-multiline="true"></textarea>
+          <button type="submit">Submit</button>
+        </form>
+        <span class="toggle">Hide</span>
       </div>
-
     </div>
 
   </div> <!-- /.main-content -->
