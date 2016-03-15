@@ -8,7 +8,6 @@ var QueryCommand = require('query-command-supported');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
-var PreambleView = require('./preamble-view');
 var RegModel = require('../../models/reg-model');
 var SearchModel = require('../../models/search-model');
 var SubHeadView = require('../header/sub-head-view');
