@@ -1,13 +1,19 @@
 /*
-premable.less
+comment.less
 ==========================================================================
-preamble.less contains styles specific to a proposed rule preamble
+comment.less contains styles related to commenting on sections
 */
 
-#preamble-content {
+.comment-wrapper {
+  padding: 10px 0;
+
+  .toggle {
+    cursor: pointer;
+    text-align: right;
+  }
 
   .comment {
-    margin-bottom: 50px;
+    padding-bottom: 10px;
 
     textarea {
       border-color: @medium_gray;

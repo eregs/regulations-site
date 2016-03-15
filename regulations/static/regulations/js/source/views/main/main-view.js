@@ -8,7 +8,6 @@ var QueryCommand = require('query-command-supported');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
-var PreambleView = require('./preamble-view');
 var RegModel = require('../../models/reg-model');
 var SearchModel = require('../../models/search-model');
 var SubHeadView = require('../header/sub-head-view');
@@ -101,7 +100,7 @@ var MainView = Backbone.View.extend({
             this.childView = new this.viewmap[this.contentType](childViewOptions);
         }
 
-        this.commentViews = this.$el.find('.comment').map(function(idx, elm) {
+        this.commentViews = this.$el.find('.comment-wrapper').map(function(idx, elm) {
             return new CommentView({el: elm});
         });
 
