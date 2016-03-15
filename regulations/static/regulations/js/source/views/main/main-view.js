@@ -213,11 +213,14 @@ var MainView = Backbone.View.extend({
     render: function(html, options) {
         var offsetTop, $scrollToId;
 
-        if (typeof this.childView !== 'undefined') {
-            this.sectionFooter.remove();
-        }
-
         this.$el.html(html);
+
+        // Destroy and recreate footer
+        this.sectionFooter.remove();
+        var $footer = this.$el.find('.section-nav');
+        if ($footer) {
+            this.sectionFooter = new SectionFooter({el: $footer});
+        }
 
         MainEvents.trigger('section:rendered');
 
