@@ -23,6 +23,7 @@ var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
 var CommentView = require('../comment-view');
+var CommentReviewView = require('../comment-review-view');
 var Resources = require('../../resources');
 Backbone.$ = $;
 
@@ -88,7 +89,7 @@ var MainView = Backbone.View.extend({
         // we don't want to ajax in data that the page loaded with
         childViewOptions.render = false;
 
-        if (this.sectionId) {
+        if (this.sectionId && this.modelmap[this.contentType]) {
             // store the contents of our $el in the model so that we
             // can re-render it later
             this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
@@ -100,9 +101,11 @@ var MainView = Backbone.View.extend({
             this.childView = new this.viewmap[this.contentType](childViewOptions);
         }
 
-        this.commentViews = this.$el.find('.comment-wrapper').map(function(idx, elm) {
-            return new CommentView({el: elm});
-        });
+        if (this.commentTypes.indexOf(this.contentType) !== -1) {
+            this.commentViews = this.$el.find('.comment-wrapper').map(function(idx, elm) {
+                return new CommentView({el: elm, hide: true});
+            });
+        }
 
         this.sectionFooter = new SectionFooter({el: this.$el.find('.section-nav')});
     },
@@ -122,8 +125,11 @@ var MainView = Backbone.View.extend({
         'search-results': SearchResultsView,
         'diff': DiffView,
         'appendix': RegView,
-        'interpretation': RegView
+        'interpretation': RegView,
+        'comment-review': CommentReviewView
     },
+
+    commentTypes: ['reg-section', 'preamble-section'],
 
     createView: function(id, options, type) {
         // close breakaway if open
@@ -181,9 +187,11 @@ var MainView = Backbone.View.extend({
         }
 
         this.childView = new this.viewmap[this.contentType](options);
-        this.commentViews = this.$el.find('.comment').map(function(idx, elm) {
-            return new CommentView({el: elm});
-        });
+        if (this.commentTypes.indexOf(this.contentType) !== -1) {
+            this.commentViews = this.$el.find('.comment').map(function(idx, elm) {
+                return new CommentView({el: elm, hide: true});
+            });
+        }
     },
 
     isAppendixOrSupplement: function() {

@@ -4,6 +4,7 @@ import boto3
 from django.conf import settings
 from django.http import JsonResponse
 from django.utils.crypto import get_random_string
+from django.views.generic.base import TemplateView
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
@@ -32,6 +33,10 @@ def upload_proxy(request):
         'url': url,
         'key': key,
     })
+
+
+class PrepareCommentView(TemplateView):
+    template_name = 'regulations/comment.html'
 
 
 @csrf_exempt

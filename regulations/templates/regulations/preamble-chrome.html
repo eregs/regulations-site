@@ -49,7 +49,9 @@
 <main role="main">
   <div id="content-body" class="main-content">
 
-    {% render_nested template=sub_template context=sub_context %}
+    <section data-page-type="preamble-section">
+      {% render_nested template=sub_template context=sub_context %}
+    </section>
 
     <div class="comment-wrapper" data-section="{{ sub_context.node.markup_id }}">
       <div class="toggle">(click to toggle comment box)</div>

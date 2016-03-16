@@ -13,7 +13,7 @@ var CommentView = Backbone.View.extend({
     'submit form': 'save'
   },
 
-  initialize: function() {
+  initialize: function(options) {
     this.$content = this.$el.find('.comment');
     this.$toggle = this.$el.find('.toggle');
     this.$comment = this.$el.find('textarea');
@@ -21,7 +21,9 @@ var CommentView = Backbone.View.extend({
     this.section = this.$el.data('section');
     this.key = 'comment:' + this.section;
 
-    this.$content.hide();
+    if (options.hide) {
+      this.$content.hide();
+    }
     this.load();
   },
 
