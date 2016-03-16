@@ -25,10 +25,10 @@ def submit_comment(sections):
             data={
                 'comment': comment,
             },
-            files=[
+            files=(
                 ('file', open(file, 'rb'))
                 for file in files
-            ],
+            ),
         )
 
 

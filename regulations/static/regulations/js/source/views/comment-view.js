@@ -5,6 +5,23 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
+function getUploadUrl() {
+  var prefix = window.APP_PREFIX || '/';
+  return $.getJSON(prefix + 'comments/attachment').then(function(resp) {
+    return resp;
+  });
+}
+
+function readFile(file) {
+  var deferred = $.Deferred();
+  var reader = new FileReader();
+  reader.onload = function() {
+    deferred.resolve(reader.result);
+  };
+  reader.readAsBinaryString(file);
+  return deferred;
+}
+
 var CommentView = Backbone.View.extend({
   events: {
     'click .toggle': 'toggle',
@@ -100,21 +117,5 @@ var CommentView = Backbone.View.extend({
     this.setStorage();
   }
 });
-
-function getUploadUrl() {
-  return $.getJSON('/upload_proxy').then(function(resp) {
-    return resp;
-  });
-}
-
-function readFile(file) {
-  var deferred = $.Deferred();
-  var reader = new FileReader();
-  reader.onload = function() {
-    deferred.resolve(reader.result);
-  };
-  reader.readAsBinaryString(file);
-  return deferred;
-}
 
 module.exports = CommentView;
