@@ -26,7 +26,11 @@ var CommentReviewView = Backbone.View.extend({
       })
       .map(function(key) {
         var section = key.replace('comment:', '');
-        var $elm = $(_.template(this.template)({section: section}));
+        var $elm = $(_.template(this.template)({
+          // TODO(jmcarp) Handle non-preamble sources
+          url: ['', 'preamble'].concat(section.split('-')).join('/'),
+          section: section
+        }));
         $elm.appendTo(this.$content);
         return new CommentView({el: $elm});
       }.bind(this))
