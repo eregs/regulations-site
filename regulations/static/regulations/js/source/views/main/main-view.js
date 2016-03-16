@@ -22,7 +22,8 @@ var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
-var Resources = require('../../resources.js');
+var CommentView = require('../comment-view');
+var Resources = require('../../resources');
 Backbone.$ = $;
 
 var MainView = Backbone.View.extend({
@@ -98,6 +99,10 @@ var MainView = Backbone.View.extend({
             // create new child view
             this.childView = new this.viewmap[this.contentType](childViewOptions);
         }
+
+        this.commentViews = this.$el.find('.comment-wrapper').map(function(idx, elm) {
+            return new CommentView({el: elm});
+        });
 
         this.sectionFooter = new SectionFooter({el: this.$el.find('.section-nav')});
     },
@@ -176,6 +181,9 @@ var MainView = Backbone.View.extend({
         }
 
         this.childView = new this.viewmap[this.contentType](options);
+        this.commentViews = this.$el.find('.comment').map(function(idx, elm) {
+            return new CommentView({el: elm});
+        });
     },
 
     isAppendixOrSupplement: function() {
