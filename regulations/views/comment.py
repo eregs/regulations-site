@@ -1,7 +1,13 @@
+import json
+
 import boto3
 from django.conf import settings
 from django.http import JsonResponse
 from django.utils.crypto import get_random_string
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
+
+from regulations import celery as tasks
 
 
 def upload_proxy(request):
@@ -26,3 +32,12 @@ def upload_proxy(request):
         'url': url,
         'key': key,
     })
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def submit_comment(request):
+    """Submit a comment to the task queue."""
+    body = json.loads(request.body.decode('utf-8'))
+    tasks.submit_comment.delay(body['sections'])
+    return JsonResponse({'status': 'submitted'})
