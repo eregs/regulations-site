@@ -21,7 +21,8 @@ from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
-from regulations.views.comment import upload_proxy, PrepareCommentView, submit_comment
+from regulations.views.comment import (
+    upload_proxy, PrepareCommentView, submit_comment)
 
 # Re-usable URL patterns.
 meta_version = r'(?P<%s>[-\d\w_]+)'

@@ -8,7 +8,7 @@ from django.views.generic.base import TemplateView
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
-from regulations import celery as tasks
+from regulations import tasks
 
 
 def upload_proxy(request):
