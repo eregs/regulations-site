@@ -166,37 +166,4 @@ After you create a [Sauce Labs](https://saucelabs.com) account:
 
 ## Customization
 
-Note that this section is incomplete
-
-### System-wide Styles
-
-The `compile_frontend` command (i.e. `python manage.py. compile_frontend`)
-uses a variant of Django's `collectstatic` to combine static assets between
-the base application (regulations-site) and any custom Django application you
-develop. It is designed as a simple file **override** scheme -- create an
-identically named file in your `static/regulations/` directory and it will
-replace the file in the base application. In this way, you can modify
-stylesheets, images, etc. when building the frontend.
-
-There is also a key extension point for stylesheets:
-`static/regulations/css/less/module/custom.less` exists to be overridden. Use
-it to declare your own custom style sheet modules for additional structure.
-
-The `compile_frontend` command generates output indicating which files are
-being overridden.
-
-### Individual Paragraphs
-
-The templates used to generate paragraphs can be replaced selectively, a
-useful technique if you want to emphasize a particular paragraph or add links
-to external sources that don't exist in the regulation proper. Note that this
-mechanism is intended for one-offs; consider method of modifying the data
-structures instead if you find yourself using it often.
-
-To use this override mechanism, create a `templates/regulations/custom_nodes`
-directory in your Django application if it doesn't already exist. Inside that
-folder, create files corresponding to node labels, e.g. `478-103-b.html`.
-These templates will be used **in place** of the `tree-with-wrapper.html`
-template, so be sure to provide the functionality already present there.
-Should you need to use this functionality only on specific versions, your
-template can make use of the `version` context variable.
+To learn about customizing the templates and styles for an instance, see [Theming an instance](https://eregs.github.io/theming/).
