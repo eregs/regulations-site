@@ -9,6 +9,7 @@ var CommentView = require('./comment-view');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
+    'click #submit': 'submit'
   },
 
   initialize: function(options) {
@@ -18,6 +19,8 @@ var CommentReviewView = Backbone.View.extend({
 
     this.showComments();
   },
+
+  render: function() {},
 
   showComments: function() {
     this.comments = _.chain(_.keys(window.localStorage))
@@ -37,7 +40,39 @@ var CommentReviewView = Backbone.View.extend({
       .value();
   },
 
-  render: function() {}
+  serialize: function() {
+    return {
+      sections: _.chain(_.keys(window.localStorage))
+        .filter(function(key) {
+          return key.indexOf('comment:') === 0;
+        })
+        .map(function(key) {
+          return JSON.parse(window.localStorage.getItem(key));
+        })
+        .value()
+    };
+  },
+
+  submit: function() {
+    var prefix = window.APP_PREFIX || '/';
+    var $xhr = $.ajax({
+      type: 'POST',
+      url: prefix + 'comments/comment',
+      data: JSON.stringify(this.serialize()),
+      contentType: 'application/json',
+      dataType: 'json'
+    });
+    $xhr.done(this.submitSuccess.bind(this));
+    $xhr.fail(this.submitError.bind(this));
+  },
+
+  submitSuccess: function(resp) {
+    // TODO(jmcarp) Figure out desired behavior
+  },
+
+  submitError: function() {
+    // TODO(jmcarp) Figure out desired behavior
+  }
 });
 
 module.exports = CommentReviewView;
