@@ -44,8 +44,8 @@ urlpatterns = patterns(
     url(r'^$', universal, name='universal_landing'),
     # about page
     url(r'^about$', about, name='about'),
-    url(r'^upload_proxy$', upload_proxy),
-    url(r'^submit_comment$', submit_comment),
+    url(r'^comments/attachment$', upload_proxy),
+    url(r'^comments/comment$', submit_comment),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v
     url(r'^regulation_redirect/%s$' % paragraph_pattern, redirect_by_date_get,
