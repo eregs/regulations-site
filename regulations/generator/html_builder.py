@@ -122,7 +122,7 @@ class HTMLBuilder():
 
         node['template_name'] = RegulationsConfig.custom_tpls.get(
             node['label_id'],
-            RegulationsConfig.node_type_tpls[node['node_type']])
+            RegulationsConfig.node_type_tpls[node['node_type'].lower()])
 
         if 'TOC' in node:
             for l in node['TOC']:

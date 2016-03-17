@@ -1,0 +1,24 @@
+{% comment %}
+    Default wrapper for nodes -- put them in a LI
+{% endcomment %}
+
+<li
+    {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
+    {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
+    {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
+>
+    {% include "regulations/node.html" %}
+
+    <div class="comment-wrapper" data-section="{{ node.markup_id }}">
+      <div class="toggle">(click to toggle comment box)</div>
+      <div class="comment">
+        <h3>Enter your comment below:</h3>
+        <form>
+          <textarea role="textbox" aria-multiline="true"></textarea>
+          <div class="queued"></div>
+          <input type="file">
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+</li>
