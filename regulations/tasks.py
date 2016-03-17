@@ -7,29 +7,34 @@ import contextlib
 
 import boto3
 import requests
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 from celery import shared_task
 from django.conf import settings
 
 
 @shared_task
-def submit_comment(sections):
+def submit_comment(comment):
     with TemporaryDirectory() as path:
-        files = [
-            fetch_file(path, file['key'], file['name'])
-            for section in sections
-            for file in section.get('files', [])
+        fields = [
+            ("comment_on", comment["document_id"]),
+            ("general_comment", comment["comment"]),
         ]
-        comment = build_comment(sections)
-        requests.post(
+        files = [('uploadedFile', (
+            file['name'], fetch_file(path, file['key'], file['name']))
+            )
+            for file in comment.get('files', [])
+        ]
+        fields.extend(files)
+        data = MultipartEncoder(fields)
+        response = requests.post(
             settings.REGS_API_URL,
-            data={
-                'comment': comment,
-            },
-            files=(
-                ('file', open(file, 'rb'))
-                for file in files
-            ),
+            data=data,
+            headers={
+                "Content-Type": data.content_type,
+                "X-Api-Key": settings.REGS_API_KEY
+            }
         )
+        print(response.text)
 
 
 @contextlib.contextmanager
@@ -50,10 +55,3 @@ def fetch_file(path, key, name):
     dest = os.path.join(path, name)
     s3.download_file(settings.BUCKET, key, dest)
     return dest
-
-
-def build_comment(sections):
-    return '\n\n'.join([
-        '# {}\n{}'.format(section['id'], section['comment'])
-        for section in sections
-    ])

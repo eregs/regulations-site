@@ -48,5 +48,5 @@ def upload_proxy(request):
 def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
-    tasks.submit_comment.delay(body['sections'])
+    tasks.submit_comment.delay(body)
     return JsonResponse({'status': 'submitted'})
