@@ -48,21 +48,7 @@
 {% block chrome-content %}
 <main role="main">
   <div id="content-body" class="main-content">
-
     {% render_nested template=sub_template context=sub_context %}
-
-    <div class="comment-wrapper" data-section="{{ sub_context.node.markup_id }}">
-      <div class="toggle">(click to toggle comment box)</div>
-
-      <div class="comment">
-        <h3>Enter your comment below:</h3>
-        <form>
-          <textarea role="textbox" aria-multiline="true"></textarea>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </div>
-
   </div> <!-- /.main-content -->
 </main>
 {% endblock %}

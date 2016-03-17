@@ -43,9 +43,11 @@ setup(
     version="2.0.0",
     packages=find_packages(),
     install_requires=[
+        'boto3',
         'cached-property',
+        'celery',
         'django>=1.8,<1.9',
-        'requests'
+        'requests',
     ],
     cmdclass={
         'build_frontend': build_frontend,
