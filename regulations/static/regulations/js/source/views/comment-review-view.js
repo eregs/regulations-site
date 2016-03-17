@@ -16,6 +16,8 @@ var CommentReviewView = Backbone.View.extend({
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
     this.template = $('#comment-template').html();
     this.$content = this.$el.find('#comment');
+    this.docNumber = this.$el.data('doc-number');
+    this.prefix = 'comment:' + this.docNumber;
 
     this.showComments();
   },
@@ -25,8 +27,8 @@ var CommentReviewView = Backbone.View.extend({
   showComments: function() {
     this.comments = _.chain(_.keys(window.localStorage))
       .filter(function(key) {
-        return key.indexOf('comment:') === 0;
-      })
+        return key.indexOf(this.prefix) === 0;
+      }.bind(this))
       .map(function(key) {
         var section = key.replace('comment:', '');
         var $elm = $(_.template(this.template)({
@@ -42,10 +44,11 @@ var CommentReviewView = Backbone.View.extend({
 
   serialize: function() {
     return {
+      docNumber: this.docNumber,
       sections: _.chain(_.keys(window.localStorage))
         .filter(function(key) {
-          return key.indexOf('comment:') === 0;
-        })
+          return key.indexOf(this.prefix) === 0;
+        }.bind(this))
         .map(function(key) {
           return JSON.parse(window.localStorage.getItem(key));
         })

@@ -38,6 +38,11 @@ def upload_proxy(request):
 class PrepareCommentView(TemplateView):
     template_name = 'regulations/comment.html'
 
+    def get_context_data(self, doc_number, **kwargs):
+        context = super(PrepareCommentView, self).get_context_data(**kwargs)
+        context['doc_number'] = doc_number
+        return context
+
 
 @csrf_exempt
 @require_http_methods(['POST'])

@@ -46,7 +46,7 @@ urlpatterns = patterns(
     # about page
     url(r'^about$', about, name='about'),
     url(r'^comments/attachment$', upload_proxy),
-    url(r'^comments/review$', PrepareCommentView.as_view()),
+    url(r'^comments/review/(?P<doc_number>[\w-]+)$', PrepareCommentView.as_view()),
     url(r'^comments/comment$', submit_comment),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v
