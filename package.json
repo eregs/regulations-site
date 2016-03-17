@@ -69,6 +69,7 @@
     "jquery": "1.11.3",
     "jquery-lazyload": "1.9.7",
     "jquery-scrollstop": "1.2.0",
+    "prosemirror": "0.4.0",
     "query-command-supported": "1.0.0",
     "respond.js": "1.4.2",
     "underscore": "1.8.3",
