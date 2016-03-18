@@ -9,7 +9,7 @@ var CommentView = require('./comment-view');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
-    'click #submit': 'submit'
+    'click .comment-review-submit': 'submit'
   },
 
   initialize: function(options) {
