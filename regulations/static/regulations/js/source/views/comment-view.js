@@ -40,6 +40,7 @@ var CommentView = Backbone.View.extend({
     this.section = this.$el.data('section');
     this.title = this.$el.data('title');
     this.key = 'comment:' + this.section;
+    this.$status = this.$el.find('.status');
 
     if (options.hide) {
       this.$content.hide();
@@ -117,6 +118,7 @@ var CommentView = Backbone.View.extend({
   save: function(e) {
     e.preventDefault();
     this.setStorage();
+    this.$status.hide().html('Your comment was saved.').fadeIn();
   }
 });
 

@@ -46,28 +46,30 @@
 {% endblock %}
 
 {% block chrome-content %}
+
 <main role="main">
   <div id="content-body" class="main-content">
-  <section id="comment-review" data-page-type="comment-review" data-doc-number="{{ doc_number }}">
-    <h2>Review submission</h2>
-    <div id="comment"></div>
-    <button id="submit">Submit</button>
-  </section>
-</div>
-
-<script id="comment-template" type="text/template">
-<div class="comment-wrapper" data-section="<%= section %>" data-title="<%= title %>">
-  <div class="comment">
-    <h3><a href="<%= url %>" target="_blank"><%= title %></a></h3>
-    <form>
-      <div class="editor-container"></div>
-      <div class="queued"></div>
-      <input type="file">
-      <button type="submit">Add to your comment</button>
-    </form>
+    <section id="comment-review" data-page-type="comment-review" data-doc-number="{{ doc_number }}">
+      <h2>Review your comments</h2>
+      <div id="comment"></div>
+      <button class="comment-review-submit">Submit your comment</button>
+    </section>
   </div>
-</div>
+
+  <script id="comment-template" type="text/template">
+  <div class="comment-wrapper" data-section="<%= section %>" data-title="<%= title %>">
+    <div class="comment">
+      <h3><a href="<%= url %>" target="_blank"><%= title %></a></h3>
+      <form>
+        <div class="editor-container"></div>
+        <div class="queued"></div>
+        <input type="file">
+        {# <button type="submit">Add to your comment</button> #}
+      </form>
+    </div>
+  </div>
 </main>
+
 {% endblock %}
 
 {% block chrome-sidebar %}{% endblock %}

@@ -47,14 +47,18 @@
 
 {% block chrome-content %}
 <main role="main">
+
   <div id="content-body" class="main-content">
+
     <section id="content-wrapper" data-page-type="preamble-section">
+
       <div id="preamble-read">
-        <span class="activate-write">Comment</span>
+        <div class="activate-write">Write a comment about this section</div>
         {% render_nested template=sub_template context=sub_context %}
       </div>
+
       <div id="preamble-write">
-        <span class="activate-read">Back to text</span>
+        <div class="activate-read">View the proposal</div>
         <div
             class="comment-wrapper"
             data-section="{{ sub_context.node.markup_id }}"
@@ -66,14 +70,17 @@
               <div class="queued"></div>
               <input type="file">
               <button type="submit">Add to your comment</button>
+              <div class="status"></div>
             </form>
           </div>
         </div>
       </div>
+
     </div>
 
     </section>
   </div> <!-- /.main-content -->
+
 </main>
 {% endblock %}
 

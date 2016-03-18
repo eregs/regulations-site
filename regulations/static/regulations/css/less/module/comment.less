@@ -4,13 +4,30 @@ comment.less
 comment.less contains styles related to commenting on sections
 */
 
-.comment-wrapper {
-  padding: 10px 0;
+.activate-write,
+.activate-read {
+  background: #4A90E2;
+  color: #FFFFFF;
+  .font-regular;
+  cursor: pointer;
+  padding: 7px 0;
+  margin: 10px 0;
+  text-align: center;
+  width: 100%;
 
-  .toggle {
-    cursor: pointer;
-    text-align: right;
+  -webkit-transition: .1s;
+  -moz-transition: .1s;
+  transition: .1s;
+
+  &:hover {
+    background-color: #00629f;
   }
+}
+
+
+.comment-wrapper {
+  .font-regular;
+  padding: 10px 0;
 
   .comment {
     font-size: 14px;
@@ -23,15 +40,34 @@ comment.less contains styles related to commenting on sections
       margin: 10px 0;
       width: 100%;
     }
-
-    button {
-      background-color: #4A90E2;
-      border-radius: 4px;
-      font-weight: 100;
-      letter-spacing: 0.03em;
-      height: auto;
-      padding: 13px 15px;
-      float: right;
-    }
   }
+
+  .status {
+    margin: 15px 0;
+    text-align: right;
+    width: 100%;
+  }
+}
+
+.comment-wrapper .comment button,
+.comment-review-submit {
+  background-color: #4A90E2;
+  border-radius: 4px;
+  font-weight: 100;
+  letter-spacing: 0.03em;
+  height: auto;
+  padding: 13px 15px;
+  float: right;
+
+  -webkit-transition: .1s;
+  -moz-transition: .1s;
+  transition: .1s;
+
+  &:hover {
+    background-color: #00629f;
+  }
+}
+
+#comment-review {
+  margin-bottom: 25px;
 }
