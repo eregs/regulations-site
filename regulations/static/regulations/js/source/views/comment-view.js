@@ -28,7 +28,6 @@ function readFile(file) {
 
 var CommentView = Backbone.View.extend({
   events: {
-    'click .toggle': 'toggle',
     'change input[type="file"]': 'addAttachment',
     'click .queue-item': 'clearAttachment',
     'submit form': 'save'
@@ -36,10 +35,10 @@ var CommentView = Backbone.View.extend({
 
   initialize: function(options) {
     this.$content = this.$el.find('.comment');
-    this.$toggle = this.$el.find('.toggle');
     this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
     this.section = this.$el.data('section');
+    this.title = this.$el.data('title');
     this.key = 'comment:' + this.section;
 
     if (options.hide) {
@@ -56,17 +55,13 @@ var CommentView = Backbone.View.extend({
 
   render: function() {},
 
-  toggle: function() {
-    this.$content.fadeToggle();
-  },
-
   getStorage: function() {
     return JSON.parse(window.localStorage.getItem(this.key) || '{}');
   },
 
   setStorage: function() {
     var payload = {
-      // comment: this.$comment.val(),
+      title: this.title,
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
         var $elm = $(elm);

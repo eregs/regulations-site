@@ -48,8 +48,30 @@
 {% block chrome-content %}
 <main role="main">
   <div id="content-body" class="main-content">
-    <section data-page-type="preamble-section">
-      {% render_nested template=sub_template context=sub_context %}
+    <section id="content-wrapper" data-page-type="preamble-section">
+      <div id="preamble-read">
+        <span class="activate-write">Comment</span>
+        {% render_nested template=sub_template context=sub_context %}
+      </div>
+      <div id="preamble-write">
+        <span class="activate-read">Back to text</span>
+        <div
+            class="comment-wrapper"
+            data-section="{{ sub_context.node.markup_id }}"
+            data-title="{{ sub_context.node.title }}">
+          <div class="comment">
+            <h3>Enter your comment below:</h3>
+            <form>
+              <div class="editor-container"></div>
+              <div class="queued"></div>
+              <input type="file">
+              <button type="submit">Add to your comment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     </section>
   </div> <!-- /.main-content -->
 </main>
