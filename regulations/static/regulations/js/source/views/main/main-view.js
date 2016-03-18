@@ -22,8 +22,8 @@ var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
-var CommentView = require('../comment-view');
 var CommentReviewView = require('../comment-review-view');
+var PreambleView = require('../preamble-view');
 var Resources = require('../../resources');
 Backbone.$ = $;
 
@@ -101,12 +101,6 @@ var MainView = Backbone.View.extend({
             this.childView = new this.viewmap[this.contentType](childViewOptions);
         }
 
-        if (this.commentTypes.indexOf(this.contentType) !== -1) {
-            this.commentViews = this.$el.find('.comment-wrapper').map(function(idx, elm) {
-                return new CommentView({el: elm, hide: true});
-            });
-        }
-
         this.sectionFooter = new SectionFooter({el: this.$el.find('.section-nav')});
     },
 
@@ -126,7 +120,8 @@ var MainView = Backbone.View.extend({
         'diff': DiffView,
         'appendix': RegView,
         'interpretation': RegView,
-        'comment-review': CommentReviewView
+        'comment-review': CommentReviewView,
+        'preamble-section': PreambleView
     },
 
     commentTypes: ['reg-section', 'preamble-section'],
@@ -187,11 +182,6 @@ var MainView = Backbone.View.extend({
         }
 
         this.childView = new this.viewmap[this.contentType](options);
-        if (this.commentTypes.indexOf(this.contentType) !== -1) {
-            this.commentViews = this.$el.find('.comment').map(function(idx, elm) {
-                return new CommentView({el: elm, hide: true});
-            });
-        }
     },
 
     isAppendixOrSupplement: function() {

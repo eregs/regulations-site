@@ -56,14 +56,14 @@
 </div>
 
 <script id="comment-template" type="text/template">
-<div class="comment-wrapper" data-section="<%= section %>">
+<div class="comment-wrapper" data-section="<%= section %>" data-title="<%= title %>">
   <div class="comment">
-    <h3><a href="<%= url %>" target="_blank"><%= section %></a></h3>
+    <h3><a href="<%= url %>" target="_blank"><%= title %></a></h3>
     <form>
       <div class="editor-container"></div>
       <div class="queued"></div>
       <input type="file">
-      <button type="submit">Save</button>
+      <button type="submit">Add to your comment</button>
     </form>
   </div>
 </div>
