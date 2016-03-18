@@ -32,14 +32,14 @@ class PartialSearchTest(TestCase):
              'timeline': 'timeytimey'}
         ]
         response = Client().get('/partial/search/111?version=vvv&q=none')
-        self.assertTrue('111-22' in response.content)
-        self.assertTrue('111.22' in response.content)
-        self.assertTrue('111-24-a' in response.content)
-        self.assertTrue('111.24(a)' in response.content)
-        self.assertTrue('111-25' in response.content)
-        self.assertTrue('111.25' in response.content)
-        self.assertTrue('3333' in response.content)
-        self.assertTrue('Consumer&#39;s' in response.content)
+        self.assertIn(b'111-22', response.content)
+        self.assertIn(b'111.22', response.content)
+        self.assertIn(b'111-24-a', response.content)
+        self.assertIn(b'111.24(a)', response.content)
+        self.assertIn(b'111-25', response.content)
+        self.assertIn(b'111.25', response.content)
+        self.assertIn(b'3333', response.content)
+        self.assertIn(b'Consumer&#39;s', response.content)
 
     @patch('regulations.views.partial_search.api_reader')
     @patch('regulations.views.partial_search.fetch_grouped_history')
@@ -63,7 +63,7 @@ class PartialSearchTest(TestCase):
              'timeline': 'timeytimey'}
         ]
         response = Client().get('/partial/search/444?version=vvv&q=none')
-        self.assertTrue('2 results' in response.content)
+        self.assertIn(b'2 results', response.content)
 
     @patch('regulations.views.partial_search.api_reader')
     @patch('regulations.views.partial_search.fetch_grouped_history')
@@ -101,8 +101,8 @@ class PartialSearchTest(TestCase):
         ]
 
         response = Client().get('/partial/search/444?version=vvv&q=other')
-        self.assertTrue('444-Subpart-B-Interp' in response.content)
-        self.assertTrue('444-Interp-h1' in response.content)
+        self.assertIn(b'444-Subpart-B-Interp', response.content)
+        self.assertIn(b'444-Interp-h1', response.content)
 
     @patch('regulations.views.partial_search.api_reader')
     @patch('regulations.views.partial_search.fetch_grouped_history')
@@ -121,14 +121,14 @@ class PartialSearchTest(TestCase):
              'timeline': 'timeytimey'}
         ]
         response = Client().get('/partial/search/121?version=vvv&q=none')
-        self.assertIn('4/5/2003', response.content)
+        self.assertIn(b'4/5/2003', response.content)
 
     @patch('regulations.views.partial_search.fetch_grouped_history')
     def test_null_params(self, fetch_grouped_history):
         response = Client().get('/partial/search/111?version=vvv')
-        self.assertIn('provide a query', response.content)
+        self.assertIn(b'provide a query', response.content)
         response = Client().get('/partial/search/111?q=vvv')
-        self.assertIn('provide a version', response.content)
+        self.assertIn(b'provide a version', response.content)
 
     def test_add_prev_next(self):
         view = PartialSearch()

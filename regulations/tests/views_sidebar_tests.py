@@ -35,14 +35,14 @@ class ViewsSideBarViewTest(TestCase):
         }
         response = Client().get('/partial/sidebar/1111-7/verver')
 
-        sxs_start = response.content.find('<section id="sxs-list"')
-        sxs_end = response.content.find('</section>', sxs_start)
+        sxs_start = response.content.find(b'<section id="sxs-list"')
+        sxs_end = response.content.find(b'</section>', sxs_start)
         sxs = response.content[sxs_start:sxs_end]
 
-        self.assertTrue(bool(re.search(r'\b12\b', sxs)))
-        self.assertTrue('12(a)' in sxs)
-        self.assertTrue('1992-2' in sxs)
-        self.assertTrue('876-12' in sxs)
-        self.assertTrue('1992-1' in sxs)
-        self.assertTrue('876-12-a' in sxs)
-        self.assertFalse('876-12-b' in sxs)
+        self.assertTrue(bool(re.search(br'\b12\b', sxs)))
+        self.assertIn(b'12(a)', sxs)
+        self.assertIn(b'1992-2', sxs)
+        self.assertIn(b'876-12', sxs)
+        self.assertIn(b'1992-1', sxs)
+        self.assertIn(b'876-12-a', sxs)
+        self.assertNotIn(b'876-12-b', sxs)

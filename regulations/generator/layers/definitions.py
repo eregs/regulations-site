@@ -2,8 +2,8 @@ from django.template import loader
 
 from regulations.generator.layers.base import InlineLayer
 from regulations.generator.section_url import SectionUrl
+from regulations.generator.layers import utils
 from ..node_types import to_markup_id
-import utils
 
 
 class DefinitionsLayer(InlineLayer):

@@ -47,7 +47,7 @@ class FormattingLayerTest(TestCase):
 
         self.assertTrue(render.called)
         context = render.call_args[0][0]
-        for key, value in expected_context.iteritems():
+        for key, value in expected_context.items():
             self.assertTrue(key in context)
             self.assertEqual(context[key], value)
 

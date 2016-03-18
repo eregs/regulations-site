@@ -1,7 +1,7 @@
 import string
-import utils
 from django.template import loader
 
+from regulations.generator.layers import utils
 from regulations.generator.layers.base import SearchReplaceLayer
 
 

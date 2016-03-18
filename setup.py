@@ -19,7 +19,7 @@ class build_frontend(Command):
         pass
 
     def run(self):
-        print __file__
+        print(__file__)
         call(['./frontendbuild.sh'],
              cwd=os.path.dirname(os.path.abspath(__file__)))
 
@@ -48,6 +48,7 @@ setup(
         'celery',
         'django>=1.8,<1.9',
         'requests',
+        'six',
     ],
     cmdclass={
         'build_frontend': build_frontend,
