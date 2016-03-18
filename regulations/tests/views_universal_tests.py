@@ -15,13 +15,13 @@ class UniversalLandingTest(TestCase):
         futures = []
 
         today = datetime.today()
-        for i in xrange(1, 5):
+        for i in range(1, 5):
             future_date = today + timedelta(days=i)
             v = {'by_date': future_date}
             versions.append(v)
             futures.append(v)
 
-        for i in xrange(1, 3):
+        for i in range(1, 3):
             past_date = today - timedelta(days=i)
             versions.append({'by_date': past_date})
 

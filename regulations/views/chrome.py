@@ -39,12 +39,12 @@ class ChromeView(TemplateView):
 
         try:
             return super(ChromeView, self).get(request, *args, **kwargs)
-        except BadComponentException, e:
+        except BadComponentException as e:
             return e.response
-        except error_handling.MissingSectionException, e:
+        except error_handling.MissingSectionException as e:
             return error_handling.handle_missing_section_404(
                 request, e.label_id, e.version, e.context)
-        except error_handling.MissingContentException, e:
+        except error_handling.MissingContentException as e:
             return error_handling.handle_generic_404(request)
 
     def _assert_good(self, response):

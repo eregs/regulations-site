@@ -5,13 +5,13 @@ from threading import Thread
 
 from django.conf import settings
 
-import api_reader
+from regulations.generator import api_reader
 from regulations.generator.layers.base import LayerBase
 from regulations.generator.layers.layers_applier import (
     InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
-from layers.diff_applier import DiffApplier
-from html_builder import HTMLBuilder
-import notices
+from regulations.generator.layers.diff_applier import DiffApplier
+from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator import notices
 
 
 def _data_layers():

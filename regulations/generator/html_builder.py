@@ -1,19 +1,23 @@
 #!/usr/bin/env python
 # vim: set fileencoding=utf-8
+from __future__ import unicode_literals
+
 import re
+from itertools import takewhile
 
-from itertools import ifilter, ifilterfalse, takewhile
+from six.moves import filter, filterfalse
 
-from node_types import to_markup_id, APPENDIX, INTERP
-from layers.layers_applier import LayersApplier
-from layers.internal_citation import InternalCitationLayer
+from regulations.generator.node_types import to_markup_id, APPENDIX, INTERP
+from regulations.generator.layers.layers_applier import LayersApplier
+from regulations.generator.layers.internal_citation import (
+    InternalCitationLayer)
 from regulations.apps import RegulationsConfig
 from .link_flattener import flatten_links
 
 
 class HTMLBuilder():
-    header_regex = re.compile(ur'^(§&nbsp;)(\s*\d+\.\d+)(.*)$')
-    section_number_regex = re.compile(ur"(§+)\s+")
+    header_regex = re.compile(r'^(§&nbsp;)(\s*\d+\.\d+)(.*)$')
+    section_number_regex = re.compile(r'(§+)\s+')
 
     def __init__(
             self, inline_applier, p_applier,
@@ -45,7 +49,7 @@ class HTMLBuilder():
     @staticmethod
     def section_space(text):
         """ After a section sign, insert a non-breaking space. """
-        return HTMLBuilder.section_number_regex.sub(ur'\1&nbsp;', text)
+        return HTMLBuilder.section_number_regex.sub(r'\1&nbsp;', text)
 
     def list_level(self, parts, node_type):
         """ Return the list level and the list type. """
@@ -144,8 +148,8 @@ class HTMLBuilder():
         node['section_header'] = len(node['label']) == 3
 
         is_header = lambda child: child['label'][-1] == 'Interp'
-        node['header_children'] = list(ifilter(is_header, node['children']))
-        node['par_children'] = list(ifilterfalse(is_header, node['children']))
+        node['header_children'] = list(filter(is_header, node['children']))
+        node['par_children'] = list(filterfalse(is_header, node['children']))
         if 'header' in node:
             node['header_markup'] = node['header']
             citation = list(takewhile(lambda p: p != 'Interp',

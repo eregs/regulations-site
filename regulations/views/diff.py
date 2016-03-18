@@ -2,6 +2,9 @@
 
 from collections import namedtuple
 
+import six
+from django.core.urlresolvers import reverse
+
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
 from regulations.generator.layers.toc_applier import TableOfContentsLayer
@@ -13,14 +16,12 @@ from regulations.views import error_handling, utils
 from regulations.views.chrome import ChromeView
 from regulations.views.partial import PartialView
 
-from django.core.urlresolvers import reverse
-
 
 class Versions(namedtuple('Versions', ['older', 'newer', 'return_to'])):
-    def __init__(self, older, newer, return_to=None):
+    def __new__(cls, older, newer, return_to=None):
         if return_to is None:
             return_to = older
-        super(Versions, self).__init__(older, newer, return_to)
+        return super(Versions, cls).__new__(cls, older, newer, return_to)
 
 
 def get_appliers(label_id, versions):
@@ -210,7 +211,7 @@ def normalize_toc(toc_element):
 
 def modified_deleted_sections(diff):
     modified, deleted = set(), set()
-    for label, diff_value in diff.iteritems():
+    for label, diff_value in six.iteritems(diff):
         label = tuple(label.split('-'))
         if 'Interp' in label:
             section_label = (label[0], 'Interp')

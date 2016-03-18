@@ -38,8 +38,8 @@ class LocationReplace(object):
         list_offsets.extend(LocationReplace.find_all_offsets(
             original, text[gt+1:], gt + 1))
 
-        self.offset_counters = range(self.offset_starter,
-                                     self.offset_starter + len(list_offsets))
+        self.offset_counters = list(range(self.offset_starter,
+                                    self.offset_starter + len(list_offsets)))
         self.offsets = dict(zip(self.offset_counters, list_offsets))
 
     def update_offset_starter(self):

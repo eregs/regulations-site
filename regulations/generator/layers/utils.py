@@ -1,13 +1,14 @@
 from datetime import datetime
 import re
 
+import six
 from django.template import Context
 
 
 def convert_to_python(data):
     """Convert raw data (e.g. from json conversion) into the appropriate
     Python objects"""
-    if isinstance(data, str) or isinstance(data, unicode):
+    if isinstance(data, six.string_types):
         #   Dates
         if re.match(r'^\d{4}-\d{2}-\d{2}$', data):
             return datetime.strptime(data, '%Y-%m-%d')

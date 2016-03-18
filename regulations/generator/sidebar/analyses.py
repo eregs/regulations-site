@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+import six
+
 from regulations.generator.label import Label
 from regulations.generator.node_types import label_to_text
 from regulations.generator.sidebar.base import SidebarBase
@@ -47,4 +49,4 @@ class Analyses(SidebarBase):
 
         return [
             SxSEntry(Label(label_id), doc_number=subdata[-1]['reference'][0])
-            for label_id, subdata in data.iteritems()]
+            for label_id, subdata in six.iteritems(data)]

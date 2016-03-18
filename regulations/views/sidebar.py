@@ -1,5 +1,6 @@
 from importlib import import_module
 
+import six
 from django.conf import settings
 from django.views.generic.base import TemplateView
 
@@ -19,7 +20,7 @@ class SideBarView(TemplateView):
 
         klasses = []
         for class_or_class_path in self.components:
-            if isinstance(class_or_class_path, basestring):
+            if isinstance(class_or_class_path, six.string_types):
                 module, class_name = class_or_class_path.rsplit('.', 1)
                 klasses.append(getattr(import_module(module), class_name))
             else:
