@@ -5,7 +5,6 @@ python:
     - '3.3'
     - '3.4'
     - '3.5'
-    - 'pypy'
 env:
     global:
         - secure: KUZAbAiGyBfiCePYo0MJVpu4YgWvYsPVxrhMOmN3vyEP2O1PpMcFJR/ESyK9mDCJ4Xck5Fc3sDfjRCDW2N6AdVPe313ERIAUxHEw9wFoeRuYl/0B/31KMSO/IjHmHwc1wW2vgtlLP/P3pa3vwr1jsJAhcrF3FBw0EnW5sz7OZQY=
