@@ -6,3 +6,4 @@ flake8
 lxml
 mock
 nose-exclude
+tox
