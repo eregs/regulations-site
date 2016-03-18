@@ -1,9 +1,10 @@
 from BeautifulSoup import BeautifulSoup
 import requests
-from urlparse import urlparse
 import threading
 import sys
 import time
+
+from six.moves.urllib_parse import urlparse
 
 
 class EregsCache():
@@ -28,9 +29,9 @@ class EregsCache():
             msg = "{0} (status {1}): {2}".format(
                 status_txt, str(req.status_code), req.url)
             self.write(msg)
-        except Exception, errtxt:
+        except Exception as err:
             self.write_error("Failed: " + args[0])
-            self.write_error(str(errtxt))
+            self.write_error(str(err))
 
     def get_main_reg_list(self):
         try:
@@ -44,9 +45,9 @@ class EregsCache():
 
             return regulations_links
 
-        except Exception, errtxt:
+        except Exception as err:
             self.write_error("Main Page Failed To Load")
-            self.write_error(str(errtxt))
+            self.write_error(str(err))
 
     # figure out the partial path depending on root location of eregs
     def get_partial_url(self,  href):
@@ -120,8 +121,8 @@ class EregsCache():
                 if len(threading.enumerate()) > 1:
                     time.sleep(len(threading.enumerate()) * 2)
 
-        except Exception, errtxt:
-            self.write_error(str(errtxt))
+        except Exception as err:
+            self.write_error(str(err))
 
 
 if __name__ == "__main__":
