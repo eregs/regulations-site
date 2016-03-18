@@ -13,17 +13,24 @@ comment.less contains styles related to commenting on sections
   }
 
   .comment {
+    font-size: 14px;
     padding-bottom: 10px;
 
-    textarea {
-      border-color: @medium_gray;
-      border-radius: 3px;
-      height: 150px;
+    textarea, .ProseMirror {
+      border-color: #979797;
+      border-radius: 4px;
       padding: 5px;
       margin: 10px 0;
       width: 100%;
     }
+
     button {
+      background-color: #4A90E2;
+      border-radius: 4px;
+      font-weight: 100;
+      letter-spacing: 0.03em;
+      height: auto;
+      padding: 13px 15px;
       float: right;
     }
   }

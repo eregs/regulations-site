@@ -58,12 +58,6 @@ var CommentView = Backbone.View.extend({
 
   toggle: function() {
     this.$content.fadeToggle();
-
-    if (this.$content.is(':visible')) {
-      $('html, body').animate({
-        scrollTop: this.$container.offset().top
-      }, 2000);
-    }
   },
 
   getStorage: function() {
