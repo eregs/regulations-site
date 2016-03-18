@@ -48,10 +48,25 @@
 {% block chrome-content %}
 <main role="main">
   <div id="content-body" class="main-content">
-    <section data-page-type="preamble-section">
-      {% render_nested template=sub_template context=sub_context %}
-    </section>
-  </div> <!-- /.main-content -->
+  <section id="comment-review" data-page-type="comment-review" data-doc-number="{{ doc_number }}">
+    <h2>Review submission</h2>
+    <div id="comment"></div>
+    <button id="submit">Submit</button>
+  </section>
+</div>
+
+<script id="comment-template" type="text/template">
+<div class="comment-wrapper" data-section="<%= section %>">
+  <div class="comment">
+    <h3><a href="<%= url %>" target="_blank"><%= section %></a></h3>
+    <form>
+      <div class="editor-container"></div>
+      <div class="queued"></div>
+      <input type="file">
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
 </main>
 {% endblock %}
 

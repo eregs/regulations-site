@@ -16,7 +16,7 @@ from regulations.views.partial import PartialRegulationView, PartialSectionView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
-from regulations.views.preamble import PreambleView
+from regulations.views.preamble import PreambleView, PrepareCommentView
 from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
@@ -45,6 +45,8 @@ urlpatterns = patterns(
     # about page
     url(r'^about$', about, name='about'),
     url(r'^comments/attachment$', upload_proxy),
+    url(r'^comments/review/(?P<doc_number>[\w-]+)$',
+        PrepareCommentView.as_view()),
     url(r'^comments/comment$', submit_comment),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v

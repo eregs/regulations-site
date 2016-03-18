@@ -5,6 +5,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
+var edit = require('prosemirror/dist/edit');
+require('prosemirror/dist/menu/tooltipmenu');
+require('prosemirror/dist/markdown');
+
 function getUploadUrl() {
   var prefix = window.APP_PREFIX || '/';
   return $.getJSON(prefix + 'comments/attachment').then(function(resp) {
@@ -30,15 +34,23 @@ var CommentView = Backbone.View.extend({
     'submit form': 'save'
   },
 
-  initialize: function() {
+  initialize: function(options) {
     this.$content = this.$el.find('.comment');
     this.$toggle = this.$el.find('.toggle');
-    this.$comment = this.$el.find('textarea');
+    this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
     this.section = this.$el.data('section');
     this.key = 'comment:' + this.section;
 
-    this.$content.hide();
+    if (options.hide) {
+      this.$content.hide();
+    }
+    this.editor = new edit.ProseMirror({
+      tooltipMenu: true,
+      place: this.$container.get(0),
+      docFormat: 'markdown',
+      doc: ''
+    });
     this.load();
   },
 
@@ -49,7 +61,7 @@ var CommentView = Backbone.View.extend({
 
     if (this.$content.is(':visible')) {
       $('html, body').animate({
-        scrollTop: this.$comment.offset().top
+        scrollTop: this.$container.offset().top
       }, 2000);
     }
   },
@@ -60,7 +72,8 @@ var CommentView = Backbone.View.extend({
 
   setStorage: function() {
     var payload = {
-      comment: this.$comment.val(),
+      // comment: this.$comment.val(),
+      comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
         var $elm = $(elm);
         return {
@@ -80,7 +93,9 @@ var CommentView = Backbone.View.extend({
 
   load: function() {
     var payload = this.getStorage();
-    this.$comment.val(payload.comment);
+    if (payload.comment) {
+      this.editor.setContent(payload.comment, 'markdown');
+    }
     _.each(payload.files || [], function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));

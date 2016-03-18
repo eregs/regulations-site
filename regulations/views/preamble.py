@@ -56,3 +56,23 @@ class PreambleView(View):
             template = 'regulations/preamble-chrome.html'
         return TemplateResponse(request=request, template=template,
                                 context=context)
+
+
+class PrepareCommentView(View):
+    def get(self, request, *args, **kwargs):
+        preamble = ApiReader().preamble(kwargs['doc_number'])
+        if preamble is None:
+            raise Http404
+
+        subtree = find_subtree(preamble, [kwargs['doc_number']])
+        if subtree is None:
+            raise Http404
+
+        context = generate_html_tree(subtree)
+        context.update({
+            'preamble': preamble,
+        })
+        template = 'regulations/comment-review-chrome.html'
+
+        return TemplateResponse(request=request, template=template,
+                                context=context)
