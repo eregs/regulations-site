@@ -22,7 +22,9 @@ var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
-var Resources = require('../../resources.js');
+var CommentReviewView = require('../comment-review-view');
+var PreambleView = require('../preamble-view');
+var Resources = require('../../resources');
 Backbone.$ = $;
 
 var MainView = Backbone.View.extend({
@@ -87,7 +89,7 @@ var MainView = Backbone.View.extend({
         // we don't want to ajax in data that the page loaded with
         childViewOptions.render = false;
 
-        if (this.sectionId) {
+        if (this.sectionId && this.modelmap[this.contentType]) {
             // store the contents of our $el in the model so that we
             // can re-render it later
             this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
@@ -117,8 +119,12 @@ var MainView = Backbone.View.extend({
         'search-results': SearchResultsView,
         'diff': DiffView,
         'appendix': RegView,
-        'interpretation': RegView
+        'interpretation': RegView,
+        'comment-review': CommentReviewView,
+        'preamble-section': PreambleView
     },
+
+    commentTypes: ['reg-section', 'preamble-section'],
 
     createView: function(id, options, type) {
         // close breakaway if open
@@ -213,11 +219,14 @@ var MainView = Backbone.View.extend({
     render: function(html, options) {
         var offsetTop, $scrollToId;
 
-        if (typeof this.childView !== 'undefined') {
-            this.sectionFooter.remove();
-        }
-
         this.$el.html(html);
+
+        // Destroy and recreate footer
+        this.sectionFooter.remove();
+        var $footer = this.$el.find('.section-nav');
+        if ($footer) {
+            this.sectionFooter = new SectionFooter({el: $footer});
+        }
 
         MainEvents.trigger('section:rendered');
 

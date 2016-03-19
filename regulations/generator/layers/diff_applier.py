@@ -1,4 +1,3 @@
-import types
 import copy
 from collections import Counter, deque, namedtuple
 
@@ -157,7 +156,7 @@ class DiffApplier(object):
             if d[0] == self.DELETE:
                 _, s, e = d
                 self.delete_text(s, e)
-            if isinstance(d[0], types.ListType):
+            if isinstance(d[0], list):
                 if d[0][0] == self.DELETE and d[1][0] == self.INSERT:
                     # Text replace scenario.
                     _, s, e = d[0]

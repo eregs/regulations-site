@@ -86,7 +86,7 @@ class LayersApplierTest(TestCase):
         self.assertEquals(lr.counter, 0)
         self.assertEqual(lr.offset_starter, 5)
         self.assertEqual(lr.offset_counters, [5, 6, 7])
-        self.assertEqual(lr.offsets.keys(), [5, 6, 7])
+        self.assertEqual(list(lr.offsets.keys()), [5, 6, 7])
         self.assertEqual(lr.offsets[5], (24, 28))
 
     def test_update_offset_starter(self):

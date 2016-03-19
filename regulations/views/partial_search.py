@@ -35,7 +35,7 @@ class PartialSearch(PartialView):
         accordingly. @TODO this is a hack -- we should be able to limit
         results in the request instead"""
         # API page size is API_PAGE_SIZE, but we show only PAGE_SIZE
-        page_idx = (page % (API_PAGE_SIZE / PAGE_SIZE)) * PAGE_SIZE
+        page_idx = (page % (API_PAGE_SIZE // PAGE_SIZE)) * PAGE_SIZE
         original_count = len(results['results'])
         is_root = lambda r: len(r['label']) == 1
         is_subpart = lambda r: node_types.type_from_label(r['label']) in (

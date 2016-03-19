@@ -16,10 +16,12 @@ from regulations.views.partial import PartialRegulationView, PartialSectionView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
+from regulations.views.preamble import PreambleView, PrepareCommentView
 from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
+from regulations.views.comment import upload_proxy, submit_comment
 
 # Re-usable URL patterns.
 meta_version = r'(?P<%s>[-\d\w_]+)'
@@ -42,6 +44,10 @@ urlpatterns = patterns(
     url(r'^$', universal, name='universal_landing'),
     # about page
     url(r'^about$', about, name='about'),
+    url(r'^comments/attachment$', upload_proxy),
+    url(r'^comments/review/(?P<doc_number>[\w-]+)$',
+        PrepareCommentView.as_view()),
+    url(r'^comments/comment$', submit_comment),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v
     url(r'^regulation_redirect/%s$' % paragraph_pattern, redirect_by_date_get,
@@ -66,6 +72,10 @@ urlpatterns = patterns(
         (section_pattern, version_pattern, newer_version_pattern),
         lt_cache(ChromeSectionDiffView.as_view()),
         name='chrome_section_diff_view'),
+
+    url(r'^preamble/(?P<paragraphs>[-\w]+(/[-\w]+)*)$',
+        PreambleView.as_view(), name='chrome_preamble'),
+
     # Redirect to version by date
     # Example: http://.../201-3-v/1999/11/8
     url(r'^%s/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})$'

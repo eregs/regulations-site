@@ -41,7 +41,7 @@ class ErrorHandlingTest(TestCase):
         request = RequestFactory().get('/fake-path')
         result = error_handling.handle_generic_404(request)
         self.assertEqual(result.status_code, 404)
-        self.assertTrue('Regulation content not found' in result.content)
+        self.assertTrue(b'Regulation content not found' in result.content)
 
     @patch('regulations.views.error_handling.add_to_chrome')
     @patch('regulations.views.error_handling.api_reader')

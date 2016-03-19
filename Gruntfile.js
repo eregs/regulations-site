@@ -119,11 +119,16 @@ module.exports = function(grunt) {
 
     mocha_istanbul: {
       coverage: {
-        src: ['<%= env.frontEndPath %>/js/unittests/specs/**/*'],
+        src: ['<%= env.frontEndPath %>/js/unittests/specs/**/*.js'],
         options: {
-          mask:'*-spec.js',
+          root: '<%= env.frontEndPath %>/js',
+          istanbulOptions: ['--include-all-sources'],
           coverageFolder: '<%= env.frontEndPath %>/js/unittests/coverage',
-          excludes: ['<%= env.frontEndPath %>/js/unittests/specs/*'],
+          excludes: [
+            'built/**/*',
+            'unittests/**/*',
+            'source/otherlibs/**/*'
+          ],
           coverage: false
         }
       }

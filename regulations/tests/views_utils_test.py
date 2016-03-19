@@ -2,6 +2,8 @@
 from unittest import TestCase
 from mock import patch
 
+from six.moves.urllib.parse import parse_qs
+
 from django.conf import settings
 from django.test import RequestFactory
 
@@ -78,8 +80,10 @@ class UtilsTest(TestCase):
         self.assertEquals('agency', context['ANALYTICS']['DAP']['AGENCY'])
         self.assertEquals('sub-agency',
                           context['ANALYTICS']['DAP']['SUBAGENCY'])
-        self.assertEquals('agency=agency&subagency=sub-agency',
-                          context['ANALYTICS']['DAP']['DAP_URL_PARAMS'])
+        self.assertEquals(
+            parse_qs('agency=agency&subagency=sub-agency'),
+            parse_qs(context['ANALYTICS']['DAP']['DAP_URL_PARAMS']),
+        )
 
     @patch('regulations.views.utils.fetch_toc')
     def test_first_section(self, fetch_toc):

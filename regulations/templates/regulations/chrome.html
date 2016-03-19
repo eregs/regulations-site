@@ -39,6 +39,7 @@
        class="drawer-toggle-icon" alt="Open navigation drawer" /><img src="{%static "regulations/img/close-caret.svg" %}"
        class="drawer-toggle-icon" alt="Close navigation drawer"/></a>
         <ul class="drawer-toggles">
+          {% block sidebar-icons %}
             {% block sidebar-toc-link %}
             <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
        class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
@@ -51,12 +52,15 @@
             <li><a href="#search" id="search-link" class="toc-nav-link" title="Search"><span class="icon-text">Search</span><img src="{%static "regulations/img/search.svg" %}"
        class="drawer-toggle-icon" alt="Search toggle"/></a></li>
             {% endblock %}
+          {% endblock %}
         </ul>
     </div> <!-- /toc-head-->
     <div id="content-header" class="header-main group">
         <div class="wayfinding">
+          {% block wayfinding %}
             <span class="subpart"></span>
             <span id="active-title">{% block active_title %}<em class="header-label"><span class="reg_part">§{{ reg_part }}</span></em>{% endblock %}</span>
+          {% endblock %}
         </div>
         {% block header-secondary %}
         <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date }}</span>
@@ -69,6 +73,7 @@
     We include the drawer in-line so that we can use blocks
     http://stackoverflow.com/questions/9633387/django-using-blocks-in-included-templates
 {% endcomment %}
+{% block whole-toc %}
 {% with active_version=version %}
 <div id="menu" class="panel" data-reg-id="{{ reg_part }}" data-cfr-title-number="{{meta.cfr_title_number}}">
     {% block drawer-toc %}
@@ -165,6 +170,7 @@
     </div> <!--/#search-->
 </div> <!-- /.panel -->
 {% endwith %}
+{% endblock %}
 
 <div class="wrap group">
 

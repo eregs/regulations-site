@@ -1,8 +1,9 @@
 # vim: set encoding=utf-8
 import itertools
-import urllib
 from django.conf import settings
 from django.core.urlresolvers import reverse
+
+from six.moves.urllib_parse import urlencode
 
 from regulations.generator import generator
 from regulations.generator.layers.meta import MetaLayer
@@ -66,7 +67,7 @@ def create_dap_url_params(dap_settings):
         if 'SUBAGENCY' in dap_settings and dap_settings['SUBAGENCY']:
             dap_params['subagency'] = dap_settings['SUBAGENCY']
 
-    return urllib.urlencode(dap_params)
+    return urlencode(dap_params)
 
 
 def first_section(reg_part, version):

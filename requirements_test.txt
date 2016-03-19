@@ -8,3 +8,4 @@ mock
 nose-exclude
 nose-testconfig
 selenium
+tox

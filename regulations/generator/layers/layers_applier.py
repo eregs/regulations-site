@@ -1,6 +1,7 @@
-from HTMLParser import HTMLParser
-from Queue import PriorityQueue
 import re
+
+from six.moves.queue import PriorityQueue
+from six.moves.html_parser import HTMLParser
 
 from regulations.generator.layers.location_replace import LocationReplace
 
