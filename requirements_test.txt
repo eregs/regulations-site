@@ -6,4 +6,6 @@ flake8
 lxml
 mock
 nose-exclude
+nose-testconfig
+selenium
 tox

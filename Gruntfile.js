@@ -135,10 +135,6 @@ module.exports = function(grunt) {
      },
 
     shell: {
-      'build-require': {
-        command: './require.sh'
-      },
-
       'nose-chrome': {
         command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:chrome --tc=testUrl:<%= env.testUrl %>',
         options: {
@@ -147,8 +143,8 @@ module.exports = function(grunt) {
         }
       },
 
-      'nose-ie10': {
-        command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:ie10 --tc=testUrl:<%= env.testUrl %>',
+      'nose-ie11': {
+        command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:ie11 --tc=testUrl:<%= env.testUrl %>',
         options: {
             stdout: true,
             stderr: true
@@ -193,7 +189,7 @@ module.exports = function(grunt) {
   /**
    * Create task aliases by registering new tasks
    */
-  grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie10']);
+  grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
   grunt.registerTask('build', ['default', 'test-js']);

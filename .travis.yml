@@ -1,33 +1,33 @@
 language: python
-sudo: true
-python:
-    - '2.7'
-    - '3.3'
-    - '3.4'
-    - '3.5'
-env:
-    global:
-        - secure: KUZAbAiGyBfiCePYo0MJVpu4YgWvYsPVxrhMOmN3vyEP2O1PpMcFJR/ESyK9mDCJ4Xck5Fc3sDfjRCDW2N6AdVPe313ERIAUxHEw9wFoeRuYl/0B/31KMSO/IjHmHwc1wW2vgtlLP/P3pa3vwr1jsJAhcrF3FBw0EnW5sz7OZQY=
-        - secure: SOpgDODtfEwNPWssGj5CQfQKBFxbJ1w3HZGbG/B9iMS4DtMz/8pBY9G4uzF0KLpNfsllzjOSlMmTFn0tQIE2QR+ifkuIBl+ksvC2/ZagNNRVg7mSe427WeGY4SnH1tvBbarFbJYlFgGjnRJylwyUar7RGqEQ4My2e6/PHreGx6I=
-before_script:
-    - if [ "$TRAVIS_PULL_REQUEST" == false ] && [ "$SAUCE_USERNAME" ] && [ "$SAUCE_ACCESS_KEY" ]; then SAUCE_OK=1; else SAUCE_OK=0; fi
-    - function START_SAUCE_CONNECT { curl -L https://gist.githubusercontent.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash & }
-    - if [ "$SAUCE_OK" == 1 ]; then START_SAUCE_CONNECT; fi;
+sudo: false
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/node_modules
+matrix:
+  include:
+    - python: '2.7'
+    - python: '3.3'
+    - python: '3.4'
+    - python: '3.5'
+    - python: '3.5'
+      addons:
+        sauce_connect: true
+      env:
+        - secure: "iexai8u5b/bIEXUKrKwjitHExazyoYqRiKvXefexIKnfdETCDRQ5bBnahpqzJD8x1gnJ3kgPptcEW1kBR2mSOcwPm77kjivGzW404EN+1gZb7eFn88lKuIstjw4zcpOPIpVMxhfVe1K+nVWKkJJf1tpJsW9KaZsdiJMyoHKdq4s="
+        - secure: "eBEPhov8FBlBOFyRskkqtbv0+74nUuq9ou6aSRHJyNoPRCsvMv3akTNSwygmg5vqe4Qp7pKKZjaVoXX6KFtC3/2Auc08t7VbyTBQHbEnaJjkFBaZSJKOpNUcWBnTHvRwPhkjzc9N1DaHwKCrf50aItT98TL6QRGKMrfbxyxuJ/g="
+before_install:
+  - pip install -U pip wheel
+  - rm -rf ~/.nvm
+  - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash
+  - source ~/.nvm/nvm.sh
+  - nvm install 4.4.0
+  - nvm use 4.4.0
 install:
-    - pip install -r requirements.txt
-    - pip install -r requirements_test.txt
-    - echo "yes" | sudo add-apt-repository ppa:chris-lea/node.js
-    - sudo apt-get update
-    - sudo apt-get install nodejs phantomjs
-    - sudo npm install -g grunt-cli grunt-init 
-    - sudo npm install
-    - cp example-config.json config.json
+  - pip install -r requirements.txt
+  - pip install -r requirements_test.txt
+  - npm install -g grunt-cli
+  - ./frontendbuild.sh
 script:
-    - grunt test-js
-    - python manage.py test
-    - flake8 .
-    - ./dummy_api/start.sh
-    - echo 'API_BASE = "http://localhost:8282/"' >> regulations/settings/local_settings.py
-    - ./run_server.sh &
-    - sleep 5
-    - if [ "$SAUCE_OK" == 1 ]; then grunt nose; fi
+  - if [ -z "$SAUCE_ACCESS_KEY" ]; then ./unit-tests.sh; fi
+  - if [ ! -z "$SAUCE_ACCESS_KEY" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./integration-tests.sh; fi

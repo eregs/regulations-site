@@ -1,7 +1,9 @@
 # vim: set encoding=utf-8
 import unittest
-from base_test import BaseTest
+
 from selenium.webdriver.support.ui import WebDriverWait
+
+from regulations.uitests.base_test import BaseTest
 
 
 class DefinitionTest(BaseTest, unittest.TestCase):
