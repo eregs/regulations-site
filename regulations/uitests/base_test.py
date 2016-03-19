@@ -10,12 +10,12 @@ class BaseTest():
             'chrome': {
                 'driver': webdriver.DesiredCapabilities.CHROME,
                 'platform': 'LINUX',
-                'version': ''
+                'version': '',
             },
-            'ie10': {
+            'ie11': {
                 'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
-                'platform': 'Windows 8',
-                'version': '10'
+                'platform': 'Windows 10',
+                'version': '11',
             }
         }
         return browser_configs[browser]
