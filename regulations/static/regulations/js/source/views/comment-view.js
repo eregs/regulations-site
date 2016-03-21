@@ -9,6 +9,8 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
+var CommentEvents = require('../events/comment-events');
+
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
   return $.getJSON(
@@ -38,26 +40,42 @@ var CommentView = Backbone.View.extend({
 
   initialize: function(options) {
     this.$content = this.$el.find('.comment');
+    this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
-    this.section = this.$el.data('section');
-    this.title = this.$el.data('title');
-    this.key = 'comment:' + this.section;
     this.$status = this.$el.find('.status');
 
-    if (options.hide) {
-      this.$content.hide();
-    }
+    this.setSection(options.section);
+
     this.editor = new edit.ProseMirror({
       tooltipMenu: true,
       place: this.$container.get(0),
       docFormat: 'markdown',
       doc: ''
     });
-    this.load();
+
+    this.listenTo(CommentEvents, 'comment:target', this.target);
+
+    if (this.section) {
+      this.load();
+    }
   },
 
   render: function() {},
+
+  setSection: function(section) {
+    this.section = section;
+    this.key = 'comment:' + section;
+  },
+
+  target: function(options) {
+    this.setSection(options.section);
+    this.$context.empty();
+    if (options.$parent) {
+      this.$context.append(options.$parent);
+    }
+    this.load();
+  },
 
   getStorage: function() {
     return JSON.parse(window.localStorage.getItem(this.key) || '{}');
@@ -65,7 +83,6 @@ var CommentView = Backbone.View.extend({
 
   setStorage: function() {
     var payload = {
-      title: this.title,
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
         var $elm = $(elm);
@@ -86,9 +103,8 @@ var CommentView = Backbone.View.extend({
 
   load: function() {
     var payload = this.getStorage();
-    if (payload.comment) {
-      this.editor.setContent(payload.comment, 'markdown');
-    }
+    this.editor.setContent(payload.comment || '', 'markdown');
+    this.$queued.empty();
     _.each(payload.files || [], function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));
