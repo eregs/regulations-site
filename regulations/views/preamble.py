@@ -48,7 +48,7 @@ class PreambleView(View):
 
         context = generate_html_tree(subtree)
         template = context['node']['template_name']
-        context['root'] = context['node']
+        context['use_comments'] = True
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             # Wrap the inner context

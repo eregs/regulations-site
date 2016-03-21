@@ -4,7 +4,7 @@
 {% if node.header %}
 <div>
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
-  {% if root.node_type == "preamble" %}
+  {% if use_comments %}
     <div class="activate-write" data-section="{{ node.markup_id }}">Comment on section {{ node.label_id }}</div>
   {% endif %}
 </div>
@@ -18,7 +18,7 @@
     {{node.marked_up|safe}}
 {% endif %}
 </p>
-{% if root.node_type == "preamble" and node.node_type == "regtext" %}
+{% if use_comments and not node.title %}
   <div class="activate-write" data-section="{{ node.markup_id }}">Comment on paragraph in section {{ node.label_id }}</div>
 {% endif %}
 {% endif %}
