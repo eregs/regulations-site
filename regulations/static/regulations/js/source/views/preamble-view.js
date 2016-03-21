@@ -7,6 +7,7 @@ Backbone.$ = $;
 
 var ChildView = require('./main/child-view');
 var CommentView = require('./comment-view');
+var CommentEvents = require('../events/comment-events');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',
@@ -29,7 +30,14 @@ var PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  write: function() {
+  write: function(e) {
+    var $target = $(e.target);
+    var $parent = $target.closest('[data-permalink-section]').clone();
+    $parent.find('.activate-write').remove();
+    CommentEvents.trigger('comment:target', {
+      section: $target.data('section'),
+      $parent: $parent
+    });
     this.$read.hide();
     this.$write.show();
   },

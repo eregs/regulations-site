@@ -53,18 +53,15 @@
     <section id="content-wrapper" data-page-type="preamble-section">
 
       <div id="preamble-read">
-        <div class="activate-write">Write a comment about this section</div>
         {% render_nested template=sub_template context=sub_context %}
       </div>
 
       <div id="preamble-write">
         <div class="activate-read">View the proposal</div>
-        <div
-            class="comment-wrapper"
-            data-section="{{ sub_context.node.markup_id }}"
-            data-title="{{ sub_context.node.title }}">
+        <div class="comment-wrapper">
           <div class="comment">
             <h3>Enter your comment below:</h3>
+            <div class="comment-context"></div>
             <form>
               <div class="editor-container"></div>
               <div class="queued"></div>
