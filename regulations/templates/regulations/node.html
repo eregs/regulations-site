@@ -18,7 +18,7 @@
     {{node.marked_up|safe}}
 {% endif %}
 </p>
-{% if root.node_type == "preamble" %}
+{% if root.node_type == "preamble" and node.node_type == "regtext" %}
   <div class="activate-write" data-section="{{ node.markup_id }}">Comment on paragraph in section {{ node.label_id }}</div>
 {% endif %}
 {% endif %}
