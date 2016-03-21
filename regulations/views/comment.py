@@ -16,7 +16,7 @@ def upload_proxy(request):
     """
     try:
         size = int(request.GET['size'])
-        assert size <= settings.ATTACHMENT_MAX_SIZE
+        assert 0 < size <= settings.ATTACHMENT_MAX_SIZE
     except (KeyError, ValueError, AssertionError):
         return JsonResponse(
             {'message': 'Invalid attachment size'},
