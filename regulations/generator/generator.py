@@ -41,28 +41,6 @@ class LayerCreator(object):
         """ Hit the API to retrieve the regulation JSON. """
         return self.api.layer(api_name, regulation, version)
 
-    def add_layer(self, layer_name, regulation, version, sectional=False):
-        """ Add a normal layer (no special handling required) to the applier.
-        """
-
-        if layer_name.lower() in LayerCreator.LAYERS:
-            layer_class = LayerCreator.LAYERS[layer_name]
-            api_name = layer_class.data_source
-            applier_type = layer_class.layer_type
-            layer_json = self.get_layer_json(api_name, regulation, version)
-            if layer_json is None:
-                logging.warning("No data for %s/%s/%s"
-                                % (api_name, regulation, version))
-            else:
-                layer = layer_class(layer_json)
-
-                if sectional and hasattr(layer, 'sectional'):
-                    layer.sectional = sectional
-                if hasattr(layer, 'version'):
-                    layer.version = version
-
-                self.appliers[applier_type].add_layer(layer)
-
     def add_layers(self, layer_names, regulation, version, sectional=False):
         """Request a list of layers. As this might spawn multiple HTTP
         requests, we wrap the requests in threads so they can proceed
