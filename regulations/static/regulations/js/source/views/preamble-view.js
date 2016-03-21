@@ -32,8 +32,11 @@ var PreambleView = ChildView.extend({
 
   write: function(e) {
     var $target = $(e.target);
+    var $parent = $target.closest('[data-permalink-section]').clone();
+    $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
-      section: $target.data('section')
+      section: $target.data('section'),
+      $parent: $parent
     });
     this.$read.hide();
     this.$write.show();

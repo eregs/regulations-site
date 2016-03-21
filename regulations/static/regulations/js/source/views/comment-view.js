@@ -40,6 +40,7 @@ var CommentView = Backbone.View.extend({
 
   initialize: function(options) {
     this.$content = this.$el.find('.comment');
+    this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
     this.title = this.$el.data('title');
@@ -63,6 +64,10 @@ var CommentView = Backbone.View.extend({
   target: function(opts) {
     this.section = opts.section;
     this.key = 'comment:' + this.section;
+    this.$context.empty();
+    if (opts.$parent) {
+      this.$context.append(opts.$parent);
+    }
     this.load();
   },
 
