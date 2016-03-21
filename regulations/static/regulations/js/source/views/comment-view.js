@@ -43,12 +43,10 @@ var CommentView = Backbone.View.extend({
     this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
-    this.title = this.$el.data('title');
     this.$status = this.$el.find('.status');
 
-    if (options.hide) {
-      this.$content.hide();
-    }
+    this.setSection(options.section);
+
     this.editor = new edit.ProseMirror({
       tooltipMenu: true,
       place: this.$container.get(0),
@@ -57,16 +55,24 @@ var CommentView = Backbone.View.extend({
     });
 
     this.listenTo(CommentEvents, 'comment:target', this.target);
+
+    if (this.section) {
+      this.load();
+    }
   },
 
   render: function() {},
 
-  target: function(opts) {
-    this.section = opts.section;
-    this.key = 'comment:' + this.section;
+  setSection: function(section) {
+    this.section = section;
+    this.key = 'comment:' + section;
+  },
+
+  target: function(options) {
+    this.setSection(options.section);
     this.$context.empty();
-    if (opts.$parent) {
-      this.$context.append(opts.$parent);
+    if (options.$parent) {
+      this.$context.append(options.$parent);
     }
     this.load();
   },
@@ -77,7 +83,6 @@ var CommentView = Backbone.View.extend({
 
   setStorage: function() {
     var payload = {
-      title: this.title,
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
         var $elm = $(elm);
