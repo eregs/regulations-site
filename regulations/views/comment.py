@@ -14,6 +14,14 @@ def upload_proxy(request):
     """Create a random key name and a temporary upload URL to permit uploads
     from the browser.
     """
+    try:
+        size = int(request.GET['size'])
+        assert 0 < size <= settings.ATTACHMENT_MAX_SIZE
+    except (KeyError, ValueError, AssertionError):
+        return JsonResponse(
+            {'message': 'Invalid attachment size'},
+            status=400,
+        )
     session = boto3.Session(
         aws_access_key_id=settings.ACCESS_KEY_ID,
         aws_secret_access_key=settings.SECRET_ACCESS_KEY,
@@ -23,6 +31,7 @@ def upload_proxy(request):
     url = s3.generate_presigned_url(
         ClientMethod='put_object',
         Params={
+            'ContentLength': size,
             'ContentType': 'application/octet-stream',
             'Bucket': settings.BUCKET,
             'Key': key,

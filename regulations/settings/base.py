@@ -228,3 +228,5 @@ SIDEBARS = (
     'regulations.generator.sidebar.analyses.Analyses',
     'regulations.generator.sidebar.help.Help',
 )
+
+ATTACHMENT_MAX_SIZE = 1024 * 1024 * 10
