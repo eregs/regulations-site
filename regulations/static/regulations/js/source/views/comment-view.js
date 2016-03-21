@@ -9,9 +9,12 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
-function getUploadUrl() {
+function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
-  return $.getJSON(prefix + 'comments/attachment').then(function(resp) {
+  return $.getJSON(
+    prefix + 'comments/attachment',
+    {size: file.size}
+  ).then(function(resp) {
     return resp;
   });
 }
@@ -92,19 +95,23 @@ var CommentView = Backbone.View.extend({
   },
 
   addAttachment: function(e) {
+    var key;
     var file = e.target.files[0];
     if (!file) { return; }
-    $.when(getUploadUrl(), readFile(file)).done(function(url, data) {
-      $.ajax({
-        type: 'PUT',
-        url: url.url,
-        data: data,
-        contentType: 'application/octet-stream',
-        processData: false
-      }).done(function(resp) {
-        this.addQueueItem(url.key, file.name);
-        $(e.target).val(null);
-      }.bind(this));
+    getUploadUrl(file).then(function(url) {
+      key = url.key;
+      return readFile(file).then(function(data) {
+        return $.ajax({
+          type: 'PUT',
+          url: url.url,
+          data: data,
+          contentType: 'application/octet-stream',
+          processData: false
+        });
+      });
+    }).then(function(resp) {
+      this.addQueueItem(key, file.name);
+      $(e.target).val(null);
     }.bind(this));
   },
 
