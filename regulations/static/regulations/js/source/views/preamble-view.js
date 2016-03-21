@@ -7,6 +7,7 @@ Backbone.$ = $;
 
 var ChildView = require('./main/child-view');
 var CommentView = require('./comment-view');
+var CommentEvents = require('../events/comment-events');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',
@@ -29,7 +30,11 @@ var PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  write: function() {
+  write: function(e) {
+    var $target = $(e.target);
+    CommentEvents.trigger('comment:target', {
+      section: $target.data('section')
+    });
     this.$read.hide();
     this.$write.show();
   },

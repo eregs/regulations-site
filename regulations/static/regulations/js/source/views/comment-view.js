@@ -9,6 +9,8 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
+var CommentEvents = require('../events/comment-events');
+
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
   return $.getJSON(
@@ -40,9 +42,7 @@ var CommentView = Backbone.View.extend({
     this.$content = this.$el.find('.comment');
     this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
-    this.section = this.$el.data('section');
     this.title = this.$el.data('title');
-    this.key = 'comment:' + this.section;
     this.$status = this.$el.find('.status');
 
     if (options.hide) {
@@ -54,10 +54,17 @@ var CommentView = Backbone.View.extend({
       docFormat: 'markdown',
       doc: ''
     });
-    this.load();
+
+    this.listenTo(CommentEvents, 'comment:target', this.target);
   },
 
   render: function() {},
+
+  target: function(opts) {
+    this.section = opts.section;
+    this.key = 'comment:' + this.section;
+    this.load();
+  },
 
   getStorage: function() {
     return JSON.parse(window.localStorage.getItem(this.key) || '{}');
@@ -86,9 +93,8 @@ var CommentView = Backbone.View.extend({
 
   load: function() {
     var payload = this.getStorage();
-    if (payload.comment) {
-      this.editor.setContent(payload.comment, 'markdown');
-    }
+    this.editor.setContent(payload.comment || '', 'markdown');
+    this.$queued.empty();
     _.each(payload.files || [], function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));

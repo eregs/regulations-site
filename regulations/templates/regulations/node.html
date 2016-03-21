@@ -2,7 +2,12 @@
     Template for inner paragraphs of a reg section
 {% endcomment %}
 {% if node.header %}
-<h{{ node.list_level|add:"+3" }}>{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
+<div>
+  <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
+  {% if root.node_type == "preamble" %}
+    <div class="activate-write" data-section="{{ node.markup_id }}">Comment on section {{ node.label_id }}</div>
+  {% endif %}
+</div>
 {% endif %}
 
 {%if node.marked_up %}
@@ -13,6 +18,9 @@
     {{node.marked_up|safe}}
 {% endif %}
 </p>
+{% if root.node_type == "preamble" %}
+  <div class="activate-write" data-section="{{ node.markup_id }}">Comment on paragraph in section {{ node.label_id }}</div>
+{% endif %}
 {% endif %}
 
 {% if node.children %}
