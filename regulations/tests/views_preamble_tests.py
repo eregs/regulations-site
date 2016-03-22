@@ -51,15 +51,21 @@ class PreambleViewTests(TestCase):
 
         response = view(RequestFactory().get('/preamble/1/c/x?partial=true'),
                         paragraphs='1/c/x')
-        self.assertNotIn('sub_context', response.context_data)
-        self.assertEqual(response.context_data['node']['text'], '4')
+        self.assertIn('sub_context', response.context_data)
+        self.assertEqual(
+            response.context_data['sub_context']['node']['text'],
+            '4',
+        )
 
         request = RequestFactory().get(
             '/preamble/1/c/x',
             HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         response = view(request, paragraphs='1/c/x')
-        self.assertNotIn('sub_context', response.context_data)
-        self.assertEqual(response.context_data['node']['text'], '4')
+        self.assertIn('sub_context', response.context_data)
+        self.assertEqual(
+            response.context_data['sub_context']['node']['text'],
+            '4',
+        )
 
     @patch('regulations.views.preamble.ApiReader')
     def test_get_404(self, ApiReader):

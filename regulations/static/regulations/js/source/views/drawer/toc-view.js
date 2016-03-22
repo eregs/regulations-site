@@ -42,7 +42,7 @@ var TOCView = Backbone.View.extend({
     setActive: function(id) {
         var newActiveLink, subpart;
 
-        newActiveLink = this.$el.find('a[data-section-id=' + Helpers.findBaseSection(id) + ']');
+        newActiveLink = this.$el.find('a[data-section-id="' + Helpers.findBaseSection(id) + '"]');
 
         this.$el.find('.current').removeClass('current');
         newActiveLink.addClass('current');
@@ -69,8 +69,9 @@ var TOCView = Backbone.View.extend({
         e.preventDefault();
 
         var sectionId = $(e.currentTarget).data('section-id');
+        var type = $('section[data-page-type]').data('page-type');
         DrawerEvents.trigger('section:open', sectionId);
-        MainEvents.trigger('section:open', sectionId, {}, 'reg-section');
+        MainEvents.trigger('section:open', sectionId, {}, type);
     },
 
     sendDiffClickEvent: function(e) {
