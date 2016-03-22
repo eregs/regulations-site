@@ -35,9 +35,12 @@
 <div class="sub-head">
     <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
     <div class="toc-head">
-        <a href="#" id="panel-link" class="toc-toggle panel-slide"><img src="{%static "regulations/img/open-caret.svg" %}"
-       class="drawer-toggle-icon" alt="Open navigation drawer" /><img src="{%static "regulations/img/close-caret.svg" %}"
-       class="drawer-toggle-icon" alt="Close navigation drawer"/></a>
+        {% block sidebar-drawer-icons %}
+        <a href="#" id="panel-link" class="toc-toggle panel-slide">
+          <img src="{%static "regulations/img/open-caret.svg" %}" class="drawer-toggle-icon" alt="Open navigation drawer" />
+          <img src="{%static "regulations/img/close-caret.svg" %}" class="drawer-toggle-icon" alt="Close navigation drawer"/>
+        </a>
+        {% endblock %}
         <ul class="drawer-toggles">
           {% block sidebar-icons %}
             {% block sidebar-toc-link %}
