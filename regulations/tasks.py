@@ -43,12 +43,12 @@ def TemporaryDirectory(*args, **kwargs):
 
 def fetch_file(path, key, name):
     session = boto3.Session(
-        aws_access_key_id=settings.ACCESS_KEY_ID,
-        aws_secret_access_key=settings.SECRET_ACCESS_KEY,
+        aws_access_key_id=settings.ATTACHMENT_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
     s3 = session.client('s3')
     dest = os.path.join(path, name)
-    s3.download_file(settings.BUCKET, key, dest)
+    s3.download_file(settings.ATTACHMENT_BUCKET, key, dest)
     return dest
 
 

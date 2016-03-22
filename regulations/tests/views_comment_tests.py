@@ -1,14 +1,13 @@
 import json
 import mock
 
-from django.conf import settings
 from django.test import SimpleTestCase, override_settings
 
 
 @override_settings(
-    BUCKET='test-bucket',
-    ACCESS_KEY_ID='test-access-key',
-    SECRET_ACCESS_KEY='test-secret-key',
+    ATTACHMENT_BUCKET='test-bucket',
+    ATTACHMENT_ACCESS_KEY_ID='test-access-key',
+    ATTACHMENT_SECRET_ACCESS_KEY='test-secret-key',
     ATTACHMENT_MAX_SIZE=42,
 )
 class TestUploadProxy(SimpleTestCase):
@@ -28,7 +27,7 @@ class TestUploadProxy(SimpleTestCase):
             Params={
                 'ContentLength': 42,
                 'ContentType': 'application/octet-stream',
-                'Bucket': settings.BUCKET,
+                'Bucket': 'test-bucket',
                 'Key': get_random.return_value,
             },
         )
