@@ -72,6 +72,7 @@ class PrepareCommentView(View):
         context = generate_html_tree(subtree)
         context.update({
             'preamble': preamble,
+            'doc_number': kwargs['doc_number'],
         })
         template = 'regulations/comment-review-chrome.html'
 
