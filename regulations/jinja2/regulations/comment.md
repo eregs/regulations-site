@@ -1,4 +1,3 @@
-{% spaceless %}
 {% for section in sections %}
 # {{section.id}}
 {{section.comment}}
@@ -9,4 +8,3 @@
 {% endfor %}
 {% endif %}
 {% endfor %}
-{% endspaceless %}
