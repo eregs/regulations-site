@@ -14,7 +14,7 @@ from django.conf import settings
 
 @shared_task
 def submit_comment(comment):
-    with AttachmentSet(comment) as attachments:
+    with assemble_attachments(comment) as attachments:
         fields = [
             ("comment_on", comment["document_id"]),
             ("general_comment", comment["comment"]),
@@ -33,7 +33,7 @@ def submit_comment(comment):
 
 
 @contextlib.contextmanager
-def AttachmentSet(comment):
+def assemble_attachments(comment):
     '''
     Assembles a collection of tuples of the form:
     [
