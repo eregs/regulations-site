@@ -15,6 +15,7 @@ var SectionFooter = require('./section-footer-view');
 var MainEvents = require('../../events/main-events');
 var SidebarEvents = require('../../events/sidebar-events');
 var DiffModel = require('../../models/diff-model');
+var PreambleModel = require('../../models/preamble-model');
 var DiffView = require('./diff-view');
 var Router = require('../../router');
 var HeaderEvents = require('../../events/header-events');
@@ -110,7 +111,8 @@ var MainView = Backbone.View.extend({
         'search-results': SearchModel,
         'diff': DiffModel,
         'appendix': RegModel,
-        'interpretation': RegModel
+        'interpretation': RegModel,
+        'preamble-section': PreambleModel
     },
 
     viewmap: {

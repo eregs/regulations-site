@@ -229,4 +229,7 @@ SIDEBARS = (
     'regulations.generator.sidebar.help.Help',
 )
 
+ATTACHMENT_BUCKET = os.getenv('BUCKET')
+ATTACHMENT_ACCESS_KEY_ID = os.getenv('ACCESS_KEY_ID')
+ATTACHMENT_SECRET_ACCESS_KEY = os.getenv('SECRET_ACCESS_KEY')
 ATTACHMENT_MAX_SIZE = 1024 * 1024 * 10

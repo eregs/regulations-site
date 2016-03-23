@@ -23,8 +23,8 @@ def upload_proxy(request):
             status=400,
         )
     session = boto3.Session(
-        aws_access_key_id=settings.ACCESS_KEY_ID,
-        aws_secret_access_key=settings.SECRET_ACCESS_KEY,
+        aws_access_key_id=settings.ATTACHMENT_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
     s3 = session.client('s3')
     key = get_random_string(50)
@@ -33,7 +33,7 @@ def upload_proxy(request):
         Params={
             'ContentLength': size,
             'ContentType': 'application/octet-stream',
-            'Bucket': settings.BUCKET,
+            'Bucket': settings.ATTACHMENT_BUCKET,
             'Key': key,
         },
     )
@@ -48,5 +48,5 @@ def upload_proxy(request):
 def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
-    tasks.submit_comment.delay(body['sections'])
+    tasks.submit_comment.delay(body)
     return JsonResponse({'status': 'submitted'})

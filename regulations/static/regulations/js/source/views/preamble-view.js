@@ -7,6 +7,7 @@ Backbone.$ = $;
 
 var ChildView = require('./main/child-view');
 var CommentView = require('./comment-view');
+var CommentEvents = require('../events/comment-events');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',
@@ -16,12 +17,14 @@ var PreambleView = ChildView.extend({
     'click .activate-read': 'read'
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    this.options = options;
+    this.id = options.id;
+    this.url = 'preamble/' + this.id.split('-').join('/');
+    if (!options.render) {
+      this.render();
+    }
     ChildView.prototype.initialize.apply(this, arguments);
-    this.$read = this.$el.find('#preamble-read');
-    this.$write = this.$el.find('#preamble-write');
-    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
-    this.$write.hide();
   },
 
   read: function() {
@@ -29,12 +32,25 @@ var PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  write: function() {
+  write: function(e) {
+    var $target = $(e.target);
+    var $parent = $target.closest('[data-permalink-section]').clone();
+    $parent.find('.activate-write').remove();
+    CommentEvents.trigger('comment:target', {
+      section: $target.data('section'),
+      $parent: $parent
+    });
     this.$read.hide();
     this.$write.show();
   },
 
-  render: function() {}
+  render: function() {
+    ChildView.prototype.render.apply(this, arguments);
+    this.$read = this.$el.find('#preamble-read');
+    this.$write = this.$el.find('#preamble-write');
+    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
+    this.$write.hide();
+  }
 });
 
 module.exports = PreambleView;

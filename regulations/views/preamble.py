@@ -52,13 +52,15 @@ class PreambleView(View):
             raise Http404
 
         context = generate_html_tree(subtree, request)
+        context['use_comments'] = True
         template = context['node']['template_name']
 
+        context = {'sub_context': context, 'sub_template': template,
+                   'preamble': preamble}
         if not request.is_ajax() and request.GET.get('partial') != 'true':
-            # Wrap the inner context
-            context = {'sub_context': context, 'sub_template': template,
-                       'preamble': preamble}
             template = 'regulations/preamble-chrome.html'
+        else:
+            template = 'regulations/preamble-partial.html'
         return TemplateResponse(request=request, template=template,
                                 context=context)
 

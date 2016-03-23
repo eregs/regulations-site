@@ -49,6 +49,7 @@ setup(
         'django>=1.8,<1.9',
         'requests',
         'six',
+        'requests-toolbelt',
     ],
     cmdclass={
         'build_frontend': build_frontend,
