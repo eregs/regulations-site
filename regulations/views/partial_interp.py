@@ -18,9 +18,10 @@ class PartialInterpView(PartialView):
     def mk_appliers(root_label, version):
         """Function to generate a shared set of appliers"""
         layer_creator = generator.LayerCreator()
+        doc_id = version + '/' + root_label
         layer_creator.add_layers(
-            ['terms', 'internal', 'keyterms', 'paragraph'], root_label,
-            version, sectional=True)
+            ['terms', 'internal', 'keyterms', 'paragraph'], 'cfr', doc_id,
+            sectional=True)
         return layer_creator.get_appliers()
 
     def determine_appliers(self, label_id, version):

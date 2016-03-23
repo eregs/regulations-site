@@ -26,7 +26,8 @@ def regulation_meta(regulation_part, version, sectional=False):
     """ Return the contents of the meta layer, without using a tree. """
 
     layer_manager = generator.LayerCreator()
-    layer_manager.add_layers(['meta'], regulation_part, version, sectional)
+    doc_id = version + '/' + regulation_part
+    layer_manager.add_layers(['meta'], 'cfr', doc_id, sectional)
 
     p_applier = layer_manager.appliers['paragraph']
     meta_layer = p_applier.layers[MetaLayer.shorthand]

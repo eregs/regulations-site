@@ -75,11 +75,16 @@ class ApiReader(object):
             self.cache.set(cache_key, element)
             return element
 
-    def layer(self, layer_name, label, version):
-        regulation_part = label.split('-')[0]
+    def layer(self, layer_name, doc_type, doc_id):
+        """When retrieving layer data, we cheat a bit -- we always retrieve
+        layer data corresponding to the "root" of the document, rather than
+        only a subnode"""
+        doc_id_parts = doc_id.split('/')
+        doc_id_parts[-1] = doc_id_parts[-1].split('-')[0]   # root
+        doc_id = '/'.join(doc_id_parts)
         return self._get(
-            ['layer', layer_name, regulation_part, version],
-            'layer/%s/%s/%s' % (layer_name, regulation_part, version))
+            ('layer', layer_name, doc_type, ':'.join(doc_id_parts)),
+            'layer/{}/{}/{}'.format(layer_name, doc_type, doc_id))
 
     def diff(self, label, older, newer):
         """ End point for diffs. """
