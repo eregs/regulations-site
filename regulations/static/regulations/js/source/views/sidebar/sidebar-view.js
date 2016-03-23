@@ -75,7 +75,7 @@ var SidebarView = Backbone.View.extend({
     },
 
     updateChildViews: function(context) {
-        var $definition = $definition || this.$el.find('#definition');
+        var $definition = $definition || this.$el.find('#definition'); // eslint-disable-line no-use-before-define
         switch (context.type) {
             case 'reg-section':
                 this.model.get(context.id, this.openRegFolders);

@@ -10,15 +10,16 @@ globals:
   $: true
   Backbone: true
   _: true
+  console: true
 
 rules:
   # Possible errors
   no-cond-assign: 0
-  no-comma-dangle: 2
+  comma-dangle: 2
   no-console: 1
   # no-extra-parens: 2
   no-irregular-whitespace: 2
-  no-reserved-keys: 2
+  quote-props: [2, consistent]
 
   # Best practices
   block-scoped-var: 2
@@ -48,11 +49,10 @@ rules:
   new-cap: 0
   no-mixed-spaces-and-tabs: 2
   # no-lonely-if: 2
-  no-space-before-semi: 2
+  semi-spacing: 2
   no-underscore-dangle: 0
-  space-after-keywords: 2
+  keyword-spacing: 2
   no-trailing-spaces: 2
-  space-in-brackets: [2, never]
   # space-infix-ops: 2
   quotes: [2, single]
   semi: [2, "always"]

@@ -40,7 +40,7 @@ $(document).ready(function() {
 // use in browser console with AccessibilityTest()
 window.AccessibilityTest = function() {
     // I think this will keep IE from crying?
-    var console = console || {error: function() {}};
+    console = console || {error: function() {}};
 
     /* eslint-disable */
     $('img').each(function() {
