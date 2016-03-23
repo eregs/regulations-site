@@ -19,21 +19,26 @@ def submit_comment(comment):
             ("comment_on", comment["document_id"]),
             ("general_comment", comment["comment"]),
         ]
-        files = [('uploadedFile', (
-            file['name'], fetch_file(path, file['key'], file['name']))
+        try:
+            files = [
+                ('uploadedFile', (file_['name'], open(
+                    fetch_file(path, file_['key'], file_['name']), "rb")))
+                for file_ in comment.get('files', [])
+            ]
+            fields.extend(files)
+            data = MultipartEncoder(fields)
+            response = requests.post(
+                settings.REGS_API_URL,
+                data=data,
+                headers={
+                    "Content-Type": data.content_type,
+                    "X-Api-Key": settings.REGS_API_KEY
+                }
             )
-            for file in comment.get('files', [])
-        ]
-        fields.extend(files)
-        data = MultipartEncoder(fields)
-        response = requests.post(
-            settings.REGS_API_URL,
-            data=data,
-            headers={
-                "Content-Type": data.content_type,
-                "X-Api-Key": settings.REGS_API_KEY
-            }
-        )
+        finally:
+            for file_ in files:
+                file_[1][1].close()
+
         print(response.text)
 
 
