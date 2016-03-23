@@ -40,8 +40,8 @@ class ParagraphSXSView(TemplateView):
         """Grab other analyses for this same paragraph (limiting to those
            visible from this regulation version.) Make them in descending
            order"""
-        sxs_layer_data = api_reader.ApiReader().layer('analyses', label_id,
-                                                      version)
+        sxs_layer_data = api_reader.ApiReader().layer(
+            'analyses', 'cfr', version + '/' + label_id)
 
         if label_id not in sxs_layer_data:
             return []

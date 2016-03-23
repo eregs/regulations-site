@@ -9,7 +9,7 @@ from regulations.generator.api_reader import ApiReader
 def fetch_toc(reg_part, version, flatten=False):
     """Fetch the toc, transform it into a list usable by navigation, etc."""
     api = ApiReader()
-    toc = api.layer('toc', reg_part, version)
+    toc = api.layer('toc', 'cfr', version + '/' + reg_part)
 
     toc_list = []
     if reg_part in toc:
