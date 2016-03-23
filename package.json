@@ -47,6 +47,7 @@
     "minifyify": "^7.2.1",
     "mocha": "^2.2.1",
     "mocha-jsdom": "^1.1.0",
+    "node-localstorage": "1.1.2",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0",
     "tmp": "0.0.23",
