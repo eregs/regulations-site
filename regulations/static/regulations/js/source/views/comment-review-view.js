@@ -51,11 +51,11 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   clearComment: function(section) {
-    var comment = _.find(this.comments, function(comment) {
+    var target = _.find(this.comments, function(comment) {
       return comment.section === section;
     });
-    if (comment) {
-      comment.remove();
+    if (target) {
+      target.remove();
     }
   },
 
