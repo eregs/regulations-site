@@ -104,7 +104,7 @@ class DiffLayerCreator(LayerCreator):
         to one of the versions we're comparing. This data is then combined
         before displaying"""
         older_layer = self.api.layer(layer_name, doc_type, doc_id)
-        newer_doc_id = '/'.join(self.newer_version, doc_id.split('/')[1:])
+        newer_doc_id = '/'.join([self.newer_version] + doc_id.split('/')[1:])
         newer_layer = self.api.layer(layer_name, doc_type, newer_doc_id)
 
         layer_json = dict(newer_layer)  # copy
