@@ -31,32 +31,38 @@ class PreambleViewTests(TestCase):
         self.assertIsNone(fn(root, ['1', 'c', 'r']))
         self.assertIsNone(fn(root, ['1', 'c', 'i', 'r']))
 
+    @patch('regulations.generator.generator.api_reader')
     @patch('regulations.views.preamble.ApiReader')
-    def test_get_integration(self, ApiReader):
+    def test_get_integration(self, ApiReader, api_reader):
         """Verify that the contexts are built correctly before being sent to
         the template. AJAX/partial=true requests should only get the inner
         context (i.e. no UI-related context)"""
         ApiReader.return_value.preamble.return_value = self._mock_preamble
+        api_reader.ApiReader.return_value.layer.return_value = {
+            '1-c-x': ['something']
+        }
         view = preamble.PreambleView.as_view()
 
-        response = view(RequestFactory().get('/preamble/1/c/x'),
-                        paragraphs='1/c/x')
+        path = '/preamble/1/c/x?layers=meta'
+        response = view(RequestFactory().get(path), paragraphs='1/c/x')
         self.assertEqual(
             response.context_data['sub_context']['node']['text'], '4')
         self.assertEqual(
             response.context_data['sub_context']['node']['children'], [])
+        # layer data is present
+        self.assertEqual(
+            response.context_data['sub_context']['node']['meta'], 'something')
         self.assertEqual(response.context_data['preamble'],
                          self._mock_preamble)
         self.assertNotIn('node', response.context_data)
 
-        response = view(RequestFactory().get('/preamble/1/c/x?partial=true'),
+        response = view(RequestFactory().get(path + '&partial=true'),
                         paragraphs='1/c/x')
         self.assertNotIn('sub_context', response.context_data)
         self.assertEqual(response.context_data['node']['text'], '4')
 
         request = RequestFactory().get(
-            '/preamble/1/c/x',
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+            path, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         response = view(request, paragraphs='1/c/x')
         self.assertNotIn('sub_context', response.context_data)
         self.assertEqual(response.context_data['node']['text'], '4')
