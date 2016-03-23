@@ -99,8 +99,8 @@ var CommentView = Backbone.View.extend({
       window.localStorage.setItem(this.key, JSON.stringify(payload));
     }
     else {
-      // don't keep comment in localstorage if saved comment is empty
-      window.localStorage.removeItem(this.key);
+      // clear comment if input is empty
+      this.clear();
     }
 
   },
