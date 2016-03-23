@@ -105,7 +105,7 @@ class GeneratorTest(TestCase):
 
         creator = generator.LayerCreator()
         creator.add_layers(
-            ['meta', 'graphics', 'internal'], '205', 'verver',
+            ['meta', 'graphics', 'internal'], 'cfr', 'verver/205',
             sectional=True)
         i, p, s = creator.get_appliers()
         self.assertEquals(len(p.layers), 1)
