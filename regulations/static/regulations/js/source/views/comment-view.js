@@ -83,6 +83,7 @@ var CommentView = Backbone.View.extend({
   },
 
   setStorage: function() {
+
     var payload = {
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
@@ -93,7 +94,7 @@ var CommentView = Backbone.View.extend({
         };
       }).get()
     };
-    window.localStorage.setItem(this.key, JSON.stringify(payload));
+
   },
 
   addQueueItem: function(key, name) {

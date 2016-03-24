@@ -42,8 +42,23 @@ comment.less contains styles related to commenting on sections
     }
   }
 
+  .comment-clear {
+    clear: both;
+    cursor: pointer;
+    display: inline-block;
+    margin: 8px 13px 0 0;
+    float: right;
+    text-align: right;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .status {
-    margin: 15px 0;
+    clear: both;
+    font-weight: bold;
+    padding: 0 8px 0 0;
     text-align: right;
     width: 100%;
   }
