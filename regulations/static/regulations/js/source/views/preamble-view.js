@@ -17,12 +17,14 @@ var PreambleView = ChildView.extend({
     'click .activate-read': 'read'
   },
 
-  initialize: function() {
+  initialize: function(options) {
+    this.options = options;
+    this.id = options.id;
+    this.url = 'preamble/' + this.id.split('-').join('/');
+    if (!options.render) {
+      this.render();
+    }
     ChildView.prototype.initialize.apply(this, arguments);
-    this.$read = this.$el.find('#preamble-read');
-    this.$write = this.$el.find('#preamble-write');
-    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
-    this.$write.hide();
   },
 
   read: function() {
@@ -42,7 +44,13 @@ var PreambleView = ChildView.extend({
     this.$write.show();
   },
 
-  render: function() {}
+  render: function() {
+    ChildView.prototype.render.apply(this, arguments);
+    this.$read = this.$el.find('#preamble-read');
+    this.$write = this.$el.find('#preamble-write');
+    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
+    this.$write.hide();
+  }
 });
 
 module.exports = PreambleView;

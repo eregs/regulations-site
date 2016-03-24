@@ -35,6 +35,7 @@ var CommentView = Backbone.View.extend({
   events: {
     'change input[type="file"]': 'addAttachment',
     'click .queue-item': 'clearAttachment',
+    'click .comment-clear': 'clear',
     'submit form': 'save'
   },
 
@@ -136,6 +137,12 @@ var CommentView = Backbone.View.extend({
     var key = $target.data('key');
     var payload = this.getStorage();
     $target.remove();
+  },
+
+  clear: function() {
+    window.localStorage.removeItem(this.key);
+    this.load();
+    CommentEvents.trigger('comment:clear', this.section);
   },
 
   save: function(e) {

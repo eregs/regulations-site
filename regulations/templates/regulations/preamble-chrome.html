@@ -1,6 +1,5 @@
 {% extends "regulations/chrome.html" %}
 {% load static from staticfiles %}
-{% load macros render_nested %}
 
 {% block title %}Preamble {{doc_number}}{% endblock %}
 
@@ -29,12 +28,13 @@
         {% for child in preamble.children %}
           {% if child.title %}
             <li>
-              <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}">{{child.title}}</a>
+              <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}"
+                 data-section-id="{{child.label|join:"-"}}">{{child.title}}</a>
             </li>
             {% for subchild in child.children %}
               {% if subchild.title %}
                 <li><a href="{% url "chrome_preamble" paragraphs=subchild.label|join:"/" %}"
-                       style="padding-left: 2em;">{{subchild.title}}</a></li>
+                       data-section-id="{{subchild.label|join:"-"}}"style="padding-left: 2em;">{{subchild.title}}</a></li>
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -49,33 +49,7 @@
 <main role="main">
 
   <div id="content-body" class="main-content">
-
-    <section id="content-wrapper" data-page-type="preamble-section">
-
-      <div id="preamble-read">
-        {% render_nested template=sub_template context=sub_context %}
-      </div>
-
-      <div id="preamble-write">
-        <div class="activate-read">View the proposal</div>
-        <div class="comment-wrapper">
-          <div class="comment">
-            <h3>Enter your comment below:</h3>
-            <div class="comment-context"></div>
-            <form>
-              <div class="editor-container"></div>
-              <div class="queued"></div>
-              <input type="file">
-              <button type="submit">Add to your comment</button>
-              <div class="status"></div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    </section>
+    {% include "regulations/preamble-partial.html" %}
   </div> <!-- /.main-content -->
 
 </main>

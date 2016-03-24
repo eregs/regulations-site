@@ -6,6 +6,7 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var CommentView = require('./comment-view');
+var CommentEvents = require('../events/comment-events');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
@@ -18,6 +19,8 @@ var CommentReviewView = Backbone.View.extend({
     this.$content = this.$el.find('#comment');
     this.docNumber = this.$el.data('doc-number');
     this.prefix = 'comment:' + this.docNumber;
+
+    this.listenTo(CommentEvents, 'comment:clear', this.clearComment);
 
     this.showComments();
   },
@@ -45,6 +48,15 @@ var CommentReviewView = Backbone.View.extend({
         });
       }.bind(this))
       .value();
+  },
+
+  clearComment: function(section) {
+    var target = _.find(this.comments, function(comment) {
+      return comment.section === section;
+    });
+    if (target) {
+      target.remove();
+    }
   },
 
   serialize: function() {
