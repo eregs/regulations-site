@@ -14,8 +14,8 @@ var PreambleView = ChildView.extend({
   el: '#content-wrapper',
 
   events: {
-    'click .activate-write': 'write',
-    'click .activate-read': 'read'
+    'click .activate-write': 'handleWrite',
+    'click .activate-read': 'handleRead'
   },
 
   initialize: function(options) {
@@ -28,17 +28,23 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.initialize.apply(this, arguments);
   },
 
-  read: function() {
+  handleRead: function() {
     this.$write.hide();
     this.$read.show();
   },
 
-  write: function(e) {
+  handleWrite: function(e) {
     var $target = $(e.target);
-    var $parent = $target.closest('[data-permalink-section]').clone();
+    this.write(
+      $target.data('section'),
+      $target.closest('[data-permalink-section]')
+    );
+  },
+
+  write: function(section, $parent) {
     $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
-      section: $target.data('section'),
+      section: section,
       $parent: $parent
     });
     this.$read.hide();
@@ -49,14 +55,14 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.render.apply(this, arguments);
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
-    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
+    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper')});
     this.commentToc = new CommentTocView({el: this.$write.find('.comment-toc')});
 
     if (this.options.mode === 'write') {
-      var $target = $('#' + this.options.section).find('[data-permalink-section]');
-      this.write({target: $target});
+      var $parent = $('#' + this.options.section).find('[data-permalink-section]');
+      this.write(this.options.section, $parent);
     } else {
-      this.read();
+      this.handleRead();
     }
   }
 });

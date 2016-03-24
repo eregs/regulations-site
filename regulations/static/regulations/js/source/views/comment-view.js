@@ -56,6 +56,7 @@ var CommentView = Backbone.View.extend({
     });
 
     this.listenTo(CommentEvents, 'comment:target', this.target);
+    this.listenTo(CommentEvents, 'comment:update', this.update);
 
     if (this.section) {
       this.load();
@@ -109,6 +110,12 @@ var CommentView = Backbone.View.extend({
     _.each(payload.files || [], function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));
+  },
+
+  update: function(section) {
+    if (this.section === section) {
+      this.load();
+    }
   },
 
   addAttachment: function(e) {

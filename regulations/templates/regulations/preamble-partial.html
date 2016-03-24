@@ -29,6 +29,10 @@
 
 <script id="comment-toc-template" type="text/template">
   <% _.each(comments, function(comment) { %>
-    <div class="comment-toc-item" data-comment-section="<%= comment.section %>"><%= comment.section %></div>
+    <div class="comment-toc-item" data-comment-section="<%= comment.section %>">
+      <span><%= comment.section %></span>
+      <span class="comment-toc-edit">Edit</span>
+      <span class="comment-toc-clear">Clear</span>
+    </div>
   <% }); %>
 </script>

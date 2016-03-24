@@ -11,7 +11,8 @@ var DrawerEvents = require('../events/drawer-events');
 
 module.exports = Backbone.CommentTocView = Backbone.View.extend({
   events: {
-    'click .comment-toc-item': 'selectComment'
+    'click .comment-toc-edit': 'editComment',
+    'click .comment-toc-clear': 'clearComment'
   },
 
   initialize: function(options) {
@@ -41,10 +42,22 @@ module.exports = Backbone.CommentTocView = Backbone.View.extend({
       .value();
   },
 
-  selectComment: function(e) {
-    var section = $(e.target).data('comment-section');
+  editComment: function(e) {
+    var section = $(e.target)
+      .closest('.comment-toc-item')
+      .data('comment-section');
     var options = {mode: 'write', section: section};
     DrawerEvents.trigger('section:open', section);
     MainEvents.trigger('section:open', section, options, 'preamble-section');
+  },
+
+  clearComment: function(e) {
+    var section = $(e.target)
+      .closest('.comment-toc-item')
+      .data('comment-section');
+    // TODO(jmcarp) Push storage ops to model
+    window.localStorage.removeItem('comment:' + section);
+    CommentEvents.trigger('comment:update', section);
+    this.render();
   }
 });
