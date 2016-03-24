@@ -30,14 +30,11 @@ class HTMLBuilder():
         self.search_applier = search_applier
         self.diff_applier = diff_applier
 
-    def generate_all_html(self):
-        self.generate_html(self.tree[''])
-
     def generate_html(self):
         if self.diff_applier:
             self.diff_applier.tree_changes(self.tree)
         for layer in self.p_applier.layers.values():
-            if hasattr(layer, 'preprocess_root'):
+            if hasattr(layer, 'preprocess_root'):   # @todo - remove
                 layer.preprocess_root(self.tree)
         self.process_node(self.tree)
 
