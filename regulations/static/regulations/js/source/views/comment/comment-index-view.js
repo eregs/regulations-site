@@ -5,9 +5,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
-var CommentEvents = require('../events/comment-events');
-var MainEvents = require('../events/main-events');
-var DrawerEvents = require('../events/drawer-events');
+var MainEvents = require('../../events/main-events');
+var DrawerEvents = require('../../events/drawer-events');
+var CommentEvents = require('../../events/comment-events');
 
 function getSection(elm) {
   return $(elm)

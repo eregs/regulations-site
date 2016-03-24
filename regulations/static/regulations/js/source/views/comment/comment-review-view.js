@@ -6,7 +6,7 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var CommentView = require('./comment-view');
-var CommentEvents = require('../events/comment-events');
+var CommentEvents = require('../../events/comment-events');
 
 var CommentReviewView = Backbone.View.extend({
   events: {

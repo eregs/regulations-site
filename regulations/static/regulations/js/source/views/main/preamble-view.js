@@ -5,10 +5,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
-var ChildView = require('./main/child-view');
-var CommentView = require('./comment-view');
-var CommentIndexView = require('./comment-index-view');
-var CommentEvents = require('../events/comment-events');
+var ChildView = require('./child-view');
+var CommentView = require('../comment/comment-view');
+var CommentIndexView = require('../comment/comment-index-view');
+var CommentEvents = require('../../events/comment-events');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',

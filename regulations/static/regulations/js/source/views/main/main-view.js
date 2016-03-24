@@ -23,8 +23,8 @@ var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
-var CommentReviewView = require('../comment-review-view');
-var PreambleView = require('../preamble-view');
+var CommentReviewView = require('../comment/comment-review-view');
+var PreambleView = require('./preamble-view');
 var Resources = require('../../resources');
 Backbone.$ = $;
 

@@ -9,7 +9,7 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
-var CommentEvents = require('../events/comment-events');
+var CommentEvents = require('../../events/comment-events');
 
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';

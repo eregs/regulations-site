@@ -15,7 +15,7 @@ describe('CommentView', function() {
     Backbone = require('backbone');
     $ = require('jquery');
     Backbone.$ = $;
-    CommentView = require('../../../source/views/comment-view');
+    CommentView = require('../../../source/views/comment/comment-view');
     CommentEvents = require('../../../source/events/comment-events');
     window.localStorage = storage;
   });
