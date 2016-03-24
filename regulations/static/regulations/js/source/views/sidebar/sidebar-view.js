@@ -82,8 +82,8 @@ var SidebarView = Backbone.View.extend({
                 MainEvents.trigger('definition:carriedOver');
 
                 // definition container is hidden when SxS opens
-                if ($definition.is(':hidden')) {
-                    $definition.show();
+                if (this.$definition.is(':hidden')) {
+                    this.$definition.show();
                 }
 
                 break;
