@@ -61,7 +61,8 @@ var CommentReviewView = Backbone.View.extend({
 
   serialize: function() {
     return {
-      docNumber: this.docNumber,
+      // TODO(jmcarp) Pass regs.gov document ID
+      // doc_number: this.docNumber,
       sections: _.chain(_.keys(window.localStorage))
         .filter(function(key) {
           return key.indexOf(this.prefix) === 0;
