@@ -61,6 +61,7 @@ describe('CommentView', function() {
     commentView.addQueueItem('6bc649', 'attachment.txt');
     commentView.setStorage();
     var payload = {
+      id: '2016_02479',
       comment: 'dislike',
       files: [
         {key: '6bc649', name: 'attachment.txt'}
@@ -79,6 +80,7 @@ describe('CommentView', function() {
 
   it('loads state from localstorage', function() {
     var payload = {
+      id: '2016_02479',
       comment: 'like',
       files: [
         {key: '6bc649', name: 'attachment.txt'}
