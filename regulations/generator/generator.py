@@ -37,33 +37,12 @@ class LayerCreator(object):
 
         self.api = api_reader.ApiReader()
 
-    def get_layer_json(self, api_name, regulation, version):
-        """ Hit the API to retrieve the regulation JSON. """
-        return self.api.layer(api_name, regulation, version)
+    def get_layer_json(self, layer_name, doc_type, label_id, version=None):
+        """Hit the API to retrieve layer data"""
+        return self.api.layer(layer_name, doc_type, label_id, version)
 
-    def add_layer(self, layer_name, regulation, version, sectional=False):
-        """ Add a normal layer (no special handling required) to the applier.
-        """
-
-        if layer_name.lower() in LayerCreator.LAYERS:
-            layer_class = LayerCreator.LAYERS[layer_name]
-            api_name = layer_class.data_source
-            applier_type = layer_class.layer_type
-            layer_json = self.get_layer_json(api_name, regulation, version)
-            if layer_json is None:
-                logging.warning("No data for %s/%s/%s"
-                                % (api_name, regulation, version))
-            else:
-                layer = layer_class(layer_json)
-
-                if sectional and hasattr(layer, 'sectional'):
-                    layer.sectional = sectional
-                if hasattr(layer, 'version'):
-                    layer.version = version
-
-                self.appliers[applier_type].add_layer(layer)
-
-    def add_layers(self, layer_names, regulation, version, sectional=False):
+    def add_layers(self, layer_names, doc_type, label_id, sectional=False,
+                   version=None):
         """Request a list of layers. As this might spawn multiple HTTP
         requests, we wrap the requests in threads so they can proceed
         concurrently."""
@@ -78,7 +57,8 @@ class LayerCreator(object):
             layer_class = LayerCreator.LAYERS[layer_name]
             api_name = layer_class.data_source
             applier_type = layer_class.layer_type
-            layer_json = self.get_layer_json(api_name, regulation, version)
+            layer_json = self.get_layer_json(api_name, doc_type, label_id,
+                                             version)
             results.append((api_name, applier_type, layer_class, layer_json))
 
         #   Spawn threads
@@ -93,8 +73,8 @@ class LayerCreator(object):
 
         for api_name, applier_type, layer_class, layer_json in results:
             if layer_json is None:
-                logging.warning("No data for %s/%s/%s"
-                                % (api_name, regulation, version))
+                logging.warning("No data for %s %s %s %s", api_name, doc_type,
+                                label_id, version)
             else:
                 layer = layer_class(layer_json)
 
@@ -117,27 +97,16 @@ class DiffLayerCreator(LayerCreator):
         super(DiffLayerCreator, self).__init__()
         self.newer_version = newer_version
 
-    @staticmethod
-    def combine_layer_versions(older_layer, newer_layer):
-        """ Create a new layer by taking all the nodes from the older
-        layer, and adding to the all the new nodes from the newer layer. """
+    def get_layer_json(self, layer_name, doc_type, label_id, version):
+        """Diffs contain layer data from _two_ documents, each corresponding
+        to one of the versions we're comparing. This data is then combined
+        before displaying"""
+        older_layer = self.api.layer(layer_name, doc_type, label_id, version)
+        newer_layer = self.api.layer(layer_name, doc_type, label_id,
+                                     self.newer_version)
 
-        combined_layer = {}
-
-        for n in older_layer:
-            combined_layer[n] = older_layer[n]
-
-        for n in newer_layer:
-            if n not in combined_layer:
-                combined_layer[n] = newer_layer[n]
-
-        return combined_layer
-
-    def get_layer_json(self, api_name, regulation, version):
-        older_layer = self.api.layer(api_name, regulation, version)
-        newer_layer = self.api.layer(api_name, regulation, self.newer_version)
-
-        layer_json = self.combine_layer_versions(older_layer, newer_layer)
+        layer_json = dict(newer_layer)  # copy
+        layer_json.update(older_layer)  # older layer takes precedence
         return layer_json
 
 

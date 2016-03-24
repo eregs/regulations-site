@@ -100,27 +100,13 @@ class GeneratorTest(TestCase):
         self.assertTrue(isinstance(s_applier, SearchReplaceLayersApplier))
 
     @patch('regulations.generator.generator.LayerCreator.get_layer_json')
-    def test_add_layer(self, get_layer_json):
-        get_layer_json.return_value = {'layer': 'layer'}
-        creator = generator.LayerCreator()
-        creator.add_layer('meta', '205', 'verver')
-        i, p, s = creator.get_appliers()
-        self.assertEquals(len(p.layers), 1)
-
-        get_layer_json.return_value = None
-        creator = generator.LayerCreator()
-        creator.add_layer('meta', '205', 'verver')
-        i, p, s = creator.get_appliers()
-        self.assertEquals(len(p.layers), 0)
-
-    @patch('regulations.generator.generator.LayerCreator.get_layer_json')
     def test_add_layers(self, get_layer_json):
         get_layer_json.return_value = {'layer': 'layer'}
 
         creator = generator.LayerCreator()
         creator.add_layers(
-            ['meta', 'graphics', 'internal'], '205', 'verver',
-            sectional=True)
+            ['meta', 'graphics', 'internal'], 'cfr', '205',
+            sectional=True, version='verver')
         i, p, s = creator.get_appliers()
         self.assertEquals(len(p.layers), 1)
         self.assertEquals(len(i.layers), 1)
