@@ -53,14 +53,13 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   clearComment: function(section) {
-    var target = _.find(this.comments, function(comment) {
+    var index = _.findIndex(this.comments, function(comment) {
       return comment.section === section;
     });
 
-    if (target) {
-      target.remove();
-      this.comments = _.without(this.comments, target);
-
+    if (index !== -1) {
+      var target = this.comments.splice(index, 1);
+      target[0].remove();
       this.checkForComments();
     }
   },
