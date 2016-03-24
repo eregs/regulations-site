@@ -21,7 +21,7 @@ from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
-from regulations.views.comment import upload_proxy, submit_comment
+from regulations.views import comment
 
 # Re-usable URL patterns.
 meta_version = r'(?P<%s>[-\d\w_]+)'
@@ -44,10 +44,11 @@ urlpatterns = patterns(
     url(r'^$', universal, name='universal_landing'),
     # about page
     url(r'^about$', about, name='about'),
-    url(r'^comments/attachment$', upload_proxy),
+    url(r'^comments/attachment$', comment.upload_proxy),
     url(r'^comments/review/(?P<doc_number>[\w-]+)$',
         PrepareCommentView.as_view()),
-    url(r'^comments/comment$', submit_comment),
+    url(r'^comments/preview$', comment.preview_comment),
+    url(r'^comments/comment$', comment.submit_comment),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v
     url(r'^regulation_redirect/%s$' % paragraph_pattern, redirect_by_date_get,

@@ -2,7 +2,7 @@ import json
 
 import boto3
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -41,6 +41,14 @@ def upload_proxy(request):
         'url': url,
         'key': key,
     })
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def preview_comment(request):
+    body = json.loads(request.body.decode('utf-8'))
+    content = tasks.build_comment(body)
+    return HttpResponse(content, 'text/markdown', 200)
 
 
 @csrf_exempt
