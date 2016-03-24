@@ -5,6 +5,7 @@ from django.views.generic.base import View
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import HTMLBuilder
+from regulations.views import utils
 
 
 def find_subtree(root, label_parts):
@@ -21,10 +22,14 @@ def find_subtree(root, label_parts):
     return cursor
 
 
-def generate_html_tree(subtree):
+def generate_html_tree(subtree, request):
     """Use the HTMLBuilder to generate a version of this subtree with
     appropriate markup. Currently, includes no layers"""
-    builder = HTMLBuilder(*LayerCreator().get_appliers())
+    layer_creator = LayerCreator()
+    doc_id = '-'.join(subtree['label'])
+    layer_creator.add_layers(utils.layer_names(request), 'preamble',
+                             doc_id, sectional=True)
+    builder = HTMLBuilder(*layer_creator.get_appliers())
     builder.tree = subtree
     builder.generate_html()
 
@@ -46,7 +51,7 @@ class PreambleView(View):
         if subtree is None:
             raise Http404
 
-        context = generate_html_tree(subtree)
+        context = generate_html_tree(subtree, request)
         context['use_comments'] = True
         template = context['node']['template_name']
 
@@ -70,7 +75,7 @@ class PrepareCommentView(View):
         if subtree is None:
             raise Http404
 
-        context = generate_html_tree(subtree)
+        context = generate_html_tree(subtree, request)
         context.update({
             'preamble': preamble,
             'doc_number': kwargs['doc_number'],
