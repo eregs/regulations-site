@@ -48,14 +48,27 @@ var CommentReviewView = Backbone.View.extend({
         });
       }.bind(this))
       .value();
+
+    this.checkForComments();
   },
 
   clearComment: function(section) {
     var target = _.find(this.comments, function(comment) {
       return comment.section === section;
     });
+
     if (target) {
       target.remove();
+      this.comments = _.without(this.comments, target);
+
+      this.checkForComments();
+    }
+  },
+
+  checkForComments: function() {
+    if (this.comments.length <= 0) {
+      $('#comment').html('<p>There are no comments to review or submit.</p>');
+      $('.comment-review-submit').remove();
     }
   },
 
