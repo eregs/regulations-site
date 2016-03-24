@@ -9,23 +9,30 @@ var CommentEvents = require('../events/comment-events');
 var MainEvents = require('../events/main-events');
 var DrawerEvents = require('../events/drawer-events');
 
-module.exports = Backbone.CommentTocView = Backbone.View.extend({
+function getSection(elm) {
+  return $(elm)
+    .closest('.comment-index-item')
+    .data('comment-section');
+}
+
+module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   events: {
-    'click .comment-toc-edit': 'editComment',
-    'click .comment-toc-clear': 'clearComment'
+    'click .comment-index-edit': 'editComment',
+    'click .comment-index-clear': 'clearComment'
   },
 
   initialize: function(options) {
     this.docNumber = this.$el.data('doc-number');
     this.prefix = 'comment:' + this.docNumber;
-    this.template = _.template($('#comment-toc-template').html());
+    this.template = _.template($('#comment-index-template').html());
+    this.$index = this.$el.find('.comment-index-items');
 
     this.render();
   },
 
   render: function() {
     var html = this.template({comments: this.parseComments()});
-    this.$el.html(html);
+    this.$index.html(html);
   },
 
   parseComments: function() {
@@ -43,18 +50,14 @@ module.exports = Backbone.CommentTocView = Backbone.View.extend({
   },
 
   editComment: function(e) {
-    var section = $(e.target)
-      .closest('.comment-toc-item')
-      .data('comment-section');
+    var section = getSection(e.target);
     var options = {mode: 'write', section: section};
     DrawerEvents.trigger('section:open', section);
     MainEvents.trigger('section:open', section, options, 'preamble-section');
   },
 
   clearComment: function(e) {
-    var section = $(e.target)
-      .closest('.comment-toc-item')
-      .data('comment-section');
+    var section = getSection(e.target);
     // TODO(jmcarp) Push storage ops to model
     window.localStorage.removeItem('comment:' + section);
     CommentEvents.trigger('comment:update', section);
