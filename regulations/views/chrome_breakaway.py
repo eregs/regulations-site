@@ -22,7 +22,7 @@ class ChromeBreakawayView(ChromeView):
         context['reg_part'] = context['label_id'].split('-')[0]
         context['version'] = self.request.GET.get('from_version')
         meta = api_reader.ApiReader().layer(
-            'meta', 'cfr', context['version'] + '/' + context['reg_part'])
+            'meta', 'cfr', context['reg_part'], context['version'])
         context['meta'] = meta[context['reg_part']][0]
         context['formatted_id'] = label_to_text(context['label_id'].split('-'))
 

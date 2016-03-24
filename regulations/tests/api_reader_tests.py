@@ -25,25 +25,32 @@ class ClientTest(TestCase):
         reader = ApiReader()
         self.assertEqual(
             to_return,
-            reader.layer("layer-here", "cfr", "version-here/label-here"))
+            reader.layer("layer-here", "cfr", "label-here", "version-here"))
         get = api_client.ApiClient.return_value.get
         self.assertEqual(1, get.call_count)
         param = api_client.ApiClient.return_value.get.call_args[0][0]
         self.assertIn('layer-here/cfr/version-here/label', param)
-        self.assertNotIn('label-here', param)   # only grabs the root
+        self.assertNotIn('label-here', param)   # only grabs the root, "label"
 
         #   Cache
         self.assertEqual(
             to_return,
-            reader.layer("layer-here", "cfr", "version-here/label-abc"))
+            reader.layer("layer-here", "cfr", "label-abc", "version-here"))
         self.assertEqual(1, get.call_count)
 
         self.assertEqual(
             to_return,
-            reader.layer("layer-here", "cfr", "version-here/lablab"))
+            reader.layer("layer-here", "cfr", "lablab", "version-here"))
         self.assertEqual(2, get.call_count)
         param = get.call_args[0][0]
         self.assertIn('layer-here/cfr/version-here/lablab', param)
+
+        self.assertEqual(
+            to_return,
+            reader.layer("layer-here", "preamble", "lablab"))
+        self.assertEqual(3, get.call_count)
+        param = get.call_args[0][0]
+        self.assertIn('layer-here/preamble/lablab', param)
 
     @patch('regulations.generator.api_reader.api_client')
     def test_notices(self, api_client):

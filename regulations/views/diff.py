@@ -31,10 +31,9 @@ def get_appliers(label_id, versions):
         raise error_handling.MissingContentException()
 
     layer_creator = generator.DiffLayerCreator(versions.newer)
-    doc_id = versions.older + '/' + label_id
     layer_creator.add_layers(
         ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting'],
-        'cfr', doc_id)
+        'cfr', label_id, version=versions.older)
     return layer_creator.get_appliers() + (diff, )
 
 

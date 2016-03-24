@@ -25,9 +25,8 @@ class PartialView(TemplateView):
     def determine_appliers(self, label_id, version):
         """Figure out which layers to apply by checking the GET args"""
         layer_creator = generator.LayerCreator()
-        doc_id = version + '/' + label_id
         layer_creator.add_layers(utils.layer_names(self.request), 'cfr',
-                                 doc_id, self.sectional_links)
+                                 label_id, self.sectional_links, version)
         return layer_creator.get_appliers()
 
     def get_context_data(self, **kwargs):

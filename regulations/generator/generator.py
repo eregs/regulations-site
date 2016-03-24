@@ -37,18 +37,15 @@ class LayerCreator(object):
 
         self.api = api_reader.ApiReader()
 
-    def get_layer_json(self, layer_name, doc_type, doc_id):
-        """ Hit the API to retrieve the regulation JSON. """
-        return self.api.layer(layer_name, doc_type, doc_id)
+    def get_layer_json(self, layer_name, doc_type, label_id, version=None):
+        """Hit the API to retrieve layer data"""
+        return self.api.layer(layer_name, doc_type, label_id, version)
 
-    def add_layers(self, layer_names, doc_type, doc_id, sectional=False):
+    def add_layers(self, layer_names, doc_type, label_id, sectional=False,
+                   version=None):
         """Request a list of layers. As this might spawn multiple HTTP
         requests, we wrap the requests in threads so they can proceed
         concurrently."""
-        if '/' in doc_id:   # @todo - is there a clean way to avoid this?
-            version = doc_id.split('/')[0]
-        else:
-            version = None
         # This doesn't deal with sectional interpretations yet.
         # we'll have to do that.
         layer_names = set(l for l in layer_names
@@ -60,7 +57,8 @@ class LayerCreator(object):
             layer_class = LayerCreator.LAYERS[layer_name]
             api_name = layer_class.data_source
             applier_type = layer_class.layer_type
-            layer_json = self.get_layer_json(api_name, doc_type, doc_id)
+            layer_json = self.get_layer_json(api_name, doc_type, label_id,
+                                             version)
             results.append((api_name, applier_type, layer_class, layer_json))
 
         #   Spawn threads
@@ -75,8 +73,8 @@ class LayerCreator(object):
 
         for api_name, applier_type, layer_class, layer_json in results:
             if layer_json is None:
-                logging.warning("No data for %s/%s/%s", api_name, doc_type,
-                                doc_id)
+                logging.warning("No data for %s %s %s %s", api_name, doc_type,
+                                label_id, version)
             else:
                 layer = layer_class(layer_json)
 
@@ -99,13 +97,13 @@ class DiffLayerCreator(LayerCreator):
         super(DiffLayerCreator, self).__init__()
         self.newer_version = newer_version
 
-    def get_layer_json(self, layer_name, doc_type, doc_id):
+    def get_layer_json(self, layer_name, doc_type, label_id, version):
         """Diffs contain layer data from _two_ documents, each corresponding
         to one of the versions we're comparing. This data is then combined
         before displaying"""
-        older_layer = self.api.layer(layer_name, doc_type, doc_id)
-        newer_doc_id = '/'.join([self.newer_version] + doc_id.split('/')[1:])
-        newer_layer = self.api.layer(layer_name, doc_type, newer_doc_id)
+        older_layer = self.api.layer(layer_name, doc_type, label_id, version)
+        newer_layer = self.api.layer(layer_name, doc_type, label_id,
+                                     self.newer_version)
 
         layer_json = dict(newer_layer)  # copy
         layer_json.update(older_layer)  # older layer takes precedence

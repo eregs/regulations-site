@@ -42,11 +42,10 @@ class Analyses(SidebarBase):
         """Retrieves SxSEntry data from the server"""
         if 'Interp' in self.label_id:
             reg_part = self.label_parts[0]
-            doc_id = '{}/{}-Interp'.format(self.version, reg_part)
-            data = http_client.layer('analyses', 'cfr', doc_id)
+            doc_id = reg_part + '-Interp'
         else:
-            doc_id = '{}/{}'.format(self.version, self.label_id)
-            data = http_client.layer('analyses', 'cfr', doc_id)
+            doc_id = self.label_id
+        data = http_client.layer('analyses', 'cfr', doc_id, self.version)
 
         return [
             SxSEntry(Label(label_id), doc_number=subdata[-1]['reference'][0])

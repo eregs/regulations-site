@@ -41,7 +41,7 @@ class ParagraphSXSView(TemplateView):
            visible from this regulation version.) Make them in descending
            order"""
         sxs_layer_data = api_reader.ApiReader().layer(
-            'analyses', 'cfr', version + '/' + label_id)
+            'analyses', 'cfr', label_id, version)
 
         if label_id not in sxs_layer_data:
             return []
