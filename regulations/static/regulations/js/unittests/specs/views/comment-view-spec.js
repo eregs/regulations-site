@@ -47,7 +47,7 @@ describe('CommentView', function() {
     var payload = {
       comment: 'like',
       files: [
-        {key: '12345', name: 'attachment.txt'}
+        {key: '6bc649', name: 'attachment.txt'}
       ],
     };
     commentView.setSection('2016_02479');
@@ -58,30 +58,30 @@ describe('CommentView', function() {
   it('writes to localstorage', function() {
     commentView.setSection('2016_02479');
     sinon.stub(commentView.editor, 'getContent').returns('dislike');
-    commentView.addQueueItem('abcde', 'attachment.txt');
+    commentView.addQueueItem('6bc649', 'attachment.txt');
     commentView.setStorage();
     var payload = {
       comment: 'dislike',
       files: [
-        {key: 'abcde', name: 'attachment.txt'}
+        {key: '6bc649', name: 'attachment.txt'}
       ],
     };
     expect(commentView.getStorage()).to.deep.equal(payload);
   });
 
   it('adds a queue item', function() {
-    commentView.addQueueItem('key', 'name');
+    commentView.addQueueItem('6bc649', 'attachment.txt');
     var $item = commentView.$queued.find('.queue-item');
     expect($item.length).to.equal(1);
-    expect($item.data('key')).to.equal('key');
-    expect($item.text()).to.equal('name');
+    expect($item.data('key')).to.equal('6bc649');
+    expect($item.text()).to.equal('attachment.txt');
   });
 
   it('loads state from localstorage', function() {
     var payload = {
       comment: 'like',
       files: [
-        {key: '123abc', name: 'attachment.txt'}
+        {key: '6bc649', name: 'attachment.txt'}
       ],
     };
     commentView.setSection('2016_02479');
@@ -91,7 +91,7 @@ describe('CommentView', function() {
     expect(commentView.editor.setContent).to.have.been.calledWith('like', 'markdown');
     var $item = commentView.$queued.find('.queue-item');
     expect($item.length).to.equal(1);
-    expect($item.data('key')).to.equal('123abc');
+    expect($item.data('key')).to.equal('6bc649');
     expect($item.text()).to.equal('attachment.txt');
   });
 
@@ -99,7 +99,7 @@ describe('CommentView', function() {
     commentView.setSection('2016_02479');
     sinon.stub(commentView.editor, 'setContent');
     sinon.stub(commentView.editor, 'getContent').returns('dislike');
-    commentView.addQueueItem('abcde', 'attachment.txt');
+    commentView.addQueueItem('6bc649', 'attachment.txt');
     commentView.setStorage();
     commentView.clear();
     expect(commentView.getStorage()).to.deep.equal({});
