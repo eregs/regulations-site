@@ -19,7 +19,6 @@ var CommentReviewView = Backbone.View.extend({
     this.$content = this.$el.find('#comment');
     this.docNumber = this.$el.data('doc-number');
     this.prefix = 'comment:' + this.docNumber;
-    this.numberOfComments = 0;
 
     this.listenTo(CommentEvents, 'comment:clear', this.clearComment);
 
@@ -50,7 +49,6 @@ var CommentReviewView = Backbone.View.extend({
       }.bind(this))
       .value();
 
-    this.numberOfComments = this.comments.length;
     this.checkForComments();
   },
 
@@ -58,16 +56,17 @@ var CommentReviewView = Backbone.View.extend({
     var target = _.find(this.comments, function(comment) {
       return comment.section === section;
     });
+
     if (target) {
       target.remove();
+      this.comments = _.without(this.comments, target);
 
-      this.numberOfComments--;
       this.checkForComments();
     }
   },
 
   checkForComments: function() {
-    if (this.numberOfComments === 0) {
+    if (this.comments.length <= 0) {
       $('#comment').html('<p>There are no comments to review or submit.</p>');
       $('.comment-review-submit').remove();
     }
