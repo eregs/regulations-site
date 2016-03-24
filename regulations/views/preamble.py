@@ -56,7 +56,7 @@ class PreambleView(View):
         template = context['node']['template_name']
 
         context = {'sub_context': context, 'sub_template': template,
-                   'preamble': preamble}
+                   'preamble': preamble, 'doc_number': label_parts[0]}
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
         else:

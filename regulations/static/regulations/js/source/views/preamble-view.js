@@ -7,6 +7,7 @@ Backbone.$ = $;
 
 var ChildView = require('./main/child-view');
 var CommentView = require('./comment-view');
+var CommentTocView = require('./comment-toc-view');
 var CommentEvents = require('../events/comment-events');
 
 var PreambleView = ChildView.extend({
@@ -49,7 +50,14 @@ var PreambleView = ChildView.extend({
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
     this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
-    this.$write.hide();
+    this.commentToc = new CommentTocView({el: this.$write.find('.comment-toc')});
+
+    if (this.options.mode === 'write') {
+      var $target = $('#' + this.options.section).find('[data-permalink-section]');
+      this.write({target: $target});
+    } else {
+      this.read();
+    }
   }
 });
 

@@ -15,7 +15,7 @@ var CommentReviewView = Backbone.View.extend({
 
   initialize: function(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
-    this.template = $('#comment-template').html();
+    this.template = _.template($('#comment-template').html());
     this.$content = this.$el.find('#comment');
     this.docNumber = this.$el.data('doc-number');
     this.prefix = 'comment:' + this.docNumber;
@@ -35,12 +35,12 @@ var CommentReviewView = Backbone.View.extend({
       .map(function(key) {
         var payload = JSON.parse(window.localStorage.getItem(key));
         var section = key.replace('comment:', '');
-        var $elm = $(_.template(this.template)({
+        var $elm = this.template({
           // TODO(jmcarp) Handle non-preamble sources
           url: ['', 'preamble'].concat(section.split('-')).join('/'),
           section: section,
           title: section
-        }));
+        });
         $elm.appendTo(this.$content);
         return new CommentView({
           el: $elm,
