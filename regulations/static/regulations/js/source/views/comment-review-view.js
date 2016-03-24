@@ -67,7 +67,7 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   checkForComments: function() {
-    if(this.numberOfComments === 0) {
+    if (this.numberOfComments === 0) {
       $('#comment').html('<p>There are no comments to review or submit.</p>');
       $('.comment-review-submit').remove();
     }
