@@ -57,18 +57,19 @@
   </div>
 
   <script id="comment-template" type="text/template">
-  <div class="comment-wrapper">
-    <div class="comment">
-      <h3><a href="<%= url %>" target="_blank"><%= title %></a></h3>
-      <form>
-        <div class="editor-container"></div>
-        <div class="queued"></div>
-        <input type="file">
-        {# <button type="submit">Add to your comment</button> #}
-        <div class="comment-clear">Remove this comment</div>
-      </form>
+    <div class="comment-wrapper">
+      <div class="comment">
+        <h3><a href="<%= url %>" target="_blank"><%= title %></a></h3>
+        <form>
+          <div class="editor-container"></div>
+          <div class="queued"></div>
+          <input type="file">
+          {# <button type="submit">Add to your comment</button> #}
+          <div class="comment-clear">Remove this comment</div>
+        </form>
+      </div>
     </div>
-  </div>
+  </script>
 </main>
 
 {% endblock %}

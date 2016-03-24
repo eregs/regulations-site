@@ -15,7 +15,7 @@ describe('CommentView', function() {
     Backbone = require('backbone');
     $ = require('jquery');
     Backbone.$ = $;
-    CommentView = require('../../../source/views/comment-view');
+    CommentView = require('../../../source/views/comment/comment-view');
     CommentEvents = require('../../../source/events/comment-events');
     window.localStorage = storage;
   });
@@ -23,12 +23,12 @@ describe('CommentView', function() {
   beforeEach(function() {
     $el = $(
       '<div class="comment">' +
-        '<div class="comment-clear">Clear</div>' +
         '<form>' +
           '<div class="editor-container"></div>' +
           '<div class="queued"></div>' +
           '<input type="file">' +
           '<button type="submit">Save</button>' +
+          '<div class="comment-clear">Clear</div>' +
           '<div class="status"></div>' +
         '</form>' +
       '</div>'
