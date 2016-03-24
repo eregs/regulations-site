@@ -42,6 +42,7 @@ var PreambleView = ChildView.extend({
   },
 
   write: function(section, $parent) {
+    $parent = $parent.clone();
     $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
       section: section,

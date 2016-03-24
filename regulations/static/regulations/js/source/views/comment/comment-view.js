@@ -95,6 +95,7 @@ var CommentView = Backbone.View.extend({
       }).get()
     };
     window.localStorage.setItem(this.key, JSON.stringify(payload));
+    CommentEvents.trigger('comment:save', this.section);
   },
 
   addQueueItem: function(key, name) {

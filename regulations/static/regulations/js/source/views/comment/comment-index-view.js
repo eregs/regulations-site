@@ -27,6 +27,9 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     this.template = _.template($('#comment-index-template').html());
     this.$index = this.$el.find('.comment-index-items');
 
+    this.listenTo(CommentEvents, 'comment:save', this.render);
+    this.listenTo(CommentEvents, 'comment:clear', this.render);
+
     this.render();
   },
 
