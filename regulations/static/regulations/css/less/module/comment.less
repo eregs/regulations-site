@@ -4,7 +4,26 @@ comment.less
 comment.less contains styles related to commenting on sections
 */
 
-.activate-write,
+#preamble-read li {
+  position: relative;
+}
+
+.activate-write {
+  color: #BDDCFD;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  position: absolute;
+  right: -270px;
+  top: -5px;
+  width: 230px;
+
+  &:hover {
+    color: #4A90E2;
+  }
+}
+
 .activate-read {
   background: #4A90E2;
   color: #FFFFFF;
@@ -23,7 +42,6 @@ comment.less contains styles related to commenting on sections
     background-color: #00629f;
   }
 }
-
 
 .comment-wrapper {
   .font-regular;

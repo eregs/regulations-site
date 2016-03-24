@@ -58,8 +58,6 @@ var RegView = ChildView.extend({
         }
 
         ChildView.prototype.initialize.apply(this, arguments);
-
-        this.loadImages();
     },
 
     // only concerned with resetting DOM, no matter
@@ -176,8 +174,6 @@ var RegView = ChildView.extend({
         ChildView.prototype.render.apply(this, arguments);
 
         this.checkDefinitionScope();
-
-        this.loadImages();
     },
 
     // content section key term link click handler
@@ -285,11 +281,6 @@ var RegView = ChildView.extend({
             regVersion: version,
             type: 'inline-interp'
         });
-    },
-
-    // lazy load images as the user scrolls
-    loadImages: function() {
-        $('.reg-image').lazyload();
     }
 });
 
