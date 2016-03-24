@@ -58,6 +58,7 @@ var ChildView = Backbone.View.extend({
         this.activeSection = this.id;
         this.$activeSection = $('#' + this.activeSection);
 
+        this.loadImages();
         return this;
     },
 
@@ -77,6 +78,7 @@ var ChildView = Backbone.View.extend({
 
     render: function() {
         this.updateWayfinding();
+        this.loadImages();
         HeaderEvents.trigger('section:open', this.id);
         DrawerEvents.trigger('section:open', this.id);
     },
@@ -175,6 +177,11 @@ var ChildView = Backbone.View.extend({
         this.stopListening();
         this.off();
         return this;
+    },
+
+    // lazy load images as the user scrolls
+    loadImages: function() {
+        $('.reg-image').lazyload();
     }
 });
 
