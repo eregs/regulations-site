@@ -32,8 +32,6 @@ var MainView = Backbone.View.extend({
     el: '#content-body',
 
     initialize: function() {
-
-
         this.dataTables = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
@@ -233,8 +231,8 @@ var MainView = Backbone.View.extend({
         MainEvents.trigger('section:rendered');
 
         SidebarEvents.trigger('update', {
-            'type': this.contentType,
-            'id': this.sectionId
+            type: this.contentType,
+            id: this.sectionId
         });
 
         if (options && typeof options.scrollToId !== 'undefined') {
@@ -272,11 +270,11 @@ var MainView = Backbone.View.extend({
         if (document.queryCommandSupported('copy')) {
             this.$el.find('*[data-copyable="true"]').each(function(index, copyable) {
                 var link = $('<a>', {
-                    'class': 'clipboard-link',
+                    class: 'clipboard-link',
                     text: 'Copy this text to your clipboard',
                     title: 'Copy this text to your clipboard',
                     id: '#copyable-' + index,
-                    href:'#copyable-' + index
+                    href: '#copyable-' + index
                 });
                 var copylink = new Clipboard(link[0], {
                     target: function(trigger) {

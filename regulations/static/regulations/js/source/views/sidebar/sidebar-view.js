@@ -75,7 +75,7 @@ var SidebarView = Backbone.View.extend({
     },
 
     updateChildViews: function(context) {
-        var $definition = $definition || this.$el.find('#definition');
+        this.$definition = this.$definition || this.$el.find('#definition');
         switch (context.type) {
             case 'reg-section':
                 this.model.get(context.id, this.openRegFolders);

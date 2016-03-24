@@ -13,7 +13,7 @@ Backbone.PreambleModel = MetaModel.extend({
     }
     return URI()
       .path(path.join('/'))
-      .addQuery({'partial': 'true'})
+      .addQuery({partial: 'true'})
       .toString();
   }
 });

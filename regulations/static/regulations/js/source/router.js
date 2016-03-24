@@ -65,9 +65,9 @@ else {
 
         loadSxS: function(section, version, params) {
             BreakawayEvents.trigger('sxs:open', {
-                'regParagraph': section,
-                'docNumber': version,
-                'fromVersion': params.from_version
+                regParagraph: section,
+                docNumber: version,
+                fromVersion: params.from_version
             });
         },
 
