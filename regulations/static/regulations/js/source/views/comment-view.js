@@ -95,14 +95,6 @@ var CommentView = Backbone.View.extend({
       }).get()
     };
 
-    if (payload.comment) {
-      window.localStorage.setItem(this.key, JSON.stringify(payload));
-    }
-    else {
-      // clear comment if input is empty
-      this.clear();
-    }
-
   },
 
   addQueueItem: function(key, name) {
