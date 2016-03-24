@@ -18,7 +18,7 @@ def submit_comment(body):
     comment = build_comment(body)
     with assemble_attachments(body) as attachments:
         fields = [
-            ('comment_on', body['doc_number']),
+            ('comment_on', settings.COMMENT_DOCUMENT_ID),
             ('general_comment', comment),
         ]
         fields.extend(attachments)
