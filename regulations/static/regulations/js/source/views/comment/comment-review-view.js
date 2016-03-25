@@ -10,16 +10,18 @@ var CommentEvents = require('../../events/comment-events');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
-    'click #preview-button': 'preview',
-    'click #submit-button': 'submit'
+    'click .preview-button': 'preview',
+    'click .submit-button': 'submit'
   },
 
   initialize: function(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
 
     this.$content = this.$el.find('#comment');
-    this.$previewContent = this.$el.find('#preview-content');
-    this.$status = this.$el.find('#status');
+    this.$previewContent = this.$el.find('.preview-content');
+    this.$previewButton = this.$el.find('.preview-button');
+    this.$submitButton = this.$el.find('.submit-button');
+    this.$status = this.$el.find('.status');
 
     this.template = _.template($('#comment-template').html());
     this.docNumber = this.$el.data('doc-number');
@@ -34,15 +36,15 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   previewMode: function() {
-    $('#preview-button').show();
-    $('#preview-content').hide();
-    $('#submit-button').hide();
+    this.$previewButton.show();
+    this.$previewContent.hide();
+    this.$submitButton.hide();
   },
 
   submitMode: function() {
-    $('#preview-button').hide();
-    $('#preview-content').show();
-    $('#submit-button').show();
+    this.$previewButton.hide();
+    this.$previewContent.show();
+    this.$submitButton.show();
   },
 
   render: function() {},
