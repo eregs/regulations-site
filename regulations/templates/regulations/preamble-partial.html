@@ -7,24 +7,24 @@
     </div>
 
     <div id="preamble-write">
-      <div class="activate-read">View the proposal</div>
+      <div class="activate-read">Read the proposal</div>
       <div class="comment-wrapper">
         <div class="comment">
-          <h3>Enter your comment below:</h3>
+          <h2>Write your comment.</h2>
           <div class="comment-context"></div>
           <form>
             <div class="editor-container"></div>
             <div class="queued"></div>
             <input type="file">
-            <button type="submit">Add to your comment</button>
-            <div class="comment-clear">Clear this comment</div>
+            <button type="submit">Save</button>
+            {# <div class="comment-clear">Clear this comment</div> #}
             <div class="status"></div>
           </form>
         </div>
       </div>
       <div class="comment-index" data-doc-number="{{ doc_number }}">
-        <div class="comment-index-items"></div>
-        <a href="{% url 'comment_review' doc_number=doc_number %}">Review</a>
+        <ul class="comment-index-items"></ul>
+        <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review</a>
       </div>
     </div>
   </section>
@@ -32,10 +32,12 @@
 
 <script id="comment-index-template" type="text/template">
   <% _.each(comments, function(comment) { %>
-    <div class="comment-index-item" data-comment-section="<%= comment.section %>">
-      <span><%= comment.section %></span>
-      <span class="comment-index-edit">Edit</span>
-      <span class="comment-index-clear">Clear</span>
-    </div>
+    <li class="comment-index-item group" data-comment-section="<%= comment.section %>">
+      <div class="comment-index-section"><%= comment.section %></div>
+      <div class="comment-index-modify">
+        <span class="comment-index-edit">edit</span>
+        <span class="comment-index-clear">x</span>
+      </div>
+    </li>
   <% }); %>
 </script>
