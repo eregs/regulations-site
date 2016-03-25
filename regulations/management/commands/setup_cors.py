@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 'CORSRules': [
                     {
                         'AllowedMethods': ['PUT'],
-                        'AllowedOrigins': ['*'],
+                        'AllowedOrigins': settings.ALLOWED_HOSTS or ['*'],
                         'AllowedHeaders': ['*'],
                     },
                 ],
