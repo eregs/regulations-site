@@ -6,11 +6,17 @@ import tempfile
 import contextlib
 
 import boto3
+
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+
 from celery import shared_task
+from celery.utils.log import get_task_logger
+
 from django.conf import settings
 from django.template import loader
+
+logger = get_task_logger(__name__)
 
 
 @shared_task
@@ -23,7 +29,7 @@ def submit_comment(body):
         ]
         fields.extend(attachments)
         data = MultipartEncoder(fields)
-        requests.post(
+        response = requests.post(
             settings.REGS_API_URL,
             data=data,
             headers={
@@ -31,6 +37,8 @@ def submit_comment(body):
                 'X-Api-Key': settings.REGS_API_KEY,
             }
         )
+        response.raise_for_status()
+        logger.info(response.text)
 
 
 def build_comment(body):
