@@ -35,10 +35,12 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   render: function() {
-    var html = this.template({comments: this.parseComments()});
+    var parsedComments = this.parseComments();
+    var html = this.template({comments: parsedComments});
+
     this.$index.html(html);
 
-    if (this.parseComments().length) {
+    if (parsedComments.length) {
       this.$commentIndexReview.show();
     }
     else {
