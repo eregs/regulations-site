@@ -85,6 +85,7 @@ var CommentView = Backbone.View.extend({
 
   setStorage: function() {
     var payload = {
+      id: this.section,
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
         var $elm = $(elm);
@@ -151,6 +152,11 @@ var CommentView = Backbone.View.extend({
     window.localStorage.removeItem(this.key);
     this.load();
     CommentEvents.trigger('comment:clear', this.section);
+  },
+
+  remove: function() {
+    this.clear();
+    Backbone.View.prototype.remove.call(this);
   },
 
   save: function(e) {
