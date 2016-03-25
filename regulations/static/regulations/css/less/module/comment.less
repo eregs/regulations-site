@@ -101,7 +101,7 @@ comment.less contains styles related to commenting on sections
 }
 
 .comment-wrapper .comment button,
-.comment-review-submit,
+#comment-confirm button,
 a.comment-index-review {
   background-color: @comment_blue;
   border-radius: 4px;
@@ -148,12 +148,14 @@ a.comment-index-review {
 
     .comment-index-section {
       float: left;
-      width: 130px;
+      width: 135px;
     }
 
     .comment-index-modify {
+      font-size: 13px;
       float: right;
-      width: 50px;
+      line-height: 20px;
+      width: 40px;
     }
 
     .comment-index-edit,
@@ -170,6 +172,10 @@ a.comment-index-review {
       color: #FFFFFF;
     }
   }
+}
+
+.preview-content {
+  margin: 15px 0 25px 0;
 }
 
 #comment-review {
