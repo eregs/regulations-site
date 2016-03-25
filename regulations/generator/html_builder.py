@@ -7,7 +7,7 @@ from itertools import takewhile
 
 from six.moves import filter, filterfalse
 
-from regulations.generator.node_types import to_markup_id, APPENDIX, INTERP
+from regulations.generator import node_types
 from regulations.generator.layers.layers_applier import LayersApplier
 from regulations.generator.layers.internal_citation import (
     InternalCitationLayer)
@@ -65,9 +65,10 @@ class HTMLBuilder(object):
         self.process_node_title(node)
         node['is_collapsed'] = self.is_collapsed(node)
 
-        node['html_label'] = to_markup_id(node['label'])
+        node['html_label'] = node_types.to_markup_id(node['label'])
         node['markup_id'] = "-".join(node['html_label'])
         node['tree_level'] = len(node['label']) - 1
+        node['human_label'] = self.human_label(node)
 
         node['list_level'] = self.list_level(node['label'], node['node_type'])
 
@@ -98,6 +99,11 @@ class HTMLBuilder(object):
         for c in node['children']:
             self.process_node(c)
 
+    @staticmethod
+    def human_label(node):
+        """Derive a human-readable description for this node"""
+        return '-'.join(node['label'])      # Default
+
 
 class CFRHTMLBuilder(HTMLBuilder):
     header_regex = re.compile(r'^(§&nbsp;)(\s*\d+\.\d+)(.*)$')
@@ -125,9 +131,9 @@ class CFRHTMLBuilder(HTMLBuilder):
 
     def list_level(self, parts, node_type):
         """ Return the list level and the list type. Overrides"""
-        if node_type == INTERP:
+        if node_type == node_types.INTERP:
             prefix_length = parts.index('Interp')+1
-        elif node_type == APPENDIX:
+        elif node_type == node_types.APPENDIX:
             prefix_length = 3
         else:
             prefix_length = 2
@@ -156,7 +162,7 @@ class CFRHTMLBuilder(HTMLBuilder):
             node['interp']['markup'] = self.section_space(
                 node['interp']['markup'])
 
-        if node['node_type'] == INTERP:
+        if node['node_type'] == node_types.INTERP:
             self.modify_interp_node(node)
 
     def modify_interp_node(self, node):
@@ -177,3 +183,21 @@ class CFRHTMLBuilder(HTMLBuilder):
                 text = '%s(%s)' % (citation[1], ')('.join(citation[2:]))
                 node['header_markup'] = node['header_markup'].replace(
                     text, icl.render_url(citation, text))
+
+    @staticmethod
+    def human_label(node):
+        """Derive a human-readable description for this node. Override"""
+        return node_types.label_to_text(node['label'])
+
+
+class PreambleHTMLBuilder(HTMLBuilder):
+    @staticmethod
+    def human_label(node):
+        """Derive a human-readable description for this node. Override"""
+        is_markerless = node_types.MARKERLESS_REGEX.match
+        prefix = list(takewhile(lambda l: not is_markerless(l),
+                                node['label']))
+        if len(prefix) > 1:
+            return 'Section ' + '.'.join(prefix[1:])
+        else:
+            return 'FR #' + prefix[0]

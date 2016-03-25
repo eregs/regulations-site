@@ -4,7 +4,7 @@ from django.views.generic.base import View
 
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
-from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator.html_builder import PreambleHTMLBuilder
 from regulations.views import utils
 
 
@@ -29,7 +29,7 @@ def generate_html_tree(subtree, request):
     doc_id = '-'.join(subtree['label'])
     layer_creator.add_layers(utils.layer_names(request), 'preamble',
                              doc_id, sectional=True)
-    builder = HTMLBuilder(*layer_creator.get_appliers())
+    builder = PreambleHTMLBuilder(*layer_creator.get_appliers())
     builder.tree = subtree
     builder.generate_html()
 

@@ -5,7 +5,7 @@
 <div>
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
   {% if use_comments %}
-    <div class="activate-write" data-section="{{ node.markup_id }}">Comment on section {{ node.label_id }}</div>
+    <div class="activate-write" data-section="{{ node.markup_id }}">Comment on {{ node.human_label }}</div>
   {% endif %}
 </div>
 {% endif %}
@@ -19,7 +19,7 @@
 {% endif %}
 </p>
 {% if use_comments and not node.title %}
-  <div class="activate-write" data-section="{{ node.markup_id }}">Comment on paragraph in section {{ node.label_id }}</div>
+  <div class="activate-write" data-section="{{ node.markup_id }}">Comment on paragraph in {{ node.human_label }}</div>
 {% endif %}
 {% endif %}
 

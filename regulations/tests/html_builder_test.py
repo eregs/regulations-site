@@ -2,7 +2,8 @@
 from unittest import TestCase
 from mock import Mock
 
-from regulations.generator.html_builder import CFRHTMLBuilder, HTMLBuilder
+from regulations.generator.html_builder import (
+    CFRHTMLBuilder, HTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.internal_citation import (
     InternalCitationLayer)
 from regulations.generator.layers.layers_applier import InlineLayersApplier
@@ -118,6 +119,13 @@ class HTMLBuilderTest(TestCase):
                             (['111', '22', 'a'], '  ')):
             node = {'label': label, 'text': text}
             self.assertFalse(HTMLBuilder.is_collapsed(node))
+
+    def test_human_label(self):
+        self.assertEqual(
+            '111', HTMLBuilder.human_label({'label': ['111']}))
+        self.assertEqual(
+            '111-22-33-aa',
+            HTMLBuilder.human_label({'label': ['111', '22', '33', 'aa']}))
 
 
 class CFRHTMLBuilderTest(TestCase):
@@ -290,3 +298,21 @@ class CFRHTMLBuilderTest(TestCase):
         builder.process_node_title(node)
         self.assertEqual(
             u'§&nbsp;101.6<del> a</del>b<ins>AAC</ins>cd', node['header'])
+
+    def test_human_label(self):
+        self.assertEqual(
+            'Regulation 111', CFRHTMLBuilder.human_label({'label': ['111']}))
+        self.assertEqual(
+            '111.22(f)',
+            CFRHTMLBuilder.human_label({'label': ['111', '22', 'f']}))
+
+
+class PreambleHTMLBuilderTest(TestCase):
+    def test_human_label(self):
+        self.assertEqual(
+            'FR #111_22',
+            PreambleHTMLBuilder.human_label({'label': ['111_22']}))
+        self.assertEqual(
+            'Section III.A.ii.4',
+            PreambleHTMLBuilder.human_label({
+                'label': ['111_22', 'III', 'A', 'ii', '4', 'p1', 'p8']}))
