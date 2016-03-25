@@ -106,13 +106,12 @@ class HTMLBuilder(object):
 
 
 class CFRHTMLBuilder(HTMLBuilder):
-    header_regex = re.compile(r'^(§&nbsp;)(\s*\d+\.\d+)(.*)$')
-    section_number_regex = re.compile(r'(§+)\s+')
+    SECTION_NUMBER_REGEX = re.compile(r'(§+)\s+')
 
     @classmethod
     def section_space(cls, text):
         """ After a section sign, insert a non-breaking space. """
-        return cls.section_number_regex.sub(r'\1&nbsp;', text)
+        return cls.SECTION_NUMBER_REGEX.sub(r'\1&nbsp;', text)
 
     def get_title(self):
         titles = {
