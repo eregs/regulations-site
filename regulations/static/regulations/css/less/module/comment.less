@@ -4,7 +4,26 @@ comment.less
 comment.less contains styles related to commenting on sections
 */
 
-.activate-write,
+#preamble-read li {
+  position: relative;
+}
+
+.activate-write {
+  color: #BDDCFD;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  position: absolute;
+  right: -270px;
+  top: -5px;
+  width: 230px;
+
+  &:hover {
+    color: #4A90E2;
+  }
+}
+
 .activate-read {
   background: #4A90E2;
   color: #FFFFFF;
@@ -24,7 +43,6 @@ comment.less contains styles related to commenting on sections
   }
 }
 
-
 .comment-wrapper {
   .font-regular;
   padding: 10px 0;
@@ -36,6 +54,8 @@ comment.less contains styles related to commenting on sections
     textarea, .ProseMirror {
       border-color: #979797;
       border-radius: 4px;
+      font-size: 14px;
+      line-height: 16px;
       padding: 5px;
       margin: 10px 0;
       width: 100%;
@@ -90,4 +110,15 @@ comment.less contains styles related to commenting on sections
 
 #comment-review {
   margin-bottom: 25px;
+}
+
+#preamble-write {
+  position: relative;
+}
+
+.comment-index {
+  position: absolute;
+  right: -270px;
+  top: -5px;
+  width: 230px;
 }

@@ -5,16 +5,17 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
-var ChildView = require('./main/child-view');
-var CommentView = require('./comment-view');
-var CommentEvents = require('../events/comment-events');
+var ChildView = require('./child-view');
+var CommentView = require('../comment/comment-view');
+var CommentIndexView = require('../comment/comment-index-view');
+var CommentEvents = require('../../events/comment-events');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',
 
   events: {
-    'click .activate-write': 'write',
-    'click .activate-read': 'read'
+    'click .activate-write': 'handleWrite',
+    'click .activate-read': 'handleRead'
   },
 
   initialize: function(options) {
@@ -27,17 +28,24 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.initialize.apply(this, arguments);
   },
 
-  read: function() {
+  handleRead: function() {
     this.$write.hide();
     this.$read.show();
   },
 
-  write: function(e) {
+  handleWrite: function(e) {
     var $target = $(e.target);
-    var $parent = $target.closest('[data-permalink-section]').clone();
+    this.write(
+      $target.data('section'),
+      $target.closest('[data-permalink-section]')
+    );
+  },
+
+  write: function(section, $parent) {
+    $parent = $parent.clone();
     $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
-      section: $target.data('section'),
+      section: section,
       $parent: $parent
     });
     this.$read.hide();
@@ -48,8 +56,15 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.render.apply(this, arguments);
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
-    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper').get(0)});
-    this.$write.hide();
+    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper')});
+    this.commentIndex = new CommentIndexView({el: this.$write.find('.comment-index')});
+
+    if (this.options.mode === 'write') {
+      var $parent = $('#' + this.options.section).find('[data-permalink-section]');
+      this.write(this.options.section, $parent);
+    } else {
+      this.handleRead();
+    }
   }
 });
 

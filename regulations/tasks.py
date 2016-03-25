@@ -72,7 +72,7 @@ def assemble_attachments(comment):
         yield attachments
     finally:
         for file_ in attachments:
-            attachments[1][1].close()
+            file_[1][1].close()
         shutil.rmtree(path)
 
 

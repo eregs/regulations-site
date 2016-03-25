@@ -9,7 +9,7 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
-var CommentEvents = require('../events/comment-events');
+var CommentEvents = require('../../events/comment-events');
 
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
@@ -56,6 +56,7 @@ var CommentView = Backbone.View.extend({
     });
 
     this.listenTo(CommentEvents, 'comment:target', this.target);
+    this.listenTo(CommentEvents, 'comment:update', this.update);
 
     if (this.section) {
       this.load();
@@ -83,7 +84,6 @@ var CommentView = Backbone.View.extend({
   },
 
   setStorage: function() {
-
     var payload = {
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
@@ -94,7 +94,8 @@ var CommentView = Backbone.View.extend({
         };
       }).get()
     };
-
+    window.localStorage.setItem(this.key, JSON.stringify(payload));
+    CommentEvents.trigger('comment:save', this.section);
   },
 
   addQueueItem: function(key, name) {
@@ -110,6 +111,12 @@ var CommentView = Backbone.View.extend({
     _.each(payload.files || [], function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));
+  },
+
+  update: function(section) {
+    if (this.section === section) {
+      this.load();
+    }
   },
 
   addAttachment: function(e) {

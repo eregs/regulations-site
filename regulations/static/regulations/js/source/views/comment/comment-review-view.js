@@ -6,7 +6,7 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var CommentView = require('./comment-view');
-var CommentEvents = require('../events/comment-events');
+var CommentEvents = require('../../events/comment-events');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
@@ -15,7 +15,7 @@ var CommentReviewView = Backbone.View.extend({
 
   initialize: function(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
-    this.template = $('#comment-template').html();
+    this.template = _.template($('#comment-template').html());
     this.$content = this.$el.find('#comment');
     this.docNumber = this.$el.data('doc-number');
     this.prefix = 'comment:' + this.docNumber;
@@ -35,7 +35,7 @@ var CommentReviewView = Backbone.View.extend({
       .map(function(key) {
         var payload = JSON.parse(window.localStorage.getItem(key));
         var section = key.replace('comment:', '');
-        var $elm = $(_.template(this.template)({
+        var $elm = $(this.template({
           // TODO(jmcarp) Handle non-preamble sources
           url: ['', 'preamble'].concat(section.split('-')).join('/'),
           section: section,
@@ -48,14 +48,26 @@ var CommentReviewView = Backbone.View.extend({
         });
       }.bind(this))
       .value();
+
+    this.checkForComments();
   },
 
   clearComment: function(section) {
-    var target = _.find(this.comments, function(comment) {
+    var index = _.findIndex(this.comments, function(comment) {
       return comment.section === section;
     });
-    if (target) {
-      target.remove();
+
+    if (index !== -1) {
+      var target = this.comments.splice(index, 1);
+      target[0].remove();
+      this.checkForComments();
+    }
+  },
+
+  checkForComments: function() {
+    if (this.comments.length <= 0) {
+      $('#comment').html('<p>There are no comments to review or submit.</p>');
+      $('.comment-review-submit').remove();
     }
   },
 

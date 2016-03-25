@@ -22,6 +22,20 @@
           </form>
         </div>
       </div>
+      <div class="comment-index" data-doc-number="{{ doc_number }}">
+        <div class="comment-index-items"></div>
+        <a href="{% url 'comment_review' doc_number=doc_number %}">Review</a>
+      </div>
     </div>
   </section>
 </section>
+
+<script id="comment-index-template" type="text/template">
+  <% _.each(comments, function(comment) { %>
+    <div class="comment-index-item" data-comment-section="<%= comment.section %>">
+      <span><%= comment.section %></span>
+      <span class="comment-index-edit">Edit</span>
+      <span class="comment-index-clear">Clear</span>
+    </div>
+  <% }); %>
+</script>
