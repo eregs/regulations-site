@@ -26,6 +26,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     this.prefix = 'comment:' + this.docNumber;
     this.template = _.template($('#comment-index-template').html());
     this.$index = this.$el.find('.comment-index-items');
+    this.$commentIndexReview = this.$el.find('.comment-index-review');
 
     this.listenTo(CommentEvents, 'comment:save', this.render);
     this.listenTo(CommentEvents, 'comment:clear', this.render);
@@ -34,8 +35,17 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   render: function() {
-    var html = this.template({comments: this.parseComments()});
+    var parsedComments = this.parseComments();
+    var html = this.template({comments: parsedComments});
+
     this.$index.html(html);
+
+    if (parsedComments.length) {
+      this.$commentIndexReview.show();
+    }
+    else {
+      this.$commentIndexReview.hide();
+    }
   },
 
   parseComments: function() {
