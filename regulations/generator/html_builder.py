@@ -7,7 +7,7 @@ from itertools import takewhile
 
 from six.moves import filter, filterfalse
 
-from regulations.generator.node_types import to_markup_id, APPENDIX, INTERP
+from regulations.generator import node_types
 from regulations.generator.layers.layers_applier import LayersApplier
 from regulations.generator.layers.internal_citation import (
     InternalCitationLayer)
@@ -15,54 +15,26 @@ from regulations.apps import RegulationsConfig
 from .link_flattener import flatten_links
 
 
-class HTMLBuilder():
-    header_regex = re.compile(r'^(§&nbsp;)(\s*\d+\.\d+)(.*)$')
-    section_number_regex = re.compile(r'(§+)\s+')
-
-    def __init__(
-            self, inline_applier, p_applier,
-            search_applier, diff_applier=None):
-        self.markup = u''
-        self.sections = None
+class HTMLBuilder(object):
+    # @todo simplify this constructor
+    def __init__(self, inline_applier, p_applier, search_applier,
+                 diff_applier=None):
         self.tree = None
         self.inline_applier = inline_applier
         self.p_applier = p_applier
         self.search_applier = search_applier
         self.diff_applier = diff_applier
 
-    def generate_all_html(self):
-        self.generate_html(self.tree[''])
-
     def generate_html(self):
         if self.diff_applier:
             self.diff_applier.tree_changes(self.tree)
         for layer in self.p_applier.layers.values():
-            if hasattr(layer, 'preprocess_root'):
+            if hasattr(layer, 'preprocess_root'):   # @todo - remove
                 layer.preprocess_root(self.tree)
         self.process_node(self.tree)
 
-    def parse_doc_title(self, reg_title):
-        match = re.search(r"[(].+[)]$", reg_title)
-        if match:
-            return match.group(0)
-
-    @staticmethod
-    def section_space(text):
-        """ After a section sign, insert a non-breaking space. """
-        return HTMLBuilder.section_number_regex.sub(r'\1&nbsp;', text)
-
     def list_level(self, parts, node_type):
-        """ Return the list level and the list type. """
-        if node_type == INTERP:
-            prefix_length = parts.index('Interp')+1
-        elif node_type == APPENDIX:
-            prefix_length = 3
-        else:
-            prefix_length = 2
-
-        if len(parts) > prefix_length:
-            return len(parts) - prefix_length
-        return 0
+        return len(parts) - 2
 
     def process_node_title(self, node):
         if 'title' in node:
@@ -70,8 +42,6 @@ class HTMLBuilder():
             if self.diff_applier:
                 node['header'] = self.diff_applier.apply_diff(
                     node['header'], node['label_id'], component='title')
-
-            node['header'] = self.section_space(node['header'])
 
     @staticmethod
     def is_collapsed(node):
@@ -95,13 +65,12 @@ class HTMLBuilder():
         self.process_node_title(node)
         node['is_collapsed'] = self.is_collapsed(node)
 
-        node['html_label'] = to_markup_id(node['label'])
+        node['html_label'] = node_types.to_markup_id(node['label'])
         node['markup_id'] = "-".join(node['html_label'])
         node['tree_level'] = len(node['label']) - 1
+        node['human_label'] = self.human_label(node)
 
-        list_level = self.list_level(node['label'], node['node_type'])
-
-        node['list_level'] = list_level
+        node['list_level'] = self.list_level(node['label'], node['node_type'])
 
         if len(node['text']):
             inline_elements = self.inline_applier.get_layer_pairs(
@@ -119,7 +88,6 @@ class HTMLBuilder():
 
             node['marked_up'] = layers_applier.apply_layers(
                 node.get('marked_up', node['text']))
-            node['marked_up'] = self.section_space(node['marked_up'])
             node['marked_up'] = flatten_links(node['marked_up'])
 
         node = self.p_applier.apply_layers(node)
@@ -127,6 +95,64 @@ class HTMLBuilder():
         node['template_name'] = RegulationsConfig.custom_tpls.get(
             node['label_id'],
             RegulationsConfig.node_type_tpls[node['node_type'].lower()])
+
+        for c in node['children']:
+            self.process_node(c)
+
+    @staticmethod
+    def human_label(node):
+        """Derive a human-readable description for this node"""
+        return '-'.join(node['label'])      # Default
+
+
+class CFRHTMLBuilder(HTMLBuilder):
+    SECTION_NUMBER_REGEX = re.compile(r'(§+)\s+')
+    DOC_TITLE_REGEX = re.compile(r'\(.+\)$')
+
+    @classmethod
+    def section_space(cls, text):
+        """ After a section sign, insert a non-breaking space. """
+        return cls.SECTION_NUMBER_REGEX.sub(r'\1&nbsp;', text)
+
+    def get_title(self):
+        titles = {
+            'part': self.tree['label'][0],
+            'reg_name': ''
+        }
+        reg_title = self.parse_doc_title(self.tree['title'])
+        if reg_title:
+            titles['reg_name'] = reg_title
+        return titles
+
+    def parse_doc_title(self, reg_title):
+        match = self.DOC_TITLE_REGEX.search(reg_title)
+        if match:
+            return match.group(0)
+
+    def list_level(self, parts, node_type):
+        """ Return the list level and the list type. Overrides"""
+        if node_type == node_types.INTERP:
+            prefix_length = parts.index('Interp')+1
+        elif node_type == node_types.APPENDIX:
+            prefix_length = 3
+        else:
+            prefix_length = 2
+
+        if len(parts) > prefix_length:
+            return len(parts) - prefix_length
+        return 0
+
+    def process_node_title(self, node):
+        """Add space to header. Overrides"""
+        super(CFRHTMLBuilder, self).process_node_title(node)
+        if 'header' in node:
+            node['header'] = self.section_space(node['header'])
+
+    def process_node(self, node):
+        """Overrides with custom, additional processing"""
+        super(CFRHTMLBuilder, self).process_node(node)
+        if 'marked_up' in node:
+            node['marked_up'] = self.section_space(node['marked_up'])
 
         if 'TOC' in node:
             for l in node['TOC']:
@@ -136,11 +162,8 @@ class HTMLBuilder():
             node['interp']['markup'] = self.section_space(
                 node['interp']['markup'])
 
-        if node['node_type'] == INTERP:
+        if node['node_type'] == node_types.INTERP:
             self.modify_interp_node(node)
-
-        for c in node['children']:
-            self.process_node(c)
 
     def modify_interp_node(self, node):
         """Add extra fields which only exist on interp nodes"""
@@ -161,12 +184,20 @@ class HTMLBuilder():
                 node['header_markup'] = node['header_markup'].replace(
                     text, icl.render_url(citation, text))
 
-    def get_title(self):
-        titles = {
-            'part': self.tree['label'][0],
-            'reg_name': ''
-        }
-        reg_title = self.parse_doc_title(self.tree['title'])
-        if reg_title:
-            titles['reg_name'] = reg_title
-        return titles
+    @staticmethod
+    def human_label(node):
+        """Derive a human-readable description for this node. Override"""
+        return node_types.label_to_text(node['label'])
+
+
+class PreambleHTMLBuilder(HTMLBuilder):
+    @staticmethod
+    def human_label(node):
+        """Derive a human-readable description for this node. Override"""
+        is_markerless = node_types.MARKERLESS_REGEX.match
+        prefix = list(takewhile(lambda l: not is_markerless(l),
+                                node['label']))
+        if len(prefix) > 1:
+            return 'Section ' + '.'.join(prefix[1:])
+        else:
+            return 'FR #' + prefix[0]

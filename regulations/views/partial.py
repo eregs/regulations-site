@@ -3,13 +3,13 @@ from django.http import Http404
 from django.views.generic.base import TemplateView
 
 from regulations.generator import generator
-from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator.html_builder import CFRHTMLBuilder
 from regulations.generator.node_types import EMPTYPART, REGTEXT, label_to_text
 from regulations.views import navigation, utils
 
 
 def generate_html(regulation_tree, layer_appliers):
-    builder = HTMLBuilder(*layer_appliers)
+    builder = CFRHTMLBuilder(*layer_appliers)
     builder.tree = regulation_tree
     builder.generate_html()
     return builder

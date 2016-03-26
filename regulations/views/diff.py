@@ -6,7 +6,7 @@ import six
 from django.core.urlresolvers import reverse
 
 from regulations.generator import generator
-from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator.html_builder import CFRHTMLBuilder
 from regulations.generator.layers.toc_applier import TableOfContentsLayer
 from regulations.generator.node_types import EMPTYPART, REGTEXT
 from regulations.generator.section_url import SectionUrl
@@ -86,7 +86,7 @@ class PartialSectionDiffView(PartialView):
 
         appliers = get_appliers(label_id, versions)
 
-        builder = HTMLBuilder(*appliers)
+        builder = CFRHTMLBuilder(*appliers)
         builder.tree = tree
         builder.generate_html()
 

@@ -10,7 +10,6 @@ from regulations.generator.layers.base import LayerBase
 from regulations.generator.layers.layers_applier import (
     InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from regulations.generator.layers.diff_applier import DiffApplier
-from regulations.generator.html_builder import HTMLBuilder
 from regulations.generator import notices
 
 
@@ -133,13 +132,6 @@ def get_tree_paragraph(paragraph_id, version):
     """Get a single level of the regulation tree."""
     api = api_reader.ApiReader()
     return api.regulation(paragraph_id, version)
-
-
-def get_builder(regulation, version, inline_applier, p_applier, s_applier):
-    """ Returns an HTML builder with the appliers, and the regulation tree. """
-    builder = HTMLBuilder(inline_applier, p_applier, s_applier)
-    builder.tree = get_regulation(regulation, version)
-    return builder
 
 
 def get_all_notices():

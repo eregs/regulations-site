@@ -63,14 +63,14 @@ def label_to_text(label, include_section=True, include_marker=False):
             or _l2t_section(label, include_section, include_marker))
 
 
-_MARKERLESS_REGEX = re.compile(r'p\d+')
+MARKERLESS_REGEX = re.compile(r'p\d+')
 
 
 def _join_paragraph_tail(label_parts, join_with, prefix='', suffix=''):
     """Given the tail of paragraph markers in a label, convert them into a
     string, separated by the appropriate strings (join_with). Also remove any
     markers following a markerless paragraph"""
-    not_markerless = lambda l: not _MARKERLESS_REGEX.match(l)
+    not_markerless = lambda l: not MARKERLESS_REGEX.match(l)
     label_parts = list(takewhile(not_markerless, label_parts))
     if label_parts:
         return prefix + join_with.join(label_parts) + suffix
