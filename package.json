@@ -22,9 +22,6 @@
   "engines": {
     "node": "4.4.0"
   },
-  "scripts": {
-    "postinstall": "grunt"
-  },
   "devDependencies": {
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.12",

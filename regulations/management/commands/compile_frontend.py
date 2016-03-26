@@ -33,6 +33,12 @@ class Command(BaseCommand):
     BUILD_DIR = "./frontend_build"
     TARGET_DIR = "./compiled/regulations"
 
+    def add_arguments(self, parser):
+        parser.add_argument('--dev', dest='dev', action='store_true')
+        parser.add_argument('--no-install', dest='install',
+                            action='store_false')
+        parser.set_defaults(dev=False, install=True)
+
     def find_regulations_directory(self):
         child = regulations.__file__
         child_dir = os.path.split(child)[0]
@@ -102,19 +108,20 @@ class Command(BaseCommand):
             write_storage.save(prefixed_path, source_file)
         settings.STATICFILES_DIRS = original_dirs
 
-    def build_frontend(self):
+    def build_frontend(self, install=True, dev=False):
         """Shell out to npm for building the frontend files"""
-        os.chdir(self.BUILD_DIR)
-        subprocess.call(["npm", "install"])
-        os.chdir("..")
+        cmd = 'build-dev' if dev else 'build-dist'
+        if install:
+            subprocess.call(['npm', 'install'], cwd=self.BUILD_DIR)
+        subprocess.call(['grunt', cmd], cwd=self.BUILD_DIR)
 
     def cleanup(self):
         shutil.copytree("%s/static/regulations" % self.BUILD_DIR,
                         self.TARGET_DIR)
 
-    def handle(self, *args, **options):
+    def handle(self, **options):
         self.remove_dirs()
         self.copy_configs()
         self.collect_files()
-        self.build_frontend()
+        self.build_frontend(install=options['install'], dev=options['dev'])
         self.cleanup()
