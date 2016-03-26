@@ -24,8 +24,6 @@ var CommentReviewView = Backbone.View.extend({
     this.$status = this.$el.find('.status');
 
     this.template = _.template($('#comment-template').html());
-    this.docNumber = this.$el.data('doc-number');
-    this.prefix = 'comment:' + this.docNumber;
 
     this.listenTo(comments, 'destroy', this.clearComment);
     this.listenTo(comments, 'destroy', this.previewMode);

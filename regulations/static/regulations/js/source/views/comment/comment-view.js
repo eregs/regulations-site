@@ -42,7 +42,6 @@ var CommentView = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    this.$content = this.$el.find('.comment');
     this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$queued = this.$el.find('.queued');
@@ -88,13 +87,11 @@ var CommentView = Backbone.View.extend({
     );
   },
 
-  render: function(model) {
-    model = model || this.model;
-    var comment = model ? model.get('comment') : '';
-    var files = model ? model.get('files') : [];
-    this.editor.setContent(comment, 'markdown');
+  render: function() {
+    var data = this.model ? this.model.toJSON() : {};
+    this.editor.setContent(data.comment || '', 'markdown');
     this.$queued.empty();
-    _.each(files, function(file) {
+    _.each(data.files || [], function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));
   },
