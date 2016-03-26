@@ -49,7 +49,7 @@
 
 <main role="main">
   <div id="content-body" class="main-content">
-    <section id="comment-review" data-page-type="comment-review" data-doc-number="{{ doc_number }}">
+    <section id="comment-review" data-page-type="comment-review">
       <h2>Review</h2>
       <div id="comment"></div>
       <div id="comment-confirm">
@@ -80,3 +80,9 @@
 {% endblock %}
 
 {% block chrome-sidebar %}{% endblock %}
+
+{% block preload %}
+<script>
+  window.DOC_NUMBER = '{{ doc_number }}';
+</script>
+{% endblock %}

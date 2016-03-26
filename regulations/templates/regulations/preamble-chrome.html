@@ -56,3 +56,9 @@
 {% endblock %}
 
 {% block chrome-sidebar %}{% endblock %}
+
+{% block preload %}
+<script>
+  window.DOC_NUMBER = '{{ doc_number }}';
+</script>
+{% endblock %}

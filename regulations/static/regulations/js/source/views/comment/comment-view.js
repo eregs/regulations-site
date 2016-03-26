@@ -9,7 +9,9 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
+var CommentModel = require('../../models/comment-model');
 var CommentEvents = require('../../events/comment-events');
+var comments = require('../../collections/comment-collection');
 
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
@@ -46,8 +48,6 @@ var CommentView = Backbone.View.extend({
     this.$queued = this.$el.find('.queued');
     this.$status = this.$el.find('.status');
 
-    this.setSection(options.section);
-
     this.editor = new edit.ProseMirror({
       tooltipMenu: true,
       place: this.$container.get(0),
@@ -56,18 +56,22 @@ var CommentView = Backbone.View.extend({
     });
 
     this.listenTo(CommentEvents, 'comment:target', this.target);
-    this.listenTo(CommentEvents, 'comment:update', this.update);
 
-    if (this.section) {
-      this.load();
-    }
+    this.setSection(options.section);
   },
 
-  render: function() {},
-
-  setSection: function(section) {
-    this.section = section;
-    this.key = 'comment:' + section;
+  setSection: function(section, overwrite) {
+    if (this.model) {
+      this.stopListening(this.model);
+    }
+    if (section) {
+      this.model = overwrite ?
+        new CommentModel({id: section}) :
+        comments.get(section) || new CommentModel({id: section});
+      this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, true));
+      this.listenTo(this.model, 'change', this.render);
+    }
+    this.render();
   },
 
   target: function(options) {
@@ -76,27 +80,6 @@ var CommentView = Backbone.View.extend({
     if (options.$parent) {
       this.$context.append(options.$parent);
     }
-    this.load();
-  },
-
-  getStorage: function() {
-    return JSON.parse(window.localStorage.getItem(this.key) || '{}');
-  },
-
-  setStorage: function() {
-    var payload = {
-      id: this.section,
-      comment: this.editor.getContent('markdown'),
-      files: this.$queued.find('.queue-item').map(function(idx, elm) {
-        var $elm = $(elm);
-        return {
-          key: $elm.data('key'),
-          name: $elm.text()
-        };
-      }).get()
-    };
-    window.localStorage.setItem(this.key, JSON.stringify(payload));
-    CommentEvents.trigger('comment:save', this.section);
   },
 
   addQueueItem: function(key, name) {
@@ -105,19 +88,15 @@ var CommentView = Backbone.View.extend({
     );
   },
 
-  load: function() {
-    var payload = this.getStorage();
-    this.editor.setContent(payload.comment || '', 'markdown');
+  render: function(model) {
+    model = model || this.model;
+    var comment = model ? model.get('comment') : '';
+    var files = model ? model.get('files') : [];
+    this.editor.setContent(comment, 'markdown');
     this.$queued.empty();
-    _.each(payload.files || [], function(file) {
+    _.each(files, function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));
-  },
-
-  update: function(section) {
-    if (this.section === section) {
-      this.load();
-    }
   },
 
   addAttachment: function(e) {
@@ -144,24 +123,28 @@ var CommentView = Backbone.View.extend({
   clearAttachment: function(e) {
     var $target = $(e.target);
     var key = $target.data('key');
-    var payload = this.getStorage();
     $target.remove();
   },
 
   clear: function() {
-    window.localStorage.removeItem(this.key);
-    this.load();
-    CommentEvents.trigger('comment:clear', this.section);
-  },
-
-  remove: function() {
-    this.clear();
-    Backbone.View.prototype.remove.call(this);
+    this.model.destroy();
   },
 
   save: function(e) {
     e.preventDefault();
-    this.setStorage();
+    this.model.set('comment', this.editor.getContent('markdown'));
+    this.model.set({
+      comment: this.editor.getContent('markdown'),
+      files: this.$queued.find('.queue-item').map(function(idx, elm) {
+        var $elm = $(elm);
+        return {
+          key: $elm.data('key'),
+          name: $elm.text()
+        };
+      }).get()
+    });
+    comments.add(this.model);
+    this.model.save();
     this.$status.hide().html('Your comment was saved.').fadeIn();
   }
 });

@@ -65,6 +65,12 @@ var PreambleView = ChildView.extend({
     } else {
       this.handleRead();
     }
+  },
+
+  remove: function() {
+    this.commentView.remove();
+    this.commentIndex.remove();
+    Backbone.View.prototype.remove.call(this);
   }
 });
 

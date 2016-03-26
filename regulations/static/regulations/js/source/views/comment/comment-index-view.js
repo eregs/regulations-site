@@ -8,10 +8,11 @@ Backbone.$ = $;
 var MainEvents = require('../../events/main-events');
 var DrawerEvents = require('../../events/drawer-events');
 var CommentEvents = require('../../events/comment-events');
+var comments = require('../../collections/comment-collection');
 
 function getSection(elm) {
   return $(elm)
-    .closest('.comment-index-item')
+    .closest('[data-comment-section]')
     .data('comment-section');
 }
 
@@ -22,44 +23,25 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    this.docNumber = this.$el.data('doc-number');
-    this.prefix = 'comment:' + this.docNumber;
     this.template = _.template($('#comment-index-template').html());
     this.$index = this.$el.find('.comment-index-items');
     this.$commentIndexReview = this.$el.find('.comment-index-review');
 
-    this.listenTo(CommentEvents, 'comment:save', this.render);
-    this.listenTo(CommentEvents, 'comment:clear', this.render);
+    this.listenTo(comments, 'add remove', this.render);
 
     this.render();
   },
 
   render: function() {
-    var parsedComments = this.parseComments();
-    var html = this.template({comments: parsedComments});
-
+    var commentData = comments.toJSON();
+    var html = this.template({comments: commentData});
     this.$index.html(html);
 
-    if (parsedComments.length) {
+    if (commentData.length) {
       this.$commentIndexReview.show();
-    }
-    else {
+    } else {
       this.$commentIndexReview.hide();
     }
-  },
-
-  parseComments: function() {
-    return _.chain(_.keys(window.localStorage))
-      .filter(function(key) {
-        return key.indexOf(this.prefix) === 0;
-      }.bind(this))
-      .map(function(key) {
-        var payload = JSON.parse(window.localStorage.getItem(key));
-        var section = key.replace('comment:', '');
-        payload.section = section;
-        return payload;
-      }.bind(this))
-      .value();
   },
 
   editComment: function(e) {
@@ -71,9 +53,9 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
 
   clearComment: function(e) {
     var section = getSection(e.target);
-    // TODO(jmcarp) Push storage ops to model
-    window.localStorage.removeItem('comment:' + section);
-    CommentEvents.trigger('comment:update', section);
-    this.render();
+    var comment = comments.get(section);
+    if (comment) {
+      comment.destroy();
+    }
   }
 });

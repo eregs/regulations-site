@@ -17,12 +17,11 @@
             <div class="queued"></div>
             <input type="file">
             <button type="submit">Save</button>
-            {# <div class="comment-clear">Clear this comment</div> #}
             <div class="status"></div>
           </form>
         </div>
       </div>
-      <div class="comment-index" data-doc-number="{{ doc_number }}">
+      <div class="comment-index">
         <ul class="comment-index-items"></ul>
         <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review</a>
       </div>
@@ -32,8 +31,8 @@
 
 <script id="comment-index-template" type="text/template">
   <% _.each(comments, function(comment) { %>
-    <li class="comment-index-item group" data-comment-section="<%= comment.section %>">
-      <div class="comment-index-section"><%= comment.section %></div>
+    <li class="comment-index-item group" data-comment-section="<%= comment.id %>">
+      <div class="comment-index-section"><%= comment.id %></div>
       <div class="comment-index-modify">
         <span class="comment-index-edit">edit</span>
         <span class="comment-index-clear">remove</span>
