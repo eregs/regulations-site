@@ -107,6 +107,7 @@ class HTMLBuilder(object):
 
 class CFRHTMLBuilder(HTMLBuilder):
     SECTION_NUMBER_REGEX = re.compile(r'(§+)\s+')
+    DOC_TITLE_REGEX = re.compile(r'\(.+\)$')
 
     @classmethod
     def section_space(cls, text):
@@ -124,7 +125,7 @@ class CFRHTMLBuilder(HTMLBuilder):
         return titles
 
     def parse_doc_title(self, reg_title):
-        match = re.search(r"[(].+[)]$", reg_title)
+        match = self.DOC_TITLE_REGEX.search(reg_title)
         if match:
             return match.group(0)
 
