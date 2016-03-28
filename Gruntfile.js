@@ -161,7 +161,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['Gruntfile.js', '<%= env.frontEndPath %>/js/source/**/*.js'],
-        tasks: ['eslint','browserify:dev']
+        tasks: ['eslint', 'browserify:dev']
       },
       css: {
         files: ['<%= env.frontEndPath %>/css/less/**/*.less'],
@@ -192,6 +192,7 @@ module.exports = function(grunt) {
   grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('build', ['default', 'test-js']);
-  grunt.registerTask('default', ['copy', 'browserify', 'less', 'cssmin']);
+  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'less']);
+  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'less', 'cssmin']);
+  grunt.registerTask('default', ['build-dist']);
 };
