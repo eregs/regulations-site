@@ -56,11 +56,16 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.render.apply(this, arguments);
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
+    var section = this.$read.closest('section').attr('id');
+    var docId = section.split('-')[0];
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: this.$read.closest('section').attr('id')
+      section: section
     });
-    this.commentIndex = new CommentIndexView({el: this.$write.find('.comment-index')});
+    this.commentIndex = new CommentIndexView({
+      el: this.$write.find('.comment-index'),
+      docId: docId
+    });
 
     if (this.options.mode === 'write') {
       var $parent = $('#' + this.options.section).find('[data-permalink-section]');

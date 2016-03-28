@@ -23,6 +23,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   initialize: function(options) {
+    this.docId = options.docId;
     this.template = _.template($('#comment-index-template').html());
     this.$index = this.$el.find('.comment-index-items');
     this.$commentIndexReview = this.$el.find('.comment-index-review');
@@ -33,7 +34,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   render: function() {
-    var commentData = comments.toJSON();
+    var commentData = comments.toJSON({docId: this.docId});
     var html = this.template({comments: commentData});
     this.$index.html(html);
 

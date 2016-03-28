@@ -23,6 +23,7 @@ var CommentReviewView = Backbone.View.extend({
     this.$submitButton = this.$el.find('.submit-button');
     this.$status = this.$el.find('.status');
 
+    this.docId = this.$el.data('doc-id');
     this.template = _.template($('#comment-template').html());
 
     this.listenTo(comments, 'destroy', this.clearComment);
@@ -46,7 +47,8 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   render: function() {
-    this.commentViews = comments.map(function(comment) {
+    var models = comments.toJSON({docId: this.docId});
+    this.commentViews = models.map(function(comment) {
       var $elm = $(this.template({
         // TODO(jmcarp) Handle non-preamble sources
         url: ['', 'preamble'].concat(comment.id.split('-')).join('/'),
@@ -85,7 +87,7 @@ var CommentReviewView = Backbone.View.extend({
 
   serialize: function() {
     return {
-      sections: comments.toJSON()
+      sections: comments.toJSON({docId: this.docId})
     };
   },
 

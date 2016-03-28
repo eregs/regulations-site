@@ -60,7 +60,9 @@ var CommentView = Backbone.View.extend({
   },
 
   setSection: function(section, blank) {
-    this.stopListening(this.model);
+    if (this.model) {
+      this.stopListening(this.model);
+    }
     this.model = blank ?
       new CommentModel({id: section}) :
       comments.get(section) || new CommentModel({id: section});
@@ -124,7 +126,6 @@ var CommentView = Backbone.View.extend({
 
   save: function(e) {
     e.preventDefault();
-    this.model.set('comment', this.editor.getContent('markdown'));
     this.model.set({
       comment: this.editor.getContent('markdown'),
       files: this.$queued.find('.queue-item').map(function(idx, elm) {
