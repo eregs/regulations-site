@@ -16,8 +16,6 @@ CSS/Javascript etc., should inherit from this template.
         {% endblock %}
         </title>
         {% include "regulations/favicon.html" %}
-        {% block preload %}
-        {% endblock %}
         {% block app_js %}
         <script>
             window.APP_PREFIX = "{{ APP_PREFIX }}";
@@ -46,6 +44,8 @@ CSS/Javascript etc., should inherit from this template.
         <!--[if lt IE 9]>
             <script src="{%static "regulations/js/built/lib/respond/respond.min.js" %}"></script>
         <![endif]-->
+        {% block preload %}
+        {% endblock %}
 
     </head>
     <!--[if lt IE 7]>      <body class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
