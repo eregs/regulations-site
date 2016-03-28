@@ -4,20 +4,13 @@ comment.less
 comment.less contains styles related to commenting on sections
 */
 
-@comment_blue: #4A90E2;
-@comment_blue_dark: #00629f;
-@comment_blue_light: #BDDCFD;
-@comment_item_blue: #E2F3F8;
-@comment_item_gray: #AEB0B5;
-@comment_input_border: #E5E5E5;
-
 #preamble-write,
 #preamble-read li {
   position: relative;
 }
 
 .activate-write {
-  color: @comment_blue_light;
+  color: @pacific_light;
   cursor: pointer;
   font-family: Arial, sans-serif;
   font-size: 15px;
@@ -33,7 +26,7 @@ comment.less contains styles related to commenting on sections
 }
 
 .activate-read {
-  background: @comment_blue;
+  background: @pacific;
   color: #FFFFFF;
   .font-regular;
   cursor: pointer;
@@ -47,7 +40,7 @@ comment.less contains styles related to commenting on sections
   transition: .1s;
 
   &:hover {
-    background-color: @comment_blue_dark;
+    background-color: @pacific_hover;
   }
 }
 
@@ -59,8 +52,9 @@ comment.less contains styles related to commenting on sections
     padding-bottom: 10px;
 
     textarea, .ProseMirror {
-      border: 2px solid @comment_input_border;
-      border-radius: 4px;
+      border: 1px solid transparent;
+      box-shadow: 0 0 1px 1px @text_area_border;
+      border-radius: 2px;
       margin: 10px 0;
       width: 100%;
 
@@ -103,7 +97,7 @@ comment.less contains styles related to commenting on sections
 .comment-wrapper .comment button,
 #comment-confirm button,
 a.comment-index-review {
-  background-color: @comment_blue;
+  background-color: @pacific;
   border-radius: 4px;
   color: #FFFFFF;
   .font-regular;
@@ -118,7 +112,7 @@ a.comment-index-review {
   transition: .1s;
 
   &:hover {
-    background-color: @comment_blue_dark;
+    background-color: @pacific_hover;
   }
 }
 
@@ -140,8 +134,8 @@ a.comment-index-review {
   }
 
   li {
-    background: @comment_item_blue;
-    color: @comment_item_gray;
+    background: @80_gray;
+    color: white;
     cursor: default;
     font-weight: 500;
     padding: 15px;
@@ -168,8 +162,7 @@ a.comment-index-review {
     }
 
     &:hover {
-      background: @comment_item_gray;
-      color: #FFFFFF;
+      background: darken(@80_gray, 10%);;
     }
   }
 }
