@@ -112,8 +112,8 @@ class Command(BaseCommand):
         """Shell out to npm for building the frontend files"""
         cmd = 'build-dev' if dev else 'build-dist'
         if install:
-            subprocess.call(['npm', 'install'], cwd=self.BUILD_DIR)
-        subprocess.call(['grunt', cmd], cwd=self.BUILD_DIR)
+            subprocess.check_call(['npm', 'install'], cwd=self.BUILD_DIR)
+        subprocess.check_call(['grunt', cmd], cwd=self.BUILD_DIR)
 
     def cleanup(self):
         shutil.copytree("%s/static/regulations" % self.BUILD_DIR,
