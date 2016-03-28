@@ -9,15 +9,17 @@ var storage = new localStorage.LocalStorage('.');
 describe('CommentView', function() {
   jsdom();
 
-  var $el, commentView, CommentView, CommentEvents;
+  var $el, comments, commentView, CommentView, CommentEvents, edit;
 
   before(function() {
     Backbone = require('backbone');
     $ = require('jquery');
     Backbone.$ = $;
-    CommentView = require('../../../source/views/comment/comment-view');
+    edit = require('prosemirror/dist/edit');
+    global.localStorage = window.localStorage = storage;
+    comments = require('../../../source/collections/comment-collection');
     CommentEvents = require('../../../source/events/comment-events');
-    window.localStorage = storage;
+    CommentView = require('../../../source/views/comment/comment-view');
   });
 
   beforeEach(function() {
@@ -34,40 +36,15 @@ describe('CommentView', function() {
       '</div>'
     );
     $(document.body).empty().append($el);
+    sinon.stub(edit.ProseMirror.prototype, 'getContent');
+    sinon.stub(edit.ProseMirror.prototype, 'setContent');
     commentView = new CommentView({el: $el});
+    comments.reset();
   });
 
-  it('setSection()', function() {
-    commentView.setSection('2016_02749-III-B');
-    expect(commentView.section).to.equal('2016_02749-III-B');
-    expect(commentView.key).to.equal('comment:2016_02749-III-B');
-  });
-
-  it('fetches from localstorage', function() {
-    var payload = {
-      comment: 'like',
-      files: [
-        {key: '6bc649', name: 'attachment.txt'}
-      ],
-    };
-    commentView.setSection('2016_02479');
-    window.localStorage.setItem('comment:2016_02479', JSON.stringify(payload));
-    expect(commentView.getStorage()).to.deep.equal(payload);
-  });
-
-  it('writes to localstorage', function() {
-    commentView.setSection('2016_02479');
-    sinon.stub(commentView.editor, 'getContent').returns('dislike');
-    commentView.addQueueItem('6bc649', 'attachment.txt');
-    commentView.setStorage();
-    var payload = {
-      id: '2016_02479',
-      comment: 'dislike',
-      files: [
-        {key: '6bc649', name: 'attachment.txt'}
-      ],
-    };
-    expect(commentView.getStorage()).to.deep.equal(payload);
+  afterEach(function() {
+    edit.ProseMirror.prototype.getContent.restore();
+    edit.ProseMirror.prototype.setContent.restore();
   });
 
   it('adds a queue item', function() {
@@ -78,33 +55,49 @@ describe('CommentView', function() {
     expect($item.text()).to.equal('attachment.txt');
   });
 
-  it('loads state from localstorage', function() {
-    var payload = {
-      id: '2016_02479',
+  it('removes a queue item', function() {
+    commentView.addQueueItem('6bc649', 'attachment.txt');
+    commentView.clearAttachment({target: commentView.$queued.find('.queue-item')});
+    var $item = commentView.$queued.find('.queue-item');
+    expect($item.length).to.equal(0);
+  });
+
+  it('reads from models', function() {
+    comments.add({
+      id: '2016_02749',
       comment: 'like',
       files: [
         {key: '6bc649', name: 'attachment.txt'}
       ],
-    };
-    commentView.setSection('2016_02479');
-    window.localStorage.setItem('comment:2016_02479', JSON.stringify(payload));
-    sinon.stub(commentView.editor, 'setContent');
-    commentView.load();
-    expect(commentView.editor.setContent).to.have.been.calledWith('like', 'markdown');
+    });
+    commentView.setSection('2016_02749');
     var $item = commentView.$queued.find('.queue-item');
     expect($item.length).to.equal(1);
     expect($item.data('key')).to.equal('6bc649');
-    expect($item.text()).to.equal('attachment.txt');
+    expect(commentView.editor.setContent).to.have.been.calledWith('like', 'markdown');
+  });
+
+  it('writes to models', function() {
+    commentView.setSection('2016_02479');
+    commentView.addQueueItem('6bc649', 'attachment.txt');
+    expect(comments.get('2016_02479')).to.be.falsy;
+    commentView.save({preventDefault: function() {}});
+    expect(comments.get('2016_02479')).to.be.truthy;
   });
 
   it('clears', function() {
+    comments.add({
+      id: '2016_02749',
+      comment: 'like',
+      files: [
+        {key: '6bc649', name: 'attachment.txt'}
+      ],
+    });
     commentView.setSection('2016_02479');
-    sinon.stub(commentView.editor, 'setContent');
-    sinon.stub(commentView.editor, 'getContent').returns('dislike');
-    commentView.addQueueItem('6bc649', 'attachment.txt');
-    commentView.setStorage();
+    commentView.save({preventDefault: function() {}});
     commentView.clear();
-    expect(commentView.getStorage()).to.deep.equal({});
+    expect(comments.get('2016_02479')).to.be.falsy;
+    expect(commentView.editor.setContent).to.have.been.calledWith('', 'markdown');
     expect(commentView.$queued.find('.queue-item').length).to.equal(0);
   });
 });
