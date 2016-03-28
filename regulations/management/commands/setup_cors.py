@@ -17,7 +17,7 @@ class Command(BaseCommand):
             CORSConfiguration={
                 'CORSRules': [
                     {
-                        'AllowedMethods': ['PUT'],
+                        'AllowedMethods': ['GET', 'PUT'],
                         'AllowedOrigins': settings.ALLOWED_HOSTS or ['*'],
                         'AllowedHeaders': ['*'],
                     },

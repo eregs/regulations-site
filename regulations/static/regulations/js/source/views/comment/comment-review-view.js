@@ -121,11 +121,33 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   submitSuccess: function(resp) {
-    this.$status.text('Comment submitted').fadeIn();
+    this.$status.text('Comment processing').fadeIn();
+    this.poll(resp.metadata_url);
   },
 
   submitError: function() {
     // TODO(jmcarp) Figure out desired behavior
+  },
+
+  poll: function(url) {
+    this.interval = window.setInterval(
+      function() {
+        $.getJSON(url).then(function(resp) {
+          window.clearInterval(this.interval);
+          this.setTrackingNumber(resp.trackingNumber);
+        }.bind(this));
+      }.bind(this),
+      5000
+    );
+  },
+
+  setTrackingNumber: function(number) {
+    this.$status.html(
+      '<div>Comment submitted</div>' +
+      '<div>Tracking number: ' +
+        '<a href="http://www.regulations.gov/#!searchResults;rpp=25;po=0;s=' + number + '">' + number + '</a>' +
+      '</div>'
+    );
   }
 });
 

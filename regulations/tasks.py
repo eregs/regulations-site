@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import os
+import json
 import shutil
 import tempfile
 import contextlib
@@ -46,9 +47,11 @@ def submit_comment(body):
 @shared_task
 def publish_metadata(response, key):
     s3 = make_s3_client()
+    body = {'trackingNumber': response['trackingNumber']}
     s3.put_object(
-        Body=response['trackingNumber'].encode(),
+        Body=json.dumps(body).encode(),
         Bucket=settings.ATTACHMENT_BUCKET,
+        ContentType='application/json',
         Key=key,
     )
 
