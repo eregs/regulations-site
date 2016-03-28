@@ -6,24 +6,31 @@ import tempfile
 import contextlib
 
 import boto3
+
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+
 from celery import shared_task
+from celery.utils.log import get_task_logger
+
 from django.conf import settings
 from django.template import loader
+
+logger = get_task_logger(__name__)
 
 
 @shared_task
 def submit_comment(body):
     comment = build_comment(body)
-    with assemble_attachments(body) as attachments:
+    files = extract_files(body)
+    with assemble_attachments(files) as attachments:
         fields = [
             ('comment_on', settings.COMMENT_DOCUMENT_ID),
             ('general_comment', comment),
         ]
         fields.extend(attachments)
         data = MultipartEncoder(fields)
-        requests.post(
+        response = requests.post(
             settings.REGS_API_URL,
             data=data,
             headers={
@@ -31,6 +38,8 @@ def submit_comment(body):
                 'X-Api-Key': settings.REGS_API_KEY,
             }
         )
+        response.raise_for_status()
+        logger.info(response.text)
 
 
 def build_comment(body):
@@ -38,6 +47,13 @@ def build_comment(body):
 
 
 def extract_files(body):
+    '''
+    Extracts the files that are to be attached to the comment.
+    Returns a collection of dicts where for each dict:
+        - dict['key'] specifies the file to be attached from S3
+        - dict['name'] specifies the name under which the file is to be
+          attached.
+    '''
     return [
         file
         for section in body.get('sections', [])
@@ -46,7 +62,7 @@ def extract_files(body):
 
 
 @contextlib.contextmanager
-def assemble_attachments(comment):
+def assemble_attachments(files):
     '''
     Assembles a collection of tuples of the form:
     [
@@ -55,10 +71,6 @@ def assemble_attachments(comment):
         ...
     ]
     for POSTing as a multipart/form-data upload.
-    comment['files'] is a collection of dicts where for each dict:
-        - dict['key'] specifies the file to be attached from S3
-        - dict['name'] specifies the name under which the file is to be
-          attached.
     On context exit, the file objects are closed and the locally
     downloaded files are deleted.
     '''
@@ -67,7 +79,7 @@ def assemble_attachments(comment):
         attachments = [
             ('uploadedFile', (file_['name'],
                               fetch_file(path, file_['key'], file_['name'])))
-            for file_ in comment.get('files', [])
+            for file_ in files
         ]
         yield attachments
     finally:
