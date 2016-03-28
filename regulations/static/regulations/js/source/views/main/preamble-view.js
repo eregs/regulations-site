@@ -56,7 +56,10 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.render.apply(this, arguments);
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
-    this.commentView = new CommentView({el: this.$write.find('.comment-wrapper')});
+    this.commentView = new CommentView({
+      el: this.$write.find('.comment-wrapper'),
+      section: this.$read.closest('section').attr('id')
+    });
     this.commentIndex = new CommentIndexView({el: this.$write.find('.comment-index')});
 
     if (this.options.mode === 'write') {

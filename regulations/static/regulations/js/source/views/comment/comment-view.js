@@ -59,17 +59,13 @@ var CommentView = Backbone.View.extend({
     this.setSection(options.section);
   },
 
-  setSection: function(section, overwrite) {
-    if (this.model) {
-      this.stopListening(this.model);
-    }
-    if (section) {
-      this.model = overwrite ?
-        new CommentModel({id: section}) :
-        comments.get(section) || new CommentModel({id: section});
-      this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, true));
-      this.listenTo(this.model, 'change', this.render);
-    }
+  setSection: function(section, blank) {
+    this.stopListening(this.model);
+    this.model = blank ?
+      new CommentModel({id: section}) :
+      comments.get(section) || new CommentModel({id: section});
+    this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, true));
+    this.listenTo(this.model, 'change', this.render);
     this.render();
   },
 
@@ -88,10 +84,9 @@ var CommentView = Backbone.View.extend({
   },
 
   render: function() {
-    var data = this.model ? this.model.toJSON() : {};
-    this.editor.setContent(data.comment || '', 'markdown');
+    this.editor.setContent(this.model.get('comment'), 'markdown');
     this.$queued.empty();
-    _.each(data.files || [], function(file) {
+    _.each(this.model.get('files'), function(file) {
       this.addQueueItem(file.key, file.name);
     }.bind(this));
   },
