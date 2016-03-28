@@ -40,6 +40,17 @@ def submit_comment(body):
         )
         response.raise_for_status()
         logger.info(response.text)
+        return response.json()
+
+
+@shared_task
+def publish_metadata(response, key):
+    s3 = make_s3_client()
+    s3.put_object(
+        Body=response['trackingNumber'].encode(),
+        Bucket=settings.ATTACHMENT_BUCKET,
+        Key=key,
+    )
 
 
 def build_comment(body):
@@ -94,11 +105,15 @@ def fetch_file(path, key, name):
     whose content is downloaded from S3 where it is stored under ``key``
 
     '''
+    s3 = make_s3_client()
+    dest = os.path.join(path, name)
+    s3.download_file(settings.ATTACHMENT_BUCKET, key, dest)
+    return open(dest, "rb")
+
+
+def make_s3_client():
     session = boto3.Session(
         aws_access_key_id=settings.ATTACHMENT_ACCESS_KEY_ID,
         aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
-    s3 = session.client('s3')
-    dest = os.path.join(path, name)
-    s3.download_file(settings.ATTACHMENT_BUCKET, key, dest)
-    return open(dest, "rb")
+    return session.client('s3')

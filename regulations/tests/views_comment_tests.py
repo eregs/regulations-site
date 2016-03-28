@@ -12,7 +12,7 @@ from django.test import SimpleTestCase, override_settings
 )
 class TestUploadProxy(SimpleTestCase):
 
-    @mock.patch('regulations.views.comment.boto3.Session')
+    @mock.patch('regulations.tasks.boto3.Session')
     @mock.patch('regulations.views.comment.get_random_string')
     def test_get_url(self, get_random, session):
         client = session.return_value.client
