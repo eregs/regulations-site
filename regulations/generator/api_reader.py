@@ -92,7 +92,7 @@ class ApiReader(object):
         # have been updated
         if result is None and doc_type == 'cfr':
             result = self._get(
-                ('layer', layer_name, 'old', layer_name, root, str(version)),
+                ('layer', layer_name, doc_type, root, str(version)),
                 'layer/{}/{}/{}'.format(layer_name, root, version))
         return result
 
