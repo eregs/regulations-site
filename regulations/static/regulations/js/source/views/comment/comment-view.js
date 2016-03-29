@@ -26,7 +26,9 @@ function getUploadUrl(file) {
 
 var CommentView = Backbone.View.extend({
   events: {
-    'change input[type="file"]': 'addAttachment',
+    'change input[type="file"]': 'addAttachments',
+    'dragenter input[type="file"]': 'highlightDropzone',
+    'dragleave input[type="file"]': 'unhighlightDropzone',
     'click .comment-clear': 'clear',
     'submit form': 'save'
   },
@@ -34,6 +36,7 @@ var CommentView = Backbone.View.extend({
   initialize: function(options) {
     this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
+    this.$input = this.$el.find('input[type="file"]');
     this.$queued = this.$el.find('.queued');
     this.$status = this.$el.find('.status');
 
@@ -79,9 +82,23 @@ var CommentView = Backbone.View.extend({
     }.bind(this));
   },
 
-  addAttachment: function(e) {
-    var file = e.target.files[0];
-    if (!file) { return; }
+  highlightDropzone: function() {
+    this.$input.addClass('highlight');
+  },
+
+  unhighlightDropzone: function() {
+    this.$input.removeClass('highlight');
+  },
+
+  addAttachments: function(e) {
+    _.each(e.target.files, function(file) {
+      this.addAttachment(file);
+    }.bind(this));
+    this.$input.val(null);
+    this.unhighlightDropzone();
+  },
+
+  addAttachment: function(file) {
     getUploadUrl(file).then(function(url) {
       var xhr = new XMLHttpRequest();
       this.attachmentViews.push(
