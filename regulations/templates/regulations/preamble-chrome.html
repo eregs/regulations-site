@@ -10,11 +10,18 @@
 
 {% block wayfinding %}
 <span class="subpart">{{doc_number}}</span>
-<span id="active-title">Active Title</span>
+<span id="active-title"></span>
 {% endblock %}
 
 {% block header-secondary %}
-<span class="effective-date"><strong>Published Date:</strong> A Date</span>
+<div class="preamble-actions">
+  <span>Actions:</span>
+  <div class="read-proposal active-mode">
+    Read the Proposal
+  </div>
+  <div class="write-comment">
+    Write a Comment
+  </div>
 {% endblock %}
 
 {% block whole-toc %}
