@@ -85,9 +85,16 @@ class ApiReader(object):
             doc_id = root
         else:
             doc_id = '{}/{}'.format(version, root)
-        return self._get(
+        result = self._get(
             ('layer', layer_name, doc_type, root, str(version)),
             'layer/{}/{}/{}'.format(layer_name, doc_type, doc_id))
+        # To remove - also try the old format for CFR layers; the API may not
+        # have been updated
+        if result is None and doc_type == 'cfr':
+            result = self._get(
+                ('layer', layer_name, doc_type, root, str(version)),
+                'layer/{}/{}/{}'.format(layer_name, root, version))
+        return result
 
     def diff(self, label, older, newer):
         """ End point for diffs. """
