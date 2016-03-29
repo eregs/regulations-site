@@ -8,6 +8,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 from regulations import tasks
+import requests
 
 
 def upload_proxy(request):
@@ -70,3 +71,16 @@ def submit_comment(request):
         'status': 'submitted',
         'metadata_url': metadata_url,
     })
+
+
+@csrf_exempt
+@require_http_methods(['GET', 'HEAD'])
+def get_federal_agencies(request):
+    url = "{}?{}".format(settings.REGS_GOV_API_LOOKUP_URL,
+                         "field=gov_agency&dependentOnValue=Federal")
+    response = requests.get(
+        url,
+        headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
+    )
+    response.raise_for_status()
+    return JsonResponse(response.json()['list'], safe=False)
