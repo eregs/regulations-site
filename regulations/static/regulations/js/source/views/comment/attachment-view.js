@@ -13,7 +13,7 @@ var AttachmentView = Backbone.View.extend({
   },
 
   initialize: function(options) {
-    this.template = _.template($('#comment-attachment-template').html());
+    this.template = _.template(document.querySelector('#comment-attachment-template').innerHTML);
     this.options = options;
 
     if (this.options.xhr) {
@@ -45,7 +45,7 @@ var AttachmentView = Backbone.View.extend({
     if (this.options.xhr) {
       this.options.xhr.abort();
     }
-  },
+  }
 });
 
 module.exports = AttachmentView;

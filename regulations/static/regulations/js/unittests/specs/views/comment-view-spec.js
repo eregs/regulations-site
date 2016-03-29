@@ -9,7 +9,7 @@ var storage = new localStorage.LocalStorage('.');
 describe('CommentView', function() {
   jsdom();
 
-  var $el, comments, commentView, CommentView, CommentEvents, edit;
+  var $el, comments, commentView, CommentView, AttachmentView, CommentEvents, edit;
 
   before(function() {
     Backbone = require('backbone');
@@ -20,6 +20,7 @@ describe('CommentView', function() {
     comments = require('../../../source/collections/comment-collection');
     CommentEvents = require('../../../source/events/comment-events');
     CommentView = require('../../../source/views/comment/comment-view');
+    AttachmentView = require('../../../source/views/comment/attachment-view');
   });
 
   beforeEach(function() {
@@ -35,7 +36,15 @@ describe('CommentView', function() {
         '</form>' +
       '</div>'
     );
-    $(document.body).empty().append($el);
+    var $template = $(
+      '<script id="comment-attachment-template" type="text/template">' +
+        '<div></div>' +
+      '</script>'
+    );
+    var $body = $(document.body)
+      .empty()
+      .append($el)
+      .append($template);
     sinon.stub(edit.ProseMirror.prototype, 'getContent');
     sinon.stub(edit.ProseMirror.prototype, 'setContent');
     commentView = new CommentView({el: $el});
@@ -47,19 +56,17 @@ describe('CommentView', function() {
     edit.ProseMirror.prototype.setContent.restore();
   });
 
-  it('adds a queue item', function() {
-    commentView.addQueueItem('6bc649', 'attachment.txt');
-    var $item = commentView.$queued.find('.queue-item');
-    expect($item.length).to.equal(1);
-    expect($item.data('key')).to.equal('6bc649');
-    expect($item.text()).to.equal('attachment.txt');
-  });
-
-  it('removes a queue item', function() {
-    commentView.addQueueItem('6bc649', 'attachment.txt');
-    commentView.clearAttachment({target: commentView.$queued.find('.queue-item')});
-    var $item = commentView.$queued.find('.queue-item');
-    expect($item.length).to.equal(0);
+  it('removes an attachment', function() {
+    commentView.attachmentViews.push(
+      new AttachmentView({
+        $parent: commentView.$queued,
+        key: '6bc649',
+        name: 'attachment.txt',
+        size: 1234
+      })
+    );
+    commentView.clearAttachment('6bc649');
+    expect(commentView.attachmentViews.length).to.equal(0);
   });
 
   it('reads from models', function() {
@@ -67,19 +74,18 @@ describe('CommentView', function() {
       id: '2016_02749',
       comment: 'like',
       files: [
-        {key: '6bc649', name: 'attachment.txt'}
+        {key: '6bc649', name: 'attachment.txt', size: 1234}
       ],
     });
     commentView.setSection('2016_02749');
-    var $item = commentView.$queued.find('.queue-item');
-    expect($item.length).to.equal(1);
-    expect($item.data('key')).to.equal('6bc649');
+    expect(commentView.attachmentViews.length).to.equal(1);
+    var attachment = commentView.attachmentViews[0];
+    expect(attachment.options.key).to.equal('6bc649');
     expect(commentView.editor.setContent).to.have.been.calledWith('like', 'markdown');
   });
 
   it('writes to models', function() {
     commentView.setSection('2016_02479');
-    commentView.addQueueItem('6bc649', 'attachment.txt');
     expect(comments.get('2016_02479')).to.be.falsy;
     commentView.save({preventDefault: function() {}});
     expect(comments.get('2016_02479')).to.be.truthy;
