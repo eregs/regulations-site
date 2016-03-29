@@ -1,6 +1,6 @@
 import json
 
-import boto3
+import celery
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.utils.crypto import get_random_string
@@ -22,11 +22,7 @@ def upload_proxy(request):
             {'message': 'Invalid attachment size'},
             status=400,
         )
-    session = boto3.Session(
-        aws_access_key_id=settings.ATTACHMENT_ACCESS_KEY_ID,
-        aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
-    )
-    s3 = session.client('s3')
+    s3 = tasks.make_s3_client()
     key = get_random_string(50)
     url = s3.generate_presigned_url(
         ClientMethod='put_object',
@@ -56,5 +52,21 @@ def preview_comment(request):
 def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
-    tasks.submit_comment.delay(body)
-    return JsonResponse({'status': 'submitted'})
+    s3 = tasks.make_s3_client()
+    metadata_key = get_random_string(50)
+    metadata_url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'Bucket': settings.ATTACHMENT_BUCKET,
+            'Key': metadata_key,
+        },
+    )
+    chain = celery.chain(
+        tasks.submit_comment.s(body),
+        tasks.publish_metadata.s(key=metadata_key),
+    )
+    chain.delay()
+    return JsonResponse({
+        'status': 'submitted',
+        'metadata_url': metadata_url,
+    })
