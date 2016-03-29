@@ -50,6 +50,7 @@ urlpatterns = patterns(
     url(r'^comments/preview$', comment.preview_comment),
     url(r'^comments/comment$', comment.submit_comment),
     url(r'^comments/federal_agencies$', comment.get_federal_agencies),
+    url(r'^comments/gov_agency_types$', comment.get_gov_agency_types),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v
     url(r'^regulation_redirect/%s$' % paragraph_pattern, redirect_by_date_get,

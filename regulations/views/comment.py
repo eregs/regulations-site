@@ -84,3 +84,16 @@ def get_federal_agencies(request):
     )
     response.raise_for_status()
     return JsonResponse(response.json()['list'], safe=False)
+
+
+@csrf_exempt
+@require_http_methods(['GET', 'HEAD'])
+def get_gov_agency_types(request):
+    url = "{}?{}".format(settings.REGS_GOV_API_LOOKUP_URL,
+                         "field=gov_agency_type")
+    response = requests.get(
+        url,
+        headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
+    )
+    response.raise_for_status()
+    return JsonResponse(response.json()['list'], safe=False)
