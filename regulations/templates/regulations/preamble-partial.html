@@ -29,6 +29,15 @@
   </section>
 </section>
 
+<script id="comment-attachment-template" type="text/template">
+  <div>
+    <%= name %>
+    <%= size %>
+    <span class="attachment-remove">Remove</span>
+    <span class="attachment-progress"><span>
+  </div>
+</script>
+
 <script id="comment-index-template" type="text/template">
   <% _.each(comments, function(comment) { %>
     <li class="comment-index-item group" data-comment-section="<%= comment.id %>">

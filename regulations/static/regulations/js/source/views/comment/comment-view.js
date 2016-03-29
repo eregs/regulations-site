@@ -11,32 +11,22 @@ require('prosemirror/dist/markdown');
 
 var CommentModel = require('../../models/comment-model');
 var CommentEvents = require('../../events/comment-events');
+var AttachmentView = require('../../views/comment/attachment-view');
 var comments = require('../../collections/comment-collection');
 
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
   return $.getJSON(
     prefix + 'comments/attachment',
-    {size: file.size}
+    {size: file.size, type: file.type || 'application/octet-stream'}
   ).then(function(resp) {
     return resp;
   });
 }
 
-function readFile(file) {
-  var deferred = $.Deferred();
-  var reader = new FileReader();
-  reader.onload = function() {
-    deferred.resolve(reader.result);
-  };
-  reader.readAsBinaryString(file);
-  return deferred;
-}
-
 var CommentView = Backbone.View.extend({
   events: {
     'change input[type="file"]': 'addAttachment',
-    'click .queue-item': 'clearAttachment',
     'click .comment-clear': 'clear',
     'submit form': 'save'
   },
@@ -54,7 +44,10 @@ var CommentView = Backbone.View.extend({
       doc: ''
     });
 
+    this.attachmentViews = [];
+
     this.listenTo(CommentEvents, 'comment:target', this.target);
+    this.listenTo(CommentEvents, 'attachment:remove', this.clearAttachment);
 
     this.setSection(options.section);
   },
@@ -67,7 +60,6 @@ var CommentView = Backbone.View.extend({
       new CommentModel({id: section}) :
       comments.get(section) || new CommentModel({id: section});
     this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, true));
-    this.listenTo(this.model, 'change', this.render);
     this.render();
   },
 
@@ -79,45 +71,39 @@ var CommentView = Backbone.View.extend({
     }
   },
 
-  addQueueItem: function(key, name) {
-    this.$queued.append(
-      $('<div class="queue-item" data-key="' + key + '">' + name + '</div>')
-    );
-  },
-
   render: function() {
     this.editor.setContent(this.model.get('comment'), 'markdown');
     this.$queued.empty();
-    _.each(this.model.get('files'), function(file) {
-      this.addQueueItem(file.key, file.name);
+    this.attachmentViews = this.model.get('files').map(function(file) {
+      return new AttachmentView(_.extend({$parent: this.$queued}, file));
     }.bind(this));
   },
 
   addAttachment: function(e) {
-    var key;
     var file = e.target.files[0];
     if (!file) { return; }
     getUploadUrl(file).then(function(url) {
-      key = url.key;
-      return readFile(file).then(function(data) {
-        return $.ajax({
-          type: 'PUT',
-          url: url.url,
-          data: data,
-          contentType: 'application/octet-stream',
-          processData: false
-        });
-      });
-    }).then(function(resp) {
-      this.addQueueItem(key, file.name);
-      $(e.target).val(null);
+      var xhr = new XMLHttpRequest();
+      this.attachmentViews.push(
+        new AttachmentView({
+          $parent: this.$queued,
+          name: file.name,
+          size: file.size,
+          key: url.key,
+          xhr: xhr
+        })
+      );
+      xhr.open('PUT', url.url);
+      xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+      xhr.send(file);
     }.bind(this));
   },
 
-  clearAttachment: function(e) {
-    var $target = $(e.target);
-    var key = $target.data('key');
-    $target.remove();
+  clearAttachment: function(key) {
+    var index = _.findIndex(this.attachmentViews, function(view) {
+      return view.options.key === key;
+    });
+    this.attachmentViews.splice(index, 1)[0].remove();
   },
 
   clear: function() {
@@ -128,13 +114,13 @@ var CommentView = Backbone.View.extend({
     e.preventDefault();
     this.model.set({
       comment: this.editor.getContent('markdown'),
-      files: this.$queued.find('.queue-item').map(function(idx, elm) {
-        var $elm = $(elm);
+      files: _.map(this.attachmentViews, function(view) {
         return {
-          key: $elm.data('key'),
-          name: $elm.text()
+          key: view.options.key,
+          name: view.options.name,
+          size: view.options.size
         };
-      }).get()
+      })
     });
     comments.add(this.model);
     this.model.save();
