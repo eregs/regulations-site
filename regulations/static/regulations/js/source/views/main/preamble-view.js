@@ -46,9 +46,12 @@ var PreambleView = ChildView.extend({
   },
 
   handleWrite: function() {
+    var $section = $('#' + this.currentSectionId);
+
     this.write(
       this.currentSectionId,
-      $('#' + this.currentSectionId)
+      $section.find('.activate-write').data('label'),
+      $section
     );
   },
 
