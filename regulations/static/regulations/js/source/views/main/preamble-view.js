@@ -15,7 +15,7 @@ var PreambleView = ChildView.extend({
   el: '#content-wrapper',
 
   events: {
-    'click .activate-write': 'handleWrite',
+    'click .activate-write': 'handleWrite'
   },
 
   initialize: function(options) {
