@@ -13,8 +13,8 @@
           <div class="comment-context"></div>
           <form>
             <div class="editor-container"></div>
-            <div class="queued"></div>
-            <input type="file">
+            <div class="comment-attachments"></div>
+            <input type="file" multiple>
             <button type="submit">Save</button>
             <div class="status"></div>
           </form>
@@ -28,10 +28,22 @@
   </section>
 </section>
 
+<script id="comment-attachment-template" type="text/template">
+  <div>
+    <%= name %>
+    <%= size %>
+    <span class="attachment-remove">Remove</span>
+    <span class="attachment-progress"><span>
+  </div>
+</script>
+
 <script id="comment-index-template" type="text/template">
   <% _.each(comments, function(comment) { %>
-    <li class="comment-index-item group" data-comment-section="<%= comment.id %>">
-      <div class="comment-index-section"><%= comment.id %></div>
+    <li
+        class="comment-index-item group"
+        data-comment-section="<%= comment.id %>"
+        data-comment-label="<%= comment.label %>">
+      <div class="comment-index-section"><%= comment.label %></div>
       <div class="comment-index-modify">
         <span class="comment-index-edit">edit</span>
         <span class="comment-index-clear">remove</span>

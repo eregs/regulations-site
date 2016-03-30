@@ -54,12 +54,13 @@ var CommentReviewView = Backbone.View.extend({
         // TODO(jmcarp) Handle non-preamble sources
         url: ['', 'preamble'].concat(comment.id.split('-')).join('/'),
         section: comment.id,
-        title: comment.id
+        title: comment.label
       }));
       $elm.appendTo(this.$content);
       return new CommentView({
         el: $elm,
-        section: comment.id
+        section: comment.id,
+        label: comment.label
       });
     }.bind(this));
 

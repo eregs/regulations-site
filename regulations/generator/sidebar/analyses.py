@@ -47,6 +47,9 @@ class Analyses(SidebarBase):
             doc_id = self.label_id
         data = http_client.layer('analyses', 'cfr', doc_id, self.version)
 
+        if not data:
+            return []
+
         return [
             SxSEntry(Label(label_id), doc_number=subdata[-1]['reference'][0])
             for label_id, subdata in six.iteritems(data)]

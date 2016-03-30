@@ -32,11 +32,11 @@ def submit_comment(body):
         fields.extend(attachments)
         data = MultipartEncoder(fields)
         response = requests.post(
-            settings.REGS_API_URL,
+            settings.REGS_GOV_API_URL,
             data=data,
             headers={
                 'Content-Type': data.content_type,
-                'X-Api-Key': settings.REGS_API_KEY,
+                'X-Api-Key': settings.REGS_GOV_API_KEY,
             }
         )
         response.raise_for_status()
