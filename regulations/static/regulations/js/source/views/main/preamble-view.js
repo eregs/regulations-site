@@ -6,6 +6,7 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var ChildView = require('./child-view');
+var PreambleHeadView = require('../header/preamble-head-view');
 var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
@@ -15,7 +16,6 @@ var PreambleView = ChildView.extend({
 
   events: {
     'click .activate-write': 'handleWrite',
-    'click .activate-read': 'handleRead'
   },
 
   initialize: function(options) {
@@ -26,6 +26,7 @@ var PreambleView = ChildView.extend({
       this.render();
     }
     ChildView.prototype.initialize.apply(this, arguments);
+    Backbone.on('readProposal', this.handleRead, this);
   },
 
   handleRead: function() {
@@ -39,6 +40,8 @@ var PreambleView = ChildView.extend({
       $target.data('section'),
       $target.closest('[data-permalink-section]')
     );
+
+    Backbone.trigger('writeSectionComment');
   },
 
   write: function(section, $parent) {
@@ -58,6 +61,7 @@ var PreambleView = ChildView.extend({
     this.$write = this.$el.find('#preamble-write');
     var section = this.$read.closest('section').attr('id');
     var docId = section.split('-')[0];
+    this.PreambleHeadView = new PreambleHeadView();
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
       section: section
