@@ -1,4 +1,5 @@
 import json
+import logging
 
 import celery
 from django.conf import settings
@@ -9,6 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from regulations import tasks
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 def upload_proxy(request):
@@ -75,21 +78,24 @@ def submit_comment(request):
 
 @require_http_methods(['GET', 'HEAD'])
 def get_federal_agencies(request):
-    response = requests.get(
-        settings.REGS_GOV_API_LOOKUP_URL,
-        params={'field': 'gov_agency', 'dependentOnValue': 'Federal'},
-        headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
-    )
-    response.raise_for_status()
-    return JsonResponse(response.json()['list'], safe=False)
+    return lookup_regulations_gov(field='gov_agency',
+                                  dependentOnValue='Federal')
 
 
 @require_http_methods(['GET', 'HEAD'])
 def get_gov_agency_types(request):
+    return lookup_regulations_gov(field='gov_agency_type')
+
+
+def lookup_regulations_gov(*args, **kwargs):
     response = requests.get(
         settings.REGS_GOV_API_LOOKUP_URL,
-        params={'field': 'gov_agency_type'},
+        params=kwargs,
         headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
     )
-    response.raise_for_status()
-    return JsonResponse(response.json()['list'], safe=False)
+    if response.status_code == requests.codes.ok:
+        return JsonResponse(response.json()['list'], safe=False)
+    else:
+        logger.error("Failed to lookup regulations.gov: {}",
+                     response.status_code, response.text)
+        response.raise_for_status()
