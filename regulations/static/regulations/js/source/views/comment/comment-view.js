@@ -29,7 +29,6 @@ var CommentView = Backbone.View.extend({
     'change input[type="file"]': 'addAttachments',
     'dragenter input[type="file"]': 'highlightDropzone',
     'dragleave input[type="file"]': 'unhighlightDropzone',
-    'click .comment-clear': 'clear',
     'submit form': 'save'
   },
 
@@ -128,10 +127,6 @@ var CommentView = Backbone.View.extend({
     });
     this.attachmentViews[index].remove();
     this.attachmentViews.splice(index, 1);
-  },
-
-  clear: function() {
-    this.model.destroy();
   },
 
   save: function(e) {
