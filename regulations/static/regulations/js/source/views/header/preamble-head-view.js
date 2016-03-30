@@ -14,8 +14,6 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.$read = $('#preamble-read');
-    this.$write = $('#preamble-write');
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
