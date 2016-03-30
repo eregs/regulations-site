@@ -37,15 +37,17 @@ var PreambleView = ChildView.extend({
     var $target = $(e.target);
     this.write(
       $target.data('section'),
+      $target.data('label'),
       $target.closest('[data-permalink-section]')
     );
   },
 
-  write: function(section, $parent) {
+  write: function(section, label, $parent) {
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
       section: section,
+      label: label,
       $parent: $parent
     });
     this.$read.hide();
@@ -69,7 +71,7 @@ var PreambleView = ChildView.extend({
 
     if (this.options.mode === 'write') {
       var $parent = $('#' + this.options.section).find('[data-permalink-section]');
-      this.write(this.options.section, $parent);
+      this.write(this.options.section, this.options.label, $parent);
     } else {
       this.handleRead();
     }

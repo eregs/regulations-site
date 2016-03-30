@@ -10,10 +10,12 @@ var DrawerEvents = require('../../events/drawer-events');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
 
-function getSection(elm) {
-  return $(elm)
-    .closest('[data-comment-section]')
-    .data('comment-section');
+function getOptions(elm) {
+  var $elm = $(elm).closest('.comment-index-item');
+  return {
+    section: $elm.data('comment-section'),
+    label: $elm.data('comment-label')
+  };
 }
 
 module.exports = Backbone.CommentIndexView = Backbone.View.extend({
@@ -46,15 +48,14 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   editComment: function(e) {
-    var section = getSection(e.target);
-    var options = {mode: 'write', section: section};
-    DrawerEvents.trigger('section:open', section);
-    MainEvents.trigger('section:open', section, options, 'preamble-section');
+    var options = _.extend({mode: 'write'}, getOptions(e.target));
+    DrawerEvents.trigger('section:open', options.section);
+    MainEvents.trigger('section:open', options.section, options, 'preamble-section');
   },
 
   clearComment: function(e) {
-    var section = getSection(e.target);
-    var comment = comments.get(section);
+    var options = getOptions(e.target);
+    var comment = comments.get(options.section);
     if (comment) {
       comment.destroy();
     }
