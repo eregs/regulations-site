@@ -1,3 +1,11 @@
+/**
+ * preamble-head-view.js
+ *
+ * This view specifically handles Preamble actions in the
+ * Sub View Header, notably click actions of the read/write tabs.
+ *
+ */
+
 'use strict';
 
 var $ = require('jquery');
