@@ -73,7 +73,6 @@ def submit_comment(request):
     })
 
 
-@csrf_exempt
 @require_http_methods(['GET', 'HEAD'])
 def get_federal_agencies(request):
     response = requests.get(
@@ -85,7 +84,6 @@ def get_federal_agencies(request):
     return JsonResponse(response.json()['list'], safe=False)
 
 
-@csrf_exempt
 @require_http_methods(['GET', 'HEAD'])
 def get_gov_agency_types(request):
     response = requests.get(
