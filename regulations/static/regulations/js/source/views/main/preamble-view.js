@@ -80,6 +80,7 @@ var PreambleView = ChildView.extend({
   },
 
   remove: function() {
+    this.preambleHeadView.remove();
     this.commentView.remove();
     this.commentIndex.remove();
     Backbone.View.prototype.remove.call(this);
