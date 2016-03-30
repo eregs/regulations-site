@@ -28,7 +28,7 @@ var AttachmentView = Backbone.View.extend({
   render: function() {
     var $el = $(this.template(this.options));
     this.options.$parent.append($el);
-    Backbone.View.prototype.setElement.call(this, $el);
+    this.setElement($el);
   },
 
   handleProgress: function(e) {

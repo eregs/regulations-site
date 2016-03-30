@@ -28,7 +28,7 @@ describe('CommentView', function() {
       '<div class="comment">' +
         '<form>' +
           '<div class="editor-container"></div>' +
-          '<div class="queued"></div>' +
+          '<div class="comment-attachments"></div>' +
           '<input type="file">' +
           '<button type="submit">Save</button>' +
           '<div class="comment-clear">Clear</div>' +
@@ -59,7 +59,7 @@ describe('CommentView', function() {
   it('removes an attachment', function() {
     commentView.attachmentViews.push(
       new AttachmentView({
-        $parent: commentView.$queued,
+        $parent: commentView.$attachments,
         key: '6bc649',
         name: 'attachment.txt',
         size: 1234
@@ -104,6 +104,6 @@ describe('CommentView', function() {
     commentView.clear();
     expect(comments.get('2016_02479')).to.be.falsy;
     expect(commentView.editor.setContent).to.have.been.calledWith('', 'markdown');
-    expect(commentView.$queued.find('.queue-item').length).to.equal(0);
+    expect(commentView.$attachments.find('.queue-item').length).to.equal(0);
   });
 });

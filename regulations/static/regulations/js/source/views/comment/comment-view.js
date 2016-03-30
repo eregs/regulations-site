@@ -37,7 +37,7 @@ var CommentView = Backbone.View.extend({
     this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
-    this.$queued = this.$el.find('.queued');
+    this.$attachments = this.$el.find('.comment-attachments');
     this.$status = this.$el.find('.status');
 
     this.editor = new edit.ProseMirror({
@@ -76,9 +76,9 @@ var CommentView = Backbone.View.extend({
 
   render: function() {
     this.editor.setContent(this.model.get('comment'), 'markdown');
-    this.$queued.empty();
+    this.$attachments.empty();
     this.attachmentViews = this.model.get('files').map(function(file) {
-      return new AttachmentView(_.extend({$parent: this.$queued}, file));
+      return new AttachmentView(_.extend({$parent: this.$attachments}, file));
     }.bind(this));
   },
 
@@ -98,12 +98,18 @@ var CommentView = Backbone.View.extend({
     this.unhighlightDropzone();
   },
 
+  /**
+   * Upload an attachment. Request a signed upload URL, PUT the file via
+   * XMLHttpRequest, and pass the XHR to AttachmentView for rendering.
+   *
+   * @param file {File} File to upload
+   */
   addAttachment: function(file) {
     getUploadUrl(file).then(function(url) {
       var xhr = new XMLHttpRequest();
       this.attachmentViews.push(
         new AttachmentView({
-          $parent: this.$queued,
+          $parent: this.$attachments,
           name: file.name,
           size: file.size,
           key: url.key,
@@ -120,7 +126,8 @@ var CommentView = Backbone.View.extend({
     var index = _.findIndex(this.attachmentViews, function(view) {
       return view.options.key === key;
     });
-    this.attachmentViews.splice(index, 1)[0].remove();
+    this.attachmentViews[index].remove();
+    this.attachmentViews.splice(index, 1);
   },
 
   clear: function() {
