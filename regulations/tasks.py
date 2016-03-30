@@ -28,8 +28,8 @@ VALID_ATTACHMENT_EXTENSIONS = set([
     "docx", "xlsx", "pptx"])
 
 
-@shared_task
-def submit_comment(body):
+@shared_task(bind=True)
+def submit_comment(self, body):
     comment = build_comment(body)
     files = extract_files(body)
     valid, message = validate_attachments(files)
@@ -51,7 +51,8 @@ def submit_comment(body):
                 'X-Api-Key': settings.REGS_GOV_API_KEY,
             }
         )
-        response.raise_for_status()
+        if response.status_code != requests.codes.created:
+            self.retry()
         logger.info(response.text)
         return response.json()
 
