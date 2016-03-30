@@ -76,10 +76,9 @@ def submit_comment(request):
 @csrf_exempt
 @require_http_methods(['GET', 'HEAD'])
 def get_federal_agencies(request):
-    url = "{}?{}".format(settings.REGS_GOV_API_LOOKUP_URL,
-                         "field=gov_agency&dependentOnValue=Federal")
     response = requests.get(
-        url,
+        settings.REGS_GOV_API_LOOKUP_URL,
+        params={'field': 'gov_agency', 'dependentOnValue': 'Federal'},
         headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
     )
     response.raise_for_status()
@@ -89,10 +88,9 @@ def get_federal_agencies(request):
 @csrf_exempt
 @require_http_methods(['GET', 'HEAD'])
 def get_gov_agency_types(request):
-    url = "{}?{}".format(settings.REGS_GOV_API_LOOKUP_URL,
-                         "field=gov_agency_type")
     response = requests.get(
-        url,
+        settings.REGS_GOV_API_LOOKUP_URL,
+        params={'field': 'gov_agency_type'},
         headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
     )
     response.raise_for_status()
