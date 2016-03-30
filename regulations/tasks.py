@@ -19,11 +19,23 @@ from django.template import loader
 
 logger = get_task_logger(__name__)
 
+# The following limits are specified by the regulations.gov API
+# They are not available as a queryable endpoint
+MAX_ATTACHMENT_COUNT = 10
+VALID_ATTACHMENT_EXTENSIONS = set([
+    "bmp", "doc", "xls", "pdf", "gif", "htm", "html", "jpg", "jpeg",
+    "png", "ppt", "rtf", "sgml", "tiff", "tif", "txt", "wpd", "xml",
+    "docx", "xlsx", "pptx"])
+
 
 @shared_task
 def submit_comment(body):
     comment = build_comment(body)
     files = extract_files(body)
+    valid, message = validate_attachments(files)
+    if not valid:
+        logger.error(message)
+        return
     with assemble_attachments(files) as attachments:
         fields = [
             ('comment_on', settings.COMMENT_DOCUMENT_ID),
@@ -120,3 +132,13 @@ def make_s3_client():
         aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
     return session.client('s3')
+
+
+def validate_attachments(files):
+    if len(files) > MAX_ATTACHMENT_COUNT:
+        return False, "Too many attachments"
+    for file_ in files:
+        _, ext = os.path.splitext(file_['name'])
+        if ext[1:].lower() not in VALID_ATTACHMENT_EXTENSIONS:
+            return False, "Invalid attachment type"
+    return True, ""
