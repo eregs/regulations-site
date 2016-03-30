@@ -78,6 +78,16 @@ class GeneratorTest(TestCase):
             ('204', 'old', 'new'),
             get_diff_json.call_args[0])
 
+    @patch('regulations.generator.generator.get_diff_json')
+    def test_get_diff_applier_allows_empty(self, get_diff_json):
+        diff = {}
+        get_diff_json.return_value = diff
+        da = generator.get_diff_applier('204', 'old', 'new')
+        self.assertEqual(da.diff, diff)
+        self.assertEqual(
+            ('204', 'old', 'new'),
+            get_diff_json.call_args[0])
+
     def test_layercreator_layers(self):
         """ A LAYER entry must have three pieces of information specified. """
 

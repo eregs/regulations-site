@@ -1,14 +1,15 @@
 regulations-site
 ================
 
-[![Build Status](https://travis-ci.org/cfpb/regulations-site.png?branch=master)](https://travis-ci.org/cfpb/regulations-site)
+[![Build Status](https://travis-ci.org/18F/regulations-site.png?branch=master)](https://travis-ci.org/18F/regulations-site)
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/423b7d7702754ff4baa8715465d75bbf/badge.svg)](https://www.quantifiedcode.com/app/project/423b7d7702754ff4baa8715465d75bbf)
 
 An interface for viewing regulations data. This project combines all of the
 data from a parsed regulation and generates navigable, accessible HTML,
 complete with associated information.
 
 This repository is part of a larger project. To read about it, please see
-[http://cfpb.github.io/eregulations/](http://cfpb.github.io/eRegulations/).
+[https://eregs.github.io/eRegulations/](https://eregs.github.io/eRegulations/).
 
 ## Features
 

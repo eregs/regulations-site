@@ -564,7 +564,7 @@ table {
     padding: 0;
     font-size: .75em;
     .avenir-next;
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
 }
 
@@ -582,12 +582,9 @@ th {
     text-align: left;
 }
 
-/* make tables horizontally scroll on small screens */
-@media only screen and ( max-width: 480px ) {
-    .table-wrap {
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch; // smoother scrolling
-    }
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; // smoother scrolling        
 }
 
 /*

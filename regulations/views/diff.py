@@ -1,4 +1,7 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
+
+from collections import namedtuple
+from itertools import takewhile
 
 from regulations.generator import generator
 from regulations.generator.html_builder import HTMLBuilder
@@ -8,24 +11,27 @@ from regulations.generator.section_url import SectionUrl
 from regulations.generator.toc import fetch_toc
 from regulations.views import error_handling, utils
 from regulations.views.chrome import ChromeView
-from regulations.views.navigation import choose_next_section
-from regulations.views.navigation import choose_previous_section
 from regulations.views.partial import PartialView
 
 from django.core.urlresolvers import reverse
 
 
-def get_appliers(label_id, older, newer):
-    diff = generator.get_diff_applier(label_id, older, newer)
+class Versions(namedtuple('Versions', ['older', 'newer', 'return_to'])):
+    def __init__(self, older, newer, return_to=None):
+        if return_to is None:
+            return_to = older
+        super(Versions, self).__init__(older, newer, return_to)
+
+
+def get_appliers(label_id, versions):
+    diff = generator.get_diff_applier(label_id, versions.older, versions.newer)
 
     if diff is None:
         raise error_handling.MissingContentException()
 
     appliers = utils.handle_diff_layers(
-        'graphics,paragraph,keyterms,defined',
-        label_id,
-        older,
-        newer)
+        'graphics,paragraph,keyterms,defined,formatting',
+        label_id, versions.older, versions.newer)
     appliers += (diff,)
     return appliers
 
@@ -40,29 +46,25 @@ class PartialSectionDiffView(PartialView):
         try:
             return super(PartialSectionDiffView, self).get(request, *args,
                                                            **kwargs)
-        except error_handling.MissingContentException, e:
+        except error_handling.MissingContentException:
             return error_handling.handle_generic_404(request)
 
-    def footer_nav(self, label, toc, old_version, new_version, from_version):
+    def footer_nav(self, label, toc, versions):
         nav = {}
         for idx, toc_entry in enumerate(toc):
             if toc_entry['section_id'] != label:
                 continue
 
-            p_sect = choose_previous_section(idx, toc)
-            n_sect = choose_next_section(idx, toc)
+            if idx > 0:
+                nav['previous'] = toc[idx - 1]
 
-            if p_sect:
-                nav['previous'] = p_sect
-                nav['previous']['url'] = reverse_chrome_diff_view(
-                    p_sect['section_id'], old_version,
-                    new_version, from_version)
+            if idx < len(toc) - 1:
+                nav['next'] = toc[idx + 1]
 
-            if n_sect:
-                nav['next'] = n_sect
-                nav['next']['url'] = reverse_chrome_diff_view(
-                    n_sect['section_id'], old_version,
-                    new_version, from_version)
+        # Add the url
+        for entry in nav.values():
+            entry['url'] = reverse_chrome_diff_view(
+                entry['section_id'], *versions)
         return nav
 
     def get_context_data(self, **kwargs):
@@ -71,17 +73,17 @@ class PartialSectionDiffView(PartialView):
         context = super(PartialView, self).get_context_data(**kwargs)
 
         label_id = context['label_id']
-        older = context['version']
-        newer = context['newer_version']
+        versions = Versions(context['version'], context['newer_version'],
+                            self.request.GET.get('from_version'))
 
-        tree = generator.get_tree_paragraph(label_id, older)
+        tree = generator.get_tree_paragraph(label_id, versions.older)
 
         if tree is None:
-            #TODO We need a more complicated check here to see if the diffs
-            #add the requested section. If not -> 404
+            # TODO We need a more complicated check here to see if the diffs
+            # add the requested section. If not -> 404
             tree = {}
 
-        appliers = get_appliers(label_id, older, newer)
+        appliers = get_appliers(label_id, versions)
 
         builder = HTMLBuilder(*appliers)
         builder.tree = tree
@@ -96,12 +98,11 @@ class PartialSectionDiffView(PartialView):
         context['markup_page_type'] = 'diff'
 
         regpart = label_id.split('-')[0]
-        old_toc = fetch_toc(regpart, older)
-        diff = generator.get_diff_json(regpart, older, newer)
-        from_version = self.request.GET.get('from_version', older)
-        context['TOC'] = diff_toc(older, newer, old_toc, diff, from_version)
-        context['navigation'] = self.footer_nav(label_id, context['TOC'],
-                                                older, newer, from_version)
+        old_toc = fetch_toc(regpart, versions.older)
+        diff = generator.get_diff_json(regpart, versions.older, versions.newer)
+        context['TOC'] = diff_toc(versions, old_toc, diff)
+        context['navigation'] = self.footer_nav(
+            label_id, context['TOC'], versions)
         return context
 
 
@@ -153,15 +154,15 @@ def reverse_chrome_diff_view(sect_id, left_ver, right_ver, from_version):
 def extract_sections(toc):
     compiled_toc = []
     for i in toc:
-        if 'Subpart' in i['index']:
+        if 'Subpart' in i['index'] or 'Subjgrp' in i['index']:
             compiled_toc.extend(i['sub_toc'])
         else:
             compiled_toc.append(i)
     return compiled_toc
 
 
-def diff_toc(older_version, newer_version, old_toc, diff, from_version):
-    #We work around Subparts in the TOC for now.
+def diff_toc(versions, old_toc, diff):
+    # We work around Subparts in the TOC for now.
     compiled_toc = extract_sections(old_toc)
 
     for node in (v['node'] for v in diff.values() if v['op'] == 'added'):
@@ -179,44 +180,44 @@ def diff_toc(older_version, newer_version, old_toc, diff, from_version):
 
     modified, deleted = modified_deleted_sections(diff)
     for el in compiled_toc:
-        if not 'Subpart' in el['index'] and not 'Subjgrp' in el['index']:
-            el['url'] = reverse_chrome_diff_view(
-                el['section_id'], older_version, newer_version, from_version)
+        if 'Subpart' not in el['index'] and 'Subjgrp' not in el['index']:
+            el['url'] = reverse_chrome_diff_view(el['section_id'], *versions)
         # Deleted first, lest deletions in paragraphs affect the section
         if tuple(el['index']) in deleted and 'op' not in el:
             el['op'] = 'deleted'
         if tuple(el['index']) in modified and 'op' not in el:
             el['op'] = 'modified'
 
-    return sort_toc(compiled_toc)
+    return sorted(compiled_toc, key=normalize_toc)
 
 
-def sort_toc(toc):
-    """ Sort the Table of Contents elements. """
+def make_sortable(string):
+    """Split a string into components, converting digits into ints so sorting
+    works as we would expect"""
+    if not string:      # base case
+        return tuple()
+    elif string[0].isdigit():
+        prefix = "".join(takewhile(lambda c: c.isdigit(), string))
+        return (int(prefix),) + make_sortable(string[len(prefix):])
+    else:
+        prefix = "".join(takewhile(lambda c: not c.isdigit(), string))
+        return (prefix,) + make_sortable(string[len(prefix):])
 
-    def normalize(element):
-        """ Return a sorting order for a TOC element, primarily based
-        on the index, and the type of content. """
 
-        # The general order of a regulation is: regulation text sections,
-        # appendices, and then the interpretations.
+def normalize_toc(toc_element):
+    """Return a sorting order for a TOC element, primarily based on the
+    index, and the type of content. General order is regulation text,
+    appendices, then interpretations."""
 
-        normalized = []
-        if element.get('is_section'):
-            normalized.append(0)
-        elif element.get('is_appendix'):
-            normalized.append(1)
-        elif element.get('is_supplement'):
-            normalized.append(2)
-
-        for part in element['index']:
-            if part.isdigit():
-                normalized.append(int(part))
-            else:
-                normalized.append(part)
-        return normalized
-
-    return sorted(toc, key=lambda el: tuple(normalize(el)))
+    sortable_index = tuple(make_sortable(l) for l in toc_element['index'])
+    if toc_element.get('is_section'):
+        return (0,) + sortable_index
+    elif toc_element.get('is_appendix'):
+        return (1,) + sortable_index
+    elif toc_element.get('is_supplement'):
+        return (2,) + sortable_index
+    else:
+        return (3,) + sortable_index
 
 
 def modified_deleted_sections(diff):

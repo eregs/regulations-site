@@ -1,6 +1,7 @@
-#vim: set encoding=utf-8
-from regulations.generator.layers.analyses import *
+# vim: set encoding=utf-8
 from unittest import TestCase
+
+from regulations.generator.layers import analyses
 
 
 class SectionBySectionLayerTest(TestCase):
@@ -19,7 +20,7 @@ class SectionBySectionLayerTest(TestCase):
                 "text": "Paragraph analysis"
             }]
         }
-        sxs = SectionBySectionLayer(layer)
+        sxs = analyses.SectionBySectionLayer(layer)
 
         key, value = sxs.apply_layer("111-22")
         self.assertEqual("analyses", key)
@@ -41,7 +42,7 @@ class SectionBySectionLayerTest(TestCase):
             '111-22-Interp': [{'reference': ['2007-22', '111-22-Interp']}],
             '111-22-Interp-2': [{'reference': ['2007-22', '111-22-Interp-2']}]
         }
-        sxs = SectionBySectionLayer(layer)
+        sxs = analyses.SectionBySectionLayer(layer)
 
         _, value = sxs.apply_layer('111-22')
         self.assertEqual(
@@ -68,7 +69,7 @@ class SectionBySectionLayerTest(TestCase):
         layer = {'555-22-Interp': [{'reference': ['aaa', '555-22-Interp']},
                                    {'reference': ['bbb', '555-22-Interp']},
                                    {'reference': ['ccc', '555-22-Interp']}]}
-        sxs = SectionBySectionLayer(layer)
+        sxs = analyses.SectionBySectionLayer(layer)
 
         self.assertEqual(sxs.to_template_dict('555-22-Interp'), [{
             'doc_number': 'ccc', 'label_id': '555-22-Interp',
@@ -76,7 +77,7 @@ class SectionBySectionLayerTest(TestCase):
 
     def test_sort_analyses(self):
         """ Here we ensure that roman numerals are sorted correctly. """
-        analyses = [
+        _analyses = [
             {'label_id': '200-20-d-2-viii'},
             {'label_id': '200-20-d-2-ix'},
             {'label_id': '200-20-d-2-iv'},
@@ -86,7 +87,7 @@ class SectionBySectionLayerTest(TestCase):
             {'label_id': '200-20-d-2-xi'},
         ]
 
-        sorted_analyses = sort_analyses(analyses)
+        sorted_analyses = analyses.sort_analyses(_analyses)
         labels = [a['label_id'] for a in sorted_analyses]
         self.assertEqual([
             '200-20-d-2-iv',

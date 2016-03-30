@@ -1,6 +1,3 @@
-import os
-import shutil
-import tempfile
 from unittest import TestCase
 
 from mock import patch
@@ -59,7 +56,6 @@ class ClientTest(TestCase):
         self.assertEqual(to_return, reader.notices())
         get = api_client.ApiClient.return_value.get
         self.assertTrue(get.called)
-        param = get.call_args[0][0]
 
         self.assertEqual(to_return, reader.notices(part='p'))
         self.assertTrue(get.called)

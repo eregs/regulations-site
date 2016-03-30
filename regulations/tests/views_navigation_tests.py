@@ -1,4 +1,4 @@
-#vim: set encoding=utf-8
+# vim: set encoding=utf-8
 from unittest import TestCase
 from mock import patch
 from regulations.views import navigation
@@ -9,22 +9,6 @@ class NavigationTest(TestCase):
         label = '204-1-a'
         self.assertEquals(
             ['204', '1', 'a'], navigation.get_labels(label))
-
-    def test_is_last(self):
-        l = [1, 2, 3]
-        self.assertFalse(navigation.is_last(1, l))
-        self.assertTrue(navigation.is_last(2, l))
-
-    def test_choose_next_section(self):
-        l = [1, 2, 3]
-        self.assertEquals(3, navigation.choose_next_section(1, l))
-        self.assertEquals(None, navigation.choose_next_section(2, l))
-
-    def test_choose_previous_section(self):
-        l = [1,  2, 3]
-        self.assertEquals(1, navigation.choose_previous_section(1, l))
-        self.assertEquals(2, navigation.choose_previous_section(2, l))
-        self.assertEquals(None, navigation.choose_previous_section(0, l))
 
     @patch('regulations.views.navigation.fetch_toc')
     def test_nav_sections(self, fetch_toc):

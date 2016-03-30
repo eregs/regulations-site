@@ -1,4 +1,4 @@
-#vim: set fileencoding=utf-8
+# vim: set fileencoding=utf-8
 from regulations.generator import title_parsing
 from regulations.generator.section_url import SectionUrl
 from regulations.generator.toc import (

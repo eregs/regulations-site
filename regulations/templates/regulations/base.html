@@ -15,7 +15,7 @@ CSS/Javascript etc., should inherit from this template.
         {{meta.cfr_title_number}} CFR Part {{reg_part}} | eRegulations
         {% endblock %}
         </title>
-        <link rel="shortcut icon" type="image/x-icon" href="{%static "eregsip/favicon.ico" %}"/>
+        {% include "regulations/favicon.html" %}
         {% block app_js %}
         <script>
             window.APP_PREFIX = "{{ APP_PREFIX }}";
@@ -54,7 +54,12 @@ CSS/Javascript etc., should inherit from this template.
     <!--[if IE 9]>         <body class="lt-ie10"> <![endif]-->
     <!--[if gt IE 9]><!--><body><!--<![endif]-->
 
-    {% include "regulations/analytics.html" %}
+    {% if ANALYTICS.GOOGLE %}
+      {% include "regulations/google_analytics.html" %}
+    {% endif %}
+    {% if ANALYTICS.DAP %}
+      {% include "regulations/dap_analytics.html" %}
+    {% endif %}
 
     {% block body %}
     {% endblock %}

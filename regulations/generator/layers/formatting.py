@@ -6,16 +6,12 @@ class FormattingLayer(object):
 
     def __init__(self, layer_data):
         self.layer_data = layer_data
-        self.table_tpl = loader.get_template('regulations/layers/table.html')
-        self.note_tpl = loader.get_template('regulations/layers/note.html')
-        self.extract_tpl = loader.get_template(
-            'regulations/layers/extract.html')
-        self.code_tpl = loader.get_template('regulations/layers/code.html')
-        self.subscript_tpl = loader.get_template(
-            'regulations/layers/subscript.html')
-        self.dash_tpl = loader.get_template('regulations/layers/dash.html')
+        self.tpls = {
+            key: loader.get_template('regulations/layers/{}.html'.format(key))
+            for key in ('table', 'note', 'code', 'subscript', 'dash',
+                        'footnote')}
 
-    def render_table(self, table):
+    def render_table(self, table, data_type=None):
         max_width = 0
         for header_row in table['header']:
             width = sum(cell['colspan'] for cell in header_row)
@@ -31,9 +27,9 @@ class FormattingLayer(object):
 
         context = Context(table)
         #   Remove new lines so that they don't get escaped on display
-        return self.table_tpl.render(context).replace('\n', '')
+        return self.tpls['table'].render(context).replace('\n', '')
 
-    def render_fence(self, fence):
+    def render_fence(self, fence, data_type=None):
         """Fenced paragraphs are formatted separately, offset from the rest of
         the text. They have an associated "type" which further specifies their
         format"""
@@ -44,37 +40,33 @@ class FormattingLayer(object):
             lines = [l.replace('Note:', '').replace('Notes:', '')
                      for l in lines]
             lines = [l for l in lines if l.strip()]
-            tpl = self.note_tpl
-        elif _type == 'extract':
-            lines = [l for l in lines if l.strip()]
-            tpl = self.extract_tpl
+            tpl = self.tpls['note']
         else:   # Generic "code"/ preformatted
             strip_nl = False
-            tpl = self.code_tpl
+            tpl = self.tpls['code']
 
         rendered = tpl.render(Context({'lines': lines, 'type': _type}))
         if strip_nl:
             rendered = rendered.replace('\n', '')
         return rendered
 
-    def render_subscript(self, subscript):
-        context = Context(subscript)
-        return self.subscript_tpl.render(context).replace('\n', '')
-
-    def render_dash(self, dash):
-        context = Context(dash)
-        return self.dash_tpl.render(context).replace('\n', '')
+    def render_replacement(self, data, data_type):
+        """Several of the formatted data types are simple string replacements.
+        Implement them all here"""
+        context = Context(data)
+        return self.tpls[data_type].render(context).replace('\n', '')
 
     def apply_layer(self, text_index):
         """Convert all plaintext tables into html tables"""
         layer_pairs = []
-        data_types = ['table', 'fence', 'subscript', 'dash']
+        data_types = ['table', 'fence', 'subscript', 'dash', 'footnote']
         for data in self.layer_data.get(text_index, []):
             for data_type in data_types:
-                processor = getattr(self, 'render_' + data_type)
+                processor = getattr(self, 'render_' + data_type,
+                                    self.render_replacement)
                 key = data_type + '_data'
                 if key in data:
                     layer_pairs.append((data['text'],
-                                        processor(data[key]),
+                                        processor(data[key], data_type),
                                         data['locations']))
         return layer_pairs

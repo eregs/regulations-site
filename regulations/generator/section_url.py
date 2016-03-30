@@ -44,7 +44,7 @@ class SectionUrl(object):
                 try:
                     url = reverse(view_name, args=(label, version))
                 except NoReverseMatch:
-                    #XXX We have some errors in our layers. Once those are
+                    # XXX We have some errors in our layers. Once those are
                     # fixed, we need to revisit this.
                     pass
             self.rev_cache[key] = url + '#' + '-'.join(to_markup_id(citation))

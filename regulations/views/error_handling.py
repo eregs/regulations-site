@@ -66,6 +66,7 @@ def check_version(label_id, version):
         requested_version = convert_to_python(requested_version)
         return requested_version[0]
 
+
 def add_to_chrome(body, context, request):
     chrome_template = loader.get_template(
         'regulations/chrome-empty-sidebar.html')
@@ -88,8 +89,8 @@ def handle_missing_section_404(
 
     context = {
         'request_path': request.path,
-        'reg_section':reg_section,
-        'effective_date':req_version['by_date']
+        'reg_section': reg_section,
+        'effective_date': req_version['by_date']
     }
     context.update(extra_context)
 

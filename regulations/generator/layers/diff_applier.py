@@ -13,13 +13,16 @@ class DiffApplier(object):
 
     INSERT = u'insert'
     DELETE = u'delete'
+    EQUAL = u'equal'
+
     DELETED_OP = 'deleted'
     ADDED_OP = 'added'
+    MODIFIED_OP = 'modified'
 
     def __init__(self, diff_json, label_requested):
         self.diff = diff_json
-        #label_requested is the regulation label for which a diff is
-        #requested.
+        # label_requested is the regulation label for which a diff is
+        # requested.
         self.label_requested = label_requested
 
     def deconstruct_text(self, original):
@@ -46,14 +49,31 @@ class DiffApplier(object):
         """ Mark all the text passed in as deleted. """
         return '<ins>' + text + '</ins>'
 
+    def set_child_labels(self, node):
+        """As we display removed, added, and unchanged nodes, the children of
+        a node will contain all three types. Pull the 'child_ops' data to
+        derive the correct order of these combined children"""
+        instructs = self.diff.get('-'.join(node['label']), {})
+        if 'child_labels' not in instructs and 'child_ops' in instructs:
+            original_labels = ['-'.join(c['label']) for c in node['children']]
+            new_labels = []
+            for op, start, end_or_nodes in instructs['child_ops']:
+                if isinstance(end_or_nodes, list):
+                    new_labels.extend(end_or_nodes)
+                else:
+                    new_labels.extend(original_labels[start:end_or_nodes])
+            node['child_labels'] = new_labels
+
     def add_nodes_to_tree(self, original, adds):
         """ Add all the nodes from new_nodes into the original tree. """
-        tree = tree_builder.build_tree_hash(original)
+        tree_hash = tree_builder.build_tree_hash(original)
+        for node in tree_hash.values():
+            self.set_child_labels(node)
 
         for label, node in adds.queue:
             p_label = '-'.join(tree_builder.parent_label(node))
-            if tree_builder.parent_in_tree(p_label, tree):
-                tree_builder.add_node_to_tree(node, p_label, tree)
+            if tree_builder.parent_in_tree(p_label, tree_hash):
+                tree_builder.add_node_to_tree(node, p_label, tree_hash)
                 adds.delete(label)
             else:
                 parent = adds.find(p_label)

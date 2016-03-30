@@ -122,7 +122,7 @@ class InlineLayersApplier(LayersBase):
             if applied:
                 layer_pairs += applied
 
-        #convert from offset-based to a search and replace layer.
+        # convert from offset-based to a search and replace layer.
         layer_elements = []
 
         for o, r, offset in layer_pairs:

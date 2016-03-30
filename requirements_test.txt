@@ -1,5 +1,6 @@
 coverage
 coveralls
 django-nose
+flake8
 mock
 nose-exclude

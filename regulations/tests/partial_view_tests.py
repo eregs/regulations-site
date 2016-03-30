@@ -2,17 +2,17 @@ from unittest import TestCase
 from mock import Mock, patch
 
 from django.test import RequestFactory
-from django.test.client import Client
 
-from regulations.generator.layers.layers_applier import *
+from regulations.generator.layers.layers_applier import (
+    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from regulations.generator.node_types import EMPTYPART, INTERP, REGTEXT
-from regulations.views.partial import *
+from regulations.views import partial
 
 
 class PartialParagraphViewTests(TestCase):
-    @patch.object(PartialParagraphView, 'section_navigation')
+    @patch.object(partial.PartialParagraphView, 'section_navigation')
     def test_transform_context(self, sn):
-        ppv = PartialParagraphView()
+        ppv = partial.PartialParagraphView()
         builder = Mock()
         builder.tree = {'label': ['1111', '22', 'a', '5'],
                         'node_type': REGTEXT}
@@ -59,7 +59,7 @@ class PartialSectionViewTests(TestCase):
         reg_version = '2013-10608'
 
         request = RequestFactory().get('/fake-path/?layers=meta')
-        view = PartialSectionView.as_view(
+        view = partial.PartialSectionView.as_view(
             template_name='regulations/regulation-content.html')
 
         response = view(request, label_id=reg_part_section,
@@ -79,7 +79,7 @@ class PartialViewTest(TestCase):
         p_applier = ParagraphLayersApplier()
         sr_applier = SearchReplaceLayersApplier()
         appliers = (i_applier, p_applier, sr_applier)
-        builder = generate_html(regulation_tree, appliers)
+        builder = partial.generate_html(regulation_tree, appliers)
         self.assertEquals(builder.tree, regulation_tree)
         self.assertEquals(builder.inline_applier, i_applier)
         self.assertEquals(builder.p_applier, p_applier)

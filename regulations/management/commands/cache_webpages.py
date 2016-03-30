@@ -4,7 +4,8 @@ import sys
 
 
 class Command(BaseCommand):
-    args = "<url where eregulations is located> <optional- comma seperated list of regulation locations to be parsed >"
+    args = ("<url where eregulations is located> <optional- comma seperated "
+            "list of regulation locations to be parsed >")
     help = 'call every page in eregulations allowing the pages to be cached'
 
     def handle(self, *args, **options):
@@ -12,5 +13,5 @@ class Command(BaseCommand):
         regulations_arg = None
         if len(sys.argv) > 3:
             regulations_arg = sys.argv[3]
-    
+
         EregsCache(sys.argv[2], regulations_arg)
