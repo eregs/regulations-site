@@ -40,8 +40,11 @@
 
 <script id="comment-index-template" type="text/template">
   <% _.each(comments, function(comment) { %>
-    <li class="comment-index-item group" data-comment-section="<%= comment.id %>">
-      <div class="comment-index-section"><%= comment.id %></div>
+    <li
+        class="comment-index-item group"
+        data-comment-section="<%= comment.id %>"
+        data-comment-label="<%= comment.label %>">
+      <div class="comment-index-section"><%= comment.label %></div>
       <div class="comment-index-modify">
         <span class="comment-index-edit">edit</span>
         <span class="comment-index-clear">remove</span>

@@ -52,22 +52,22 @@ var CommentView = Backbone.View.extend({
     this.listenTo(CommentEvents, 'comment:target', this.target);
     this.listenTo(CommentEvents, 'attachment:remove', this.clearAttachment);
 
-    this.setSection(options.section);
+    this.setSection(options.section, options.label);
   },
 
-  setSection: function(section, blank) {
+  setSection: function(section, label, blank) {
     if (this.model) {
       this.stopListening(this.model);
     }
     this.model = blank ?
       new CommentModel({id: section}) :
-      comments.get(section) || new CommentModel({id: section});
-    this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, true));
+      comments.get(section) || new CommentModel({id: section, label: label});
+    this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, label, true));
     this.render();
   },
 
   target: function(options) {
-    this.setSection(options.section);
+    this.setSection(options.section, options.label);
     this.$context.empty();
     if (options.$parent) {
       this.$context.append(options.$parent);
