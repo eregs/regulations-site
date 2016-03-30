@@ -13,6 +13,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
+var CommentEvents = require('../../events/comment-events');
+
 var PreambleHeadView = Backbone.View.extend({
   el: '.preamble-header',
 
@@ -25,14 +27,14 @@ var PreambleHeadView = Backbone.View.extend({
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
-    Backbone.on('writeSectionComment', this.writeComment, this);
+    CommentEvents.on('writeSectionComment', this.writeComment, this);
   },
 
   readProposal: function() {
     this.$readTab.addClass('active-mode');
     this.$writeTab.removeClass('active-mode');
 
-    Backbone.trigger('readProposal');
+    CommentEvents.trigger('readProposal');
   },
 
   writeComment: function() {

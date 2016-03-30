@@ -22,11 +22,14 @@ var PreambleView = ChildView.extend({
     this.options = options;
     this.id = options.id;
     this.url = 'preamble/' + this.id.split('-').join('/');
+
     if (!options.render) {
       this.render();
     }
+
     ChildView.prototype.initialize.apply(this, arguments);
-    Backbone.on('readProposal', this.handleRead, this);
+
+    CommentEvents.on('readProposal', this.handleRead, this);
   },
 
   handleRead: function() {
@@ -41,7 +44,7 @@ var PreambleView = ChildView.extend({
       $target.closest('[data-permalink-section]')
     );
 
-    Backbone.trigger('writeSectionComment');
+    CommentEvents.trigger('writeSectionComment');
   },
 
   write: function(section, $parent) {
