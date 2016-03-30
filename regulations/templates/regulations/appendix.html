@@ -25,11 +25,9 @@
             {% endif %}
 
             {% if level_one.children %}
-                {% with first_child=level_one.children|first %}
-                {% include "regulations/ol-tag.html" %}
-                {% endwith %}
+                <ol class="level-{{level_one.list_level|add:1}}">
                 {% for node in level_one.children  %}
-                    {% include "regulations/tree-with-wrapper.html" %}
+                    {% include node.template_name %}
                 {% endfor %}
                 </ol>
             {% endif %}
@@ -48,4 +46,5 @@
             {% include "regulations/slide-down-interp.html" %}
         {% endwith %}
     {% endif %}
+    </section>
 {% endif %}

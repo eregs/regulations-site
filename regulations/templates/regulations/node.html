@@ -1,0 +1,39 @@
+{% comment %}
+    Template for inner paragraphs of a reg section
+{% endcomment %}
+{% if node.header %}
+<div>
+  <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
+  {% if use_comments %}
+    <div class="activate-write" data-section="{{ node.markup_id }}">+ Write a comment about {{ node.human_label }}</div>
+  {% endif %}
+</div>
+{% endif %}
+
+{%if node.marked_up %}
+<p {% if node.is_collapsed %}class="collapsed"{% endif %}>
+{% if node.node_type == "appendix" %}
+    {{node.marked_up|safe|linebreaksbr}}
+{% else  %}
+    {{node.marked_up|safe}}
+{% endif %}
+</p>
+{% if use_comments and not node.title %}
+  <div class="activate-write" data-section="{{ node.markup_id }}">+ Write a comment about {{ node.human_label }}</div>
+{% endif %}
+{% endif %}
+
+{% if node.children %}
+<ol class="level-{{node.list_level|add:1}}">
+    {% for c in node.children %}
+        {% with node=c %}
+            {% include node.template_name %}
+        {% endwith %}
+    {% endfor %}
+</ol>
+{% endif %}
+{% if node.interp %}
+    {% with interp=node.interp %}
+        {% include "regulations/slide-down-interp.html" %}
+    {% endwith %}
+{% endif %}

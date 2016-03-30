@@ -1,0 +1,58 @@
+{% extends "regulations/chrome.html" %}
+{% load static from staticfiles %}
+
+{% block title %}Preamble {{doc_number}}{% endblock %}
+
+{% block sidebar-icons %}
+<li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
+       class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
+{% endblock %}
+
+{% block wayfinding %}
+<span class="subpart">{{doc_number}}</span>
+<span id="active-title">Active Title</span>
+{% endblock %}
+
+{% block header-secondary %}
+<span class="effective-date"><strong>Published Date:</strong> A Date</span>
+{% endblock %}
+
+{% block whole-toc %}
+<div id="menu" class="panel">
+  <div class="toc-drawer toc-container current hidden diff-toc" id="table-of-contents">
+    <div class="drawer-header">
+      <h3 class="toc-type">Table of Contents</h3>
+    </div><!-- /.drawer-header -->
+    <nav id="toc" class="regulation-nav drawer-content" role="navigation">
+      <ol>
+        {% for child in preamble.children %}
+          {% if child.title %}
+            <li>
+              <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}"
+                 data-section-id="{{child.label|join:"-"}}">{{child.title}}</a>
+            </li>
+            {% for subchild in child.children %}
+              {% if subchild.title %}
+                <li><a href="{% url "chrome_preamble" paragraphs=subchild.label|join:"/" %}"
+                       data-section-id="{{subchild.label|join:"-"}}"style="padding-left: 2em;">{{subchild.title}}</a></li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </nav>
+  </div>
+</div> <!-- /.panel -->
+{% endblock %}
+
+{% block chrome-content %}
+<main role="main">
+
+  <div id="content-body" class="main-content">
+    {% include "regulations/preamble-partial.html" %}
+  </div> <!-- /.main-content -->
+
+</main>
+{% endblock %}
+
+{% block chrome-sidebar %}{% endblock %}

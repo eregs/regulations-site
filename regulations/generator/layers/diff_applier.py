@@ -1,6 +1,5 @@
-import types
 import copy
-from collections import deque
+from collections import Counter, deque, namedtuple
 
 from regulations.generator.layers import tree_builder
 
@@ -49,6 +48,8 @@ class DiffApplier(object):
         """ Mark all the text passed in as deleted. """
         return '<ins>' + text + '</ins>'
 
+    _LabelOp = namedtuple('LabelOp', ['label', 'op'])
+
     def set_child_labels(self, node):
         """As we display removed, added, and unchanged nodes, the children of
         a node will contain all three types. Pull the 'child_ops' data to
@@ -56,13 +57,30 @@ class DiffApplier(object):
         instructs = self.diff.get('-'.join(node['label']), {})
         if 'child_labels' not in instructs and 'child_ops' in instructs:
             original_labels = ['-'.join(c['label']) for c in node['children']]
-            new_labels = []
-            for op, start, end_or_nodes in instructs['child_ops']:
-                if isinstance(end_or_nodes, list):
-                    new_labels.extend(end_or_nodes)
+            label_ops = []
+            for op, start, end_or_labels in instructs['child_ops']:
+                if isinstance(end_or_labels, list):
+                    labels = end_or_labels
                 else:
-                    new_labels.extend(original_labels[start:end_or_nodes])
-            node['child_labels'] = new_labels
+                    labels = original_labels[start:end_or_labels]
+                label_ops.extend(DiffApplier._LabelOp(l, op) for l in labels)
+            label_ops = self.remove_moved_labels(label_ops)
+            node['child_labels'] = [lo.label for lo in label_ops]
+
+    @classmethod
+    def has_moved(cls, label_op, seen_count):
+        """A label is moved if it's been deleted in one position but added int
+        another"""
+        if seen_count[label_op.label] == 1:
+            return False
+        else:   # We want to keep the final destination (INSERT)
+            return label_op.op != cls.INSERT
+
+    def remove_moved_labels(self, label_ops):
+        """If a label has been moved, we will display it in the new position"""
+        seen_count = Counter(label_op.label for label_op in label_ops)
+
+        return [lo for lo in label_ops if not self.has_moved(lo, seen_count)]
 
     def add_nodes_to_tree(self, original, adds):
         """ Add all the nodes from new_nodes into the original tree. """
@@ -138,7 +156,7 @@ class DiffApplier(object):
             if d[0] == self.DELETE:
                 _, s, e = d
                 self.delete_text(s, e)
-            if isinstance(d[0], types.ListType):
+            if isinstance(d[0], list):
                 if d[0][0] == self.DELETE and d[1][0] == self.INSERT:
                     # Text replace scenario.
                     _, s, e = d[0]

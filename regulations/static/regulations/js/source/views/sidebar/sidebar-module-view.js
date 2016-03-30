@@ -6,7 +6,8 @@ var RegModel = require('../../models/reg-model');
 Backbone.$ = $;
 
 var SidebarModuleView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         var field;
         this.model = {};
 

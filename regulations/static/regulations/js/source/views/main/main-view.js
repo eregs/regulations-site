@@ -1,6 +1,10 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+var URI = require('urijs');
+var DataTable = require('datatables.net')();
+var Clipboard = require('clipboard');
+var QueryCommand = require('query-command-supported');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
@@ -11,6 +15,7 @@ var SectionFooter = require('./section-footer-view');
 var MainEvents = require('../../events/main-events');
 var SidebarEvents = require('../../events/sidebar-events');
 var DiffModel = require('../../models/diff-model');
+var PreambleModel = require('../../models/preamble-model');
 var DiffView = require('./diff-view');
 var Router = require('../../router');
 var HeaderEvents = require('../../events/header-events');
@@ -18,13 +23,16 @@ var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
-var Resources = require('../../resources.js');
+var CommentReviewView = require('../comment/comment-review-view');
+var PreambleView = require('./preamble-view');
+var Resources = require('../../resources');
 Backbone.$ = $;
 
 var MainView = Backbone.View.extend({
     el: '#content-body',
 
     initialize: function() {
+        this.dataTables = null;
         this.render = _.bind(this.render, this);
         this.externalEvents = MainEvents;
 
@@ -35,9 +43,12 @@ var MainView = Backbone.View.extend({
             this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
             this.externalEvents.on('section:error', this.displayError, this);
         }
+        this.externalEvents.on('section:resize', this.applyTablePlugin, this);
+        this.externalEvents.on('section:sethandlers', this.setHandlers, this);
 
         var childViewOptions = {},
             appendixOrSupplement;
+
         this.$topSection = this.$el.find('section[data-page-type]');
 
         // which page are we starting on?
@@ -66,9 +77,8 @@ var MainView = Backbone.View.extend({
 
         // find search query
         if (this.contentType === 'search-results') {
-            childViewOptions.id = Helpers.parseURL(window.location.href);
-            childViewOptions.params = childViewOptions.id.params;
-            childViewOptions.query = childViewOptions.id.params.q;
+            childViewOptions.params = URI.parseQuery(window.location.search);
+            childViewOptions.query = childViewOptions.params.q;
         }
 
         if (this.contentType === 'landing-page') {
@@ -78,7 +88,7 @@ var MainView = Backbone.View.extend({
         // we don't want to ajax in data that the page loaded with
         childViewOptions.render = false;
 
-        if (this.sectionId) {
+        if (this.sectionId && this.modelmap[this.contentType]) {
             // store the contents of our $el in the model so that we
             // can re-render it later
             this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
@@ -95,19 +105,26 @@ var MainView = Backbone.View.extend({
 
     modelmap: {
         'reg-section': RegModel,
+        'landing-page': RegModel,
         'search-results': SearchModel,
         'diff': DiffModel,
         'appendix': RegModel,
-        'interpretation': RegModel
+        'interpretation': RegModel,
+        'preamble-section': PreambleModel
     },
 
     viewmap: {
         'reg-section': RegView,
+        'landing-page': RegView,
         'search-results': SearchResultsView,
         'diff': DiffView,
         'appendix': RegView,
-        'interpretation': RegView
+        'interpretation': RegView,
+        'comment-review': CommentReviewView,
+        'preamble-section': PreambleView
     },
+
+    commentTypes: ['reg-section', 'preamble-section'],
 
     createView: function(id, options, type) {
         // close breakaway if open
@@ -183,9 +200,12 @@ var MainView = Backbone.View.extend({
     },
 
     displayError: function() {
+        // prevent error warning stacking
+        $('.error-network').remove();
+
         // get ID of still rendered last section
         var oldId = this.$el.find('section[data-page-type]').attr('id'),
-            $error = this.$el.prepend('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>');
+            $error = this.$el.prepend('<div class="error error-network"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>').hide().fadeIn('slow');
 
         DrawerEvents.trigger('section:open', oldId);
         HeaderEvents.trigger('section:open', oldId);
@@ -194,23 +214,25 @@ var MainView = Backbone.View.extend({
         SidebarEvents.trigger('section:error');
 
         window.scrollTo($error.offset().top, 0);
-
     },
 
     render: function(html, options) {
         var offsetTop, $scrollToId;
 
-        if (typeof this.childView !== 'undefined') {
-            this.sectionFooter.remove();
-        }
-
         this.$el.html(html);
+
+        // Destroy and recreate footer
+        this.sectionFooter.remove();
+        var $footer = this.$el.find('.section-nav');
+        if ($footer) {
+            this.sectionFooter = new SectionFooter({el: $footer});
+        }
 
         MainEvents.trigger('section:rendered');
 
         SidebarEvents.trigger('update', {
-            'type': this.contentType,
-            'id': this.sectionId
+            type: this.contentType,
+            id: this.sectionId
         });
 
         if (options && typeof options.scrollToId !== 'undefined') {
@@ -228,7 +250,6 @@ var MainView = Backbone.View.extend({
     loading: function() {
         // visually indicate that a new section is loading
         $('.main-content').addClass('loading');
-
     },
 
     loaded: function() {
@@ -236,6 +257,51 @@ var MainView = Backbone.View.extend({
 
         // change focus to main content area when new sections are loaded
         $('.section-focus').focus();
+        this.setHandlers();
+    },
+
+    setHandlers: function() {
+        this.applyTablePlugin();
+        this.applyClipboardPlugin();
+    },
+
+    applyClipboardPlugin: function() {
+    // Create anchor tag for copy to clipboard
+        if (document.queryCommandSupported('copy')) {
+            this.$el.find('*[data-copyable="true"]').each(function(index, copyable) {
+                var link = $('<a>', {
+                    class: 'clipboard-link',
+                    text: 'Copy this text to your clipboard',
+                    title: 'Copy this text to your clipboard',
+                    id: '#copyable-' + index,
+                    href: '#copyable-' + index
+                });
+                var copylink = new Clipboard(link[0], {
+                    target: function(trigger) {
+                        return copyable;
+                    }
+                });
+                $(copyable).before(link);
+            });
+        }
+    },
+
+    applyTablePlugin: function() {
+        if (this.dataTables) {
+            this.dataTables.destroy();
+        }
+        // Only apply the datatables plugin if there is a table header present
+        if (this.$el.find('table').length) {
+            this.dataTables = this.$el.find('table').has('thead *').DataTable({
+                paging: false,
+                searching: false,
+                scrollY: 400,
+                scrollCollapse: true,
+                scrollX: true,
+                info: false
+            });
+        }
     }
+
 });
 module.exports = MainView;

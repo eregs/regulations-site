@@ -5,8 +5,8 @@ from django.views.decorators.cache import cache_page
 from regulations.views.about import about
 from regulations.views.chrome_breakaway import ChromeSXSView
 from regulations.views.chrome import (
-    ChromeInterpView, ChromeLandingView, ChromeParagraphView,
-    ChromeRegulationView, ChromeSearchView, ChromeSectionView,
+    ChromeView, ChromeLandingView,
+    ChromeSearchView,
     ChromeSubterpView)
 from regulations.views.diff import ChromeSectionDiffView
 from regulations.views.diff import PartialSectionDiffView
@@ -16,10 +16,12 @@ from regulations.views.partial import PartialRegulationView, PartialSectionView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
+from regulations.views.preamble import PreambleView, PrepareCommentView
 from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
+from regulations.views import comment
 
 # Re-usable URL patterns.
 meta_version = r'(?P<%s>[-\d\w_]+)'
@@ -42,6 +44,13 @@ urlpatterns = patterns(
     url(r'^$', universal, name='universal_landing'),
     # about page
     url(r'^about$', about, name='about'),
+    url(r'^comments/attachment$', comment.upload_proxy),
+    url(r'^comments/review/(?P<doc_number>[\w-]+)$',
+        PrepareCommentView.as_view(), name='comment_review'),
+    url(r'^comments/preview$', comment.preview_comment),
+    url(r'^comments/comment$', comment.submit_comment),
+    url(r'^comments/federal_agencies$', comment.get_federal_agencies),
+    url(r'^comments/gov_agency_types$', comment.get_gov_agency_types),
     # Redirect to version by date (by GET)
     # Example http://.../regulation_redirect/201-3-v
     url(r'^regulation_redirect/%s$' % paragraph_pattern, redirect_by_date_get,
@@ -66,6 +75,10 @@ urlpatterns = patterns(
         (section_pattern, version_pattern, newer_version_pattern),
         lt_cache(ChromeSectionDiffView.as_view()),
         name='chrome_section_diff_view'),
+
+    url(r'^preamble/(?P<paragraphs>[-\w]+(/[-\w]+)*)$',
+        PreambleView.as_view(), name='chrome_preamble'),
+
     # Redirect to version by date
     # Example: http://.../201-3-v/1999/11/8
     url(r'^%s/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})$'
@@ -73,7 +86,7 @@ urlpatterns = patterns(
     # A regulation section with chrome
     # Example: http://.../201-4/2013-10704
     url(r'^%s/%s$' % (section_pattern, version_pattern),
-        lt_cache(ChromeSectionView.as_view()),
+        lt_cache(ChromeView.as_view(partial_class=PartialSectionView)),
         name='chrome_section_view'),
     # Subterp, interpretations of a while subpart, emptypart or appendices
     # Example: http://.../201-Subpart-A-Interp/2013-10706
@@ -85,17 +98,22 @@ urlpatterns = patterns(
     # Interpretation of a section/paragraph or appendix
     # Example: http://.../201-4-Interp/2013-10704
     url(r'^%s/%s$' % (interp_pattern, version_pattern),
-        lt_cache(ChromeInterpView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=partial_interp.PartialInterpView)),
         name='chrome_interp_view'),
     # The whole regulation with chrome
     # Example: http://.../201/2013-10704
     url(r'^%s/%s$' % (reg_pattern, version_pattern),
-        lt_cache(ChromeRegulationView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=PartialRegulationView,
+            version_switch_view='chrome_regulation_view')),
         name='chrome_regulation_view'),
     # A regulation paragraph with chrome
     # Example: http://.../201-2-g/2013-10704
     url(r'^%s/%s$' % (paragraph_pattern, version_pattern),
-        lt_cache(ChromeParagraphView.as_view()),
+        lt_cache(ChromeView.as_view(
+            partial_class=PartialParagraphView,
+            version_switch_view='chrome_paragraph_view')),
         name='chrome_paragraph_view'),
     # A regulation landing page
     # Example: http://.../201

@@ -13,7 +13,7 @@ Universal drawer styles
 .panel {
     background-color: @bg_gray;
     border-right: 2px solid @medium_gray;
-    .avenir-next-demi;
+    .font-bold;
     font-size: .875em;
     overflow-y: scroll; /* allow content to be scrollable */
 }
@@ -55,11 +55,8 @@ Panel Header
         padding: 0 15px;
     }
 
-    h2 {
-        color: @mid_text;
-        font-size: .875em; /* 12px / (26px * .875em) */
-        .avenir-next-demi;
-        text-transform: uppercase;
+    h3 {
+        .drawer-header-font;
     }
 }
 
@@ -115,15 +112,21 @@ Panel Slide Button
 }
 
 /* use the icon font for the drawer toggle arrow in browsers that support it */
-.panel-slide:before {
-    .cf-icon;
-    content: "\e000";
+.panel-slide {
+    img:first-child { display:none; }
+    img:last-child { display:inline-block; }
 
-    .close & {        
-        content: "\e002";
+    .close & {
+        img:first-child { display:inline-block; }
+        img:last-child { display:none; }
     }
 }
 
+.drawer-toggle-icon {
+    height:15px;
+    vertical-align:middle;
+    margin-bottom:4px;
+}
 
 /*
 TOC Nav Links
@@ -164,23 +167,12 @@ currently these are TOC, History, and Search
         }
     }
 
-    .cf-icon-table-of-contents {
-        html.no-fontface & {
-            background: url(../img/nav-link.png) center center no-repeat;
-        }
-    }
-
     .cf-icon-search {
         html.no-fontface & {
             background: url(../img/search.png) center center no-repeat;
         }
     }
 
-    .cf-icon-history {
-        html.no-fontface & {
-            background: url(../img/history.png) center center no-repeat;
-        }
-    }
 }
 
 .close {

@@ -1,104 +1,63 @@
+from importlib import import_module
 import logging
 import re
 from threading import Thread
 
-import api_reader
-from layers.defined import DefinedLayer
-from layers.definitions import DefinitionsLayer
-from layers.external_citation import ExternalCitationLayer
-from layers.formatting import FormattingLayer
-from layers.internal_citation import InternalCitationLayer
-from layers.interpretations import InterpretationsLayer
-from layers.key_terms import KeyTermsLayer
-from layers.meta import MetaLayer
-from layers.layers_applier import InlineLayersApplier
-from layers.layers_applier import ParagraphLayersApplier
-from layers.layers_applier import SearchReplaceLayersApplier
-from layers.paragraph_markers import ParagraphMarkersLayer
-from layers.toc_applier import TableOfContentsLayer
-from layers.graphics import GraphicsLayer
-from layers.diff_applier import DiffApplier
-from html_builder import HTMLBuilder
-import notices
+from django.conf import settings
+
+from regulations.generator import api_reader
+from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.layers_applier import (
+    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
+from regulations.generator.layers.diff_applier import DiffApplier
+from regulations.generator import notices
+
+
+def _data_layers():
+    """Index all configured data layers by their "shorthand". This doesn't
+    have any error checking -- it'll explode if configured improperly"""
+    layers = {}
+    for class_path in settings.DATA_LAYERS:
+        module, class_name = class_path.rsplit('.', 1)
+        klass = getattr(import_module(module), class_name)
+        layers[klass.shorthand] = klass
+    return layers
 
 
 class LayerCreator(object):
     """ This lets us dynamically load layers by shorthand. """
-    DEFINED = DefinedLayer.shorthand
-    EXTERNAL = ExternalCitationLayer.shorthand
-    GRAPHICS = GraphicsLayer.shorthand
-    INTERNAL = InternalCitationLayer.shorthand
-    INTERP = InterpretationsLayer.shorthand
-    KEY_TERMS = KeyTermsLayer.shorthand
-    META = MetaLayer.shorthand
-    PARAGRAPH = ParagraphMarkersLayer.shorthand
-    FORMATTING = FormattingLayer.shorthand
-    TERMS = DefinitionsLayer.shorthand
-    TOC = TableOfContentsLayer.shorthand
-
-    LAYERS = {
-        DEFINED: ('terms', 'inline', DefinedLayer),
-        # EXTERNAL: ('external-citations', 'inline', ExternalCitationLayer),
-        GRAPHICS: ('graphics', 'search_replace', GraphicsLayer),
-        INTERNAL: ('internal-citations', 'inline', InternalCitationLayer),
-        INTERP: ('interpretations', 'paragraph', InterpretationsLayer),
-        KEY_TERMS: ('keyterms', 'search_replace', KeyTermsLayer),
-        META: ('meta', 'paragraph', MetaLayer),
-        PARAGRAPH: (
-            'paragraph-markers', 'search_replace', ParagraphMarkersLayer),
-        FORMATTING: ('formatting', 'search_replace', FormattingLayer),
-        TERMS: ('terms', 'inline', DefinitionsLayer),
-        TOC: ('toc', 'paragraph', TableOfContentsLayer),
-    }
+    LAYERS = _data_layers()
 
     def __init__(self):
         self.appliers = {
-            'inline': InlineLayersApplier(),
-            'paragraph': ParagraphLayersApplier(),
-            'search_replace': SearchReplaceLayersApplier()}
+            LayerBase.INLINE: InlineLayersApplier(),
+            LayerBase.PARAGRAPH: ParagraphLayersApplier(),
+            LayerBase.SEARCH_REPLACE: SearchReplaceLayersApplier()}
 
         self.api = api_reader.ApiReader()
 
-    def get_layer_json(self, api_name, regulation, version):
-        """ Hit the API to retrieve the regulation JSON. """
-        return self.api.layer(api_name, regulation, version)
+    def get_layer_json(self, layer_name, doc_type, label_id, version=None):
+        """Hit the API to retrieve layer data"""
+        return self.api.layer(layer_name, doc_type, label_id, version)
 
-    def add_layer(self, layer_name, regulation, version, sectional=False):
-        """ Add a normal layer (no special handling required) to the applier.
-        """
-
-        if layer_name.lower() in LayerCreator.LAYERS:
-            api_name, applier_type,\
-                layer_class = LayerCreator.LAYERS[layer_name]
-            layer_json = self.get_layer_json(api_name, regulation, version)
-            if layer_json is None:
-                logging.warning("No data for %s/%s/%s"
-                                % (api_name, regulation, version))
-            else:
-                layer = layer_class(layer_json)
-
-                if sectional and hasattr(layer, 'sectional'):
-                    layer.sectional = sectional
-                if hasattr(layer, 'version'):
-                    layer.version = version
-
-                self.appliers[applier_type].add_layer(layer)
-
-    def add_layers(self, layer_names, regulation, version, sectional=False):
+    def add_layers(self, layer_names, doc_type, label_id, sectional=False,
+                   version=None):
         """Request a list of layers. As this might spawn multiple HTTP
         requests, we wrap the requests in threads so they can proceed
         concurrently."""
         # This doesn't deal with sectional interpretations yet.
         # we'll have to do that.
-        layer_names = set(filter(lambda l: l.lower() in LayerCreator.LAYERS,
-                                 layer_names))
+        layer_names = set(l for l in layer_names
+                          if l.lower() in LayerCreator.LAYERS)
         results = []
         procs = []
 
         def one_layer(layer_name):
-            api_name, applier_type,\
-                layer_class = LayerCreator.LAYERS[layer_name]
-            layer_json = self.get_layer_json(api_name, regulation, version)
+            layer_class = LayerCreator.LAYERS[layer_name]
+            api_name = layer_class.data_source
+            applier_type = layer_class.layer_type
+            layer_json = self.get_layer_json(api_name, doc_type, label_id,
+                                             version)
             results.append((api_name, applier_type, layer_class, layer_json))
 
         #   Spawn threads
@@ -113,8 +72,8 @@ class LayerCreator(object):
 
         for api_name, applier_type, layer_class, layer_json in results:
             if layer_json is None:
-                logging.warning("No data for %s/%s/%s"
-                                % (api_name, regulation, version))
+                logging.warning("No data for %s %s %s %s", api_name, doc_type,
+                                label_id, version)
             else:
                 layer = layer_class(layer_json)
 
@@ -127,9 +86,9 @@ class LayerCreator(object):
 
     def get_appliers(self):
         """ Return the appliers. """
-        return (self.appliers['inline'],
-                self.appliers['paragraph'],
-                self.appliers['search_replace'])
+        return (self.appliers[LayerBase.INLINE],
+                self.appliers[LayerBase.PARAGRAPH],
+                self.appliers[LayerBase.SEARCH_REPLACE])
 
 
 class DiffLayerCreator(LayerCreator):
@@ -137,27 +96,16 @@ class DiffLayerCreator(LayerCreator):
         super(DiffLayerCreator, self).__init__()
         self.newer_version = newer_version
 
-    @staticmethod
-    def combine_layer_versions(older_layer, newer_layer):
-        """ Create a new layer by taking all the nodes from the older
-        layer, and adding to the all the new nodes from the newer layer. """
+    def get_layer_json(self, layer_name, doc_type, label_id, version):
+        """Diffs contain layer data from _two_ documents, each corresponding
+        to one of the versions we're comparing. This data is then combined
+        before displaying"""
+        older_layer = self.api.layer(layer_name, doc_type, label_id, version)
+        newer_layer = self.api.layer(layer_name, doc_type, label_id,
+                                     self.newer_version)
 
-        combined_layer = {}
-
-        for n in older_layer:
-            combined_layer[n] = older_layer[n]
-
-        for n in newer_layer:
-            if n not in combined_layer:
-                combined_layer[n] = newer_layer[n]
-
-        return combined_layer
-
-    def get_layer_json(self, api_name, regulation, version):
-        older_layer = self.api.layer(api_name, regulation, version)
-        newer_layer = self.api.layer(api_name, regulation, self.newer_version)
-
-        layer_json = self.combine_layer_versions(older_layer, newer_layer)
+        layer_json = dict(newer_layer)  # copy
+        layer_json.update(older_layer)  # older layer takes precedence
         return layer_json
 
 
@@ -184,13 +132,6 @@ def get_tree_paragraph(paragraph_id, version):
     """Get a single level of the regulation tree."""
     api = api_reader.ApiReader()
     return api.regulation(paragraph_id, version)
-
-
-def get_builder(regulation, version, inline_applier, p_applier, s_applier):
-    """ Returns an HTML builder with the appliers, and the regulation tree. """
-    builder = HTMLBuilder(inline_applier, p_applier, s_applier)
-    builder.tree = get_regulation(regulation, version)
-    return builder
 
 
 def get_all_notices():

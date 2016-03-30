@@ -1,0 +1,15 @@
+<section id="help" class="regs-meta">
+  {% include "regulations/generic_help.html" %}
+  <div class="sidebar-subsection">
+    <h5 class="help-title">Textual Help</h5>
+      <a class="what" href="{% url 'about' %}#related-info"
+         aria-label="Link opens in a new window" target="_blank">(What's this?)</a>
+      <ul class="help-list">
+        {% for subtemplate_content in subtemplates %}
+          {{ subtemplate_content|safe }}
+        {% endfor %}
+      </ul>
+    </div> <!-- /.sidebar-subsection-->
+  </div> <!-- /.expand-drawer-->
+</section> <!-- /.regs-meta -->
+

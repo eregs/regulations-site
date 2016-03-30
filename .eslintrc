@@ -10,15 +10,16 @@ globals:
   $: true
   Backbone: true
   _: true
+  console: true
 
 rules:
   # Possible errors
   no-cond-assign: 0
-  no-comma-dangle: 2
+  comma-dangle: 2
   no-console: 1
-  no-extra-parens: 2
+  # no-extra-parens: 2
   no-irregular-whitespace: 2
-  no-reserved-keys: 2
+  quote-props: [2, consistent]
 
   # Best practices
   block-scoped-var: 2
@@ -28,7 +29,7 @@ rules:
   curly: 2
   no-alert: 2
   no-eval: 2
-  no-extend-native: 2
+  # no-extend-native: 2
   no-with: 2
 
   # Variables
@@ -43,21 +44,20 @@ rules:
 
 
   # Stylistic issues
-  brace-style: 2
+  # brace-style: 2
   camelcase: 0
   new-cap: 0
   no-mixed-spaces-and-tabs: 2
-  no-lonely-if: 2
-  no-space-before-semi: 2
+  # no-lonely-if: 2
+  semi-spacing: 2
   no-underscore-dangle: 0
-  space-after-keywords: 2
+  keyword-spacing: 2
   no-trailing-spaces: 2
-  space-in-brackets: [2, never]
-  space-infix-ops: 2
+  # space-infix-ops: 2
   quotes: [2, single]
   semi: [2, "always"]
 
-  # Outstanding issues
+  # Outstanding issues. Correct values commented out above
   no-unused-vars: 0
   no-extend-native: 0
   valid-typeof: 0

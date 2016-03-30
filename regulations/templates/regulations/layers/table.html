@@ -2,7 +2,11 @@
     Used to turn markdown tables into HTML tables
 {% endcomment %}
 <div class="table-wrap">
-    <table>
+{% comment %}
+    The Datatables jquery plugin requires a width of 100% on table tags to 
+    correctly calulate relative sizes
+{% endcomment %}
+    <table width="100%">
         {% if caption %}
             <caption>{{ caption }}</caption>
         {% endif %}

@@ -2,7 +2,10 @@
 from unittest import TestCase
 from mock import patch
 
+from six.moves.urllib.parse import parse_qs
+
 from django.conf import settings
+from django.test import RequestFactory
 
 from regulations.views import utils
 
@@ -27,13 +30,15 @@ class UtilsTest(TestCase):
         layer_list = utils.get_layer_list(names)
         self.assertEquals(set(['meta', 'internal', 'graphics']), layer_list)
 
-    @patch('regulations.generator.generator.LayerCreator.get_layer_json')
-    def test_handle_specified_layers(self, get_layer_json):
-        get_layer_json.return_value = {'layer': 'layer'}
+    def test_layer_names(self):
+        request = RequestFactory().get('/?layers=graphics,meta,other')
+        self.assertEqual(utils.layer_names(request), set(['graphics', 'meta']))
 
-        layer_names = 'graphics,meta'
-        appliers = utils.handle_specified_layers(layer_names, '205', '2013-1')
-        self.assertEquals(3, len(appliers))
+        request = RequestFactory().get('/?layers=')
+        self.assertEqual(utils.layer_names(request), set())
+
+        request = RequestFactory().get('/')
+        self.assertTrue(len(utils.layer_names(request)) > 4)
 
     def test_add_extras_env(self):
         context = {}
@@ -62,6 +67,7 @@ class UtilsTest(TestCase):
                 'SUBAGENCY': 'sub-agency',
             }
         }
+
         utils.add_extras(context)
 
         self.assertTrue('APP_PREFIX' in context)
@@ -74,8 +80,10 @@ class UtilsTest(TestCase):
         self.assertEquals('agency', context['ANALYTICS']['DAP']['AGENCY'])
         self.assertEquals('sub-agency',
                           context['ANALYTICS']['DAP']['SUBAGENCY'])
-        self.assertEquals('agency=agency&subagency=sub-agency',
-                          context['ANALYTICS']['DAP']['DAP_URL_PARAMS'])
+        self.assertEquals(
+            parse_qs('agency=agency&subagency=sub-agency'),
+            parse_qs(context['ANALYTICS']['DAP']['DAP_URL_PARAMS']),
+        )
 
     @patch('regulations.views.utils.fetch_toc')
     def test_first_section(self, fetch_toc):
@@ -84,3 +92,11 @@ class UtilsTest(TestCase):
             {'section_id': '204-101', 'index': ['204', '101']}]
         first = utils.first_section('204', '2')
         self.assertEqual(first, '204-100')
+
+    def test_make_sortable(self):
+        """Verify that strings get decomposed correctly into sortable tuples"""
+        self.assertEqual(utils.make_sortable("abc"), ("abc",))
+        self.assertEqual(utils.make_sortable("123"), (123,))
+        self.assertEqual(utils.make_sortable("abc123def456"),
+                         ("abc", 123, "def", 456))
+        self.assertEqual(utils.make_sortable("123abc456"), (123, "abc", 456))

@@ -75,11 +75,26 @@ class ApiReader(object):
             self.cache.set(cache_key, element)
             return element
 
-    def layer(self, layer_name, label, version):
-        regulation_part = label.split('-')[0]
-        return self._get(
-            ['layer', layer_name, regulation_part, version],
-            'layer/%s/%s/%s' % (layer_name, regulation_part, version))
+    def layer(self, layer_name, doc_type, label_id, version=None):
+        """When retrieving layer data, we cheat a bit -- we always retrieve
+        layer data corresponding to the "root" of the document, rather than
+        only a subnode. We also must convert to the API format, where any
+        version information is prefixed to doc_id"""
+        root = label_id.split('-')[0]
+        if version is None:
+            doc_id = root
+        else:
+            doc_id = '{}/{}'.format(version, root)
+        result = self._get(
+            ('layer', layer_name, doc_type, root, str(version)),
+            'layer/{}/{}/{}'.format(layer_name, doc_type, doc_id))
+        # To remove - also try the old format for CFR layers; the API may not
+        # have been updated
+        if result is None and doc_type == 'cfr':
+            result = self._get(
+                ('layer', layer_name, doc_type, root, str(version)),
+                'layer/{}/{}/{}'.format(layer_name, root, version))
+        return result
 
     def diff(self, label, older, newer):
         """ End point for diffs. """
@@ -114,3 +129,7 @@ class ApiReader(object):
         if regulation:
             params['regulation'] = regulation
         return self.client.get('search', params)
+
+    def preamble(self, doc_number):
+        return self._get(
+            ['preamble', doc_number], 'preamble/{}'.format(doc_number))

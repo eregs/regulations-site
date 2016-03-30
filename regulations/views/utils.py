@@ -1,8 +1,9 @@
 # vim: set encoding=utf-8
 import itertools
-import urllib
 from django.conf import settings
 from django.core.urlresolvers import reverse
+
+from six.moves.urllib_parse import urlencode
 
 from regulations.generator import generator
 from regulations.generator.layers.meta import MetaLayer
@@ -25,8 +26,8 @@ def regulation_meta(regulation_part, version, sectional=False):
     """ Return the contents of the meta layer, without using a tree. """
 
     layer_manager = generator.LayerCreator()
-    layer_manager.add_layer(
-        MetaLayer.shorthand, regulation_part, version, sectional)
+    layer_manager.add_layers(['meta'], 'cfr', regulation_part, sectional,
+                             version)
 
     p_applier = layer_manager.appliers['paragraph']
     meta_layer = p_applier.layers[MetaLayer.shorthand]
@@ -35,22 +36,12 @@ def regulation_meta(regulation_part, version, sectional=False):
     return applied_layer[1]
 
 
-def handle_specified_layers(
-        layer_names, regulation_id, version, sectional=False):
-
-    layer_list = get_layer_list(layer_names)
-    layer_creator = generator.LayerCreator()
-    layer_creator.add_layers(layer_list, regulation_id, version, sectional)
-    return layer_creator.get_appliers()
-
-
-def handle_diff_layers(
-        layer_names, regulation_id, older, newer, sectional=False):
-
-    layer_list = get_layer_list(layer_names)
-    layer_creator = generator.DiffLayerCreator(newer)
-    layer_creator.add_layers(layer_list, regulation_id, older, sectional)
-    return layer_creator.get_appliers()
+def layer_names(request):
+    """Determine which layers are currently active by looking at the request"""
+    if 'layers' in request.GET.keys():
+        return get_layer_list(request.GET['layers'])
+    else:
+        return generator.LayerCreator.LAYERS.keys()
 
 
 def add_extras(context):
@@ -76,7 +67,7 @@ def create_dap_url_params(dap_settings):
         if 'SUBAGENCY' in dap_settings and dap_settings['SUBAGENCY']:
             dap_params['subagency'] = dap_settings['SUBAGENCY']
 
-    return urllib.urlencode(dap_params)
+    return urlencode(dap_params)
 
 
 def first_section(reg_part, version):
@@ -86,3 +77,17 @@ def first_section(reg_part, version):
 
     toc = fetch_toc(reg_part, version, flatten=True)
     return toc[0]['section_id']
+
+
+def make_sortable(string):
+    """Split a string into components, converting digits into ints so sorting
+    works as we would expect"""
+    if not string:      # base case
+        return tuple()
+    elif string[0].isdigit():
+        prefix = "".join(itertools.takewhile(lambda c: c.isdigit(), string))
+        return (int(prefix),) + make_sortable(string[len(prefix):])
+    else:
+        prefix = "".join(itertools.takewhile(lambda c: not c.isdigit(),
+                                             string))
+        return (prefix,) + make_sortable(string[len(prefix):])

@@ -17,12 +17,10 @@
     {% endif %}
 
     {% if interp.par_children %}
-        {% with first_child=interp.par_children|first %}
-            {% include "regulations/ol-tag.html" %}
-        {% endwith %}
+        <ol class="level-{{interp.list_level|add:1}}">
             {% for par_child in interp.par_children %}
                 {% with node=par_child %}
-                    {% include "regulations/tree-with-wrapper.html" %}
+                    {% include node.template_name %}
                 {% endwith %}
             {% endfor %}
         </ol>

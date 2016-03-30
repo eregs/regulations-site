@@ -88,12 +88,6 @@ class GeneratorTest(TestCase):
             ('204', 'old', 'new'),
             get_diff_json.call_args[0])
 
-    def test_layercreator_layers(self):
-        """ A LAYER entry must have three pieces of information specified. """
-
-        for l, v in generator.LayerCreator.LAYERS.items():
-            self.assertEqual(len(v), 3)
-
     def test_layercreator_getappliers(self):
         creator = generator.LayerCreator()
         appliers = creator.get_appliers()
@@ -106,27 +100,13 @@ class GeneratorTest(TestCase):
         self.assertTrue(isinstance(s_applier, SearchReplaceLayersApplier))
 
     @patch('regulations.generator.generator.LayerCreator.get_layer_json')
-    def test_add_layer(self, get_layer_json):
-        get_layer_json.return_value = {'layer': 'layer'}
-        creator = generator.LayerCreator()
-        creator.add_layer('meta', '205', 'verver')
-        i, p, s = creator.get_appliers()
-        self.assertEquals(len(p.layers), 1)
-
-        get_layer_json.return_value = None
-        creator = generator.LayerCreator()
-        creator.add_layer('meta', '205', 'verver')
-        i, p, s = creator.get_appliers()
-        self.assertEquals(len(p.layers), 0)
-
-    @patch('regulations.generator.generator.LayerCreator.get_layer_json')
     def test_add_layers(self, get_layer_json):
         get_layer_json.return_value = {'layer': 'layer'}
 
         creator = generator.LayerCreator()
         creator.add_layers(
-            ['meta', 'graphics', 'internal'], '205', 'verver',
-            sectional=True)
+            ['meta', 'graphics', 'internal'], 'cfr', '205',
+            sectional=True, version='verver')
         i, p, s = creator.get_appliers()
         self.assertEquals(len(p.layers), 1)
         self.assertEquals(len(i.layers), 1)

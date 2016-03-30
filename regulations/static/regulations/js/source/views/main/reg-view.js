@@ -3,7 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 require('../../events/scroll-stop.js');
-var unveil = require('unveil');
+var LazyLoad = require('jquery-lazyload');
 var DefinitionView = require('../sidebar/definition-view');
 var RegModel = require('../../models/reg-model');
 var SectionFooterView = require('./section-footer-view');
@@ -25,7 +25,8 @@ var RegView = ChildView.extend({
         'click .inline-interp-header': 'expandInterp'
     },
 
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         this.externalEvents = MainEvents;
 
         this.listenTo(this.externalEvents, 'definition:close', this.closeDefinition);
@@ -57,8 +58,6 @@ var RegView = ChildView.extend({
         }
 
         ChildView.prototype.initialize.apply(this, arguments);
-
-        this.loadImages();
     },
 
     // only concerned with resetting DOM, no matter
@@ -175,8 +174,6 @@ var RegView = ChildView.extend({
         ChildView.prototype.render.apply(this, arguments);
 
         this.checkDefinitionScope();
-
-        this.loadImages();
     },
 
     // content section key term link click handler
@@ -284,11 +281,6 @@ var RegView = ChildView.extend({
             regVersion: version,
             type: 'inline-interp'
         });
-    },
-
-    // lazy load images as the user scrolls
-    loadImages: function() {
-        $('.reg-image').unveil();
     }
 });
 

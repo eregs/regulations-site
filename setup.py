@@ -19,7 +19,7 @@ class build_frontend(Command):
         pass
 
     def run(self):
-        print __file__
+        print(__file__)
         call(['./frontendbuild.sh'],
              cwd=os.path.dirname(os.path.abspath(__file__)))
 
@@ -43,9 +43,14 @@ setup(
     version="2.0.0",
     packages=find_packages(),
     install_requires=[
+        'boto3',
+        'cached-property',
+        'celery',
         'django>=1.8,<1.9',
-        'lxml',
-        'requests'
+        'jinja2',
+        'requests',
+        'six',
+        'requests-toolbelt',
     ],
     cmdclass={
         'build_frontend': build_frontend,

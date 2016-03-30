@@ -1,0 +1,42 @@
+{% load macros render_nested %}
+
+<section id="content-wrapper" data-page-type="preamble-section">
+  <section id="{{sub_context.node.label_id}}">
+    <div id="preamble-read">
+      {% render_nested template=sub_template context=sub_context %}
+    </div>
+
+    <div id="preamble-write">
+      <div class="activate-read">Read the proposal</div>
+      <div class="comment-wrapper">
+        <div class="comment">
+          <h2>Write your comment.</h2>
+          <div class="comment-context"></div>
+          <form>
+            <div class="editor-container"></div>
+            <div class="queued"></div>
+            <input type="file">
+            <button type="submit">Save</button>
+            <div class="status"></div>
+          </form>
+        </div>
+      </div>
+      <div class="comment-index">
+        <ul class="comment-index-items"></ul>
+        <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review</a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<script id="comment-index-template" type="text/template">
+  <% _.each(comments, function(comment) { %>
+    <li class="comment-index-item group" data-comment-section="<%= comment.id %>">
+      <div class="comment-index-section"><%= comment.id %></div>
+      <div class="comment-index-modify">
+        <span class="comment-index-edit">edit</span>
+        <span class="comment-index-clear">remove</span>
+      </div>
+    </li>
+  <% }); %>
+</script>

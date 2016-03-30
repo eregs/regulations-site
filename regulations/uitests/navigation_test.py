@@ -1,6 +1,8 @@
 import unittest
-from base_test import BaseTest
+
 from selenium.webdriver.support.ui import WebDriverWait
+
+from regulations.uitests.base_test import BaseTest
 
 
 class NavigationTest(BaseTest, unittest.TestCase):
@@ -23,8 +25,7 @@ class NavigationTest(BaseTest, unittest.TestCase):
                 '//*[@id="active-title"]').text in (u'\u00A71005.5(b)(1)',
                                                     u'\u00A71005.5(b)'))
 
-        fwd_link = self.driver.find_element_by_xpath(
-            '//*[@id="1005-5"]/nav/ul/li[2]/a')
+        fwd_link = self.driver.find_element_by_css_selector('li.next a')
         fwd_link.click()
         # should navigate to next section
         WebDriverWait(self.driver, 30).until(
@@ -34,8 +35,7 @@ class NavigationTest(BaseTest, unittest.TestCase):
 
         # should go back to 1005-5
         self.driver.find_element_by_xpath('//*[@id="1005-5"]')
-        back_link = self.driver.find_element_by_xpath(
-            '//*[@id="1005-5"]/nav/ul/li[1]/a')
+        back_link = self.driver.find_element_by_css_selector('li.previous a')
         back_link.click()
         # should navigate to 1005-4
         WebDriverWait(self.driver, 30).until(

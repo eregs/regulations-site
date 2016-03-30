@@ -1,26 +1,27 @@
 # vim: set encoding=utf-8
 
 from collections import namedtuple
-from itertools import takewhile
+
+import six
+from django.core.urlresolvers import reverse
 
 from regulations.generator import generator
-from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator.html_builder import CFRHTMLBuilder
 from regulations.generator.layers.toc_applier import TableOfContentsLayer
 from regulations.generator.node_types import EMPTYPART, REGTEXT
 from regulations.generator.section_url import SectionUrl
+from regulations.generator.sidebar.diff_help import DiffHelp
 from regulations.generator.toc import fetch_toc
 from regulations.views import error_handling, utils
 from regulations.views.chrome import ChromeView
 from regulations.views.partial import PartialView
 
-from django.core.urlresolvers import reverse
-
 
 class Versions(namedtuple('Versions', ['older', 'newer', 'return_to'])):
-    def __init__(self, older, newer, return_to=None):
+    def __new__(cls, older, newer, return_to=None):
         if return_to is None:
             return_to = older
-        super(Versions, self).__init__(older, newer, return_to)
+        return super(Versions, cls).__new__(cls, older, newer, return_to)
 
 
 def get_appliers(label_id, versions):
@@ -29,11 +30,11 @@ def get_appliers(label_id, versions):
     if diff is None:
         raise error_handling.MissingContentException()
 
-    appliers = utils.handle_diff_layers(
-        'graphics,paragraph,keyterms,defined,formatting',
-        label_id, versions.older, versions.newer)
-    appliers += (diff,)
-    return appliers
+    layer_creator = generator.DiffLayerCreator(versions.newer)
+    layer_creator.add_layers(
+        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting'],
+        'cfr', label_id, version=versions.older)
+    return layer_creator.get_appliers() + (diff, )
 
 
 class PartialSectionDiffView(PartialView):
@@ -85,7 +86,7 @@ class PartialSectionDiffView(PartialView):
 
         appliers = get_appliers(label_id, versions)
 
-        builder = HTMLBuilder(*appliers)
+        builder = CFRHTMLBuilder(*appliers)
         builder.tree = tree
         builder.generate_html()
 
@@ -110,7 +111,7 @@ class ChromeSectionDiffView(ChromeView):
     """Search results with chrome"""
     template_name = 'regulations/diff-chrome.html'
     partial_class = PartialSectionDiffView
-    has_sidebar = False
+    sidebar_components = [DiffHelp]
 
     def check_tree(self, context):
         pass    # The tree may or may not exist in the particular version
@@ -191,25 +192,13 @@ def diff_toc(versions, old_toc, diff):
     return sorted(compiled_toc, key=normalize_toc)
 
 
-def make_sortable(string):
-    """Split a string into components, converting digits into ints so sorting
-    works as we would expect"""
-    if not string:      # base case
-        return tuple()
-    elif string[0].isdigit():
-        prefix = "".join(takewhile(lambda c: c.isdigit(), string))
-        return (int(prefix),) + make_sortable(string[len(prefix):])
-    else:
-        prefix = "".join(takewhile(lambda c: not c.isdigit(), string))
-        return (prefix,) + make_sortable(string[len(prefix):])
-
-
 def normalize_toc(toc_element):
     """Return a sorting order for a TOC element, primarily based on the
     index, and the type of content. General order is regulation text,
     appendices, then interpretations."""
 
-    sortable_index = tuple(make_sortable(l) for l in toc_element['index'])
+    sortable_index = tuple(utils.make_sortable(l)
+                           for l in toc_element['index'])
     if toc_element.get('is_section'):
         return (0,) + sortable_index
     elif toc_element.get('is_appendix'):
@@ -222,7 +211,7 @@ def normalize_toc(toc_element):
 
 def modified_deleted_sections(diff):
     modified, deleted = set(), set()
-    for label, diff_value in diff.iteritems():
+    for label, diff_value in six.iteritems(diff):
         label = tuple(label.split('-'))
         if 'Interp' in label:
             section_label = (label[0], 'Interp')

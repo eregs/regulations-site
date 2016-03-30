@@ -3,13 +3,13 @@ from django.http import Http404
 from django.views.generic.base import TemplateView
 
 from regulations.generator import generator
-from regulations.generator.html_builder import HTMLBuilder
+from regulations.generator.html_builder import CFRHTMLBuilder
 from regulations.generator.node_types import EMPTYPART, REGTEXT, label_to_text
 from regulations.views import navigation, utils
 
 
 def generate_html(regulation_tree, layer_appliers):
-    builder = HTMLBuilder(*layer_appliers)
+    builder = CFRHTMLBuilder(*layer_appliers)
     builder.tree = regulation_tree
     builder.generate_html()
     return builder
@@ -24,16 +24,10 @@ class PartialView(TemplateView):
 
     def determine_appliers(self, label_id, version):
         """Figure out which layers to apply by checking the GET args"""
-        if 'layers' in self.request.GET.keys():
-            return utils.handle_specified_layers(
-                self.request.GET['layers'], label_id, version,
-                self.__class__.sectional_links)
-        else:
-            layer_creator = generator.LayerCreator()
-            layer_creator.add_layers(
-                generator.LayerCreator.LAYERS.keys(),
-                label_id, version, self.__class__.sectional_links)
-            return layer_creator.get_appliers()
+        layer_creator = generator.LayerCreator()
+        layer_creator.add_layers(utils.layer_names(self.request), 'cfr',
+                                 label_id, self.sectional_links, version)
+        return layer_creator.get_appliers()
 
     def get_context_data(self, **kwargs):
         context = super(PartialView, self).get_context_data(**kwargs)

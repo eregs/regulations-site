@@ -12,7 +12,8 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var ChildView = Backbone.View.extend({
-    initialize: function() {
+    initialize: function(options) {
+        this.options = options;
         var cb;
 
         this.model = this.options.model;
@@ -49,7 +50,7 @@ var ChildView = Backbone.View.extend({
         }
         else if (this.options.id) {
             this.attachWayfinding();
-
+            MainEvents.trigger('section:sethandlers');
             DrawerEvents.trigger('section:open', this.id);
         }
 
@@ -57,6 +58,7 @@ var ChildView = Backbone.View.extend({
         this.activeSection = this.id;
         this.$activeSection = $('#' + this.activeSection);
 
+        this.loadImages();
         return this;
     },
 
@@ -76,6 +78,7 @@ var ChildView = Backbone.View.extend({
 
     render: function() {
         this.updateWayfinding();
+        this.loadImages();
         HeaderEvents.trigger('section:open', this.id);
         DrawerEvents.trigger('section:open', this.id);
     },
@@ -148,8 +151,7 @@ var ChildView = Backbone.View.extend({
 
     route: function(options) {
         if (Router.hasPushState && typeof options.noRoute === 'undefined') {
-            var url = this.url,
-                hashPosition;
+            var url = this.url;
 
             // if a hash has been passed in
             if (options && typeof options.scrollToId !== 'undefined') {
@@ -157,7 +159,9 @@ var ChildView = Backbone.View.extend({
                 this.navigate(url);
                 $('html, body').scrollTop($('#' + options.scrollToId).offset().top);
             } else {
-                url += '#' + options.id;
+                if (['diff', 'search-results', 'preamble-section'].indexOf(options.type) === -1) {
+                    url += '#' + options.id;
+                }
                 this.navigate(url);
             }
         }
@@ -173,6 +177,11 @@ var ChildView = Backbone.View.extend({
         this.stopListening();
         this.off();
         return this;
+    },
+
+    // lazy load images as the user scrolls
+    loadImages: function() {
+        $('.reg-image').lazyload();
     }
 });
 

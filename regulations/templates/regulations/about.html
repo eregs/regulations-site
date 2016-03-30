@@ -1,6 +1,7 @@
 {% extends "regulations/generic_universal.html" %}
 {% block title %}About eRegulations{% endblock %}
 {% load static from staticfiles %}
+{% load macros %}
 
 {% comment %}
     Application about page
@@ -27,15 +28,18 @@
             <p>eRegulations makes regulations <a href="#read" class="standard">easier to read</a> and <a href="#navigation" class="standard">navigate</a>. It
             clarifies regulations by bringing <a href="#related-info">related information</a> and <a href="#timeline" class="standard">regulatory history</a>
             to the forefront. It is a work in progress by the
-            <a href="http://consumerfinance.gov/" class="external" target="_blank">Consumer Financial Protection Bureau</a>
-            and <a href="https://18f.gsa.gov/" class="external" target="_blank">18F</a>;
+            {% external_link url="http://consumerfinance.gov" text="Consumer Financial Protection Bureau" %}
+            and
+            {% external_link url="https://18f.gsa.gov" text="18F" %};
             it is a public domain work of the United States Government.</p>
         </div>
 
         <div class="content-secondary column-r well dev-well">
             <span class="cf-icon cf-icon-github"></span><span class="icon-text">Github</span>
-            <h4>Developers</h4>
-            <p>eRegulations is an open source project. Visit <a href="http://cfpb.github.io/eRegulations/" class="external" target="_blank">the project repository</a> to learn more and contribute.</p>
+            <h3>Developers</h3>
+            <p>eRegulations is an open source project. Visit 
+              {% external_link url="https://eregs.github.io/" text="the project repository" %}
+              to learn more and contribute.</p>
         </div>
     </div>
     <div id="read" class="inner-wrap easy-read group">

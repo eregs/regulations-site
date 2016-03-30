@@ -80,27 +80,37 @@ STATICFILES_FINDERS = (
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', get_random_string(50))
 
-TEMPLATES = [{
-    "BACKEND": "django.template.backends.django.DjangoTemplates",
-    "OPTIONS": {
-        "context_processors": (
-            # "django.contrib.auth.context_processors.auth",
-            "django.template.context_processors.debug",
-            "django.template.context_processors.i18n",
-            "django.template.context_processors.media",
-            "django.template.context_processors.static",
-            "django.template.context_processors.tz",
-            "django.contrib.messages.context_processors.messages"
-        ),
-        # List of callables that know how to import templates from various
-        # sources.
-        "loaders": [
-            ('django.template.loaders.cached.Loader', (
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader'))
-        ],
-    }
-}]
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "OPTIONS": {
+            "context_processors": (
+                # "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages"
+            ),
+            # List of callables that know how to import templates from various
+            # sources.
+            "loaders": [
+                ('django.template.loaders.cached.Loader', (
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader'))
+            ],
+        }
+    },
+    {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "trim_blocks": True,
+            "lstrip_blocks": True,
+        },
+    },
+]
 
 
 # Note order:
@@ -116,7 +126,7 @@ ROOT_URLCONF = 'regulations.urls'
 
 INSTALLED_APPS = (
     'django.contrib.staticfiles',
-    'regulations',
+    'regulations.apps.RegulationsConfig',
 )
 
 # eregs specific settings
@@ -204,3 +214,33 @@ LOGGING = {
         },
     }
 }
+
+
+# Where should we look for data?
+DATA_LAYERS = (
+    'regulations.generator.layers.defined.DefinedLayer',
+    'regulations.generator.layers.definitions.DefinitionsLayer',
+    # Commented out of the defaults until the feature is considered complete
+    # 'regulations.generator.layers.external_citation.ExternalCitationLayer',
+    'regulations.generator.layers.footnotes.FootnotesLayer',
+    'regulations.generator.layers.formatting.FormattingLayer',
+    'regulations.generator.layers.internal_citation.InternalCitationLayer',
+    # Should likely be moved to a CFPB-specific module
+    'regulations.generator.layers.interpretations.InterpretationsLayer',
+    'regulations.generator.layers.key_terms.KeyTermsLayer',
+    'regulations.generator.layers.meta.MetaLayer',
+    'regulations.generator.layers.paragraph_markers.ParagraphMarkersLayer',
+    'regulations.generator.layers.toc_applier.TableOfContentsLayer',
+    'regulations.generator.layers.graphics.GraphicsLayer',
+)
+
+SIDEBARS = (
+    'regulations.generator.sidebar.analyses.Analyses',
+    'regulations.generator.sidebar.help.Help',
+)
+
+ATTACHMENT_BUCKET = os.getenv('S3_BUCKET')
+ATTACHMENT_ACCESS_KEY_ID = os.getenv('S3_ACCESS_KEY_ID')
+ATTACHMENT_SECRET_ACCESS_KEY = os.getenv('S3_SECRET_ACCESS_KEY')
+ATTACHMENT_MAX_SIZE = 1024 * 1024 * 10
+COMMENT_DOCUMENT_ID = os.getenv('DOCUMENT_ID')

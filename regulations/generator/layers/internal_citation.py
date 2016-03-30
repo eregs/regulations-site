@@ -1,10 +1,12 @@
 from django.template import loader, Context
 
+from regulations.generator.layers.base import InlineLayer
 from regulations.generator.section_url import SectionUrl
 
 
-class InternalCitationLayer():
+class InternalCitationLayer(InlineLayer):
     shorthand = 'internal'
+    data_source = 'internal-citations'
 
     def __init__(self, layer):
         self.layer = layer
@@ -13,9 +15,8 @@ class InternalCitationLayer():
         self.rev_urls = SectionUrl()
         self.rendered = {}
 
-    def render_url(
-        self, label, text,
-            template_name='regulations/layers/internal_citation.html'):
+    def render_url(self, label, text,
+                   template_name='regulations/layers/internal_citation.html'):
 
         key = (tuple(label), text, template_name)
         if key not in self.rendered:
@@ -27,14 +28,5 @@ class InternalCitationLayer():
             self.rendered[key] = template.render(c).strip('\n')
         return self.rendered[key]
 
-    def apply_layer(self, text, text_index):
-        if text_index in self.layer:
-            layer_elements = self.layer[text_index]
-
-            layer_pairs = []
-            for layer_element in layer_elements:
-                for start, end in layer_element['offsets']:
-                    ot = text[int(start):int(end)]
-                    rt = self.render_url(layer_element['citation'], ot)
-                    layer_pairs.append((ot, rt, (start, end)))
-            return layer_pairs
+    def replacement_for(self, original, data):
+        return self.render_url(data['citation'], original)

@@ -2,8 +2,10 @@ from django import http
 from django.template import RequestContext, loader
 
 from regulations.generator import api_reader
+from regulations.generator.sidebar.help import Help as HelpSidebar
 from regulations.generator.layers.utils import convert_to_python
 from regulations.views import utils
+from regulations.views.sidebar import SideBarView
 
 
 class MissingContentException(Exception):
@@ -68,10 +70,13 @@ def check_version(label_id, version):
 
 
 def add_to_chrome(body, context, request):
-    chrome_template = loader.get_template(
-        'regulations/chrome-empty-sidebar.html')
+    chrome_template = loader.get_template('regulations/chrome.html')
 
     context['main_content'] = body
+    sidebar_view = SideBarView.as_view(components=[HelpSidebar])
+    sidebar_response = sidebar_view(request, label_id=context['label_id'],
+                                    version=context['version'])
+    context['sidebar_content'] = sidebar_response.render().content
     chrome_body = chrome_template.render(RequestContext(
         request, context))
 

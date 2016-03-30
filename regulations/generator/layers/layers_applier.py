@@ -1,6 +1,7 @@
-from lxml import html
-from Queue import PriorityQueue
-from HTMLParser import HTMLParser
+import re
+
+from six.moves.queue import PriorityQueue
+from six.moves.html_parser import HTMLParser
 
 from regulations.generator.layers.location_replace import LocationReplace
 
@@ -8,6 +9,7 @@ from regulations.generator.layers.location_replace import LocationReplace
 class LayersApplier(object):
     """ Most layers replace content. We try to do this intelligently here,
     so that layers don't step over each other. """
+    HTML_TAG_REGEX = re.compile(r'<[^>]*?>')
 
     def __init__(self):
         self.queue = PriorityQueue()
@@ -23,20 +25,6 @@ class LayersApplier(object):
         item = (original, replacement, locations)
         self.queue.put((-priority, item))
 
-    def replace(self, xml_node, original, replacement):
-        """ Helper method for replace_all(), this actually does the replace.
-        This deals with XML nodes, not nodes in the tree. """
-        if xml_node.text:
-            xml_node.text = xml_node.text.replace(original, replacement)
-
-        for c in xml_node.getchildren():
-            self.replace(c, original, replacement)
-
-        if xml_node.tail:
-            xml_node.tail = xml_node.tail.replace(original, replacement)
-
-        return xml_node
-
     def location_replace(self, xml_node, original, replacement, locations):
         LocationReplace().location_replace(xml_node, original, replacement,
                                            locations)
@@ -48,14 +36,16 @@ class LayersApplier(object):
 
     def replace_all(self, original, replacement):
         """ Replace all occurrences of original with replacement. This is HTML
-        aware. """
-
-        htmlized = html.fragment_fromstring(self.text, create_parent='div')
-        htmlized = self.replace(htmlized, original, replacement)
-
-        self.text = html.tostring(htmlized)
-        self.text = self.text.replace("<div>", "", 1)
-        self.text = self.text[:self.text.rfind("</div>")]
+        aware; it effectively looks at all of the text in between HTML tags"""
+        text_chunks = []
+        index = 0
+        for match in self.HTML_TAG_REGEX.finditer(self.text):
+            text = self.text[index:match.start()]
+            text_chunks.append(text.replace(original, replacement))
+            text_chunks.append(self.text[match.start():match.end()])    # tag
+            index = match.end()
+        text_chunks.append(self.text[index:])   # trailing text
+        self.text = "".join(text_chunks)
         self.unescape_text()
 
     def replace_at(self, original, replacement, locations):
@@ -100,9 +90,7 @@ class SearchReplaceLayersApplier(LayersBase):
     def get_layer_pairs(self, text_index):
         elements = []
         for layer in self.layers.values():
-            applied = layer.apply_layer(text_index)
-            if applied:
-                elements += applied
+            elements += list(layer.apply_layer(text_index))
         return elements
 
 
@@ -118,9 +106,7 @@ class InlineLayersApplier(LayersBase):
     def get_layer_pairs(self, text_index, original_text):
         layer_pairs = []
         for layer in self.layers.values():
-            applied = layer.apply_layer(original_text, text_index)
-            if applied:
-                layer_pairs += applied
+            layer_pairs += list(layer.apply_layer(original_text, text_index))
 
         # convert from offset-based to a search and replace layer.
         layer_elements = []

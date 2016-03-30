@@ -1,8 +1,13 @@
 from django.template import loader, Context
 
+from regulations.generator.layers.base import LayerBase
 
-class DefinedLayer(object):
+
+# Does not extend InlineLayer as this retrieves its data in a different way
+class DefinedLayer(LayerBase):
     shorthand = 'defined'
+    data_source = 'terms'
+    layer_type = LayerBase.INLINE
 
     def __init__(self, layer):
         self.layer = layer

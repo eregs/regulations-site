@@ -1,5 +1,6 @@
 {% extends "regulations/base.html" %}
 {% load static from staticfiles %}
+{% load macros %}
 
 
 {% block title %}
@@ -34,27 +35,38 @@
 <div class="sub-head">
     <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
     <div class="toc-head">
-        <a href="#" id="panel-link" class="toc-toggle panel-slide"><span class="icon-text">Navigation</span></a>
+        {% block sidebar-drawer-icons %}
+        <a href="#" id="panel-link" class="toc-toggle panel-slide">
+          <img src="{%static "regulations/img/open-caret.svg" %}" class="drawer-toggle-icon" alt="Open navigation drawer" />
+          <img src="{%static "regulations/img/close-caret.svg" %}" class="drawer-toggle-icon" alt="Close navigation drawer"/>
+        </a>
+        {% endblock %}
         <ul class="drawer-toggles">
+          {% block sidebar-icons %}
             {% block sidebar-toc-link %}
-            <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><span class="cf-icon cf-icon-table-of-contents"></span></a></li>
+            <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
+       class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
             {% endblock %}
             {% block sidebar-history-link %}
-            <li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline"><span class="icon-text">Regulation Timeline</span><span class="cf-icon cf-icon-history"></span></a></li>
+            <li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline"><span class="icon-text">Regulation Timeline</span><img src="{%static "regulations/img/timeline.svg" %}"
+       class="drawer-toggle-icon" alt="Regulation Timeline toggle"/></a></li>
             {% endblock %}
             {% block sidebar-search-link %}
-            <li><a href="#search" id="search-link" class="toc-nav-link" title="Search"><span class="icon-text">Search</span><span class="cf-icon cf-icon-search"></span></a></li>
+            <li><a href="#search" id="search-link" class="toc-nav-link" title="Search"><span class="icon-text">Search</span><img src="{%static "regulations/img/search.svg" %}"
+       class="drawer-toggle-icon" alt="Search toggle"/></a></li>
             {% endblock %}
+          {% endblock %}
         </ul>
     </div> <!-- /toc-head-->
     <div id="content-header" class="header-main group">
         <div class="wayfinding">
+          {% block wayfinding %}
             <span class="subpart"></span>
             <span id="active-title">{% block active_title %}<em class="header-label"><span class="reg_part">§{{ reg_part }}</span></em>{% endblock %}</span>
+          {% endblock %}
         </div>
         {% block header-secondary %}
         <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date }}</span>
-        <h2> </h2>
         {% endblock %}
     </div>
 </div>
@@ -64,6 +76,7 @@
     We include the drawer in-line so that we can use blocks
     http://stackoverflow.com/questions/9633387/django-using-blocks-in-included-templates
 {% endcomment %}
+{% block whole-toc %}
 {% with active_version=version %}
 <div id="menu" class="panel" data-reg-id="{{ reg_part }}" data-cfr-title-number="{{meta.cfr_title_number}}">
     {% block drawer-toc %}
@@ -76,19 +89,20 @@
     {% block drawer-history %}
         <div id="timeline" class="history-drawer toc-container hidden">
             <div class="drawer-header">
-                <h2 class="toc-type">Regulation Timeline</h2>
+                <h3 class="toc-type">Regulation Timeline</h3>
             </div><!-- /.drawer-header -->
             <div class="drawer-content">
                 <p class="effective-label">Find the regulation effective on this date:</p>
                 <div class="form-wrap group">
                 <form action="{% url 'redirect_by_date_get' label_id %}"
                       method="GET" class="date-input">
-                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" />
-                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" />
-                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" />
+                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" title="Effective month" />
+                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" title="Effective day"/>
+                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" title="Effective year" />
                   <button type="submit" class="find-button">Find</button>
                 </form>
                 </div><!--./date-form-->
+                {% comment %}TODO: Indentation here is all kinds of funky {% endcomment %}
                 <ul class="version-list" id="history-toc-list">
                 {% for version in history %}
                     <li class="{% if version.version == active_version %}current {% endif %}status-list" data-base-version="{{version.version}}">
@@ -102,29 +116,33 @@
                             <h5 class="final-rule">Final Rule</h5>
                             <ul class="rule-list">
                             {% for notice in version.notices %}
+                              {% with pub_date=notice.publication_date|date %}
                                 {% if notice.fr_url %}
-                                    <li><a class="fr-notice external" href="{{notice.fr_url}}" target="_blank">Published {{notice.publication_date|date}}</a></li>
+                                  <li>{% external_link classes="fr-notice" url=notice.fr_url text="Published "|add:pub_date %}</li>
                                 {% else %}
-                                    <li>Published {{notice.publication_date|date}}</li>
+                                  <li>Published {{pub_date}}</li>
                                 {% endif %}
+                              {% endwith %}
                             {% endfor %}
-                                </ul>
-                                <div class="diff-selector group">
-                                <h4 class="compare-title">Compare this with</h4>
-                                <div class="select-content">
+                            </ul>
+                            <div class="diff-selector group">
+                                <h4 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date}} with</h4>
                                 <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
-                                    <select name="new_version" onChange="this.form.submit();">
-                                        <option value="default" disabled="disabled" selected="selected">regulation effective</option>
+                                  <div class="select-content">
+                                    <select name="new_version" title="Compare version">
                                         {% for version in history %}
                                             {% if active_version != version.version %}
                                                 <option value="{{version.version}}">{{version.by_date|date}}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
+                                  </div> <!--/.select-content-->
+                                  <div class="diff-button-wrapper">
+                                      <button>Show Differences</button>
+                                  </div>
                                 </form>
-                            </div> <!--/.select-content-->
-                        </div><!--/.diff-selector-->
-                    </div><!--/.timeline-content-wrap-->
+                            </div><!--/.diff-selector-->
+                        </div><!--/.timeline-content-wrap-->
                     </li>
                 {% endfor %}
                 </ul>
@@ -133,17 +151,17 @@
     {% endblock %}
     <div id="search" class="search-drawer toc-container hidden">
         <div class="drawer-header">
-            <h2 class="toc-type">Search</h2>
+            <h3 class="toc-type">Search</h3>
         </div><!-- /.drawer-header -->
         <div class="drawer-content">
             <form action="{% url 'chrome_search' reg_part %}" method="GET" role="search">
                 <div class="search-box">
-                    <input type="text" name="q" value="{{ q }}" id="search-input" /><button type="submit"><i class="cf-icon cf-icon-search"></i><strong class="icon-text">Search</strong></button>
+                    <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/><button type="submit"><span class="cf-icon cf-icon-search"></span><strong class="icon-text">Search</strong></button>
                 </div><!--/.search-box-->
                 <div class="version-search">
                     <h4>Search in regulation effective:</h4>
                     <div class="select-content">
-                        <select name="version" id="version-select">
+                        <select name="version" id="version-select" title="Effective version">
                         {% for version in history %}
                             <option value="{{version.version}}"{% if active_version == version.version %} selected="selected"{% endif %}>{{version.by_date|date}}</option>
                         {% endfor %}
@@ -155,20 +173,18 @@
     </div> <!--/#search-->
 </div> <!-- /.panel -->
 {% endwith %}
+{% endblock %}
 
 <div class="wrap group">
 
 {% block chrome-content %}
 <main role="main">
   <div id="content-body" class="main-content">
-      {% load in_context %}
+      {% load render_nested %}
       {{ main_content|safe }}
-      {% begincontext main_content_context main_content_template %}
-          {% if main_content_template %}
-              {% include main_content_template %}
-          {% endif %}
-      {% endcontext %}
-
+      {% if main_content_template %}
+          {% render_nested template=main_content_template context=main_content_context %}
+      {% endif %}
   </div> <!-- /.main-content -->
 </main>
 {% endblock %}

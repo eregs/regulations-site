@@ -195,6 +195,24 @@ class DiffApplierTest(TestCase):
         self.assertEqual(original['child_labels'],
                          ['100-1', '100-2', '100-2a', '100-3'])
 
+    def test_set_child_labels_reorder(self):
+        """Nodes which have been _moved_ should be ordered in their final
+        resting position"""
+        node1 = {'label': ['1', '1'], 'node_type': 'regtext', 'children': []}
+        node2 = {'label': ['1', '2'], 'node_type': 'regtext', 'children': []}
+        root = {'label': ['1'], 'node_type': 'regtext',
+                'children': [node1, node2]}
+
+        diff = {'1': {
+            'op': diff_applier.DiffApplier.MODIFIED_OP,
+            'child_ops': [[diff_applier.DiffApplier.DELETE, 0, 2],
+                          [diff_applier.DiffApplier.INSERT, 0, ['1-2', '1-1']]]
+        }}
+
+        da = diff_applier.DiffApplier(diff, None)
+        da.set_child_labels(root)
+        self.assertEqual(root['child_labels'], ['1-2', '1-1'])
+
     def test_child_picking(self):
         da = self.create_diff_applier()
         da.label_requested = '204-3'

@@ -1,4 +1,3 @@
-from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import title
 
 from regulations.generator import api_reader, node_types
@@ -14,17 +13,6 @@ PAGE_SIZE = 10
 class PartialSearch(PartialView):
     """Display search results without any chrome."""
     template_name = 'regulations/search-results.html'
-
-    def get(self, request, *args, **kwargs):
-        """Override this method so we can return a 400 if needed"""
-        query = request.GET.get('q')
-        version = request.GET.get('version')
-        if not query or not version:
-            return HttpResponseBadRequest("missing query or version")
-
-        kwargs['q'] = query
-        kwargs['version'] = version
-        return super(PartialSearch, self).get(request, *args, **kwargs)
 
     def add_prev_next(self, current_page, context):
         total = float(context['results']['total_hits']) / PAGE_SIZE
@@ -47,7 +35,7 @@ class PartialSearch(PartialView):
         accordingly. @TODO this is a hack -- we should be able to limit
         results in the request instead"""
         # API page size is API_PAGE_SIZE, but we show only PAGE_SIZE
-        page_idx = (page % (API_PAGE_SIZE/PAGE_SIZE)) * PAGE_SIZE
+        page_idx = (page % (API_PAGE_SIZE // PAGE_SIZE)) * PAGE_SIZE
         original_count = len(results['results'])
         is_root = lambda r: len(r['label']) == 1
         is_subpart = lambda r: node_types.type_from_label(r['label']) in (
@@ -62,6 +50,10 @@ class PartialSearch(PartialView):
         # We don't want to run the content data of PartialView -- it assumes
         # we will be applying layers
         context = super(PartialView, self).get_context_data(**kwargs)
+
+        context['q'] = self.request.GET.get('q')
+        context['version'] = self.request.GET.get('version')
+
         context['regulation'] = context['label_id'].split('-')[0]
 
         try:
@@ -69,10 +61,20 @@ class PartialSearch(PartialView):
         except ValueError:
             page = 0
 
-        api_page = page // (API_PAGE_SIZE/PAGE_SIZE)
+        api_page = page // (API_PAGE_SIZE / PAGE_SIZE)
 
-        results = api_reader.ApiReader().search(
-            context['q'], context['version'], context['regulation'], api_page)
+        context['warnings'] = []
+        if not context['q']:
+            context['warnings'].append('Please provide a query.')
+        if not context['version']:
+            context['warnings'].append('Please provide a version.')
+
+        if context['warnings']:
+            results = {'results': [], 'total_hits': 0}
+        else:
+            results = api_reader.ApiReader().search(
+                context['q'], context['version'], context['regulation'],
+                api_page)
 
         self.reduce_results(results, page)
         section_url = SectionUrl()

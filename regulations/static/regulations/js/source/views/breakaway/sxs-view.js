@@ -18,8 +18,9 @@ var SxSView = Backbone.View.extend({
         'click .return-link': 'removeHighlight'
     },
 
-    initialize: function() {
+    initialize: function(options) {
         var render;
+        this.options = options;
         this.externalEvents = BreakawayEvents;
 
         // visibly open the SxS panel immediately

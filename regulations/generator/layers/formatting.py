@@ -1,15 +1,20 @@
 from django.template import loader, Context
 
+from regulations.generator.layers.base import SearchReplaceLayer
 
-class FormattingLayer(object):
+
+class FormattingLayer(SearchReplaceLayer):
     shorthand = 'formatting'
+    data_source = 'formatting'
+    DATA_TYPES = ('table', 'fence', 'subscript', 'dash', 'footnote',
+                  'superscript')
 
-    def __init__(self, layer_data):
-        self.layer_data = layer_data
+    def __init__(self, layer):
+        self.layer = layer
         self.tpls = {
             key: loader.get_template('regulations/layers/{}.html'.format(key))
             for key in ('table', 'note', 'code', 'subscript', 'dash',
-                        'footnote')}
+                        'footnote', 'superscript')}
 
     def render_table(self, table, data_type=None):
         max_width = 0
@@ -56,17 +61,10 @@ class FormattingLayer(object):
         context = Context(data)
         return self.tpls[data_type].render(context).replace('\n', '')
 
-    def apply_layer(self, text_index):
-        """Convert all plaintext tables into html tables"""
-        layer_pairs = []
-        data_types = ['table', 'fence', 'subscript', 'dash', 'footnote']
-        for data in self.layer_data.get(text_index, []):
-            for data_type in data_types:
-                processor = getattr(self, 'render_' + data_type,
-                                    self.render_replacement)
-                key = data_type + '_data'
-                if key in data:
-                    layer_pairs.append((data['text'],
-                                        processor(data[key], data_type),
-                                        data['locations']))
-        return layer_pairs
+    def replacements_for(self, original, data):
+        for data_type in self.DATA_TYPES:
+            processor = getattr(self, 'render_' + data_type,
+                                self.render_replacement)
+            key = data_type + '_data'
+            if key in data:
+                yield processor(data[key], data_type)

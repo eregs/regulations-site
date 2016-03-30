@@ -3,16 +3,15 @@ from django.views.generic.base import TemplateView
 from regulations.generator import generator
 from regulations.generator.node_types import label_to_text, type_from_label
 from regulations.generator.section_url import SectionUrl
+from regulations.generator.sidebar.help import Help as HelpSideBar
 from regulations.generator.subterp import filter_by_subterp
 from regulations.generator.toc import fetch_toc
 from regulations.generator.versions import fetch_grouped_history
 from regulations.views import utils
-from regulations.views.partial_interp import (
-    PartialInterpView, PartialSubterpView)
+from regulations.views.partial_interp import PartialSubterpView
 from regulations.views.reg_landing import regulation_exists, get_versions
 from regulations.views.reg_landing import regulation as landing_page
-from regulations.views.partial import PartialParagraphView
-from regulations.views.partial import PartialRegulationView, PartialSectionView
+from regulations.views.partial import PartialSectionView
 from regulations.views.partial_search import PartialSearch
 from regulations.views.sidebar import SideBarView
 from regulations.views import error_handling
@@ -21,9 +20,10 @@ from regulations.views import error_handling
 class ChromeView(TemplateView):
     """ Base class for views which wish to include chrome. """
     template_name = 'regulations/chrome.html'
-    has_sidebar = True
     #   Which view name to use when switching versions
     version_switch_view = 'chrome_section_view'
+    sidebar_components = SideBarView.components
+    partial_class = None
 
     def check_tree(self, context):
         """Throw an exception if the requested section doesn't exist"""
@@ -39,12 +39,12 @@ class ChromeView(TemplateView):
 
         try:
             return super(ChromeView, self).get(request, *args, **kwargs)
-        except BadComponentException, e:
+        except BadComponentException as e:
             return e.response
-        except error_handling.MissingSectionException, e:
+        except error_handling.MissingSectionException as e:
             return error_handling.handle_missing_section_404(
                 request, e.label_id, e.version, e.context)
-        except error_handling.MissingContentException, e:
+        except error_handling.MissingContentException as e:
             return error_handling.handle_generic_404(request)
 
     def _assert_good(self, response):
@@ -58,9 +58,19 @@ class ChromeView(TemplateView):
         context['main_content_template'] = view.template_name
 
     def diff_redirect_label(self, label_id, toc):
-        """Most of the time, we want diff_redirect to link to *this*
-        section's label. This gives us an out for when we need to link
-        somewhere else."""
+        """We only display diffs for sections and appendices. All other types
+        of content must be converted to an appropriate diff label"""
+        label_parts = label_id.split('-')
+        if len(label_parts) == 1:   # whole CFR part. link to first section
+            while toc:
+                label_id = toc[0]['section_id']
+                toc = toc[0].get('sub_toc')
+        # We only show diffs for the whole interpretation at once
+        elif 'Interp' in label_parts:
+            label_id = label_parts[0] + '-Interp'
+        # Non-section paragraph; link to the containing section
+        elif len(label_parts) > 2:
+            label_id = '-'.join(label_parts[:2])
         return label_id
 
     def set_chrome_context(self, context, reg_part, version):
@@ -102,55 +112,19 @@ class ChromeView(TemplateView):
 
         self.check_tree(context)
         self.add_main_content(context)
-
-        if self.has_sidebar:
-            sidebar_view = SideBarView.as_view()
-            response = sidebar_view(self.request, label_id=label_id,
-                                    version=version)
-            self._assert_good(response)
-            response.render()
-            context['sidebar_content'] = response.content
+        context['sidebar_content'] = self.sidebar(label_id, version)
 
         return context
 
-
-class ChromeInterpView(ChromeView):
-    """Interpretation of regtext section/paragraph or appendix with chrome"""
-    partial_class = PartialInterpView
-
-
-class ChromeSectionView(ChromeView):
-    """Regtext section with chrome"""
-    partial_class = PartialSectionView
-
-
-class ChromeParagraphView(ChromeView):
-    """Regtext paragraph with chrome"""
-    partial_class = PartialParagraphView
-    version_switch_view = 'chrome_paragraph_view'
-
-    def diff_redirect_label(self, label_id, toc):
-        """We don't do diffs for individual paragraphs; instead, link to the
-        containing section"""
-        label = label_id.split('-')
-        if 'Interp' in label:
-            return label[0] + '-Interp'
-        else:
-            return '-'.join(label[:2])
-
-
-class ChromeRegulationView(ChromeView):
-    """Entire regulation with chrome"""
-    partial_class = PartialRegulationView
-    version_switch_view = 'chrome_regulation_view'
-
-    def diff_redirect_label(self, label_id, toc):
-        """We don't do diffs of the whole reg; instead link to the first
-        section"""
-        while toc:
-            label_id = toc[0]['section_id']
-            toc = toc[0].get('sub_toc')
-        return label_id
+    def sidebar(self, label_id, version):
+        """Generate the sidebar content for this label_id+version. This
+        involves passing through to the SideBarView"""
+        sidebar_view = SideBarView.as_view(components=self.sidebar_components)
+        response = sidebar_view(self.request, label_id=label_id,
+                                version=version)
+        self._assert_good(response)
+        response.render()
+        return response.content
 
 
 class ChromeSubterpView(ChromeView):
@@ -175,17 +149,12 @@ class ChromeSubterpView(ChromeView):
             raise error_handling.MissingSectionException(label_id, version,
                                                          context)
 
-    def diff_redirect_label(self, label_id, toc):
-        """We don't do diffs for subterps. Instead, link to diff of the
-        whole interp"""
-        return label_id.split('-', 1)[0] + '-Interp'
-
 
 class ChromeSearchView(ChromeView):
     """Search results with chrome"""
     template_name = 'regulations/chrome-search.html'
     partial_class = PartialSearch
-    has_sidebar = False
+    sidebar_components = [HelpSideBar]
 
     def check_tree(self, context):
         pass    # Search doesn't perform this check
@@ -209,10 +178,13 @@ class ChromeLandingView(ChromeView):
     """Landing page with chrome"""
     template_name = 'regulations/landing-chrome.html'
     partial_class = PartialSectionView  # Needed to know sectional status
-    has_sidebar = False
 
     def check_tree(self, context):
         pass    # Landing page doesn't perform this check
+
+    def sidebar(self, label_id, version):
+        """Landing pages don't have a sidebar generated this way"""
+        return None
 
     def add_main_content(self, context):
         """Landing page isn't a TemplateView"""

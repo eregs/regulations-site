@@ -24,8 +24,10 @@ def fetch_regulations_and_future_versions():
 
 def fetch_grouped_history(part):
     client = api_reader.ApiReader()
-    versions = filter(lambda v: 'by_date' in v,
-                      client.regversions(part)['versions'])
+    versions = [
+        version for version in client.regversions(part)['versions']
+        if 'by_date' in version
+    ]
     for version in versions:
         version['notices'] = []
     versions = sorted(convert_to_python(versions), reverse=True,

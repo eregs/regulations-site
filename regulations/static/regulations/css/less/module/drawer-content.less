@@ -11,26 +11,23 @@ This contains all of the styles specific to the TOC
     }
 
     li {
+        .regulation-nav-item-font;
         margin: 0;
         text-indent: 0;
     }
 
     .toc-section-marker {
-      .avenir-next-demi;
-      display: block;
-      font-size: 18px;
+        .regulation-nav-section-marker-font;
+        display: block;
     }
 
     /* Interpretation Subparts in the TOC are styled differently */
     .toc-interp-heading {
-        .avenir-next;
-        text-transform: uppercase;
-        font-size: 12px;
+        .regulation-nav-interp-heading-font;
     }
 
     .toc-interp-title {
-        .avenir-next-demi;
-        font-size: 14px;
+        .regulation-nav-interp-title-font;
     }
 
     a {
@@ -88,16 +85,15 @@ This contains all of the styles specific to the TOC
     margin: 0;
     padding: 10px 15px;
     display: block;
-    color: @mid_text;
     background-color: #F8F8F8;
-    font-size: 1em;
     .border-bottom-light (@width: 1px);
     .border-top-light (@width: 1px);
-    text-transform: uppercase;
+    .regulation-nav-subpart-heading-font;
+
 }
 
 .subpart-subhead {
-    .avenir-next-demi;
+    .font-bold;
     text-transform: none;
 }
 
@@ -109,7 +105,7 @@ This contains all of the styles specific to the history
 
 .history-drawer {
 
-    .avenir-next-demi;
+    .font-bold;
 
     ul,
     li {
@@ -122,8 +118,8 @@ This contains all of the styles specific to the history
 
     .effective-label {
         padding: 0 15px;
-        .avenir-next;
-        color: @dark_gray;
+        .font-regular;
+        color: @dark_text;
     }
 
     /*TODO: unify link styles with TOC*/
@@ -179,12 +175,6 @@ This contains all of the styles specific to the history
         display: block;
     }
 
-    h3 {
-        margin: 0;
-        font-size: 1em;
-        .avenir-next-demi;
-    }
-
     h4 {
         .reset;
         font-size: 0.875em;
@@ -206,20 +196,20 @@ This contains all of the styles specific to the history
     .compare-title {
         margin: 10px 15px 0 15px;
         padding-top: 15px;
-        border-top: 1px dashed @light_field;
+        border-top: 1px solid @history_drawer_border_color;
     }
 
     .rule-status {
         color: @dark_text;
         text-transform: lowercase;
-        .avenir-next;
+        .font-regular;
         display: block;
         float: right;
     }
 
     .rule-list {
         margin: 0 15px;
-        .avenir-next;
+        .font-regular;
     }
 
     .rule-list li {
@@ -231,25 +221,17 @@ This contains all of the styles specific to the history
     }
 
     .version-date {
-        .avenir-next-demi;
-        font-size: 1.285714286em;
+        .regulation-history-version-date-font;
     }
 
     .select-content {
         margin: 6px 15px 15px 15px;
-        background: white url('../img/select-blue.png') no-repeat bottom right;
     }
 
-
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-resolution: 192dpi) {
-        .select-content {
-            background: white url('../img/select-blue@2x.png') no-repeat bottom right;
-            background-size: 32px 32px;
-        }
+    .diff-button-wrapper {
+        text-align: center;
+        margin-bottom: 1em;
     }
-
 }
 
 .js {
@@ -352,7 +334,7 @@ This contains all of the styles specific to the search
 
     h4 {
         color: @dark_text;
-        .avenir-next;
+        .font-regular;
         text-transform: none;
         margin-bottom: 0.5em;
     }

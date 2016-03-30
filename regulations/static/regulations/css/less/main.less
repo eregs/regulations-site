@@ -10,6 +10,8 @@ Type & Layout
 ------------- */
 @import "normalize.less";
 @import "cf-icons.less";
+@import "base-variables.less";
+@import "variables.less";
 @import "mixins.less";
 @import "fonts.less";
 @import "typography.less";
@@ -22,8 +24,10 @@ Modules
 @import "module/drawer.less";
 @import "module/extract.less";
 @import "module/interpretations.less";
+@import "module/note.less";
 @import "module/header.less";
 @import "module/footer.less";
+@import "module/full-footer.less";
 @import "module/sidebar.less";
 @import "module/sxs.less";
 @import "module/search-results.less";
@@ -34,6 +38,9 @@ Modules
 @import "module/universal-landing.less";
 @import "module/about.less";
 @import "module/error.less";
+@import "module/paragraph-markers.less";
+@import "module/comment.less";
+@import "module/custom.less";
 
 
 /*
@@ -113,7 +120,7 @@ Modules
 .alert {
     background-color: #F6D9D3;
     border: 1px solid #E8A091;
-    .avenir-next;
+    .font-regular;
 
     ul {
         .reset;
@@ -126,7 +133,7 @@ Modules
 
 .well {
     padding: 1em 1.25em;
-    background: @grey;
+    background: @bg_gray;
 }
 
 .bump {
@@ -161,7 +168,7 @@ Modules
 }
 
 .error {
-    .avenir-next;
+    .font-regular;
     color: @red_orange;
     border-bottom: 1px solid @light_field;
     font-size: .9em;
@@ -177,7 +184,7 @@ Modules
 
 /* credit */
 #modal {
-    .avenir-next-demi;
+    .font-bold;
     color: @dark_gray;
     width: 400px;
     height: 400px;
@@ -192,7 +199,7 @@ Modules
         margin-top: 0;
 
         li {
-            .avenir-next;
+            .font-regular;
             margin-top: .75em;
         }
     }
@@ -224,7 +231,7 @@ Modules
 }
 
 #sig {
-    .avenir-next;
+    .font-regular;
 }
 
 .love {

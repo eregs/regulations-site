@@ -17,6 +17,23 @@ module.exports = function(grunt) {
     env: grunt.file.readJSON('config.json'),
 
     /**
+     * Copy dependencies into static paths
+     */
+    copy: {
+      main: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['node_modules/respond.js/dest/*'],
+            dest: '<%= env.frontEndPath %>/js/built/lib/respond/',
+            filter: 'isFile'
+          }
+        ]
+      }
+    },
+
+    /**
      * https://github.com/gruntjs/grunt-contrib-less
      */
     less: {
@@ -73,7 +90,7 @@ module.exports = function(grunt) {
           '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js','<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
-          transform: ['browserify-shim', 'debowerify'],
+          transform: ['browserify-shim'],
           browserifyOptions: {
             debug: true
           }
@@ -81,42 +98,43 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js']
+          '<%= env.frontEndPath %>/js/built/regulations.min.js': ['<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
-          transform: ['browserify-shim', 'debowerify'],
+          transform: ['browserify-shim'],
           browserifyOptions: {
-            debug: false
-          }
-        }
-      }
-    },
-
-    uglify: {
-      dist: {
-        files: {
-          '<%= env.frontEndPath %>/js/built/regulations.min.js': ['<%= env.frontEndPath %>/js/built/regulations.js']
+            debug: true
+          },
+          plugin: [
+            [function(b) {
+              b.plugin('minifyify', {
+                map: '/static/regulations/js/built/regulations.min.map',
+                output: grunt.template.process('<%= env.frontEndPath %>/js/built/regulations.min.map')
+              });
+            }]
+          ]
         }
       }
     },
 
     mocha_istanbul: {
       coverage: {
-        src: ['<%= env.frontEndPath %>/js/unittests/specs/**/*'],
+        src: ['<%= env.frontEndPath %>/js/unittests/specs/**/*.js'],
         options: {
-          mask:'*-spec.js',
+          root: '<%= env.frontEndPath %>/js',
+          istanbulOptions: ['--include-all-sources'],
           coverageFolder: '<%= env.frontEndPath %>/js/unittests/coverage',
-          excludes: ['<%= env.frontEndPath %>/js/unittests/specs/*'],
+          excludes: [
+            'built/**/*',
+            'unittests/**/*',
+            'source/otherlibs/**/*'
+          ],
           coverage: false
         }
       }
      },
 
     shell: {
-      'build-require': {
-        command: './require.sh'
-      },
-
       'nose-chrome': {
         command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:chrome --tc=testUrl:<%= env.testUrl %>',
         options: {
@@ -125,22 +143,13 @@ module.exports = function(grunt) {
         }
       },
 
-      'nose-ie10': {
-        command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:ie10 --tc=testUrl:<%= env.testUrl %>',
+      'nose-ie11': {
+        command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:ie11 --tc=testUrl:<%= env.testUrl %>',
         options: {
             stdout: true,
             stderr: true
         }
       }
-    },
-
-    // https://github.com/yatskevich/grunt-bower-task
-    bower: {
-        install: {
-            options: {
-                targetDir: '<%= env.frontEndPath %>/js/source/lib'
-            }
-        }
     },
 
     /**
@@ -152,7 +161,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['Gruntfile.js', '<%= env.frontEndPath %>/js/source/**/*.js'],
-        tasks: ['eslint','browserify:dev']
+        tasks: ['eslint', 'browserify:dev']
       },
       css: {
         files: ['<%= env.frontEndPath %>/css/less/**/*.less'],
@@ -177,14 +186,13 @@ module.exports = function(grunt) {
    */
   require('load-grunt-tasks')(grunt);
 
-    /**
-    * Create task aliases by registering new tasks
-    * Let's remove `squish` since it's a duplicate task
-    */
-  grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie10']);
+  /**
+   * Create task aliases by registering new tasks
+   */
+  grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('build', ['default', 'test-js']);
-  grunt.registerTask('squish', ['browserify', 'uglify', 'less', 'cssmin']);
-  grunt.registerTask('default', ['browserify', 'uglify', 'less', 'cssmin']);
+  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'less']);
+  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'less', 'cssmin']);
+  grunt.registerTask('default', ['build-dist']);
 };

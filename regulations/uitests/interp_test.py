@@ -1,6 +1,8 @@
 import unittest
-from base_test import BaseTest
+
 from selenium.webdriver.support.ui import WebDriverWait
+
+from regulations.uitests.base_test import BaseTest
 
 
 class InterpTest(BaseTest, unittest.TestCase):

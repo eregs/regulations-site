@@ -223,14 +223,3 @@ describe('Version Finder Helper Functions:', function() {
     });
 
 });
-
-describe('Other Helper Functions:', function() {
-
-    'use strict';
-
-    xit('parseURL should parse correctly', function() {
-        // This method requires the DOM
-    });
-
-
-});

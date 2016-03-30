@@ -1,3 +1,4 @@
+{% load macros %}
 {% if sxs.label %}
     <div class="sxs-header">
         <a class="sxs-back-button" href="{{ back_url }}"><span class="cf-icon cf-icon-arrow-left-round"></span> {{sxs.header}}</a>
@@ -45,9 +46,7 @@
     <h3>ANALYSIS TAKEN FROM:</h3>
 
         <h4>Document Number:</h4>
-        <p>
-            <a href="{{notice.fr_url}}" class="external" target="_blank">{{notice.document_number}}</a>
-        </p>
+        <p>{% external_link url=notice.fr_url text=notice.document_number %}</p>
 
         <h4>Action:</h4>
         <p>
