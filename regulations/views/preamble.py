@@ -61,6 +61,7 @@ class PreambleView(View):
             template = 'regulations/preamble-chrome.html'
         else:
             template = 'regulations/preamble-partial.html'
+        context = utils.add_extras(context)
         return TemplateResponse(request=request, template=template,
                                 context=context)
 
@@ -82,5 +83,6 @@ class PrepareCommentView(View):
         })
         template = 'regulations/comment-review-chrome.html'
 
+        context = utils.add_extras(context)
         return TemplateResponse(request=request, template=template,
                                 context=context)
