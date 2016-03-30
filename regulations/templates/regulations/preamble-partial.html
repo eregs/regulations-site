@@ -14,8 +14,8 @@
           <div class="comment-context"></div>
           <form>
             <div class="editor-container"></div>
-            <div class="queued"></div>
-            <input type="file">
+            <div class="comment-attachments"></div>
+            <input type="file" multiple>
             <button type="submit">Save</button>
             <div class="status"></div>
           </form>
@@ -28,6 +28,15 @@
     </div>
   </section>
 </section>
+
+<script id="comment-attachment-template" type="text/template">
+  <div>
+    <%= name %>
+    <%= size %>
+    <span class="attachment-remove">Remove</span>
+    <span class="attachment-progress"><span>
+  </div>
+</script>
 
 <script id="comment-index-template" type="text/template">
   <% _.each(comments, function(comment) { %>

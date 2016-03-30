@@ -32,7 +32,7 @@ def upload_proxy(request):
         ClientMethod='put_object',
         Params={
             'ContentLength': size,
-            'ContentType': 'application/octet-stream',
+            'ContentType': request.GET.get('type', 'application/octet-stream'),
             'Bucket': settings.ATTACHMENT_BUCKET,
             'Key': key,
         },
