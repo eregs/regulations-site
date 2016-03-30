@@ -6,6 +6,7 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var ChildView = require('./child-view');
+var MainEvents = require('../../events/main-events');
 var PreambleHeadView = require('../header/preamble-head-view');
 var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
@@ -15,13 +16,11 @@ var PreambleView = ChildView.extend({
   el: '#content-wrapper',
 
   events: {
-    'click .activate-write': 'handleWrite'
+    'click .activate-write': 'handleWriteLink'
   },
 
   initialize: function(options) {
     this.options = options;
-    this.id = options.id;
-    this.url = 'preamble/' + this.id.split('-').join('/');
 
     if (!options.render) {
       this.render();
@@ -29,7 +28,11 @@ var PreambleView = ChildView.extend({
 
     ChildView.prototype.initialize.apply(this, arguments);
 
-    CommentEvents.on('readProposal', this.handleRead, this);
+    this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
+    this.listenTo(CommentEvents, 'comment:write', this.handleWrite);
+    this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
+
+    CommentEvents.trigger('comment:readTab');
   },
 
   handleRead: function() {
@@ -37,14 +40,26 @@ var PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  handleWrite: function(e) {
+  handleParagraphActive: function(id) {
+    // update current Section ID as user scrolls
+    this.currentSectionId = id;
+  },
+
+  handleWrite: function() {
+    this.write(
+      this.currentSectionId,
+      $('#' + this.currentSectionId)
+    );
+  },
+
+  handleWriteLink: function(e) {
     var $target = $(e.target);
     this.write(
       $target.data('section'),
       $target.closest('[data-permalink-section]')
     );
 
-    CommentEvents.trigger('writeSectionComment');
+    CommentEvents.trigger('comment:writeTab');
   },
 
   write: function(section, $parent) {
@@ -62,16 +77,20 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.render.apply(this, arguments);
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
-    var section = this.$read.closest('section').attr('id');
-    var docId = section.split('-')[0];
-    this.PreambleHeadView = new PreambleHeadView();
+
+    this.section = this.$read.closest('section').attr('id');
+    this.docId = this.section.split('-')[0];
+
+    this.currentSectionId = this.section;
+
+    this.preambleHeadView = new PreambleHeadView();
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: section
+      section: this.section
     });
     this.commentIndex = new CommentIndexView({
       el: this.$write.find('.comment-index'),
-      docId: docId
+      docId: this.docId
     });
 
     if (this.options.mode === 'write') {
@@ -83,7 +102,6 @@ var PreambleView = ChildView.extend({
   },
 
   remove: function() {
-    this.preambleHeadView.remove();
     this.commentView.remove();
     this.commentIndex.remove();
     Backbone.View.prototype.remove.call(this);

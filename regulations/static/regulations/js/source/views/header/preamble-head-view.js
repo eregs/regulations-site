@@ -27,19 +27,30 @@ var PreambleHeadView = Backbone.View.extend({
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
-    CommentEvents.on('writeSectionComment', this.writeComment, this);
+    this.listenTo(CommentEvents, 'comment:readTab', this.readTabOpen);
+    this.listenTo(CommentEvents, 'comment:writeTab', this.writeTabOpen);
+  },
+
+  readTabOpen: function () {
+    this.$readTab.addClass('active-mode');
+    this.$writeTab.removeClass('active-mode');
   },
 
   readProposal: function() {
-    this.$readTab.addClass('active-mode');
-    this.$writeTab.removeClass('active-mode');
+    this.readTabOpen();
 
-    CommentEvents.trigger('readProposal');
+    CommentEvents.trigger('read:proposal');
+  },
+
+  writeTabOpen: function() {
+    this.$writeTab.addClass('active-mode');
+    this.$readTab.removeClass('active-mode');
   },
 
   writeComment: function() {
-    this.$writeTab.addClass('active-mode');
-    this.$readTab.removeClass('active-mode');
+    this.writeTabOpen();
+
+    CommentEvents.trigger('comment:write');
   }
 
 });
