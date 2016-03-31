@@ -24,6 +24,7 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   initialize: function() {
+
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
@@ -37,9 +38,11 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   readProposal: function() {
-    this.readTabOpen();
+    if($('#preamble-write').is(':visible')) {
+      this.readTabOpen();
 
-    CommentEvents.trigger('read:proposal');
+      CommentEvents.trigger('read:proposal');
+    }
   },
 
   writeTabOpen: function() {
@@ -48,11 +51,12 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   writeComment: function() {
-    this.writeTabOpen();
+    if($('#preamble-read').is(':visible')) {
+      this.writeTabOpen();
 
-    CommentEvents.trigger('comment:write');
+      CommentEvents.trigger('comment:write');
+    }
   }
-
 });
 
 module.exports = PreambleHeadView;

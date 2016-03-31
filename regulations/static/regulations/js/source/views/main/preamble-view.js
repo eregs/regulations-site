@@ -66,7 +66,7 @@ var PreambleView = ChildView.extend({
       this.write(
         this.currentSectionId,
         $section.find('.activate-write').data('label'),
-        $section
+        $section.find('[data-permalink-section]')
       );
     }
   },
