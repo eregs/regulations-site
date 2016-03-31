@@ -43,7 +43,7 @@ var PreambleView = ChildView.extend({
   },
 
   handleParagraphActive: function(id) {
-    // update current Section ID as user scrolls
+    // update current Section ID as active paragraph changes
     this.currentSectionId = id;
   },
 
@@ -86,7 +86,7 @@ var PreambleView = ChildView.extend({
     this.$write = this.$el.find('#preamble-write');
 
     this.currentSectionId = this.$read.closest('section').attr('id');
-    this.docId = this.section.split('-')[0];
+    this.docId = this.currentSectionId.split('-')[0];
 
     this.preambleHeadView = new PreambleHeadView();
     this.commentView = new CommentView({
