@@ -7,6 +7,7 @@ import tempfile
 import contextlib
 
 import boto3
+from botocore.client import Config
 
 import requests
 from requests_toolbelt.multipart.encoder import MultipartEncoder
@@ -119,4 +120,4 @@ def make_s3_client():
         aws_access_key_id=settings.ATTACHMENT_ACCESS_KEY_ID,
         aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
-    return session.client('s3')
+    return session.client('s3', config=Config(signature_version='s3v4'))
