@@ -16,7 +16,7 @@ var PreambleView = ChildView.extend({
   el: '#content-wrapper',
 
   events: {
-    'click .activate-write': 'handleWrite'
+    'click .activate-write': 'handleWriteLink'
   },
 
   initialize: function(options) {
@@ -31,7 +31,7 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.initialize.apply(this, arguments);
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
-    this.listenTo(CommentEvents, 'comment:write', this.handleWrite);
+    this.listenTo(CommentEvents, 'comment:write', this.handleWriteTab);
     this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
 
     CommentEvents.trigger('comment:readTabOpen');
@@ -47,28 +47,25 @@ var PreambleView = ChildView.extend({
     this.currentSectionId = id;
   },
 
-  handleWrite: function(e) {
-    // + Write a comment about section (link)
-    if (e) {
-      var $target = $(e.target);
-      this.write(
-        $target.data('section'),
-        $target.data('label'),
-        $target.closest('[data-permalink-section]')
-      );
+  handleWriteLink: function(e) {
+    var $target = $(e.target);
+    this.write(
+      $target.data('section'),
+      $target.data('label'),
+      $target.closest('[data-permalink-section]')
+    );
 
-      CommentEvents.trigger('comment:writeTabOpen');
-    }
-    // Write a comment tab
-    else {
-      var $section = $('#' + this.currentSectionId);
+    CommentEvents.trigger('comment:writeTabOpen');
+  },
 
-      this.write(
-        this.currentSectionId,
-        $section.find('.activate-write').data('label'),
-        $section.find('[data-permalink-section]')
-      );
-    }
+  handleWriteTab: function() {
+    var $section = $('#' + this.currentSectionId);
+
+    this.write(
+      this.currentSectionId,
+      $section.find('.activate-write').data('label'),
+      $section.find('[data-permalink-section]')
+    );
   },
 
   write: function(section, label, $parent) {
