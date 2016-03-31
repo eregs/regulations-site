@@ -38,7 +38,7 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   readProposal: function() {
-    if($('#preamble-write').is(':visible')) {
+    if ($('#preamble-write').is(':visible')) {
       this.readTabOpen();
 
       CommentEvents.trigger('read:proposal');
@@ -51,7 +51,7 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   writeComment: function() {
-    if($('#preamble-read').is(':visible')) {
+    if ($('#preamble-read').is(':visible')) {
       this.writeTabOpen();
 
       CommentEvents.trigger('comment:write');
