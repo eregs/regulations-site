@@ -74,7 +74,6 @@ class ChromeView(TemplateView):
         return label_id
 
     def set_chrome_context(self, context, reg_part, version):
-        utils.add_extras(context)
         context['reg_part'] = reg_part
         context['history'] = fetch_grouped_history(reg_part)
 

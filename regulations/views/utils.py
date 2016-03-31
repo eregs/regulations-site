@@ -1,9 +1,5 @@
 # vim: set encoding=utf-8
 import itertools
-from django.conf import settings
-from django.core.urlresolvers import reverse
-
-from six.moves.urllib_parse import urlencode
 
 from regulations.generator import generator
 from regulations.generator.layers.meta import MetaLayer
@@ -42,32 +38,6 @@ def layer_names(request):
         return get_layer_list(request.GET['layers'])
     else:
         return generator.LayerCreator.LAYERS.keys()
-
-
-def add_extras(context):
-    if getattr(settings, 'JS_DEBUG', False):
-        context['env'] = 'source'
-    else:
-        context['env'] = 'built'
-    prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
-    prefix = prefix.replace('9999', '')
-    context['APP_PREFIX'] = prefix
-    context['ANALYTICS'] = getattr(settings, 'ANALYTICS', {})
-    if 'DAP' in context['ANALYTICS']:
-        context['ANALYTICS']['DAP']['DAP_URL_PARAMS'] = create_dap_url_params(
-            context['ANALYTICS']['DAP'])
-    return context
-
-
-def create_dap_url_params(dap_settings):
-    """ Create the DAP url string to append to script tag """
-    dap_params = {}
-    if 'AGENCY' in dap_settings and dap_settings['AGENCY']:
-        dap_params['agency'] = dap_settings['AGENCY']
-        if 'SUBAGENCY' in dap_settings and dap_settings['SUBAGENCY']:
-            dap_params['subagency'] = dap_settings['SUBAGENCY']
-
-    return urlencode(dap_params)
 
 
 def first_section(reg_part, version):
