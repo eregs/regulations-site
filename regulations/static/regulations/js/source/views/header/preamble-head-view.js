@@ -27,8 +27,8 @@ var PreambleHeadView = Backbone.View.extend({
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
-    this.listenTo(CommentEvents, 'comment:readTab', this.readTabOpen);
-    this.listenTo(CommentEvents, 'comment:writeTab', this.writeTabOpen);
+    this.listenTo(CommentEvents, 'comment:readTabOpen', this.readTabOpen);
+    this.listenTo(CommentEvents, 'comment:writeTabOpen', this.writeTabOpen);
   },
 
   readTabOpen: function () {

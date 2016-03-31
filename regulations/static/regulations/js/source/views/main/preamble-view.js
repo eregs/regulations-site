@@ -31,10 +31,10 @@ var PreambleView = ChildView.extend({
     ChildView.prototype.initialize.apply(this, arguments);
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
-    this.listenTo(CommentEvents, 'comment:write', this.handleWrite);
+    this.listenTo(CommentEvents, 'comment:write', this.handleWriteEvent);
     this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
 
-    CommentEvents.trigger('comment:readTab');
+    CommentEvents.trigger('comment:readTabOpen');
   },
 
   handleRead: function() {
@@ -47,7 +47,7 @@ var PreambleView = ChildView.extend({
     this.currentSectionId = id;
   },
 
-  handleWrite: function() {
+  handleWriteEvent: function() {
     var $section = $('#' + this.currentSectionId);
 
     this.write(
@@ -65,7 +65,7 @@ var PreambleView = ChildView.extend({
       $target.closest('[data-permalink-section]')
     );
 
-    CommentEvents.trigger('comment:writeTab');
+    CommentEvents.trigger('comment:writeTabOpen');
   },
 
   write: function(section, label, $parent) {
