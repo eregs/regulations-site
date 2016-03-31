@@ -11,7 +11,6 @@ var CommentReviewView = Backbone.View.extend({
   events: {
     'click .preview-button': 'preview',
     'click .submit-button': 'submit',
-    'click .back-to-comment' : 'back'
   },
 
   initialize: function(options) {
@@ -72,10 +71,6 @@ var CommentReviewView = Backbone.View.extend({
   previewSuccess: function(resp) {
     this.$previewContent.text(resp);
     this.submitMode();
-  },
-
-  back: function() {
-    window.history.back();
   },
 
   submit: function() {
