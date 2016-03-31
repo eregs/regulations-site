@@ -21,6 +21,8 @@ var PreambleView = ChildView.extend({
 
   initialize: function(options) {
     this.options = options;
+    this.id = options.id;
+    this.url = 'preamble/' + this.id.split('-').join('/');
 
     if (!options.render) {
       this.render();
