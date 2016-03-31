@@ -90,20 +90,4 @@ describe('CommentView', function() {
     commentView.save({preventDefault: function() {}});
     expect(comments.get('2016_02479')).to.be.truthy;
   });
-
-  it('clears', function() {
-    comments.add({
-      id: '2016_02749',
-      comment: 'like',
-      files: [
-        {key: '6bc649', name: 'attachment.txt'}
-      ],
-    });
-    commentView.setSection('2016_02479');
-    commentView.save({preventDefault: function() {}});
-    commentView.clear();
-    expect(comments.get('2016_02479')).to.be.falsy;
-    expect(commentView.editor.setContent).to.have.been.calledWith('', 'markdown');
-    expect(commentView.$attachments.find('.queue-item').length).to.equal(0);
-  });
 });

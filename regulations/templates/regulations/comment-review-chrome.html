@@ -52,28 +52,42 @@
     <section id="comment-review" data-page-type="comment-review" data-doc-id="{{doc_number}}">
       <h2>Review</h2>
       <div id="comment"></div>
+    </section>
+  </div>
+
+  <script id="comment-template" type="text/template">
+    <% if (comments.length) { %>
+      <div>
+        <% _.each(comments, function(comment, index) { %>
+          <div>
+            <h3><%= comment.label %></h3>
+            <div><%= comment.comment %></div>
+            <% if (comment.files.length) { %>
+              <div>
+                Attachments included
+                <ul>
+                  <% _.each(comment.files, function(file) { %>
+                    <li><%= file.name %> Preview</li>
+                  <% }) %>
+                </ul>
+              </div>
+            <% } %>
+          </div>
+          <div>Edit comment</div>
+          <% if (index < comments.length - 1) { %>
+            <div>-----</div>
+          <% } %>
+        <% }) %>
+      </div>
       <div id="comment-confirm">
         <button class="preview-button">Preview your comment</button>
         <pre class="preview-content"></pre>
         <button class="submit-button">Submit your comment</button>
         <div class="status"></div>
       </div>
-    </section>
-  </div>
-
-  <script id="comment-template" type="text/template">
-    <div class="comment-wrapper">
-      <div class="comment">
-        <h3><a href="<%= url %>" target="_blank"><%= title %></a></h3>
-        <form>
-          <div class="editor-container"></div>
-          <div class="comment-attachments"></div>
-          <input type="file">
-          {# <button type="submit">Add to your comment</button> #}
-          <div class="comment-clear">Remove this comment</div>
-        </form>
-      </div>
-    </div>
+    <% } else { %>
+      <p>There are no comments to review or submit.</p>
+    <% } %>
   </script>
 </main>
 
