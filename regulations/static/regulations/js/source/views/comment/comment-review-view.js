@@ -10,7 +10,7 @@ var comments = require('../../collections/comment-collection');
 var CommentReviewView = Backbone.View.extend({
   events: {
     'click .preview-button': 'preview',
-    'click .submit-button': 'submit',
+    'click .submit-button': 'submit'
   },
 
   initialize: function(options) {
