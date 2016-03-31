@@ -45,6 +45,7 @@ class PreambleViewTests(TestCase):
 
         path = '/preamble/1/c/x?layers=meta'
         response = view(RequestFactory().get(path), paragraphs='1/c/x')
+        self.assertIn('env', response.context_data)
         self.assertEqual(
             response.context_data['sub_context']['node']['text'], '4')
         self.assertEqual(
