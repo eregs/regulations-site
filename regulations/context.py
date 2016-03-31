@@ -15,7 +15,7 @@ def globals(request):
     return {
         'globals': {
             'env': env,
-            'prefix': prefix,
+            'APP_PREFIX': prefix,
             'ANALYTICS': analytics,
         },
     }
