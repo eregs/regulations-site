@@ -34,10 +34,9 @@ class Command(BaseCommand):
     TARGET_DIR = "./compiled/regulations"
 
     def add_arguments(self, parser):
-        parser.add_argument('--dev', dest='dev', action='store_true')
         parser.add_argument('--no-install', dest='install',
                             action='store_false')
-        parser.set_defaults(dev=False, install=True)
+        parser.set_defaults(install=True)
 
     def find_regulations_directory(self):
         child = regulations.__file__
@@ -123,5 +122,5 @@ class Command(BaseCommand):
         self.remove_dirs()
         self.copy_configs()
         self.collect_files()
-        self.build_frontend(install=options['install'], dev=options['dev'])
+        self.build_frontend(install=options['install'], dev=settings.JS_DEBUG)
         self.cleanup()
