@@ -2,7 +2,6 @@ from django.http import HttpResponse
 
 from regulations.generator import api_reader
 from regulations.generator.node_types import label_to_text
-from regulations.views import utils
 from regulations.views.chrome import ChromeView
 from regulations.views.partial_sxs import ParagraphSXSView
 
@@ -31,7 +30,6 @@ class ChromeBreakawayView(ChromeView):
             return content
         context['partial_content'] = content
 
-        utils.add_extras(context)
         return context
 
 

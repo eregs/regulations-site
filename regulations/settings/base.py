@@ -91,7 +91,8 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
-                "django.contrib.messages.context_processors.messages"
+                "django.contrib.messages.context_processors.messages",
+                "regulations.context.globals",
             ),
             # List of callables that know how to import templates from various
             # sources.

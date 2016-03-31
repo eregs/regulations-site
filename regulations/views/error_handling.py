@@ -4,7 +4,6 @@ from django.template import RequestContext, loader
 from regulations.generator import api_reader
 from regulations.generator.sidebar.help import Help as HelpSidebar
 from regulations.generator.layers.utils import convert_to_python
-from regulations.views import utils
 from regulations.views.sidebar import SideBarView
 
 
@@ -37,7 +36,6 @@ class MissingSectionException(Exception):
 def handle_generic_404(request):
     template = loader.get_template('regulations/generic_404.html')
     context = {'request_path': request.path}
-    utils.add_extras(context)
     body = template.render(RequestContext(
         request, context))
     return http.HttpResponseNotFound(body, content_type='text/html')
