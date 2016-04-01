@@ -4,6 +4,39 @@ comment.less
 comment.less contains styles related to commenting on sections
 */
 
+#preamble-read {
+  margin: 0;
+  padding: 0;
+}
+
+.preamble-header {
+  position: absolute;
+  right: 0;
+
+  span {
+    padding: 0 10px;
+  }
+
+  .read-proposal,
+  .write-comment {
+    border-left: 1px solid @medium_gray;
+    color: @dark_text;
+    cursor: pointer;
+    display: inline-block;
+    .font-regular;
+    font-size: 15px;
+    text-align: center;
+    margin-right: -4px;
+    width: 245px;
+  }
+
+  .active-mode {
+    background: #FFFFFF;
+    color: @pacific;
+    cursor: default;
+  }
+}
+
 #preamble-write,
 #preamble-read li {
   position: relative;

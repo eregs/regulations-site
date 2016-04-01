@@ -1,13 +1,12 @@
 {% load macros render_nested %}
 
-<section id="content-wrapper" data-page-type="preamble-section">
+<section id="content-wrapper" class="preamble-wrapper" data-page-type="preamble-section">
   <section id="{{sub_context.node.label_id}}">
-    <div id="preamble-read">
+    <ul id="preamble-read">
       {% render_nested template=sub_template context=sub_context %}
-    </div>
+    </ul>
 
     <div id="preamble-write">
-      <div class="activate-read">Read the proposal</div>
       <div class="comment-wrapper">
         <div class="comment">
           <h2>Write your comment.</h2>

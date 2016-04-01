@@ -51,6 +51,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     var options = _.extend({mode: 'write'}, getOptions(e.target));
     DrawerEvents.trigger('section:open', options.section);
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
+    CommentEvents.trigger('comment:writeTabOpen');
   },
 
   clearComment: function(e) {

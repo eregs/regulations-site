@@ -6,6 +6,8 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var ChildView = require('./child-view');
+var MainEvents = require('../../events/main-events');
+var PreambleHeadView = require('../header/preamble-head-view');
 var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
@@ -14,18 +16,25 @@ var PreambleView = ChildView.extend({
   el: '#content-wrapper',
 
   events: {
-    'click .activate-write': 'handleWrite',
-    'click .activate-read': 'handleRead'
+    'click .activate-write': 'handleWriteLink'
   },
 
   initialize: function(options) {
     this.options = options;
     this.id = options.id;
     this.url = 'preamble/' + this.id.split('-').join('/');
+
     if (!options.render) {
       this.render();
     }
+
     ChildView.prototype.initialize.apply(this, arguments);
+
+    this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
+    this.listenTo(CommentEvents, 'comment:write', this.handleWriteTab);
+    this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
+
+    CommentEvents.trigger('comment:readTabOpen');
   },
 
   handleRead: function() {
@@ -33,12 +42,29 @@ var PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  handleWrite: function(e) {
+  handleParagraphActive: function(id) {
+    // update current Section ID as active paragraph changes
+    this.currentSectionId = id;
+  },
+
+  handleWriteLink: function(e) {
     var $target = $(e.target);
     this.write(
       $target.data('section'),
       $target.data('label'),
       $target.closest('[data-permalink-section]')
+    );
+
+    CommentEvents.trigger('comment:writeTabOpen');
+  },
+
+  handleWriteTab: function() {
+    var $section = $('#' + this.currentSectionId);
+
+    this.write(
+      this.currentSectionId,
+      $section.find('.activate-write').data('label'),
+      $section.find('[data-permalink-section]')
     );
   },
 
@@ -56,17 +82,23 @@ var PreambleView = ChildView.extend({
 
   render: function() {
     ChildView.prototype.render.apply(this, arguments);
+
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
-    var section = this.$read.closest('section').attr('id');
-    var docId = section.split('-')[0];
+
+    this.currentSectionId = this.$read.closest('section').attr('id');
+    this.docId = this.currentSectionId.split('-')[0];
+
+    this.preambleHeadView = new PreambleHeadView();
+
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: section
+      section: this.currentSectionId
     });
+
     this.commentIndex = new CommentIndexView({
       el: this.$write.find('.comment-index'),
-      docId: docId
+      docId: this.docId
     });
 
     if (this.options.mode === 'write') {
