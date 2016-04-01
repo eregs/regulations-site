@@ -1,7 +1,8 @@
 import os
+import platform
 import subprocess
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 
 BIN_PATH = (
@@ -14,5 +15,10 @@ class Command(BaseCommand):
     help = 'Fetch wkhtmltox binary'
 
     def handle(self, **options):
+        if platform.system() != 'Linux':
+            raise CommandError(
+                'The `wkhtmltox` command only handles linux; to install on '
+                'another platform, see http://wkhtmltopdf.org/downloads.html.'
+            )
         subprocess.check_call(['wget', '-r', os.path.join(*BIN_PATH)])
         subprocess.check_call(['tar', 'xzvf', BIN_PATH[-1]])

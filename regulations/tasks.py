@@ -74,11 +74,11 @@ def html_to_pdf(html):
         pdf_path = os.path.join(path, 'document.pdf')
         with open(html_path, 'w') as fp:
             fp.write(html)
-        subprocess.check_output(['wkhtmltopdf', html_path, pdf_path])
-        pdf_file = open(pdf_path)
-        yield pdf_file
+        subprocess.check_output(
+            [settings.WKHTMLTOPDF_PATH, html_path, pdf_path])
+        with open(pdf_path, 'rb') as pdf_file:
+            yield pdf_file
     finally:
-        pdf_file.close()
         shutil.rmtree(path)
 
 
