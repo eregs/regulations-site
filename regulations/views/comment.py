@@ -47,7 +47,7 @@ def upload_proxy(request):
 @require_http_methods(['POST'])
 def preview_comment(request):
     body = json.loads(request.body.decode('utf-8'))
-    content = tasks.build_comment(body)
+    content = tasks.comment_to_markdown(body)
     return HttpResponse(content, 'text/markdown', 200)
 
 

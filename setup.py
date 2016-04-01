@@ -48,6 +48,7 @@ setup(
         'celery',
         'django>=1.8,<1.9',
         'jinja2',
+        'markdown2',
         'requests',
         'six',
         'requests-toolbelt',
