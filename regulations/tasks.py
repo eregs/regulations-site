@@ -5,6 +5,9 @@ import json
 import shutil
 import tempfile
 import contextlib
+import subprocess
+
+import markdown2
 
 import boto3
 from botocore.client import Config
@@ -23,12 +26,13 @@ logger = get_task_logger(__name__)
 
 @shared_task
 def submit_comment(body):
-    comment = build_comment(body)
+    html = json_to_html(body)
     files = extract_files(body)
-    with assemble_attachments(files) as attachments:
+    with html_to_pdf(html) as comment, build_attachments(files) as attachments:
         fields = [
             ('comment_on', settings.COMMENT_DOCUMENT_ID),
-            ('general_comment', comment),
+            # TODO: Ensure this name is unique
+            ('uploadedFile', ('comment.pdf', comment)),
         ]
         fields.extend(attachments)
         data = MultipartEncoder(fields)
@@ -57,8 +61,25 @@ def publish_metadata(response, key):
     )
 
 
-def build_comment(body):
-    return loader.render_to_string('regulations/comment.md', body)
+def json_to_html(body):
+    md = loader.render_to_string('regulations/comment.md', body)
+    return markdown2.markdown(md)
+
+
+@contextlib.contextmanager
+def html_to_pdf(html):
+    try:
+        path = tempfile.mkdtemp()
+        html_path = os.path.join(path, 'document.html')
+        pdf_path = os.path.join(path, 'document.pdf')
+        with open(html_path, 'w') as fp:
+            fp.write(html)
+        subprocess.check_output(
+            [settings.WKHTMLTOPDF_PATH, html_path, pdf_path])
+        with open(pdf_path, 'rb') as pdf_file:
+            yield pdf_file
+    finally:
+        shutil.rmtree(path)
 
 
 def extract_files(body):
@@ -77,7 +98,7 @@ def extract_files(body):
 
 
 @contextlib.contextmanager
-def assemble_attachments(files):
+def build_attachments(files):
     '''
     Assembles a collection of tuples of the form:
     [

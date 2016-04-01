@@ -79,9 +79,15 @@
           <% } %>
         <% }) %>
       </div>
-      <div id="comment-confirm">
-        <button class="preview-button">Preview your comment</button>
-        <pre class="preview-content"></pre>
+      <div id="comment-preview">
+        <button class="preview-button">Build preview</button>
+        <span class="preview-link">
+          <% if (previewUrl) { %>
+            <a href="<%= previewUrl %>">Download preview</a>
+          <% } %>
+        </span>
+      </div>
+      <div>
         <button class="submit-button">Submit your comment</button>
         <div class="status"></div>
       </div>
