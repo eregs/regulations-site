@@ -108,14 +108,16 @@ class CFRChangesView(View):
             request=request, template='regulations/cfr_changes.html',
             context=context)
 
-    def authorities_context(self, amendments, cfr_part):
+    @staticmethod
+    def authorities_context(amendments, cfr_part):
         """What authorities information is relevant to this CFR part?"""
         relevant = [amd for amd in amendments
                     if amd.get('cfr_part') == cfr_part and 'authority' in amd]
         return {'instructions': [a['instruction'] for a in relevant],
                 'authorities': [a['authority'] for a in relevant]}
 
-    def regtext_changes_context(self, amendments, version_info, label_id):
+    @staticmethod
+    def regtext_changes_context(amendments, version_info, label_id):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
         relevant = []
