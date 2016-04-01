@@ -43,9 +43,34 @@ def upload_proxy(request):
     })
 
 
+def download_proxy(request):
+    """Generate a temporary URL to GET an attachment."""
+    key = request.GET.get('key')
+    name = request.GET.get('name')
+    if key is None or name is None:
+        return JsonResponse(
+            {'message': 'Must provide key and name'},
+            status=400,
+        )
+    s3 = tasks.make_s3_client()
+    disposition = 'attachment; filename="{}"'.format(name)
+    url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'ResponseContentDisposition': disposition,
+            'Bucket': settings.ATTACHMENT_BUCKET,
+            'Key': key,
+        },
+    )
+    return JsonResponse({'url': url})
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def preview_comment(request):
+    """Convert a comment to PDF, upload the result to S3, and return a signed
+    URL to GET the PDF.
+    """
     body = json.loads(request.body.decode('utf-8'))
     html = tasks.json_to_html(body)
     key = '/'.join([settings.ATTACHMENT_PREVIEW_PREFIX, get_random_string(50)])
@@ -54,7 +79,7 @@ def preview_comment(request):
         s3.put_object(
             Body=pdf,
             ContentType='application/pdf',
-            ContentDisposition='attachment; filename=comment.pdf',
+            ContentDisposition='attachment; filename="comment.pdf"',
             Bucket=settings.ATTACHMENT_BUCKET,
             Key=key,
         )
@@ -65,9 +90,7 @@ def preview_comment(request):
             'Key': key,
         },
     )
-    return JsonResponse({
-        'url': url,
-    })
+    return JsonResponse({'url': url})
 
 
 @csrf_exempt

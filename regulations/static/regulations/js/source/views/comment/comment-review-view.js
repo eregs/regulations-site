@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
@@ -9,6 +10,7 @@ var comments = require('../../collections/comment-collection');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
+    'click .attachment-preview': 'previewAttachment',
     'click .preview-button': 'preview',
     'click .submit-button': 'submit'
   },
@@ -48,11 +50,22 @@ var CommentReviewView = Backbone.View.extend({
     };
   },
 
+  previewAttachment: function(e) {
+    var $target = $(e.target);
+    var url = URI(window.APP_PREFIX + 'comments/attachment/preview')
+      .addQuery({
+        name: $target.data('name'),
+        key: $target.data('key')
+      });
+    $.getJSON(url).then(function(resp) {
+      window.location = resp.url;
+    });
+  },
+
   preview: function() {
-    var prefix = window.APP_PREFIX || '/';
     var $xhr = $.ajax({
       type: 'POST',
-      url: prefix + 'comments/preview',
+      url: window.APP_PREFIX + 'comments/preview',
       data: JSON.stringify(this.serialize()),
       contentType: 'application/json',
       dataType: 'json'

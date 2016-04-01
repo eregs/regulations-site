@@ -67,7 +67,15 @@
                 Attachments included
                 <ul>
                   <% _.each(comment.files, function(file) { %>
-                    <li><%= file.name %> Preview</li>
+                    <li>
+                      <%= file.name %>
+                      <a
+                          href="#"
+                          class="attachment-preview"
+                          data-key="<%= file.key %>"
+                          data-name="<%= file.name %>">
+                        Preview</a>
+                    </li>
                   <% }) %>
                 </ul>
               </div>
@@ -91,7 +99,6 @@
         <button class="submit-button">Submit your comment</button>
         <div class="status"></div>
       </div>
-
     <% } else { %>
       <p>There are no comments to review or submit.</p>
     <% } %>

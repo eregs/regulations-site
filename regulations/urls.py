@@ -45,6 +45,7 @@ urlpatterns = patterns(
     # about page
     url(r'^about$', about, name='about'),
     url(r'^comments/attachment$', comment.upload_proxy),
+    url(r'^comments/attachment/preview$', comment.download_proxy),
     url(r'^comments/review/(?P<doc_number>[\w-]+)$',
         PrepareCommentView.as_view(), name='comment_review'),
     url(r'^comments/preview$', comment.preview_comment),
