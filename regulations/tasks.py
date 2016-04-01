@@ -7,8 +7,10 @@ import tempfile
 import contextlib
 
 import boto3
+from botocore.exceptions import ClientError
 
 import requests
+from requests.exceptions import RequestException
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from celery import shared_task
@@ -22,27 +24,34 @@ logger = get_task_logger(__name__)
 
 @shared_task(bind=True)
 def submit_comment(self, body):
+    '''
+    Submit the comment to regulations.gov. If unsuccessful, retry the task.
+    Number of retries and time between retries is managed by Celery settings.
+    '''
     comment = build_comment(body)
     files = extract_files(body)
-    with assemble_attachments(files) as attachments:
-        fields = [
-            ('comment_on', settings.COMMENT_DOCUMENT_ID),
-            ('general_comment', comment),
-        ]
-        fields.extend(attachments)
-        data = MultipartEncoder(fields)
-        response = requests.post(
-            settings.REGS_GOV_API_URL,
-            data=data,
-            headers={
-                'Content-Type': data.content_type,
-                'X-Api-Key': settings.REGS_GOV_API_KEY,
-            }
-        )
-        if response.status_code != requests.codes.created:
-            self.retry()
-        logger.info(response.text)
-        return response.json()
+    try:
+        with assemble_attachments(files) as attachments:
+            fields = [
+                ('comment_on', settings.COMMENT_DOCUMENT_ID),
+                ('general_comment', comment),
+            ]
+            fields.extend(attachments)
+            data = MultipartEncoder(fields)
+            response = requests.post(
+                settings.REGS_GOV_API_URL,
+                data=data,
+                headers={
+                    'Content-Type': data.content_type,
+                    'X-Api-Key': settings.REGS_GOV_API_KEY,
+                }
+            )
+            if response.status_code != requests.codes.created:
+                self.retry()
+            logger.info(response.text)
+            return response.json()
+    except (ClientError, RequestException):
+        self.retry()
 
 
 @shared_task
