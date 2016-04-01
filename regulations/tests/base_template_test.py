@@ -26,12 +26,12 @@ class GlobalContextTest(SimpleTestCase):
     @override_settings(JS_DEBUG=True)
     def test_debug(self):
         resp = self.client.get('/about')
-        self.assertEqual(resp.context['globals']['env'], 'source')
+        self.assertEqual(resp.context['EREGS_GLOBALS']['ENV'], 'source')
 
     @override_settings(JS_DEBUG=False)
     def test_prod(self):
         resp = self.client.get('/about')
-        self.assertEqual(resp.context['globals']['env'], 'built')
+        self.assertEqual(resp.context['EREGS_GLOBALS']['ENV'], 'built')
 
     @override_settings(
         ANALYTICS={
@@ -47,7 +47,7 @@ class GlobalContextTest(SimpleTestCase):
     )
     def test_analytics(self):
         resp = self.client.get('/about')
-        analytics = resp.context['globals']['ANALYTICS']
+        analytics = resp.context['EREGS_GLOBALS']['ANALYTICS']
         self.assertEquals('gtm-site-id',
                           analytics['GOOGLE']['GTM_SITE_ID'])
         self.assertEquals('ga-site-id',
@@ -62,4 +62,4 @@ class GlobalContextTest(SimpleTestCase):
 
     def test_prefix(self):
         resp = self.client.get('/about')
-        self.assertIn('APP_PREFIX', resp.context['globals'])
+        self.assertIn('APP_PREFIX', resp.context['EREGS_GLOBALS'])
