@@ -12,14 +12,6 @@ from django.views.decorators.csrf import csrf_exempt
 from regulations import tasks
 import requests
 
-# The following limit is specified by the regulations.gov API
-# It is not available as a queryable endpoint
-VALID_ATTACHMENT_EXTENSIONS = set([
-    "bmp", "doc", "xls", "pdf", "gif", "htm", "html", "jpg", "jpeg",
-    "png", "ppt", "rtf", "sgml", "tiff", "tif", "txt", "wpd", "xml",
-    "docx", "xlsx", "pptx"])
-MAX_ATTACHMENT_COUNT = 10
-
 logger = logging.getLogger(__name__)
 
 
@@ -66,7 +58,7 @@ def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
     files = tasks.extract_files(body)
-    if len(files) > MAX_ATTACHMENT_COUNT:
+    if len(files) > settings.MAX_ATTACHMENT_COUNT:
         message = "Too many attachments"
         logger.error(message)
         return JsonResponse({'message': message}, status=403)
@@ -120,6 +112,6 @@ def validate_attachment(filename, size):
     if size <= 0 or size > settings.ATTACHMENT_MAX_SIZE:
         return False, "Invalid attachment size"
     _, ext = os.path.splitext(filename)
-    if ext[1:].lower() not in VALID_ATTACHMENT_EXTENSIONS:
+    if ext[1:].lower() not in settings.VALID_ATTACHMENT_EXTENSIONS:
         return False, "Invalid attachment type"
     return True, ""
