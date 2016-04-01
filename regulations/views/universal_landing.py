@@ -41,7 +41,6 @@ def get_regulations_list(all_versions):
 
 def universal(request):
     context = {}
-    utils.add_extras(context)
 
     all_versions = versions.fetch_regulations_and_future_versions()
     regs = get_regulations_list(all_versions)

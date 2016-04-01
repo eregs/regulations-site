@@ -2,8 +2,6 @@
 from unittest import TestCase
 from mock import patch
 
-from six.moves.urllib.parse import parse_qs
-
 from django.conf import settings
 from django.test import RequestFactory
 
@@ -39,51 +37,6 @@ class UtilsTest(TestCase):
 
         request = RequestFactory().get('/')
         self.assertTrue(len(utils.layer_names(request)) > 4)
-
-    def test_add_extras_env(self):
-        context = {}
-
-        settings.JS_DEBUG = True
-        utils.add_extras(context)
-        self.assertEqual('source', context['env'])
-
-        settings.JS_DEBUG = False
-        utils.add_extras(context)
-        self.assertEqual('built', context['env'])
-
-        del(settings.JS_DEBUG)
-        utils.add_extras(context)
-        self.assertEqual('built', context['env'])
-
-    def test_add_extras(self):
-        context = {}
-        settings.ANALYTICS = {
-            'GOOGLE': {
-                'GTM_SITE_ID': 'gtm-site-id',
-                'GA_SITE_ID': 'ga-site-id',
-                },
-            'DAP': {
-                'AGENCY': 'agency',
-                'SUBAGENCY': 'sub-agency',
-            }
-        }
-
-        utils.add_extras(context)
-
-        self.assertTrue('APP_PREFIX' in context)
-        self.assertTrue('env' in context)
-
-        self.assertEquals('gtm-site-id',
-                          context['ANALYTICS']['GOOGLE']['GTM_SITE_ID'])
-        self.assertEquals('ga-site-id',
-                          context['ANALYTICS']['GOOGLE']['GA_SITE_ID'])
-        self.assertEquals('agency', context['ANALYTICS']['DAP']['AGENCY'])
-        self.assertEquals('sub-agency',
-                          context['ANALYTICS']['DAP']['SUBAGENCY'])
-        self.assertEquals(
-            parse_qs('agency=agency&subagency=sub-agency'),
-            parse_qs(context['ANALYTICS']['DAP']['DAP_URL_PARAMS']),
-        )
 
     @patch('regulations.views.utils.fetch_toc')
     def test_first_section(self, fetch_toc):

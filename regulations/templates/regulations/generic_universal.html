@@ -5,7 +5,7 @@
     Replaces application's loaded scripts and styles with just styles.
 {% endcomment %}
 {% block app_js %}
-        {% if env == 'built' %}
+        {% if globals.env == 'built' %}
         <link rel="stylesheet" href="{%static "regulations/css/regulations.min.css" %}"/>
         {% else %}
         <link rel="stylesheet" href="{%static "regulations/css/style.css" %}"/>
