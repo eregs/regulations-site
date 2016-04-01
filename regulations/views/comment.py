@@ -57,6 +57,13 @@ def preview_comment(request):
 def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
+
+    comment = tasks.build_comment(body)
+    if len(comment) > settings.MAX_COMMENT_LENGTH:
+        message = "Comment is too long"
+        logger.error(message)
+        return JsonResponse({'message': message}, status=403)
+
     files = tasks.extract_files(body)
     if len(files) > settings.MAX_ATTACHMENT_COUNT:
         message = "Too many attachments"

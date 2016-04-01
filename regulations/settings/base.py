@@ -244,6 +244,7 @@ ATTACHMENT_ACCESS_KEY_ID = os.getenv('S3_ACCESS_KEY_ID')
 ATTACHMENT_SECRET_ACCESS_KEY = os.getenv('S3_SECRET_ACCESS_KEY')
 
 # regulations.gov restrictions
+MAX_COMMENT_LENGTH = 5000
 ATTACHMENT_MAX_SIZE = 1024 * 1024 * 10
 VALID_ATTACHMENT_EXTENSIONS = set([
     "bmp", "doc", "xls", "pdf", "gif", "htm", "html", "jpg", "jpeg",
