@@ -21,32 +21,23 @@ var CommentReviewView = Backbone.View.extend({
     this.docId = this.$el.data('doc-id');
     this.template = _.template($('#comment-template').html());
 
+    this.mode = 'preview';
+    this.previewUrl = null;
+
     this.render();
-    this.previewMode();
   },
 
   findElms: function() {
-    this.$previewContent = this.$el.find('.preview-content');
-    this.$previewButton = this.$el.find('.preview-button');
-    this.$submitButton = this.$el.find('.submit-button');
     this.$status = this.$el.find('.status');
-  },
-
-  previewMode: function() {
-    this.$previewButton.show();
-    this.$previewContent.hide();
-    this.$submitButton.hide();
-  },
-
-  submitMode: function() {
-    this.$previewButton.hide();
-    this.$previewContent.show();
-    this.$submitButton.show();
   },
 
   render: function() {
     var commentData = comments.toJSON({docId: this.docId});
-    var html = this.template({comments: commentData});
+    var html = this.template({
+      comments: commentData,
+      previewUrl: this.previewUrl,
+      mode: this.mode
+    });
     this.$content.html(html);
     this.findElms();
   },
@@ -63,14 +54,16 @@ var CommentReviewView = Backbone.View.extend({
       type: 'POST',
       url: prefix + 'comments/preview',
       data: JSON.stringify(this.serialize()),
-      contentType: 'application/json'
+      contentType: 'application/json',
+      dataType: 'json'
     });
     $xhr.then(this.previewSuccess.bind(this));
   },
 
   previewSuccess: function(resp) {
-    this.$previewContent.text(resp);
-    this.submitMode();
+    this.mode = 'submit';
+    this.previewUrl = resp.url;
+    this.render();
   },
 
   submit: function() {
