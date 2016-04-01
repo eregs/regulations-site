@@ -26,8 +26,7 @@ logger = get_task_logger(__name__)
 
 @shared_task
 def submit_comment(body):
-    md = comment_to_markdown(body)
-    html = markdown2.markdown(md)
+    html = json_to_html(body)
     files = extract_files(body)
     with html_to_pdf(html) as comment, build_attachments(files) as attachments:
         fields = [
@@ -62,8 +61,9 @@ def publish_metadata(response, key):
     )
 
 
-def comment_to_markdown(body):
-    return loader.render_to_string('regulations/comment.md', body)
+def json_to_html(body):
+    md = loader.render_to_string('regulations/comment.md', body)
+    return markdown2.markdown(md)
 
 
 @contextlib.contextmanager

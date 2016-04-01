@@ -2,14 +2,14 @@ import json
 import logging
 
 import celery
+import requests
 from django.conf import settings
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
 from regulations import tasks
-import requests
 
 logger = logging.getLogger(__name__)
 
@@ -47,8 +47,27 @@ def upload_proxy(request):
 @require_http_methods(['POST'])
 def preview_comment(request):
     body = json.loads(request.body.decode('utf-8'))
-    content = tasks.comment_to_markdown(body)
-    return HttpResponse(content, 'text/markdown', 200)
+    html = tasks.json_to_html(body)
+    key = '/'.join([settings.ATTACHMENT_PREVIEW_PREFIX, get_random_string(50)])
+    s3 = tasks.make_s3_client()
+    with tasks.html_to_pdf(html) as pdf:
+        s3.put_object(
+            Body=pdf,
+            ContentType='application/pdf',
+            ContentDisposition='attachment; filename=comment.pdf',
+            Bucket=settings.ATTACHMENT_BUCKET,
+            Key=key,
+        )
+    url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'Bucket': settings.ATTACHMENT_BUCKET,
+            'Key': key,
+        },
+    )
+    return JsonResponse({
+        'url': url,
+    })
 
 
 @csrf_exempt
