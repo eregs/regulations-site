@@ -19,18 +19,11 @@ from django.template import loader
 
 logger = get_task_logger(__name__)
 
-# The following limit is specified by the regulations.gov API
-# It is not available as a queryable endpoint
-MAX_ATTACHMENT_COUNT = 10
-
 
 @shared_task(bind=True)
 def submit_comment(self, body):
     comment = build_comment(body)
     files = extract_files(body)
-    if len(files) > MAX_ATTACHMENT_COUNT:
-        logger.error("Too many attachments")
-        return
     with assemble_attachments(files) as attachments:
         fields = [
             ('comment_on', settings.COMMENT_DOCUMENT_ID),

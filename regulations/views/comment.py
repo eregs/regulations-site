@@ -18,6 +18,7 @@ VALID_ATTACHMENT_EXTENSIONS = set([
     "bmp", "doc", "xls", "pdf", "gif", "htm", "html", "jpg", "jpeg",
     "png", "ppt", "rtf", "sgml", "tiff", "tif", "txt", "wpd", "xml",
     "docx", "xlsx", "pptx"])
+MAX_ATTACHMENT_COUNT = 10
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,12 @@ def preview_comment(request):
 def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
+    files = tasks.extract_files(body)
+    if len(files) > MAX_ATTACHMENT_COUNT:
+        message = "Too many attachments"
+        logger.error(message)
+        return JsonResponse({'message': message}, status=403)
+
     s3 = tasks.make_s3_client()
     metadata_key = get_random_string(50)
     metadata_url = s3.generate_presigned_url(
