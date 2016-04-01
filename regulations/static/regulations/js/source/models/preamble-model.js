@@ -7,10 +7,8 @@ var MetaModel = require('./meta-model');
 
 Backbone.PreambleModel = MetaModel.extend({
   getAJAXUrl: function(id) {
-    var path = ['preamble'].concat(id.split('-'));
-    if (window.APP_PREFIX) {
-      path = [window.APP_PREFIX].concat(path);
-    }
+    // window.APP_PREFIX always ends in a slash
+    var path = [window.APP_PREFIX + 'preamble'].concat(id.split('-'));
     return URI()
       .path(path.join('/'))
       .addQuery({partial: 'true'})
