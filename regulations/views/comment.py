@@ -1,3 +1,4 @@
+import os.path
 import json
 import logging
 
@@ -11,6 +12,13 @@ from django.views.decorators.csrf import csrf_exempt
 from regulations import tasks
 import requests
 
+# The following limit is specified by the regulations.gov API
+# It is not available as a queryable endpoint
+VALID_ATTACHMENT_EXTENSIONS = set([
+    "bmp", "doc", "xls", "pdf", "gif", "htm", "html", "jpg", "jpeg",
+    "png", "ppt", "rtf", "sgml", "tiff", "tif", "txt", "wpd", "xml",
+    "docx", "xlsx", "pptx"])
+
 logger = logging.getLogger(__name__)
 
 
@@ -18,14 +26,12 @@ def upload_proxy(request):
     """Create a random key name and a temporary upload URL to permit uploads
     from the browser.
     """
-    try:
-        size = int(request.GET['size'])
-        assert 0 < size <= settings.ATTACHMENT_MAX_SIZE
-    except (KeyError, ValueError, AssertionError):
-        return JsonResponse(
-            {'message': 'Invalid attachment size'},
-            status=400,
-        )
+    filename = request.GET['name']
+    size = int(request.GET['size'])
+    valid, message = validate_attachment(filename, size)
+    if not valid:
+        logger.error(message)
+        return JsonResponse({'message': message}, status=400)
     s3 = tasks.make_s3_client()
     key = get_random_string(50)
     url = s3.generate_presigned_url(
@@ -35,7 +41,9 @@ def upload_proxy(request):
             'ContentType': request.GET.get('type', 'application/octet-stream'),
             'Bucket': settings.ATTACHMENT_BUCKET,
             'Key': key,
+            'Metadata': {'name': filename}
         },
+
     )
     return JsonResponse({
         'url': url,
@@ -99,3 +107,12 @@ def lookup_regulations_gov(*args, **kwargs):
         logger.error("Failed to lookup regulations.gov: {}",
                      response.status_code, response.text)
         response.raise_for_status()
+
+
+def validate_attachment(filename, size):
+    if size <= 0 or size > settings.ATTACHMENT_MAX_SIZE:
+        return False, "Invalid attachment size"
+    _, ext = os.path.splitext(filename)
+    if ext[1:].lower() not in VALID_ATTACHMENT_EXTENSIONS:
+        return False, "Invalid attachment type"
+    return True, ""

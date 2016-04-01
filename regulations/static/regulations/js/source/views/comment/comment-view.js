@@ -14,11 +14,18 @@ var CommentEvents = require('../../events/comment-events');
 var AttachmentView = require('../../views/comment/attachment-view');
 var comments = require('../../collections/comment-collection');
 
+/**
+* Get a presigned upload URL.
+* The file extension (from the name) and size are validated
+* and the uploadURL is constrained by the file name and size.
+*
+* @param file {File} File to upload
+*/
 function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
   return $.getJSON(
     prefix + 'comments/attachment',
-    {size: file.size, type: file.type || 'application/octet-stream'}
+    {size: file.size, name: file.name, type: file.type || 'application/octet-stream'}
   ).then(function(resp) {
     return resp;
   });
@@ -118,6 +125,9 @@ var CommentView = Backbone.View.extend({
       );
       xhr.open('PUT', url.url);
       xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+      // Metadata that was bound to the presigned URL has to be honored by passing
+      // in the meta data fields with x-amz-meta- prefixes
+      xhr.setRequestHeader('x-amz-meta-name', file.name);
       xhr.send(file);
     }.bind(this));
   },
