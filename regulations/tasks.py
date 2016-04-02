@@ -17,19 +17,16 @@ from celery import shared_task
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
-from django.template import loader
 
 logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True)
-def submit_comment(self, body):
+def submit_comment(self, comment, files):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
     '''
-    comment = build_comment(body)
-    files = extract_files(body)
     try:
         with assemble_attachments(files) as attachments:
             fields = [
@@ -67,25 +64,6 @@ def publish_metadata(response, key):
         ContentType='application/json',
         Key=key,
     )
-
-
-def build_comment(body):
-    return loader.render_to_string('regulations/comment.md', body)
-
-
-def extract_files(body):
-    '''
-    Extracts the files that are to be attached to the comment.
-    Returns a collection of dicts where for each dict:
-        - dict['key'] specifies the file to be attached from S3
-        - dict['name'] specifies the name under which the file is to be
-          attached.
-    '''
-    return [
-        file
-        for section in body.get('sections', [])
-        for file in section.get('files', [])
-    ]
 
 
 @contextlib.contextmanager

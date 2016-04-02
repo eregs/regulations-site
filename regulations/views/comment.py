@@ -5,6 +5,7 @@ import logging
 import celery
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
+from django.template import loader
 from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -48,7 +49,7 @@ def upload_proxy(request):
 @require_http_methods(['POST'])
 def preview_comment(request):
     body = json.loads(request.body.decode('utf-8'))
-    content = tasks.build_comment(body)
+    content = build_comment(body)
     return HttpResponse(content, 'text/markdown', 200)
 
 
@@ -58,13 +59,13 @@ def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
 
-    comment = tasks.build_comment(body)
+    comment = build_comment(body)
     if len(comment) > settings.MAX_COMMENT_LENGTH:
         message = "Comment is too long"
         logger.error(message)
         return JsonResponse({'message': message}, status=403)
 
-    files = tasks.extract_files(body)
+    files = extract_files(body)
     if len(files) > settings.MAX_ATTACHMENT_COUNT:
         message = "Too many attachments"
         logger.error(message)
@@ -80,7 +81,7 @@ def submit_comment(request):
         },
     )
     chain = celery.chain(
-        tasks.submit_comment.s(body),
+        tasks.submit_comment.s(comment, files),
         tasks.publish_metadata.s(key=metadata_key),
     )
     chain.delay()
@@ -122,3 +123,22 @@ def validate_attachment(filename, size):
     if ext[1:].lower() not in settings.VALID_ATTACHMENT_EXTENSIONS:
         return False, "Invalid attachment type"
     return True, ""
+
+
+def build_comment(body):
+    return loader.render_to_string('regulations/comment.md', body)
+
+
+def extract_files(body):
+    '''
+    Extracts the files that are to be attached to the comment.
+    Returns a collection of dicts where for each dict:
+        - dict['key'] specifies the file to be attached from S3
+        - dict['name'] specifies the name under which the file is to be
+          attached.
+    '''
+    return [
+        file
+        for section in body.get('sections', [])
+        for file in section.get('files', [])
+    ]
