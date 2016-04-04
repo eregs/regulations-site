@@ -81,17 +81,16 @@
           </div>
           <div>Edit comment</div>
           <% if (index < comments.length - 1) { %>
-            <div>-----</div>
+            <hr>
           <% } %>
         <% }) %>
       </div>
       <div id="comment-preview">
-        <button class="preview-button">Build preview</button>
-        <span class="preview-link">
-          <% if (previewUrl) { %>
-            <a href="<%= previewUrl %>">Download preview</a>
-          <% } %>
-        </span>
+        <% if (!previewLoading) { %>
+          <button class="preview-button">Preview your comment</button>
+        <% } else { %>
+          <button class="preview-button" disabled>Building...</button>
+        <% } %>
       </div>
       <div>
         <button class="submit-button">Submit your comment</button>
