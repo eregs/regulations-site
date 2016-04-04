@@ -21,4 +21,4 @@ class Command(BaseCommand):
             )
         subprocess.check_call([
             'wget', '-O', BIN_PATH[-1], '/'.join(BIN_PATH)])
-        subprocess.check_call(['tar', 'xzvf', BIN_PATH[-1]])
+        subprocess.check_call(['tar', 'xvf', BIN_PATH[-1]])
