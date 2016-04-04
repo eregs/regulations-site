@@ -1,4 +1,3 @@
-import os
 import platform
 import subprocess
 
@@ -20,5 +19,6 @@ class Command(BaseCommand):
                 'The `wkhtmltox` command only handles linux; to install on '
                 'another platform, see http://wkhtmltopdf.org/downloads.html.'
             )
-        subprocess.check_call(['wget', '-r', os.path.join(*BIN_PATH)])
+        subprocess.check_call([
+            'wget', '-O', BIN_PATH[-1], '/'.join(BIN_PATH)])
         subprocess.check_call(['tar', 'xzvf', BIN_PATH[-1]])
