@@ -103,14 +103,6 @@ TEMPLATES = [
             ],
         }
     },
-    {
-        "BACKEND": "django.template.backends.jinja2.Jinja2",
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "trim_blocks": True,
-            "lstrip_blocks": True,
-        },
-    },
 ]
 
 
