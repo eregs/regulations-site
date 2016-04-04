@@ -22,9 +22,7 @@ var CommentReviewView = Backbone.View.extend({
     this.docId = this.$el.data('doc-id');
     this.template = _.template($('#comment-template').html());
 
-    this.mode = 'preview';
-    this.previewUrl = null;
-
+    this.previewLoading = false;
     this.render();
   },
 
@@ -36,8 +34,7 @@ var CommentReviewView = Backbone.View.extend({
     var commentData = comments.toJSON({docId: this.docId});
     var html = this.template({
       comments: commentData,
-      previewUrl: this.previewUrl,
-      mode: this.mode
+      previewLoading: this.previewLoading
     });
     this.$content.html(html);
     this.findElms();
@@ -58,11 +55,13 @@ var CommentReviewView = Backbone.View.extend({
       dataType: 'json'
     });
     $xhr.then(this.previewSuccess.bind(this));
+    this.previewLoading = true;
+    this.render();
   },
 
   previewSuccess: function(resp) {
-    this.mode = 'submit';
-    this.previewUrl = resp.url;
+    window.location = resp.url;
+    this.previewLoading = false;
     this.render();
   },
 
