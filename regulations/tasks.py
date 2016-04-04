@@ -11,8 +11,10 @@ import markdown2
 
 import boto3
 from botocore.client import Config
+from botocore.exceptions import ClientError
 
 import requests
+from requests.exceptions import RequestException
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from celery import shared_task
@@ -24,29 +26,40 @@ from django.template import loader
 logger = get_task_logger(__name__)
 
 
-@shared_task
-def submit_comment(body):
+@shared_task(bind=True)
+def submit_comment(self, body, files):
+    '''
+    Submit the comment to regulations.gov. If unsuccessful, retry the task.
+    Number of retries and time between retries is managed by Celery settings.
+    '''
     html = json_to_html(body)
-    files = extract_files(body)
-    with html_to_pdf(html) as comment, build_attachments(files) as attachments:
-        fields = [
-            ('comment_on', settings.COMMENT_DOCUMENT_ID),
-            # TODO: Ensure this name is unique
-            ('uploadedFile', ('comment.pdf', comment)),
-        ]
-        fields.extend(attachments)
-        data = MultipartEncoder(fields)
-        response = requests.post(
-            settings.REGS_GOV_API_URL,
-            data=data,
-            headers={
-                'Content-Type': data.content_type,
-                'X-Api-Key': settings.REGS_GOV_API_KEY,
-            }
-        )
-        response.raise_for_status()
-        logger.info(response.text)
-        return response.json()
+    try:
+        with html_to_pdf(html) as comment, \
+                build_attachments(files) as attachments:
+            fields = [
+                ('comment_on', settings.COMMENT_DOCUMENT_ID),
+                # TODO: Ensure this name is unique
+                ('uploadedFile', ('comment.pdf', comment)),
+            ]
+            fields.extend(attachments)
+            data = MultipartEncoder(fields)
+            response = requests.post(
+                settings.REGS_GOV_API_URL,
+                data=data,
+                headers={
+                    'Content-Type': data.content_type,
+                    'X-Api-Key': settings.REGS_GOV_API_KEY,
+                }
+            )
+            if response.status_code != requests.codes.created:
+                logger.warn("Post to regulations.gov failed: %s %s",
+                            response.status_code, response.text)
+                self.retry()
+            logger.info(response.text)
+            return response.json()
+    except (ClientError, RequestException):
+        logger.exception("submit_comment task failed")
+        self.retry()
 
 
 @shared_task
@@ -80,21 +93,6 @@ def html_to_pdf(html):
             yield pdf_file
     finally:
         shutil.rmtree(path)
-
-
-def extract_files(body):
-    '''
-    Extracts the files that are to be attached to the comment.
-    Returns a collection of dicts where for each dict:
-        - dict['key'] specifies the file to be attached from S3
-        - dict['name'] specifies the name under which the file is to be
-          attached.
-    '''
-    return [
-        file
-        for section in body.get('sections', [])
-        for file in section.get('files', [])
-    ]
 
 
 @contextlib.contextmanager

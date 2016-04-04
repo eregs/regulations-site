@@ -1,3 +1,4 @@
+import os.path
 import json
 import time
 import logging
@@ -22,15 +23,12 @@ def upload_proxy(request):
     """Create a random key name and a pair of temporary PUT and GET URLS to
     permit attachment uploads and previews from the browser.
     """
-    try:
-        size = int(request.GET['size'])
-        assert 0 < size <= settings.ATTACHMENT_MAX_SIZE
-    except (KeyError, ValueError, AssertionError):
-        return JsonResponse(
-            {'message': 'Invalid attachment size'},
-            status=400,
-        )
     filename = request.GET['name']
+    size = int(request.GET['size'])
+    valid, message = validate_attachment(filename, size)
+    if not valid:
+        logger.error(message)
+        return JsonResponse({'message': message}, status=400)
     s3 = tasks.make_s3_client()
     key = get_random_string(50)
     put_url = s3.generate_presigned_url(
@@ -40,7 +38,9 @@ def upload_proxy(request):
             'ContentType': request.GET.get('type', 'application/octet-stream'),
             'Bucket': settings.ATTACHMENT_BUCKET,
             'Key': key,
+            'Metadata': {'name': filename}
         },
+
     )
     disposition = 'attachment; filename="{}"'.format(filename)
     get_url = s3.generate_presigned_url(
@@ -91,6 +91,13 @@ def preview_comment(request):
 def submit_comment(request):
     """Submit a comment to the task queue."""
     body = json.loads(request.body.decode('utf-8'))
+
+    files = extract_files(body)
+    if len(files) > settings.MAX_ATTACHMENT_COUNT:
+        message = "Too many attachments"
+        logger.error(message)
+        return JsonResponse({'message': message}, status=403)
+
     s3 = tasks.make_s3_client()
     metadata_key = get_random_string(50)
     metadata_url = s3.generate_presigned_url(
@@ -101,7 +108,7 @@ def submit_comment(request):
         },
     )
     chain = celery.chain(
-        tasks.submit_comment.s(body),
+        tasks.submit_comment.s(body, files),
         tasks.publish_metadata.s(key=metadata_key),
     )
     chain.delay()
@@ -134,3 +141,27 @@ def lookup_regulations_gov(*args, **kwargs):
         logger.error("Failed to lookup regulations.gov: {}",
                      response.status_code, response.text)
         response.raise_for_status()
+
+
+def validate_attachment(filename, size):
+    if size <= 0 or size > settings.ATTACHMENT_MAX_SIZE:
+        return False, "Invalid attachment size"
+    _, ext = os.path.splitext(filename)
+    if ext[1:].lower() not in settings.VALID_ATTACHMENT_EXTENSIONS:
+        return False, "Invalid attachment type"
+    return True, ""
+
+
+def extract_files(body):
+    '''
+    Extracts the files that are to be attached to the comment.
+    Returns a collection of dicts where for each dict:
+        - dict['key'] specifies the file to be attached from S3
+        - dict['name'] specifies the name under which the file is to be
+          attached.
+    '''
+    return [
+        file
+        for section in body.get('sections', [])
+        for file in section.get('files', [])
+    ]
