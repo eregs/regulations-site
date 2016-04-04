@@ -1,6 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
+var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
@@ -49,10 +50,9 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   preview: function() {
-    var prefix = window.APP_PREFIX || '/';
     var $xhr = $.ajax({
       type: 'POST',
-      url: prefix + 'comments/preview',
+      url: window.APP_PREFIX + 'comments/preview',
       data: JSON.stringify(this.serialize()),
       contentType: 'application/json',
       dataType: 'json'

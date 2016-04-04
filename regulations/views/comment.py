@@ -1,4 +1,5 @@
 import json
+import time
 import logging
 
 import celery
@@ -13,10 +14,13 @@ from regulations import tasks
 
 logger = logging.getLogger(__name__)
 
+# TODO: Expire preview URL at commenting deadline
+PREVIEW_EXPIRATION_SECONDS = 60 * 60 * 24 * 90
+
 
 def upload_proxy(request):
-    """Create a random key name and a temporary upload URL to permit uploads
-    from the browser.
+    """Create a random key name and a pair of temporary PUT and GET URLS to
+    permit attachment uploads and previews from the browser.
     """
     try:
         size = int(request.GET['size'])
@@ -26,9 +30,10 @@ def upload_proxy(request):
             {'message': 'Invalid attachment size'},
             status=400,
         )
+    filename = request.GET['name']
     s3 = tasks.make_s3_client()
     key = get_random_string(50)
-    url = s3.generate_presigned_url(
+    put_url = s3.generate_presigned_url(
         ClientMethod='put_object',
         Params={
             'ContentLength': size,
@@ -37,8 +42,18 @@ def upload_proxy(request):
             'Key': key,
         },
     )
+    disposition = 'attachment; filename="{}"'.format(filename)
+    get_url = s3.generate_presigned_url(
+        ClientMethod='get_object',
+        Params={
+            'ResponseExpires': time.time() + PREVIEW_EXPIRATION_SECONDS,
+            'ResponseContentDisposition': disposition,
+            'Bucket': settings.ATTACHMENT_BUCKET,
+            'Key': key,
+        },
+    )
     return JsonResponse({
-        'url': url,
+        'urls': {'get': get_url, 'put': put_url},
         'key': key,
     })
 
@@ -46,6 +61,9 @@ def upload_proxy(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def preview_comment(request):
+    """Convert a comment to PDF, upload the result to S3, and return a signed
+    URL to GET the PDF.
+    """
     body = json.loads(request.body.decode('utf-8'))
     html = tasks.json_to_html(body)
     key = '/'.join([settings.ATTACHMENT_PREVIEW_PREFIX, get_random_string(50)])
@@ -54,7 +72,7 @@ def preview_comment(request):
         s3.put_object(
             Body=pdf,
             ContentType='application/pdf',
-            ContentDisposition='attachment; filename=comment.pdf',
+            ContentDisposition='attachment; filename="comment.pdf"',
             Bucket=settings.ATTACHMENT_BUCKET,
             Key=key,
         )
@@ -65,9 +83,7 @@ def preview_comment(request):
             'Key': key,
         },
     )
-    return JsonResponse({
-        'url': url,
-    })
+    return JsonResponse({'url': url})
 
 
 @csrf_exempt
