@@ -13,16 +13,9 @@
 <span id="active-title"></span>
 {% endblock %}
 
+
 {% block header-secondary %}
-<div class="preamble-header">
-  <span>Actions:</span>
-  <div class="read-proposal active-mode">
-    Read the proposal
-  </div>
-  <div class="write-comment">
-    Write a comment
-  </div>
-</div>
+  {% include "regulations/preamble-header.html" %}
 {% endblock %}
 
 {% block whole-toc %}
