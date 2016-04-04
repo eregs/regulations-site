@@ -28,12 +28,26 @@ comment.less contains styles related to commenting on sections
     text-align: center;
     margin-right: -4px;
     width: 245px;
+
+    .read-icon,
+    .write-icon {
+      fill: @dark_text;
+    }
+
+    span {
+      padding-left: 5px;
+    }
   }
 
   .active-mode {
     background: #FFFFFF;
     color: @pacific;
     cursor: default;
+
+    .read-icon,
+    .write-icon {
+      fill: @pacific;
+    }
   }
 }
 
