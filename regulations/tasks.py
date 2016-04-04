@@ -54,12 +54,12 @@ def submit_comment(self, body, files):
             if response.status_code != requests.codes.created:
                 logger.warn("Post to regulations.gov failed: %s %s",
                             response.status_code, response.text)
-                self.retry()
+                raise self.retry()
             logger.info(response.text)
             return response.json()
-    except (ClientError, RequestException):
-        logger.exception("submit_comment task failed")
-        self.retry()
+    except (ClientError, RequestException) as exc:
+        logger.exception(exc)
+        raise self.retry(exc=exc)
 
 
 @shared_task
