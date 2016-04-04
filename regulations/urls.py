@@ -16,7 +16,8 @@ from regulations.views.partial import PartialRegulationView, PartialSectionView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
-from regulations.views.preamble import PreambleView, PrepareCommentView
+from regulations.views.preamble import (
+    CFRChangesView, PreambleView, PrepareCommentView)
 from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
@@ -76,6 +77,8 @@ urlpatterns = patterns(
         lt_cache(ChromeSectionDiffView.as_view()),
         name='chrome_section_diff_view'),
 
+    url(r'^preamble/(?P<doc_number>[\w-]+)/cfr_changes/(?P<section>[\w-]+)$',
+        CFRChangesView.as_view(), name='cfr_changes'),
     url(r'^preamble/(?P<paragraphs>[-\w]+(/[-\w]+)*)$',
         PreambleView.as_view(), name='chrome_preamble'),
 

@@ -1,11 +1,15 @@
+from django.conf import settings
 from django.http import Http404
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
-from regulations.generator.html_builder import PreambleHTMLBuilder
+from regulations.generator.html_builder import (
+    CFRHTMLBuilder, PreambleHTMLBuilder)
+from regulations.generator.layers.utils import is_contained_in
 from regulations.views import utils
+from regulations.views.diff import Versions, get_appliers
 
 
 def find_subtree(root, label_parts):
@@ -84,3 +88,51 @@ class PrepareCommentView(View):
 
         return TemplateResponse(request=request, template=template,
                                 context=context)
+
+
+class CFRChangesView(View):
+    def get(self, request, doc_number, section):
+        cfr_changes = getattr(settings, 'CFR_CHANGES', {})  # mock
+        if doc_number not in cfr_changes:
+            raise Http404("Doc # {} not found".format(doc_number))
+        versions = cfr_changes[doc_number]["versions"]
+        amendments = cfr_changes[doc_number]["amendments"]
+        label_parts = section.split('-')
+
+        if len(label_parts) == 1:
+            context = self.authorities_context(amendments, cfr_part=section)
+        else:
+            context = self.regtext_changes_context(amendments, versions,
+                                                   label_id=section)
+        return TemplateResponse(
+            request=request, template='regulations/cfr_changes.html',
+            context=context)
+
+    @staticmethod
+    def authorities_context(amendments, cfr_part):
+        """What authorities information is relevant to this CFR part?"""
+        relevant = [amd for amd in amendments
+                    if amd.get('cfr_part') == cfr_part and 'authority' in amd]
+        return {'instructions': [a['instruction'] for a in relevant],
+                'authorities': [a['authority'] for a in relevant]}
+
+    @staticmethod
+    def regtext_changes_context(amendments, version_info, label_id):
+        """Generate diffs for the changed section"""
+        cfr_part = label_id.split('-')[0]
+        relevant = []
+        for amd in amendments:
+            keys = amd.get('changes', {}).keys()
+            if any(is_contained_in(key, label_id) for key in keys):
+                relevant.append(amd)
+
+        versions = Versions(version_info[cfr_part]['left'],
+                            version_info[cfr_part]['right'])
+        tree = ApiReader().regulation(label_id, versions.older)
+        appliers = get_appliers(label_id, versions)
+
+        builder = CFRHTMLBuilder(*appliers)
+        builder.tree = tree
+        builder.generate_html()
+        return {'instructions': [a['instruction'] for a in relevant],
+                'tree': builder.tree}
