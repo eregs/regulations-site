@@ -26,7 +26,7 @@ def get_regulations_list(all_versions):
 
     for part in reg_parts:
         version = all_versions[part][0]['version']
-        reg_meta = utils.regulation_meta(part, version, True)
+        reg_meta = utils.regulation_meta(part, version)
         first_section = utils.first_section(part, version)
         amendments = filter_future_amendments(all_versions.get(part, None))
 

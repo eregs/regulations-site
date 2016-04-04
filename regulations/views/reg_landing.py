@@ -41,11 +41,8 @@ def regulation(request, label_id):
         label_id, current_version['version'])
     context['reg_part'] = label_id.split('-')[0]
 
-    regulation_meta = utils.regulation_meta(
-        label_id,
-        current_version['version'],
-        True)
-    context['meta'] = regulation_meta
+    context['meta'] = utils.regulation_meta(label_id,
+                                            current_version['version'])
 
     c = RequestContext(request, context)
 
