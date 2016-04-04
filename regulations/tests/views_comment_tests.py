@@ -3,6 +3,8 @@ import mock
 
 from django.test import SimpleTestCase, override_settings
 
+from regulations.views import comment
+
 
 @override_settings(
     ATTACHMENT_BUCKET='test-bucket',
@@ -12,17 +14,19 @@ from django.test import SimpleTestCase, override_settings
 )
 class TestUploadProxy(SimpleTestCase):
 
+    @mock.patch('time.time')
     @mock.patch('regulations.tasks.boto3.Session')
     @mock.patch('regulations.views.comment.get_random_string')
-    def test_get_url(self, get_random, session):
+    def test_get_url(self, get_random, session, mock_time):
         client = session.return_value.client
         generate_presigned = client.return_value.generate_presigned_url
-        generate_presigned.return_value = 'test-url'
+        generate_presigned.side_effect = ['first-url', 'second-url']
         get_random.return_value = 'not-so-random'
-        resp = self.client.get('/comments/attachment?size=42')
+        mock_time.return_value = 123
+        resp = self.client.get('/comments/attachment?size=42&name=foo.pdf')
         self.assertEqual(resp.status_code, 200)
         body = json.loads(resp.content.decode())
-        generate_presigned.assert_called_with(
+        generate_presigned.assert_any_call(
             ClientMethod='put_object',
             Params={
                 'ContentLength': 42,
@@ -31,8 +35,18 @@ class TestUploadProxy(SimpleTestCase):
                 'Key': get_random.return_value,
             },
         )
+        generate_presigned.assert_any_call(
+            ClientMethod='get_object',
+            Params={
+                'ResponseExpires': 123 + comment.PREVIEW_EXPIRATION_SECONDS,
+                'ResponseContentDisposition': 'attachment; filename="foo.pdf"',
+                'Bucket': 'test-bucket',
+                'Key': get_random.return_value,
+            },
+        )
         self.assertEqual(body['key'], get_random.return_value)
-        self.assertEqual(body['url'], generate_presigned.return_value)
+        self.assertEqual(body['urls']['put'], 'first-url')
+        self.assertEqual(body['urls']['get'], 'second-url')
 
     def test_get_url_empty(self):
         resp = self.client.get('/comments/attachment?size=0')

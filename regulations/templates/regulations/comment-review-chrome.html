@@ -70,10 +70,8 @@
                     <li>
                       <%= file.name %>
                       <a
-                          href="#"
-                          class="attachment-preview"
-                          data-key="<%= file.key %>"
-                          data-name="<%= file.name %>">
+                          href="<%= file.previewUrl %>"
+                          class="attachment-preview">
                         Preview</a>
                     </li>
                   <% }) %>

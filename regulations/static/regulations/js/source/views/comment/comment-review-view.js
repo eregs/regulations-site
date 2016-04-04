@@ -10,7 +10,6 @@ var comments = require('../../collections/comment-collection');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
-    'click .attachment-preview': 'previewAttachment',
     'click .preview-button': 'preview',
     'click .submit-button': 'submit'
   },
@@ -48,18 +47,6 @@ var CommentReviewView = Backbone.View.extend({
     return {
       sections: comments.toJSON({docId: this.docId})
     };
-  },
-
-  previewAttachment: function(e) {
-    var $target = $(e.target);
-    var url = URI(window.APP_PREFIX + 'comments/attachment/preview')
-      .addQuery({
-        name: $target.data('name'),
-        key: $target.data('key')
-      });
-    $.getJSON(url).then(function(resp) {
-      window.location = resp.url;
-    });
   },
 
   preview: function() {

@@ -1,4 +1,5 @@
 import json
+import time
 import logging
 
 import celery
@@ -13,10 +14,13 @@ from regulations import tasks
 
 logger = logging.getLogger(__name__)
 
+# TODO: Expire preview URL at commenting deadline
+PREVIEW_EXPIRATION_SECONDS = 60 * 60 * 24 * 90
+
 
 def upload_proxy(request):
-    """Create a random key name and a temporary upload URL to permit uploads
-    from the browser.
+    """Create a random key name and a pair of temporary PUT and GET URLS to
+    permit attachment uploads and previews from the browser.
     """
     try:
         size = int(request.GET['size'])
@@ -26,9 +30,10 @@ def upload_proxy(request):
             {'message': 'Invalid attachment size'},
             status=400,
         )
+    filename = request.GET['name']
     s3 = tasks.make_s3_client()
     key = get_random_string(50)
-    url = s3.generate_presigned_url(
+    put_url = s3.generate_presigned_url(
         ClientMethod='put_object',
         Params={
             'ContentLength': size,
@@ -37,32 +42,20 @@ def upload_proxy(request):
             'Key': key,
         },
     )
-    return JsonResponse({
-        'url': url,
-        'key': key,
-    })
-
-
-def download_proxy(request):
-    """Generate a temporary URL to GET an attachment."""
-    key = request.GET.get('key')
-    name = request.GET.get('name')
-    if key is None or name is None:
-        return JsonResponse(
-            {'message': 'Must provide key and name'},
-            status=400,
-        )
-    s3 = tasks.make_s3_client()
-    disposition = 'attachment; filename="{}"'.format(name)
-    url = s3.generate_presigned_url(
+    disposition = 'attachment; filename="{}"'.format(filename)
+    get_url = s3.generate_presigned_url(
         ClientMethod='get_object',
         Params={
+            'ResponseExpires': time.time() + PREVIEW_EXPIRATION_SECONDS,
             'ResponseContentDisposition': disposition,
             'Bucket': settings.ATTACHMENT_BUCKET,
             'Key': key,
         },
     )
-    return JsonResponse({'url': url})
+    return JsonResponse({
+        'urls': {'get': get_url, 'put': put_url},
+        'key': key,
+    })
 
 
 @csrf_exempt

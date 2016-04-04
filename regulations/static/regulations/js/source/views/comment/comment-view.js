@@ -18,7 +18,7 @@ function getUploadUrl(file) {
   var prefix = window.APP_PREFIX || '/';
   return $.getJSON(
     prefix + 'comments/attachment',
-    {size: file.size, type: file.type || 'application/octet-stream'}
+    {size: file.size, name: file.name, type: file.type || 'application/octet-stream'}
   ).then(function(resp) {
     return resp;
   });
@@ -104,18 +104,19 @@ var CommentView = Backbone.View.extend({
    * @param file {File} File to upload
    */
   addAttachment: function(file) {
-    getUploadUrl(file).then(function(url) {
+    getUploadUrl(file).then(function(resp) {
       var xhr = new XMLHttpRequest();
       this.attachmentViews.push(
         new AttachmentView({
           $parent: this.$attachments,
+          previewUrl: resp.urls.get,
           name: file.name,
           size: file.size,
-          key: url.key,
+          key: resp.key,
           xhr: xhr
         })
       );
-      xhr.open('PUT', url.url);
+      xhr.open('PUT', resp.urls.put);
       xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
       xhr.send(file);
     }.bind(this));
@@ -137,7 +138,8 @@ var CommentView = Backbone.View.extend({
         return {
           key: view.options.key,
           name: view.options.name,
-          size: view.options.size
+          size: view.options.size,
+          previewUrl: view.options.previewUrl
         };
       })
     });
