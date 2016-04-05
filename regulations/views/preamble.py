@@ -56,11 +56,20 @@ class PreambleView(View):
             raise Http404
 
         context = generate_html_tree(subtree, request)
+        prefix = '{}-preamble'.format(label_parts[0])
+
         context['use_comments'] = True
+        context['section_prefix'] = prefix
         template = context['node']['template_name']
 
-        context = {'sub_context': context, 'sub_template': template,
-                   'preamble': preamble, 'doc_number': label_parts[0]}
+        context = {
+            'sub_context': context,
+            'sub_template': template,
+            'preamble': preamble,
+            'doc_number': label_parts[0],
+            'section_prefix': prefix,
+            'markup_id': context['node']['label_id']
+        }
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
         else:
@@ -105,10 +114,18 @@ class CFRChangesView(View):
             context = self.regtext_changes_context(amendments, versions,
                                                    label_id=section)
 
+        prefix = '{}-cfr'.format(doc_number)
         context['use_comments'] = True
+        context['section_prefix'] = prefix
 
-        context = {'sub_context': context, 'sub_template': 'regulations/cfr_changes.html',  # noqa
-                   'preamble': None, 'doc_number': doc_number}
+        context = {
+            'sub_context': context,
+            'sub_template': 'regulations/cfr_changes.html',
+            'preamble': None,
+            'doc_number': doc_number,
+            'section_prefix': prefix,
+            'markup_id': section,
+        }
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
