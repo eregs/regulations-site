@@ -15,7 +15,6 @@
 {% endblock %}
 
 {% block header-secondary %}
-<span class="effective-date"><strong>Published Date:</strong> A Date</span>
 {% endblock %}
 
 {% block whole-toc %}
@@ -48,44 +47,47 @@
 {% block chrome-content %}
 
 <main role="main">
-  <div id="content-body" class="main-content">
+  <div id="content-body" class="main-content comment-review-wrapper">
     <section id="comment-review" data-page-type="comment-review" data-doc-id="{{doc_number}}">
-      <h2>Review</h2>
-      <div id="comment"></div>
+      <h2>Review your full comment</h2>
+      <h3>You are submitting an official comment to Regulations.gov.</h3>
+      <div class="comment-review-items"></div>
     </section>
   </div>
 
   <script id="comment-template" type="text/template">
     <% if (comments.length) { %>
-      <div>
-        <% _.each(comments, function(comment, index) { %>
-          <div>
-            <h3><%= comment.label %></h3>
-            <div><%= comment.comment %></div>
-            <% if (comment.files.length) { %>
-              <div>
-                Attachments included
-                <ul>
-                  <% _.each(comment.files, function(file) { %>
-                    <li>
-                      <%= file.name %>
-                      <a
-                          href="<%= file.previewUrl %>"
-                          class="attachment-preview">
-                        Preview</a>
-                    </li>
-                  <% }) %>
-                </ul>
-              </div>
+      <div class="comments">
+        <ul>
+          <% _.each(comments, function(comment, index) { %>
+            <li>
+              <h4><%= comment.label %></h4>
+              <div><%= comment.comment %></div>
+              <% if (comment.files.length) { %>
+                <div>
+                  Attachments included
+                  <ul>
+                    <% _.each(comment.files, function(file) { %>
+                      <li>
+                        <%= file.name %>
+                        <a
+                            href="<%= file.previewUrl %>"
+                            class="attachment-preview">
+                          Preview</a>
+                      </li>
+                    <% }) %>
+                  </ul>
+                </div>
+              <% } %>
+            </li>
+            <div class="edit-coment">Edit comment</div>
+            <% if (index < comments.length - 1) { %>
+            ------
             <% } %>
-          </div>
-          <div>Edit comment</div>
-          <% if (index < comments.length - 1) { %>
-            <hr>
-          <% } %>
-        <% }) %>
+          <% }) %>
+        </ul>
       </div>
-      <div id="comment-preview">
+      <div class="comment-preview">
         <% if (!previewLoading) { %>
           <button class="preview-button">Preview your comment</button>
         <% } else { %>

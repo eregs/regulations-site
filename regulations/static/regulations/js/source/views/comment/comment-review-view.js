@@ -17,7 +17,7 @@ var CommentReviewView = Backbone.View.extend({
   initialize: function(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
 
-    this.$content = this.$el.find('#comment');
+    this.$content = this.$el.find('.comment-review-items');
 
     this.docId = this.$el.data('doc-id');
     this.template = _.template($('#comment-template').html());

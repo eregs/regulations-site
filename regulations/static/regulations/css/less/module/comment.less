@@ -206,8 +206,29 @@ a.comment-index-review {
 
 #comment-review {
   margin-bottom: 50px;
+
+  .comments {
+    border: 1px solid @text_area_border;
+    padding: 0 15px;
+    margin: 35px 0;
+
+    input.highlight[type="file"] {
+      background: blue;
+    }
+  }
 }
 
-.comment input.highlight[type="file"] {
-  background: blue;
+
+@media only screen and ( min-width: 780px ) {
+  .comment-review-wrapper {
+    margin-right: 5%;
+    padding-left: 35px;
+  }
+}
+
+@media only screen and ( min-width: 1100px ) {
+  .comment-review-wrapper {
+    margin-right: 5%;
+    padding-left: 35px;
+  }
 }
