@@ -40,6 +40,8 @@ var CommentView = Backbone.View.extend({
   },
 
   initialize: function(options) {
+    this.options = options;
+
     this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
@@ -65,9 +67,10 @@ var CommentView = Backbone.View.extend({
     if (this.model) {
       this.stopListening(this.model);
     }
+    var opts = {id: section, label: label, docId: this.docId};
     this.model = blank ?
-      new CommentModel({id: section}) :
-      comments.get(section) || new CommentModel({id: section, label: label});
+      new CommentModel(opts) :
+      comments.get(section) || new CommentModel(opts);
     this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, label, true));
     this.render();
   },

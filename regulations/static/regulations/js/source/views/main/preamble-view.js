@@ -87,13 +87,14 @@ var PreambleView = ChildView.extend({
     this.$write = this.$el.find('#preamble-write');
 
     this.currentSectionId = this.$read.closest('section').attr('id');
-    this.docId = this.currentSectionId.split('-')[0];
+    this.docId = this.$read.closest('section').data('doc-id');
 
     this.preambleHeadView = new PreambleHeadView();
 
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: this.currentSectionId
+      section: this.currentSectionId,
+      docId: this.docId
     });
 
     this.commentIndex = new CommentIndexView({
