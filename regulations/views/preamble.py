@@ -68,7 +68,7 @@ class PreambleView(View):
             'preamble': preamble,
             'doc_number': label_parts[0],
             'section_prefix': prefix,
-            'markup_id': context['node']['label_id']
+            'markup_id': context['node']['markup_id']
         }
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'

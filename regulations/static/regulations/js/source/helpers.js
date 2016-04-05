@@ -292,6 +292,12 @@ module.exports = {
     /**
      * Parse a preamble section ID to a path array.
      * @param {string} id Preamble section ID
+     * @example
+     * // Returns ['preamble', '2016_02749', 'I', 'A']
+     * parsePreambleId('2016_02749-preamble-2016_02749-I-A')
+     * @example
+     * // Returns ['preamble', '2016_02749', 'cfr_changes', '478-32-a']
+     * parsePreambleId('2016_02749-cfr-478-32-a-1')
      */
     parsePreambleId: function(id) {
       var parts = id.split('-');
