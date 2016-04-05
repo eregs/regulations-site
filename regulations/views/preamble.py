@@ -104,9 +104,18 @@ class CFRChangesView(View):
         else:
             context = self.regtext_changes_context(amendments, versions,
                                                    label_id=section)
-        return TemplateResponse(
-            request=request, template='regulations/cfr_changes.html',
-            context=context)
+
+        context['use_comments'] = True
+
+        context = {'sub_context': context, 'sub_template': 'regulations/cfr_changes.html',  # noqa
+                   'preamble': None, 'doc_number': doc_number}
+
+        if not request.is_ajax() and request.GET.get('partial') != 'true':
+            template = 'regulations/preamble-chrome.html'
+        else:
+            template = 'regulations/preamble-partial.html'
+        return TemplateResponse(request=request, template=template,
+                                context=context)
 
     @staticmethod
     def authorities_context(amendments, cfr_part):

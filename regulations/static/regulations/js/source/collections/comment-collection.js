@@ -11,9 +11,9 @@ var CommentCollection = Backbone.Collection.extend({
   model: CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
 
-  filter: function(doc) {
+  filter: function(docId) {
     return _.filter(this.models, function(model) {
-      return model.id.split('-')[0] === doc;
+      return model.get('docId') === docId;
     });
   },
 
