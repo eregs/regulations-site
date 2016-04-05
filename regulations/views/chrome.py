@@ -86,14 +86,10 @@ class ChromeView(TemplateView):
                     sub['index'], version, self.partial_class.sectional_links)
         context['TOC'] = toc
 
-        regulation_meta = utils.regulation_meta(
-            reg_part,
-            version,
-            self.partial_class.sectional_links)
+        context['meta'] = utils.regulation_meta(reg_part, version)
         context['version_switch_view'] = self.version_switch_view
         context['diff_redirect_label'] = self.diff_redirect_label(
             context['label_id'], toc)
-        context['meta'] = regulation_meta
 
     def get_context_data(self, **kwargs):
         context = super(ChromeView, self).get_context_data(**kwargs)
