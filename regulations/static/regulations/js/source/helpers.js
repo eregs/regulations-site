@@ -287,5 +287,30 @@ module.exports = {
     toggleExpandable: function($expandable, dur) {
         $expandable.toggleClass('open')
           .next('.chunk').slideToggle(dur);
+    },
+
+    /**
+     * Parse a preamble section ID to a path array.
+     * @param {string} id Preamble section ID
+     * @example
+     * // Returns ['preamble', '2016_02749', 'I', 'A']
+     * parsePreambleId('2016_02749-preamble-2016_02749-I-A')
+     * @example
+     * // Returns ['preamble', '2016_02749', 'cfr_changes', '478-32-a']
+     * parsePreambleId('2016_02749-cfr-478-32-a-1')
+     */
+    parsePreambleId: function(id) {
+      var parts = id.split('-');
+      var docId = parts.shift();
+      var type = parts.shift();
+      var path = ['preamble', docId];
+      if (type === 'preamble') {
+        // Note: Document ID appears twice in preamble IDs
+        // TODO: Standardize IDs and drop the `slice`
+        path = path.concat(parts.slice(1));
+      } else if (type === 'cfr') {
+        path = path.concat(['cfr_changes', parts.join('-')]);
+      }
+      return path;
     }
 };

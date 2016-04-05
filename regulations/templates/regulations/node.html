@@ -7,7 +7,7 @@
   {% if use_comments %}
     <div
         class="activate-write"
-        data-section="{{ node.markup_id }}"
+        data-section="{{ node.full_id }}"
         data-label="{{ node.human_label }}">
       + Write a comment about {{ node.human_label }}</div>
   {% endif %}
@@ -25,7 +25,7 @@
 {% if use_comments and not node.title %}
   <div
       class="activate-write"
-      data-section="{{ node.markup_id }}"
+      data-section="{{ node.full_id }}"
       data-label="{{ node.human_label }}">
     + Write a comment about {{ node.human_label }}</div>
 {% endif %}
