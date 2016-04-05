@@ -6,6 +6,7 @@
 {% block sidebar-icons %}
 <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
        class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
+<li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="CFR Changes">CFR</a></li>
 {% endblock %}
 
 {% block wayfinding %}
@@ -41,6 +42,32 @@
           {% endif %}
         {% endfor %}
       </ol>
+    </nav>
+  </div>
+
+  {% comment %}
+  @TODO: "timeline" is not an accurate description here, but the JS has a
+  whitelist which needs to be followed. We can follow up to generalize the JS
+  {% endcomment %}
+  <div id="timeline" class="toc-container hidden">
+    <div class="drawer-header">
+      <h3 class="toc-type">Table of Contents</h3>
+    </div>
+    <nav id="cfr-toc" class="regulation-nav drawer-content" role="navigation">
+      <ol>
+        {% for cfr_part_toc in cfr_change_toc %}
+          <li>
+            <h3 class="subpart-heading">{{cfr_part_toc.title}} CFR {{cfr_part_toc.part}}</h3>
+          </li>
+          <li><a href="{{cfr_part_toc.authority_url}}">Authority</a></li>
+          {% for section_toc in cfr_part_toc.sections %}
+            <li><a href="{{section_toc.url}}">{{section_toc.title}}</a></li>
+          {% endfor %}
+        {% endfor %}
+      </ol>
+      {% with toc_items=TOC %}
+        {% include "regulations/toc.html" %}
+      {% endwith %}
     </nav>
   </div>
 </div> <!-- /.panel -->
