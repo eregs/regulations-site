@@ -10,7 +10,7 @@
     <img src="{%static "regulations/img/table-of-contents.svg" %}" class="drawer-toggle-icon" alt="Table of Contents toggle" />
   </a>
 </li>
-<li><a href="#table-of-contents-secondary" id="timeline-link" class="toc-nav-link" title="CFR Changes">CFR</a></li>
+<li><a href="#table-of-contents-secondary" id="table-of-contents-secondary-link" class="toc-nav-link" title="CFR Changes">CFR</a></li>
 {% endblock %}
 
 {% block wayfinding %}
@@ -49,10 +49,6 @@
     </nav>
   </div>
 
-  {% comment %}
-  @TODO: "timeline" is not an accurate description here, but the JS has a
-  whitelist which needs to be followed. We can follow up to generalize the JS
-  {% endcomment %}
   <div id="table-of-contents-secondary" class="toc-container hidden">
     <div class="drawer-header">
       <h3 class="toc-type">Table of Contents</h3>

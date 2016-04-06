@@ -49,7 +49,9 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
 
   editComment: function(e) {
     var options = _.extend({mode: 'write'}, getOptions(e.target));
+    var type = options.section.split('-')[1];
     DrawerEvents.trigger('section:open', options.section);
+    DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
     CommentEvents.trigger('comment:writeTabOpen');
   },
