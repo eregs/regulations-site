@@ -4,11 +4,12 @@ var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var MetaModel = require('./meta-model');
+var helpers = require('../helpers');
 
 Backbone.PreambleModel = MetaModel.extend({
   getAJAXUrl: function(id) {
-    // window.APP_PREFIX always ends in a slash
-    var path = [window.APP_PREFIX + 'preamble'].concat(id.split('-'));
+    var path = helpers.parsePreambleId(id);
+    path[0] = window.APP_PREFIX + path[0];
     return URI()
       .path(path.join('/'))
       .addQuery({partial: 'true'})

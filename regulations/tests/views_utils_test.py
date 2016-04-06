@@ -53,3 +53,11 @@ class UtilsTest(TestCase):
         self.assertEqual(utils.make_sortable("abc123def456"),
                          ("abc", 123, "def", 456))
         self.assertEqual(utils.make_sortable("123abc456"), (123, "abc", 456))
+
+    @patch('regulations.views.utils.api_reader')
+    def test_regulation_meta_404(self, api_reader):
+        """We shouldn't crash if meta data isn't available"""
+        ret_vals = [None, {}, {'111-22': 'something'}]
+        for ret_val in ret_vals:
+            api_reader.ApiReader.return_value.layer.return_value = ret_val
+            self.assertEqual({}, utils.regulation_meta('111', 'vvv'))

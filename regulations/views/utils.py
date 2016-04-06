@@ -1,10 +1,13 @@
 # vim: set encoding=utf-8
 import itertools
+import logging
 
-from regulations.generator import generator
-from regulations.generator.layers.meta import MetaLayer
+from regulations.generator import api_reader, generator
 from regulations.generator.layers.tree_builder import roman_nums
 from regulations.generator.toc import fetch_toc
+
+
+logger = logging.getLogger(__name__)
 
 
 def to_roman(number):
@@ -18,18 +21,20 @@ def get_layer_list(names):
     return set(l.lower() for l in names.split(',') if l.lower() in layer_names)
 
 
-def regulation_meta(regulation_part, version, sectional=False):
+def regulation_meta(cfr_part, version):
     """ Return the contents of the meta layer, without using a tree. """
+    layer_data = api_reader.ApiReader().layer('meta', 'cfr', cfr_part, version)
+    if layer_data is None:
+        logger.warning("404 when fetching Meta for %s@%s", cfr_part, version)
+        layer_data = {}
+    if not layer_data.get(cfr_part):
+        logger.warning("Empty meta data for %s@%s. Misparsed?",
+                       cfr_part, version)
 
-    layer_manager = generator.LayerCreator()
-    layer_manager.add_layers(['meta'], 'cfr', regulation_part, sectional,
-                             version)
-
-    p_applier = layer_manager.appliers['paragraph']
-    meta_layer = p_applier.layers[MetaLayer.shorthand]
-    applied_layer = meta_layer.apply_layer(regulation_part)
-
-    return applied_layer[1]
+    meta = {}
+    for data in layer_data.get(cfr_part, []):
+        meta.update(data)
+    return meta
 
 
 def layer_names(request):

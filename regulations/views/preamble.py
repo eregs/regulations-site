@@ -30,14 +30,17 @@ def find_subtree(root, label_parts):
     return cursor
 
 
-def generate_html_tree(subtree, request):
+def generate_html_tree(subtree, request, id_prefix=None):
     """Use the HTMLBuilder to generate a version of this subtree with
     appropriate markup. Currently, includes no layers"""
     layer_creator = LayerCreator()
     doc_id = '-'.join(subtree['label'])
     layer_creator.add_layers(utils.layer_names(request), 'preamble',
                              doc_id, sectional=True)
-    builder = PreambleHTMLBuilder(*layer_creator.get_appliers())
+    builder = PreambleHTMLBuilder(
+        *layer_creator.get_appliers(),
+        id_prefix=id_prefix
+    )
     builder.tree = subtree
     builder.generate_html()
 
@@ -142,13 +145,22 @@ class PreambleView(View):
         if subtree is None:
             raise Http404
 
-        context = generate_html_tree(subtree, request)
+        id_prefix = [doc_number, 'preamble']
+        context = generate_html_tree(subtree, request, id_prefix=id_prefix)
+
         context['use_comments'] = True
+        context['section_prefix'] = '{}-preamble'.format(doc_number)
         template = context['node']['template_name']
 
-        context = {'sub_context': context, 'sub_template': template,
-                   'preamble': preamble, 'doc_number': doc_number,
-                   'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)}
+        context = {
+            'sub_context': context,
+            'sub_template': template,
+            'preamble': preamble,
+            'section_prefix': '{}-preamble'.format(label_parts[0]),
+            'doc_number': doc_number,
+            'full_id': context['node']['full_id'],
+            'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
+        }
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
         else:
@@ -167,7 +179,8 @@ class PrepareCommentView(View):
         if subtree is None:
             raise Http404
 
-        context = generate_html_tree(subtree, request)
+        id_prefix = [kwargs['doc_number'], 'preamble']
+        context = generate_html_tree(subtree, request, id_prefix=id_prefix)
         context.update({
             'preamble': preamble,
             'doc_number': kwargs['doc_number'],
@@ -194,15 +207,23 @@ class CFRChangesView(View):
         if len(label_parts) == 1:
             context = self.authorities_context(amendments, cfr_part=section)
         else:
-            context = self.regtext_changes_context(amendments, versions,
-                                                   label_id=section)
+            context = self.regtext_changes_context(
+                amendments,
+                versions,
+                doc_number=doc_number,
+                label_id=section,
+            )
 
         context['use_comments'] = True
 
-        context = {'sub_context': context,
-                   'sub_template': 'regulations/cfr_changes.html',
-                   'preamble': preamble, 'doc_number': doc_number,
-                   'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)}
+        context = {
+            'sub_context': context,
+            'sub_template': 'regulations/cfr_changes.html',
+            'preamble': preamble,
+            'doc_number': doc_number,
+            'full_id': '{}-cfr-{}'.format(doc_number, section),
+            'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
+        }
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
@@ -220,7 +241,8 @@ class CFRChangesView(View):
                 'authorities': [a['authority'] for a in relevant]}
 
     @staticmethod
-    def regtext_changes_context(amendments, version_info, label_id):
+    def regtext_changes_context(amendments, version_info, label_id,
+                                doc_number):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
         relevant = []
@@ -237,7 +259,7 @@ class CFRChangesView(View):
         tree = ApiReader().regulation(label_id, versions.older)
         appliers = get_appliers(label_id, versions)
 
-        builder = CFRHTMLBuilder(*appliers)
+        builder = CFRHTMLBuilder(*appliers, id_prefix=[str(doc_number), 'cfr'])
         builder.tree = tree
         builder.generate_html()
         return {'instructions': [a['instruction'] for a in relevant],

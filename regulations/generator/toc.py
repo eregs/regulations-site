@@ -2,14 +2,20 @@
 the api. We need to modify it a bit to group subparts, subterps, etc. These
 modifications, then, are used for navigation, citations, and the TOC
 layer"""
-from regulations.generator import title_parsing
-from regulations.generator.api_reader import ApiReader
+import logging
+
+from regulations.generator import api_reader, title_parsing
+
+
+logger = logging.getLogger(__name__)
 
 
 def fetch_toc(reg_part, version, flatten=False):
     """Fetch the toc, transform it into a list usable by navigation, etc."""
-    api = ApiReader()
-    toc = api.layer('toc', 'cfr', reg_part, version)
+    toc = api_reader.ApiReader().layer('toc', 'cfr', reg_part, version)
+    if toc is None:
+        logger.warning("404 when fetching TOC for %s@%s", reg_part, version)
+        toc = []
 
     toc_list = []
     if reg_part in toc:
