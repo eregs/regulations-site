@@ -205,15 +205,94 @@ a.comment-index-review {
 }
 
 #comment-review {
+  .font-regular;
   margin-bottom: 50px;
+
+  h2 {
+    margin-top: 0.5em;
+  }
 
   .comments {
     border: 1px solid @text_area_border;
-    padding: 0 15px;
-    margin: 35px 0;
+    padding: 10px 15px;
+    margin: 25px 0;
+
+    h4 {
+      margin-top: 0;
+    }
 
     input.highlight[type="file"] {
       background: blue;
+    }
+
+    ul {
+      margin-top: 15px;
+    }
+
+    ul li {
+      position: relative;
+
+      &:after {
+        content: "------";
+        display: block;
+        padding-top: 10px;
+      }
+      &:last-child:after {
+        content: "";
+      }
+    }
+
+    .comment-content {
+      width: 490px;
+    }
+
+    .edit-comment {
+      color: @pacific;
+      cursor: pointer;
+      position: absolute;
+      right: 25px;
+      top: 20px;
+
+      .write-icon {
+        fill: @pacific;
+      }
+
+      span:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .comment-attachments {
+      margin-top: 5px;
+      width: 490px;
+
+      ul {
+        background: @grey;
+        padding: 0;
+        margin: 5px 0 0 0;
+      }
+
+      li {
+        padding: 10px 15px;
+        margin: 0;
+
+        &:after {
+          content: "";
+          padding: 0;
+        }
+      }
+
+      .filename {
+        float: left;
+        width: 370px;
+      }
+
+      .attachment-preview {
+        float: right;
+        text-align: right;
+        width: 80px;
+      }
+
     }
   }
 }
