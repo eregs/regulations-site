@@ -244,80 +244,80 @@ a.comment-index-review {
         content: "";
       }
     }
+  }
 
-    .comment-content {
-      width: 480px;
+  .comment-content {
+    width: 480px;
+  }
+
+  .edit-comment {
+    color: @pacific;
+    cursor: pointer;
+    position: absolute;
+    right: 25px;
+    top: 20px;
+
+    .write-icon {
+      fill: @pacific;
     }
 
-    .edit-comment {
-      color: @pacific;
-      cursor: pointer;
-      position: absolute;
-      right: 25px;
-      top: 20px;
+    span:hover {
+      text-decoration: underline;
+    }
+  }
 
-      .write-icon {
-        fill: @pacific;
-      }
+  .comment-attachments {
+    margin-top: 5px;
+    width: 480px;
 
-      span:hover {
-        text-decoration: underline;
-      }
+    ul {
+      background: @grey;
+      padding: 0;
+      margin: 5px 0 0 0;
     }
 
-    .comment-attachments {
-      margin-top: 5px;
-      width: 480px;
-
-      ul {
-        background: @grey;
-        padding: 0;
-        margin: 5px 0 0 0;
-      }
-
-      li {
-        padding: 10px 15px;
-        margin: 0;
-
-        &:after {
-          content: "";
-          padding: 0;
-        }
-      }
-
-      .filename {
-        float: left;
-        width: 370px;
-      }
-
-      .attachment-preview {
-        float: right;
-        text-align: right;
-        width: 80px;
-      }
-    }
-
-    .download-comment {
-      background: @pacific_light;
-      border-top: 1px solid @text_area_border;
+    li {
       padding: 10px 15px;
+      margin: 0;
 
-      h4 {
-        color: @pacific;
-        float: left;
-        font-size: 18px;
-        line-height: 18px;
-        text-transform: inherit;
-        width: 425px;
+      &:after {
+        content: "";
+        padding: 0;
       }
+    }
 
-      .details {
-        color: @80_gray;
-        float: right;
-        font-size: 14px;
-        text-align: right;
-        width: 250px;
-      }
+    .filename {
+      float: left;
+      width: 370px;
+    }
+
+    .attachment-preview {
+      float: right;
+      text-align: right;
+      width: 80px;
+    }
+  }
+
+  .download-comment {
+    background: @pacific_light;
+    border-top: 1px solid @text_area_border;
+    padding: 10px 15px;
+
+    h4 {
+      color: @pacific;
+      float: left;
+      font-size: 18px;
+      line-height: 18px;
+      text-transform: inherit;
+      width: 425px;
+    }
+
+    .details {
+      color: @80_gray;
+      float: right;
+      font-size: 14px;
+      text-align: right;
+      width: 250px;
     }
   }
 
