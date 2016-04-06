@@ -40,6 +40,8 @@ var CommentView = Backbone.View.extend({
   },
 
   initialize: function(options) {
+    this.options = options;
+
     this.$context = this.$el.find('.comment-context');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
@@ -65,9 +67,10 @@ var CommentView = Backbone.View.extend({
     if (this.model) {
       this.stopListening(this.model);
     }
+    var options = {id: section, label: label, docId: this.options.docId};
     this.model = blank ?
-      new CommentModel({id: section}) :
-      comments.get(section) || new CommentModel({id: section, label: label});
+      new CommentModel(options) :
+      comments.get(section) || new CommentModel(options);
     this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, label, true));
     this.render();
   },
@@ -108,7 +111,7 @@ var CommentView = Backbone.View.extend({
    * Upload an attachment. Request a signed upload URL, PUT the file via
    * XMLHttpRequest, and pass the XHR to AttachmentView for rendering.
    *
-   * @param file {File} File to upload
+   * @param {File} file File to upload
    */
   addAttachment: function(file) {
     getUploadUrl(file).then(function(resp) {

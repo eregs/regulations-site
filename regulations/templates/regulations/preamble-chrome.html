@@ -4,8 +4,12 @@
 {% block title %}Preamble {{doc_number}}{% endblock %}
 
 {% block sidebar-icons %}
-<li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
-       class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
+<li>
+  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents">
+    <span class="icon-text">Table of Contents</span>
+    <img src="{%static "regulations/img/table-of-contents.svg" %}" class="drawer-toggle-icon" alt="Table of Contents toggle" />
+  </a>
+</li>
 {% endblock %}
 
 {% block wayfinding %}
@@ -30,12 +34,12 @@
           {% if child.title %}
             <li>
               <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}"
-                 data-section-id="{{child.label|join:"-"}}">{{child.title}}</a>
+                 data-section-id="{{section_prefix}}-{{child.label|join:"-"}}">{{child.title}}</a>
             </li>
             {% for subchild in child.children %}
               {% if subchild.title %}
                 <li><a href="{% url "chrome_preamble" paragraphs=subchild.label|join:"/" %}"
-                       data-section-id="{{subchild.label|join:"-"}}"style="padding-left: 2em;">{{subchild.title}}</a></li>
+                       data-section-id="{{section_prefix}}-{{subchild.label|join:"-"}}"style="padding-left: 2em;">{{subchild.title}}</a></li>
               {% endif %}
             {% endfor %}
           {% endif %}

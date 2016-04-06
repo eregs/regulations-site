@@ -11,6 +11,7 @@ var PreambleHeadView = require('../header/preamble-head-view');
 var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
+var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',
@@ -22,7 +23,9 @@ var PreambleView = ChildView.extend({
   initialize: function(options) {
     this.options = options;
     this.id = options.id;
-    this.url = 'preamble/' + this.id.split('-').join('/');
+
+    var path = helpers.parsePreambleId(this.id);
+    this.url = path.join('/');
 
     if (!options.render) {
       this.render();
@@ -87,13 +90,14 @@ var PreambleView = ChildView.extend({
     this.$write = this.$el.find('#preamble-write');
 
     this.currentSectionId = this.$read.closest('section').attr('id');
-    this.docId = this.currentSectionId.split('-')[0];
+    this.docId = this.$read.closest('section').data('doc-id');
 
     this.preambleHeadView = new PreambleHeadView();
 
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: this.currentSectionId
+      section: this.currentSectionId,
+      docId: this.docId
     });
 
     this.commentIndex = new CommentIndexView({
