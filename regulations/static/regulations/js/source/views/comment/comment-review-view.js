@@ -6,10 +6,9 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
-var comments = require('../../collections/comment-collection');
-
 var PreambleHeadView = require('../header/preamble-head-view');
 var CommentEvents = require('../../events/comment-events');
+var comments = require('../../collections/comment-collection');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
@@ -27,11 +26,17 @@ var CommentReviewView = Backbone.View.extend({
 
     this.previewLoading = false;
 
+    this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
+
     this.render();
   },
 
   findElms: function() {
     this.$status = this.$el.find('.status');
+  },
+
+  handleRead: function() {
+    location.href = '../../preamble/' + this.docId + '/I';
   },
 
   render: function() {
