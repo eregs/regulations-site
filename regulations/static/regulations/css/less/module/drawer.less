@@ -42,22 +42,37 @@ Panel Header
 
 .drawer-header {
 
-    .toc-type {
-        position: fixed;
-        margin: 0;
-        width: 240px;
-        height: 40px;
-        line-height: 40px;
-        background-color: @bg_gray;
-        border-right: 2px solid @medium_gray;
-        z-index: 100;
-        border-bottom: 1px solid @medium_gray;
-        padding: 0 15px;
-    }
+  .toc-type, .toc-subheader {
+    position: relative;
+    margin: 0;
+    width: 240px;
+    height: 32px;
+    line-height: 40px;
+    background-color: @bg_gray;
+    border-right: 2px solid @medium_gray;
+    border-bottom: none;
+    z-index: 100;
+    padding: 0 15px;
+  }
 
-    h3 {
-        .drawer-header-font;
-    }
+  .toc-subheader {
+    line-height: 20px;
+    height: 30px;
+    border-bottom: 1px solid @medium_gray;
+  }
+
+  h3 {
+    color: @black;
+    font-size: 0.875em;
+    text-transform: uppercase;
+  }
+
+  h5 {
+    color: @black;
+    .font-regular;
+    font-size: 0.875em;
+    text-transform: capitalize;
+  }
 }
 
 /*
@@ -138,18 +153,19 @@ currently these are TOC, History, and Search
 .toc-nav-link {
     display: inline-block;
     zoom: 1;
-    *display: inline;
+    display: inline;
     height: 100%;
     padding: 0;
     margin: 0;
     width: 56px;
     text-align: center;
+    background-color: @light_field;
     border-right: 1px solid @medium_gray;
     vertical-align: center;
 
     &.current {
         background-color: @light_field;
-        border-bottom: 1px solid @medium_gray;
+        border-bottom: none;
     }
 
     .close & {
@@ -188,6 +204,12 @@ currently these are TOC, History, and Search
           border-bottom: none;
       }
 }
+
+.menu-tab {
+  .font-bold;
+  color: @black;
+}
+
 
 /* align the drawer toggle list*/
 .drawer-toggles {
