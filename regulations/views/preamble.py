@@ -26,7 +26,7 @@ def find_subtree(root, label_parts):
     return cursor
 
 
-def generate_html_tree(subtree, request, id_prefix):
+def generate_html_tree(subtree, request, id_prefix=None):
     """Use the HTMLBuilder to generate a version of this subtree with
     appropriate markup. Currently, includes no layers"""
     layer_creator = LayerCreator()
@@ -58,11 +58,8 @@ class PreambleView(View):
         if subtree is None:
             raise Http404
 
-        context = generate_html_tree(
-            subtree,
-            request,
-            id_prefix=[str(label_parts[0]), 'preamble'],
-        )
+        id_prefix = [str(label_parts[0]), 'preamble']
+        context = generate_html_tree(subtree, request, id_prefix=id_prefix)
 
         context['use_comments'] = True
         context['section_prefix'] = '{}-preamble'.format(label_parts[0])
@@ -94,7 +91,8 @@ class PrepareCommentView(View):
         if subtree is None:
             raise Http404
 
-        context = generate_html_tree(subtree, request)
+        id_prefix = [kwargs['doc_number'], 'preamble']
+        context = generate_html_tree(subtree, request, id_prefix=id_prefix)
         context.update({
             'preamble': preamble,
             'doc_number': kwargs['doc_number'],
