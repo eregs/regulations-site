@@ -208,13 +208,16 @@ a.comment-index-review {
   .font-regular;
   margin-bottom: 50px;
 
-  h2 {
-    margin-top: 0.5em;
+  h2, h3 {
+    margin: 0.5em 0 0;
+  }
+
+  p {
+    .font-regular;
   }
 
   .comments {
     border: 1px solid @text_area_border;
-    padding: 10px 15px;
     margin: 25px 0;
 
     h4 {
@@ -226,7 +229,7 @@ a.comment-index-review {
     }
 
     ul {
-      margin-top: 15px;
+      margin: 25px 15px;
     }
 
     ul li {
@@ -243,7 +246,7 @@ a.comment-index-review {
     }
 
     .comment-content {
-      width: 490px;
+      width: 480px;
     }
 
     .edit-comment {
@@ -264,7 +267,7 @@ a.comment-index-review {
 
     .comment-attachments {
       margin-top: 5px;
-      width: 490px;
+      width: 480px;
 
       ul {
         background: @grey;
@@ -292,8 +295,91 @@ a.comment-index-review {
         text-align: right;
         width: 80px;
       }
-
     }
+
+    .download-comment {
+      background: @pacific_light;
+      border-top: 1px solid @text_area_border;
+      padding: 10px 15px;
+
+      h4 {
+        color: @pacific;
+        float: left;
+        font-size: 18px;
+        line-height: 18px;
+        text-transform: inherit;
+        width: 425px;
+      }
+
+      .details {
+        color: @80_gray;
+        float: right;
+        font-size: 14px;
+        text-align: right;
+        width: 250px;
+      }
+    }
+  }
+
+  input[type=checkbox] {
+    height: auto;
+    margin-right: 5px;
+  }
+
+  .additional-info {
+    padding: 0 0 10px 0;
+    width: 535px;
+
+    h4 {
+      margin-bottom: 0.75em;
+    }
+
+    span {
+      color: @80_gray;
+    }
+
+    fieldset {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    legend {
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 17px;
+    }
+
+    input[type=text] {
+      border: 1px solid @text_area_border;
+      border-radius: 3px;
+      height: auto;
+      padding: 5px 10px;
+      margin: 5px 0;
+      text-align: left;
+      width: 100%;
+    }
+  }
+
+  .statement {
+    border-top: 1px solid @text_area_border;
+    padding: 10px 0 0;
+    margin: 15px 0 25px 0;
+    width: 535px;
+
+    .required {
+      color: @red_orange;
+    }
+  }
+
+  .submit-button {
+    background: @grey;
+    border-radius: 3px;
+    color: #000;
+    font-size: 17px;
+    font-weight: bold;
+    height: auto;
+    padding: 12px 30px;
   }
 }
 
