@@ -9,12 +9,8 @@
        class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
 {% endblock %}
 
-{% block wayfinding %}
-<span class="subpart">{{doc_number}}</span>
-<span id="active-title">Active Title</span>
-{% endblock %}
-
 {% block header-secondary %}
+  {% include "regulations/preamble-header.html" %}
 {% endblock %}
 
 {% block whole-toc %}
