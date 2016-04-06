@@ -10,7 +10,7 @@
     <img src="{%static "regulations/img/table-of-contents.svg" %}" class="drawer-toggle-icon" alt="Table of Contents toggle" />
   </a>
 </li>
-<li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="CFR Changes">CFR</a></li>
+<li><a href="#table-of-contents-secondary" id="timeline-link" class="toc-nav-link" title="CFR Changes">CFR</a></li>
 {% endblock %}
 
 {% block wayfinding %}
@@ -35,12 +35,12 @@
           {% if child.title %}
             <li>
               <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}"
-                 data-section-id="{{section_prefix}}-{{child.label|join:"-"}}">{{child.title}}</a>
+                 data-section-id="{{doc_number}}-preamble-{{child.label|join:"-"}}">{{child.title}}</a>
             </li>
             {% for subchild in child.children %}
               {% if subchild.title %}
                 <li><a href="{% url "chrome_preamble" paragraphs=subchild.label|join:"/" %}"
-                       data-section-id="{{section_prefix}}-{{subchild.label|join:"-"}}"style="padding-left: 2em;">{{subchild.title}}</a></li>
+                       data-section-id="{{doc_number}}-preamble-{{subchild.label|join:"-"}}"style="padding-left: 2em;">{{subchild.title}}</a></li>
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -53,7 +53,7 @@
   @TODO: "timeline" is not an accurate description here, but the JS has a
   whitelist which needs to be followed. We can follow up to generalize the JS
   {% endcomment %}
-  <div id="timeline" class="toc-container hidden">
+  <div id="table-of-contents-secondary" class="toc-container hidden">
     <div class="drawer-header">
       <h3 class="toc-type">Table of Contents</h3>
     </div>
@@ -65,13 +65,10 @@
           </li>
           <li><a href="{{cfr_part_toc.authority_url}}">Authority</a></li>
           {% for section_toc in cfr_part_toc.sections %}
-            <li><a href="{{section_toc.url}}">{{section_toc.title}}</a></li>
+            <li><a href="{{section_toc.url}}" data-section-id="{{doc_number}}-cfr-{{cfr_part_toc.part}}-{{section_toc.section}}">{{section_toc.title}}</a></li>
           {% endfor %}
         {% endfor %}
       </ol>
-      {% with toc_items=TOC %}
-        {% include "regulations/toc.html" %}
-      {% endwith %}
     </nav>
   </div>
 </div> <!-- /.panel -->

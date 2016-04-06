@@ -149,14 +149,12 @@ class PreambleView(View):
         context = generate_html_tree(subtree, request, id_prefix=id_prefix)
 
         context['use_comments'] = True
-        context['section_prefix'] = '{}-preamble'.format(doc_number)
         template = context['node']['template_name']
 
         context = {
             'sub_context': context,
             'sub_template': template,
             'preamble': preamble,
-            'section_prefix': '{}-preamble'.format(label_parts[0]),
             'doc_number': doc_number,
             'full_id': context['node']['full_id'],
             'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)

@@ -27,6 +27,11 @@ var DrawerView = Backbone.View.extend({
         this.childViews['search'] = new SearchView();
         this.childViews['drawer-tabs'] = new DrawerTabs();
 
+        var $tocSecondary = $('table-of-contents-secondary');
+        if ($tocSecondary.length) {
+          this.childViews['table-of-contents-secondary'] = new TOCView({el: $tocSecondary});
+        }
+
         this.setActivePane('table-of-contents');
     },
 
