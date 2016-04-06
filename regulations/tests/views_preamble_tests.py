@@ -129,9 +129,11 @@ class CFRChangeToCTests(TestCase):
                 authority_url='/preamble/docdoc/cfr_changes/111',
                 sections=[
                     preamble.ToCSect(section='1', title='Section 1',
-                                     url='/preamble/docdoc/cfr_changes/111-1'),
+                                     url='/preamble/docdoc/cfr_changes/111-1',
+                                     full_id='docdoc-cfr-111-1'),
                     preamble.ToCSect(section='3', title='Section 3',
-                                     url='/preamble/docdoc/cfr_changes/111-3')
+                                     url='/preamble/docdoc/cfr_changes/111-3',
+                                     full_id='docdoc-cfr-111-3')
                 ]),
             preamble.ToCPart(
                 title='99', part='222', name='Some title for reg 222',

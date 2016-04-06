@@ -17,6 +17,7 @@ var DrawerTabsView = Backbone.View.extend({
 
     idMap: {
         'table-of-contents': '#menu-link',
+        'table-of-contents-secondary': '#table-of-contents-secondary-link',
         'timeline': '#timeline-link',
         'search': '#search-link'
     },

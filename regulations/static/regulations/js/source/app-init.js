@@ -25,11 +25,11 @@ Backbone.$ = $;
     init: function() {
         Router.start();
         this.bindEvents();
-        var gaview = new AnalyticsHandler(),
-            main = new MainView(),
-            sidebar = new SidebarView(),
-            header = new HeaderView(),  // Header before Drawer as Drawer sends Header events
-            drawer = new DrawerView();
+        var gaview = new AnalyticsHandler();
+        var header = new HeaderView();  // Header before Drawer as Drawer sends Header events
+        var drawer = new DrawerView();
+        var main = new MainView();
+        var sidebar = new SidebarView();
         setTimeout(function() {
             $('html').addClass('selenium-start');
         }, 5000);

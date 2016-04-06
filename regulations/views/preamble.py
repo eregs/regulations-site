@@ -50,7 +50,7 @@ def generate_html_tree(subtree, request, id_prefix=None):
 
 ToCPart = namedtuple('ToCPart', ['title', 'part', 'name', 'authority_url',
                                  'sections'])
-ToCSect = namedtuple('ToCSect', ['section', 'url', 'title'])
+ToCSect = namedtuple('ToCSect', ['section', 'url', 'title', 'full_id'])
 
 
 class CFRChangeToC(object):
@@ -108,12 +108,14 @@ class CFRChangeToC(object):
         if (self.current_section is None or
                 self.current_section.section != change_section):
 
+            section = '-'.join(label_parts[:2])
             self.current_section = ToCSect(
                 section=change_section,
                 title=self.section_titles.get(change_section),
+                full_id='{}-cfr-{}'.format(self.doc_number, section),
                 url=reverse('cfr_changes', kwargs={
                     'doc_number': self.doc_number,
-                    'section': '-'.join(label_parts[:2])}))
+                    'section': section}))
             self.current_part.sections.append(self.current_section)
 
     @classmethod
@@ -149,14 +151,12 @@ class PreambleView(View):
         context = generate_html_tree(subtree, request, id_prefix=id_prefix)
 
         context['use_comments'] = True
-        context['section_prefix'] = '{}-preamble'.format(doc_number)
         template = context['node']['template_name']
 
         context = {
             'sub_context': context,
             'sub_template': template,
             'preamble': preamble,
-            'section_prefix': '{}-preamble'.format(label_parts[0]),
             'doc_number': doc_number,
             'full_id': context['node']['full_id'],
             'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
