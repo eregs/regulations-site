@@ -91,7 +91,11 @@
         </ul>
 
         <div class="download-comment group">
-          <h4>Download the text of your full comment as a PDF</h4>
+          <% if (!previewLoading) { %>
+            <h4 class="preview-button">Download the text of your full comment as a PDF</h4>
+          <% } else { %>
+            <h4 class="preview-button" disabled>Building your PDF...</h4>
+          <% } %>
           <div class="details">
             This does not include your attachments.
           </div>
