@@ -1,6 +1,8 @@
 # vim: set fileencoding=utf-8
 from unittest import TestCase
 
+from mock import patch
+
 from regulations.generator import toc
 
 
@@ -153,3 +155,10 @@ class TocTest(TestCase):
         self.assertTrue(subpart.get('is_subterp'))
         self.assertEqual(['1001', 'Subpart', 'C', 'Interp'], subpart['index'])
         self.assertEqual('1001-Subpart-C-Interp', subpart['section_id'])
+
+    @patch('regulations.generator.toc.api_reader')
+    def test_fetch_toc_404(self, api_reader):
+        """Should not crash if there is no TOC data"""
+        api_reader.ApiReader.return_value.layer.return_value = None
+        self.assertEqual([], toc.fetch_toc('111', 'vvv'))
+        self.assertEqual([], toc.fetch_toc('111', 'vvv', True))

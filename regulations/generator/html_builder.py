@@ -18,12 +18,13 @@ from .link_flattener import flatten_links
 class HTMLBuilder(object):
     # @todo simplify this constructor
     def __init__(self, inline_applier, p_applier, search_applier,
-                 diff_applier=None):
+                 diff_applier=None, id_prefix=None):
         self.tree = None
         self.inline_applier = inline_applier
         self.p_applier = p_applier
         self.search_applier = search_applier
         self.diff_applier = diff_applier
+        self.id_prefix = id_prefix or []
 
     def generate_html(self):
         if self.diff_applier:
@@ -67,6 +68,7 @@ class HTMLBuilder(object):
 
         node['html_label'] = node_types.to_markup_id(node['label'])
         node['markup_id'] = "-".join(node['html_label'])
+        node['full_id'] = "-".join(self.id_prefix + node['html_label'])
         node['tree_level'] = len(node['label']) - 1
         node['human_label'] = self.human_label(node)
 

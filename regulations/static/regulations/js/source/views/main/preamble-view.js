@@ -11,6 +11,8 @@ var PreambleHeadView = require('../header/preamble-head-view');
 var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
+var DrawerEvents = require('../../events/drawer-events');
+var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
   el: '#content-wrapper',
@@ -21,8 +23,14 @@ var PreambleView = ChildView.extend({
 
   initialize: function(options) {
     this.options = options;
-    this.id = options.id;
-    this.url = 'preamble/' + this.id.split('-').join('/');
+
+    // If rendering, `MainView` passes the ID of the sub-section with the section ID;
+    // else, find the sub-section from `$el` and get its ID.
+    this.id = options.render ? options.id : this.$el.find('section:first').attr('id');
+
+    var path = helpers.parsePreambleId(this.id);
+    var type = this.id.split('-')[1];
+    this.url = path.join('/');
 
     if (!options.render) {
       this.render();
@@ -35,6 +43,7 @@ var PreambleView = ChildView.extend({
     this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
 
     CommentEvents.trigger('comment:readTabOpen');
+    DrawerEvents.trigger('pane:init', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
   },
 
   handleRead: function() {
@@ -87,13 +96,14 @@ var PreambleView = ChildView.extend({
     this.$write = this.$el.find('#preamble-write');
 
     this.currentSectionId = this.$read.closest('section').attr('id');
-    this.docId = this.currentSectionId.split('-')[0];
+    this.docId = this.$read.closest('section').data('doc-id');
 
     this.preambleHeadView = new PreambleHeadView();
 
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: this.currentSectionId
+      section: this.currentSectionId,
+      docId: this.docId
     });
 
     this.commentIndex = new CommentIndexView({

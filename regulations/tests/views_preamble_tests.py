@@ -31,9 +31,10 @@ class PreambleViewTests(TestCase):
         self.assertIsNone(fn(root, ['1', 'c', 'r']))
         self.assertIsNone(fn(root, ['1', 'c', 'i', 'r']))
 
+    @patch('regulations.views.preamble.CFRChangeToC')
     @patch('regulations.generator.generator.api_reader')
     @patch('regulations.views.preamble.ApiReader')
-    def test_get_integration(self, ApiReader, api_reader):
+    def test_get_integration(self, ApiReader, api_reader, CFRChangeToC):
         """Verify that the contexts are built correctly before being sent to
         the template. AJAX/partial=true requests should only get the inner
         context (i.e. no UI-related context)"""
@@ -90,3 +91,51 @@ class PreambleViewTests(TestCase):
         self.assertRaises(Http404, view,
                           RequestFactory().get('/preamble/1/not/here'),
                           paragraphs='1/not/here')
+
+
+class CFRChangeToCTests(TestCase):
+    @patch('regulations.views.preamble.fetch_toc')
+    @patch('regulations.views.preamble.utils.regulation_meta')
+    def test_add_amendment(self, fetch_meta, fetch_toc):
+        """Add amendments for two different CFR parts. Verify that the table
+        of contents contains only the changed data"""
+        version_info = {'111': {'left': 'v1', 'right': 'v2'},
+                        '222': {'left': 'vold', 'right': 'vnew'}}
+        builder = preamble.CFRChangeToC('docdoc', version_info)
+        fetch_toc.return_value = [
+            dict(index=['111', '1'], title='Section 1'),
+            dict(index=['111', '1', 'a'], title='1 a'),
+            dict(index=['111', '2'], title='Section 2'),
+            dict(index=['111', '3'], title='Section 3')]
+        fetch_meta.return_value = dict(cfr_title_number='99',
+                                       statutory_name='Some title for reg 111')
+        builder.add_amendment(dict(cfr_part='111', instruction='1. inst1',
+                                   authority='auth1'))
+        builder.add_amendment(dict(cfr_part='111', instruction='2. inst2',
+                                   # The second element of each pair would be
+                                   # non-empty in realistic scenarios
+                                   changes=[['111-1', []], ['111-3-b', []]]))
+
+        fetch_toc.return_value = [dict(index=['222', '4'], title='Section 4')]
+        fetch_meta.return_value = dict(cfr_title_number='99',
+                                       statutory_name='Some title for reg 222')
+        # only authority change
+        builder.add_amendment(dict(cfr_part='222', instruction='3. inst3',
+                                   authority='auth2'))
+
+        self.assertEqual(builder.toc, [
+            preamble.ToCPart(
+                title='99', part='111', name='Some title for reg 111',
+                authority_url='/preamble/docdoc/cfr_changes/111',
+                sections=[
+                    preamble.ToCSect(section='1', title='Section 1',
+                                     url='/preamble/docdoc/cfr_changes/111-1',
+                                     full_id='docdoc-cfr-111-1'),
+                    preamble.ToCSect(section='3', title='Section 3',
+                                     url='/preamble/docdoc/cfr_changes/111-3',
+                                     full_id='docdoc-cfr-111-3')
+                ]),
+            preamble.ToCPart(
+                title='99', part='222', name='Some title for reg 222',
+                authority_url='/preamble/docdoc/cfr_changes/222',
+                sections=[])])

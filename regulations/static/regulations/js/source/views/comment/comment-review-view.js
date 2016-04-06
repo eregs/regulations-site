@@ -8,6 +8,9 @@ Backbone.$ = $;
 
 var comments = require('../../collections/comment-collection');
 
+var PreambleHeadView = require('../header/preamble-head-view');
+var CommentEvents = require('../../events/comment-events');
+
 var CommentReviewView = Backbone.View.extend({
   events: {
     'click .preview-button': 'preview',
@@ -17,12 +20,13 @@ var CommentReviewView = Backbone.View.extend({
   initialize: function(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
 
-    this.$content = this.$el.find('#comment');
+    this.$content = this.$el.find('.comment-review-items');
 
     this.docId = this.$el.data('doc-id');
     this.template = _.template($('#comment-template').html());
 
     this.previewLoading = false;
+
     this.render();
   },
 
@@ -38,6 +42,9 @@ var CommentReviewView = Backbone.View.extend({
     });
     this.$content.html(html);
     this.findElms();
+
+    this.preambleHeadView = new PreambleHeadView();
+    CommentEvents.trigger('comment:writeTabOpen');
   },
 
   serialize: function() {
