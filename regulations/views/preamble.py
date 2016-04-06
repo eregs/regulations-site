@@ -50,7 +50,7 @@ def generate_html_tree(subtree, request, id_prefix=None):
 
 ToCPart = namedtuple('ToCPart', ['title', 'part', 'name', 'authority_url',
                                  'sections'])
-ToCSect = namedtuple('ToCSect', ['section', 'url', 'title'])
+ToCSect = namedtuple('ToCSect', ['section', 'url', 'title', 'full_id'])
 
 
 class CFRChangeToC(object):
@@ -108,12 +108,14 @@ class CFRChangeToC(object):
         if (self.current_section is None or
                 self.current_section.section != change_section):
 
+            section = '-'.join(label_parts[:2])
             self.current_section = ToCSect(
                 section=change_section,
                 title=self.section_titles.get(change_section),
+                full_id='{}-cfr-{}'.format(self.doc_number, section),
                 url=reverse('cfr_changes', kwargs={
                     'doc_number': self.doc_number,
-                    'section': '-'.join(label_parts[:2])}))
+                    'section': section}))
             self.current_part.sections.append(self.current_section)
 
     @classmethod

@@ -61,7 +61,7 @@
           </li>
           <li><a href="{{cfr_part_toc.authority_url}}">Authority</a></li>
           {% for section_toc in cfr_part_toc.sections %}
-            <li><a href="{{section_toc.url}}" data-section-id="{{doc_number}}-cfr-{{cfr_part_toc.part}}-{{section_toc.section}}">{{section_toc.title}}</a></li>
+            <li><a href="{{section_toc.url}}" data-section-id="{{section_toc.full_id}}">{{section_toc.title}}</a></li>
           {% endfor %}
         {% endfor %}
       </ol>
