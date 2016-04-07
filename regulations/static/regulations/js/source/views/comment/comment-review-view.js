@@ -6,6 +6,8 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
+var MainEvents = require('../../events/main-events');
+var DrawerEvents = require('../../events/drawer-events');
 var PreambleHeadView = require('../header/preamble-head-view');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
@@ -36,7 +38,15 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   handleRead: function() {
-    location.href = '../../preamble/' + this.docId + '/I';
+    var section = this.docId + '-preamble-' + this.docId + '-I';
+    var options = {id: section, section: section, mode: 'read'};
+
+    $('#content-body').removeClass('comment-review-wrapper').addClass('preamble-wrapper');
+
+    MainEvents.trigger('section:open', section, options, 'preamble-section');
+    DrawerEvents.trigger('section:open', options.section);
+    DrawerEvents.trigger('pane:change', 'table-of-contents');
+
   },
 
   render: function() {
