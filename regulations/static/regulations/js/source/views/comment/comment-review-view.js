@@ -15,6 +15,7 @@ var CommentReviewView = Backbone.View.extend({
   events: {
     'click .edit-comment': 'editComment',
     'click .preview-button': 'preview',
+    'change .agree': 'toggleSubmit',
     'click .submit-button': 'submit'
   },
 
@@ -93,6 +94,10 @@ var CommentReviewView = Backbone.View.extend({
     window.location = resp.url;
     this.previewLoading = false;
     this.render();
+  },
+
+  toggleSubmit: function() {
+    $('.submit-button').prop('disabled', function(i, v) { return !v; });
   },
 
   submit: function() {

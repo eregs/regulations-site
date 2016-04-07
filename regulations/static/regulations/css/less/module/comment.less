@@ -378,13 +378,21 @@ a.comment-index-review {
   }
 
   .submit-button {
-    background: @grey;
+    background: @pacific;
     border-radius: 3px;
-    color: #000;
+    color: #FFF;
     font-size: 17px;
     font-weight: bold;
     height: auto;
     padding: 12px 30px;
+
+    &:disabled, &:disabled:hover {
+      background: @grey;
+      color: #000;
+    }
+    &:hover {
+      background-color: @pacific_hover;
+    }
   }
 }
 
