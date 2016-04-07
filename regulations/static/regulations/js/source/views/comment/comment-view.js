@@ -22,9 +22,8 @@ var comments = require('../../collections/comment-collection');
  * @param file {File} File to upload
  */
 function getUploadUrl(file) {
-  var prefix = window.APP_PREFIX || '/';
   return $.getJSON(
-    prefix + 'comments/attachment',
+    window.APP_PREFIX + 'comments/attachment',
     {size: file.size, name: file.name, type: file.type || 'application/octet-stream'}
   ).then(function(resp) {
     return resp;

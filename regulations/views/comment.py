@@ -40,7 +40,6 @@ def upload_proxy(request):
             'Key': key,
             'Metadata': {'name': filename}
         },
-
     )
     disposition = 'attachment; filename="{}"'.format(filename)
     get_url = s3.generate_presigned_url(
@@ -54,6 +53,29 @@ def upload_proxy(request):
     )
     return JsonResponse({
         'urls': {'get': get_url, 'put': put_url},
+        'key': key,
+    })
+
+
+def cache_proxy(request):
+    s3 = tasks.make_s3_client()
+    key = request.GET.get('key') or get_random_string(50)
+    # TODO: Validate size
+    try:
+        size = int(request.GET['size'])
+    except (KeyError, ValueError):
+        return JsonResponse({'message': 'Invalid size'}, status_code=400)
+    url = s3.generate_presigned_url(
+        ClientMethod='put_object',
+        Params={
+            'ContentLength': size,
+            'ContentType': 'application/json',
+            'Bucket': settings.ATTACHMENT_BUCKET,
+            'Key': key,
+        },
+    )
+    return JsonResponse({
+        'url': url,
         'key': key,
     })
 
