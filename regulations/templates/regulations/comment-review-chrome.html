@@ -58,7 +58,7 @@
       <div class="comments">
         <ul>
           <% _.each(comments, function(comment, index) { %>
-            <li>
+            <li data-section="<%= comment.id %>">
               <h4><%= comment.label %></h4>
               <div class="comment-content">
                 <%= comment.comment %>
