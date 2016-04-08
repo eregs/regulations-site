@@ -5,12 +5,13 @@
 
 {% block sidebar-icons %}
 <li>
-  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents">
-    <span class="icon-text">Table of Contents</span>
-    <img src="{%static "regulations/img/table-of-contents.svg" %}" class="drawer-toggle-icon" alt="Table of Contents toggle" />
+  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Preamble Table of Contents">
+    <span class="menu-tab">Pre</span>
   </a>
 </li>
-<li><a href="#table-of-contents-secondary" id="table-of-contents-secondary-link" class="toc-nav-link" title="CFR Changes">CFR</a></li>
+<li>
+  <a href="#table-of-contents-secondary" id="table-of-contents-secondary-link" class="toc-nav-link" title="CFR Changes">CFR</a>
+</li>
 {% endblock %}
 
 {% block wayfinding %}{% endblock %}
@@ -24,6 +25,7 @@
   <div class="toc-drawer toc-container current hidden diff-toc" id="table-of-contents">
     <div class="drawer-header">
       <h3 class="toc-type">Table of Contents</h3>
+      <h5 class="toc-subheader">Preamble</h5>
     </div><!-- /.drawer-header -->
     <nav id="toc" class="regulation-nav drawer-content" role="navigation">
       <ol>

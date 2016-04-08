@@ -55,7 +55,7 @@ class HTMLBuilder(object):
         text_without_marker = node['text'].replace(marker, '')
         return node['text'].strip() and not text_without_marker.strip()
 
-    def process_node(self, node):
+    def process_node(self, node, indexes=None):
         """Every node passes through this function on the way to being
         rendered. Importantly, this adds the `marked_up` field, which contains
         the HTML version of node's text (after applying all relevant
@@ -66,6 +66,7 @@ class HTMLBuilder(object):
         self.process_node_title(node)
         node['is_collapsed'] = self.is_collapsed(node)
 
+        node['indexes'] = indexes or []
         node['html_label'] = node_types.to_markup_id(node['label'])
         node['markup_id'] = "-".join(node['html_label'])
         node['full_id'] = "-".join(self.id_prefix + node['html_label'])
@@ -98,8 +99,8 @@ class HTMLBuilder(object):
             node['label_id'],
             RegulationsConfig.node_type_tpls[node['node_type'].lower()])
 
-        for c in node['children']:
-            self.process_node(c)
+        for idx, child in enumerate(node['children']):
+            self.process_node(child, indexes=node['indexes'] + [idx])
 
     @staticmethod
     def human_label(node):
@@ -150,9 +151,9 @@ class CFRHTMLBuilder(HTMLBuilder):
         if 'header' in node:
             node['header'] = self.section_space(node['header'])
 
-    def process_node(self, node):
+    def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
-        super(CFRHTMLBuilder, self).process_node(node)
+        super(CFRHTMLBuilder, self).process_node(node, indexes=indexes)
         if 'marked_up' in node:
             node['marked_up'] = self.section_space(node['marked_up'])
 
@@ -200,6 +201,14 @@ class PreambleHTMLBuilder(HTMLBuilder):
         prefix = list(takewhile(lambda l: not is_markerless(l),
                                 node['label']))
         if len(prefix) > 1:
-            return 'Section ' + '.'.join(prefix[1:])
+            label = 'Section ' + '.'.join(prefix[1:])
+            count = len(node['label']) - len(prefix)
+            if count:
+                paragraphs = '.'.join(
+                    str(idx + 1)
+                    for idx in node['indexes'][-count:]
+                )
+                label += ' Paragraph ' + paragraphs
+            return label
         else:
             return 'FR #' + prefix[0]

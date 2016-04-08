@@ -40,6 +40,7 @@ def submit_comment(self, body, files):
                 ('comment_on', settings.COMMENT_DOCUMENT_ID),
                 # TODO: Ensure this name is unique
                 ('uploadedFile', ('comment.pdf', comment)),
+                ('general_comment', 'See attached comment.pdf'),
             ]
             fields.extend(attachments)
             data = MultipartEncoder(fields)

@@ -315,4 +315,14 @@ class PreambleHTMLBuilderTest(TestCase):
         self.assertEqual(
             'Section III.A.ii.4',
             PreambleHTMLBuilder.human_label({
-                'label': ['111_22', 'III', 'A', 'ii', '4', 'p1', 'p8']}))
+                'label': ['111_22', 'III', 'A', 'ii', '4'],
+                'indexes': [2, 0, 1, 3],
+            }),
+        )
+        self.assertEqual(
+            'Section III.A.ii.4 Paragraph 3.5',
+            PreambleHTMLBuilder.human_label({
+                'label': ['111_22', 'III', 'A', 'ii', '4', 'p3', 'p7'],
+                'indexes': [2, 0, 1, 3, 2, 4]
+            }),
+        )
