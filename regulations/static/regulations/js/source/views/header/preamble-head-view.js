@@ -38,7 +38,8 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   readProposal: function() {
-    if ($('#preamble-write').is(':visible')) {
+    // yeah... need a better way to manage this. - xtine
+    if ($('#preamble-write').is(':visible') || $('#comment-review').length) {
       this.readTabOpen();
 
       CommentEvents.trigger('read:proposal');

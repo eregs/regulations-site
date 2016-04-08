@@ -9,6 +9,8 @@
        class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
 {% endblock %}
 
+{% block wayfinding %}{% endblock %}
+
 {% block header-secondary %}
   {% include "regulations/preamble-header.html" %}
 {% endblock %}
@@ -56,7 +58,7 @@
       <div class="comments">
         <ul>
           <% _.each(comments, function(comment, index) { %>
-            <li>
+            <li data-section="<%= comment.id %>">
               <h4><%= comment.label %></h4>
               <div class="comment-content">
                 <%= comment.comment %>

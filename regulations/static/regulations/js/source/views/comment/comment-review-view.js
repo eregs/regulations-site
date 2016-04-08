@@ -6,14 +6,16 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
-var comments = require('../../collections/comment-collection');
-
+var MainEvents = require('../../events/main-events');
 var PreambleHeadView = require('../header/preamble-head-view');
 var CommentEvents = require('../../events/comment-events');
+var comments = require('../../collections/comment-collection');
 
 var CommentReviewView = Backbone.View.extend({
   events: {
+    'click .edit-comment': 'editComment',
     'click .preview-button': 'preview',
+    'change .agree': 'toggleSubmit',
     'click .submit-button': 'submit'
   },
 
@@ -27,11 +29,32 @@ var CommentReviewView = Backbone.View.extend({
 
     this.previewLoading = false;
 
+    this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
+
     this.render();
   },
 
   findElms: function() {
     this.$status = this.$el.find('.status');
+  },
+
+  handleRead: function() {
+    var section = this.docId + '-preamble-' + this.docId + '-I';
+    var options = {id: section, section: section, mode: 'read'};
+
+    $('#content-body').removeClass('comment-review-wrapper').addClass('preamble-wrapper');
+
+    MainEvents.trigger('section:open', section, options, 'preamble-section');
+  },
+
+  editComment: function(e) {
+    var section = $(e.target).closest('li').data('section');
+    var options = {id: section, section: section, mode: 'write'};
+
+    $('#content-body').removeClass('comment-review-wrapper');
+
+    MainEvents.trigger('section:open', section, options, 'preamble-section');
+    CommentEvents.trigger('comment:writeTabOpen');
   },
 
   render: function() {
@@ -40,6 +63,7 @@ var CommentReviewView = Backbone.View.extend({
       comments: commentData,
       previewLoading: this.previewLoading
     });
+
     this.$content.html(html);
     this.findElms();
 
@@ -70,6 +94,10 @@ var CommentReviewView = Backbone.View.extend({
     window.location = resp.url;
     this.previewLoading = false;
     this.render();
+  },
+
+  toggleSubmit: function() {
+    $('.submit-button').prop('disabled', function(i, v) { return !v; });
   },
 
   submit: function() {
