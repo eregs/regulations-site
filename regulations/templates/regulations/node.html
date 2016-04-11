@@ -5,11 +5,13 @@
 <div>
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
   {% if use_comments %}
+  {% if not changes or node.markup_id in changes %}
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
         data-label="{{ node.human_label }}">
       + Write a comment about {{ node.human_label }}</div>
+  {% endif %}
   {% endif %}
 </div>
 {% endif %}
@@ -22,12 +24,14 @@
     {{node.marked_up|safe}}
 {% endif %}
 </p>
-{% if use_comments and not node.title %}
+{% if use_comments %}
+{% if not changes or node.markup_id in changes %}
   <div
       class="activate-write"
       data-section="{{ node.full_id }}"
       data-label="{{ node.human_label }}">
     + Write a comment about {{ node.human_label }}</div>
+{% endif %}
 {% endif %}
 {% endif %}
 
