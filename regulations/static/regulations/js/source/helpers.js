@@ -290,14 +290,23 @@ module.exports = {
     },
 
     /**
-     * Parse a preamble section ID to a path array.
+     * Parse a preamble section ID.
      * @param {string} id Preamble section ID
      * @example
-     * // Returns ['preamble', '2016_02749', 'I', 'A']
      * parsePreambleId('2016_02749-preamble-2016_02749-I-A')
+     * {
+     *   docId: '2016_02749',
+     *   path: ['preamble', '2016_02749', 'I'],
+     *   hash: '2016_02749-I-A'
+     * }
      * @example
      * // Returns ['preamble', '2016_02749', 'cfr_changes', '478-32-a']
      * parsePreambleId('2016_02749-cfr-478-32-a-1')
+     * {
+     *    docId: '2016_02749',
+     *    path: ['preamble', '2016_02749', 'cfr_changes', '478-32-a-1'],
+     *    hash: '478-32-a-1'
+     * }
      */
     parsePreambleId: function(id) {
       var parts = id.split('-');
@@ -311,6 +320,10 @@ module.exports = {
       } else if (type === 'cfr') {
         path = path.concat(['cfr_changes', parts.join('-')]);
       }
-      return {path: path, hash: parts.join('-')};
+      return {
+        path: path,
+        hash: parts.join('-'),
+        docId: docId
+      };
     }
 };
