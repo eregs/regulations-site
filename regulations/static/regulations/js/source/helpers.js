@@ -307,10 +307,10 @@ module.exports = {
       if (type === 'preamble') {
         // Note: Document ID appears twice in preamble IDs
         // TODO: Standardize IDs and drop the `slice`
-        path = path.concat(parts.slice(1));
+        path = path.concat(parts.slice(1, 2));
       } else if (type === 'cfr') {
         path = path.concat(['cfr_changes', parts.join('-')]);
       }
-      return path;
+      return {path: path, hash: parts.join('-')};
     }
 };

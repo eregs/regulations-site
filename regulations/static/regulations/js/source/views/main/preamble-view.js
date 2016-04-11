@@ -28,9 +28,10 @@ var PreambleView = ChildView.extend({
     // else, find the sub-section from `$el` and get its ID.
     this.id = options.render ? options.id : this.$el.find('section:first').attr('id');
 
-    var path = helpers.parsePreambleId(this.id);
+    var parsed = helpers.parsePreambleId(this.id);
     var type = this.id.split('-')[1];
-    this.url = path.join('/');
+    this.url = parsed.path.join('/');
+    this.options.scrollToId = parsed.hash;
 
     if (!options.render) {
       this.render();

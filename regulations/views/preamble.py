@@ -132,6 +132,40 @@ class CFRChangeToC(object):
         return builder.toc
 
 
+PreambleSect = namedtuple(
+    'PreambleSect',
+    ['depth', 'full_id', 'title', 'url', 'children'],
+)
+
+
+def make_preamble_toc(nodes, depth=1):
+    if depth >= 3:
+        return []
+    return [
+        PreambleSect(
+            depth=depth,
+            title=node['title'],
+            url='{}#{}'.format(
+                reverse(
+                    'chrome_preamble',
+                    kwargs={'paragraphs': '/'.join(node['label'][:2])},
+                ),
+                '-'.join(node['label']),
+            ),
+            full_id='{}-preamble-{}'.format(
+                node['label'][0],
+                '-'.join(node['label']),
+            ),
+            children=make_preamble_toc(
+                node.get('children', []),
+                depth=depth + 1,
+            )
+        )
+        for node in nodes
+        if node.get('title')
+    ]
+
+
 class PreambleView(View):
     """Displays either a notice preamble (or a subtree of that preamble). If
     using AJAX or specifically requesting, generate only the preamble markup;
@@ -156,9 +190,9 @@ class PreambleView(View):
         context = {
             'sub_context': context,
             'sub_template': template,
-            'preamble': preamble,
             'doc_number': doc_number,
             'full_id': context['node']['full_id'],
+            'preamble_toc': make_preamble_toc(preamble['children']),
             'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
         }
         if not request.is_ajax() and request.GET.get('partial') != 'true':
@@ -222,6 +256,7 @@ class CFRChangesView(View):
             'preamble': preamble,
             'doc_number': doc_number,
             'full_id': '{}-cfr-{}'.format(doc_number, section),
+            'preamble_toc': make_preamble_toc(preamble['children']),
             'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
         }
 
