@@ -20,19 +20,25 @@ Universal drawer styles
 
 .toc-head {
 
+  transition: 0.1s;
+
   a:link,
   a:visited {
     color: @black;
     height: 33px;
   }
 
-  a:hover,
   a:active,
   a.current {
-      background-color: @light_field;
-      color: @pacific;
-      height: 34px;
+    background-color: @light_field;
+    color: @pacific;
+    height: 34px;
   }
+
+  a:hover:not(.current) {
+    height: 33px;
+  }
+
 }
 
 /*
