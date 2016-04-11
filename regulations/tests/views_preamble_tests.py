@@ -53,8 +53,10 @@ class PreambleViewTests(TestCase):
         # layer data is present
         self.assertEqual(
             response.context_data['sub_context']['node']['meta'], 'something')
-        self.assertEqual(response.context_data['preamble'],
-                         self._mock_preamble)
+        self.assertEqual(
+            response.context_data['preamble_toc'],
+            preamble.make_preamble_toc(self._mock_preamble['children']),
+        )
         self.assertNotIn('node', response.context_data)
 
         response = view(RequestFactory().get(path + '&partial=true'),
@@ -91,6 +93,50 @@ class PreambleViewTests(TestCase):
         self.assertRaises(Http404, view,
                           RequestFactory().get('/preamble/1/not/here'),
                           paragraphs='1/not/here')
+
+
+class PreambleToCTests(TestCase):
+
+    def setUp(self):
+        self.nodes = [
+            {
+                'title': 'l1',
+                'label': ['abc', '123', 'I'],
+                'children': [
+                    {
+                        'title': 'l2',
+                        'label': ['abc', '123', 'I', 'A'],
+                    }
+                ]
+            }
+        ]
+
+    def test_preamble_toc(self):
+        toc = preamble.make_preamble_toc(self.nodes)
+        self.assertEqual(
+            toc,
+            [
+                preamble.PreambleSect(
+                    depth=1,
+                    title='l1',
+                    url='/preamble/abc/123#abc-123-I',
+                    full_id='abc-preamble-abc-123-I',
+                    children=[
+                        preamble.PreambleSect(
+                            depth=2,
+                            title='l2',
+                            url='/preamble/abc/123#abc-123-I-A',
+                            full_id='abc-preamble-abc-123-I-A',
+                            children=[],
+                        )
+                    ]
+                )
+            ],
+        )
+
+    def test_max_depth(self):
+        toc = preamble.make_preamble_toc(self.nodes, max_depth=1)
+        self.assertEqual(toc[0].children, [])
 
 
 class CFRChangeToCTests(TestCase):

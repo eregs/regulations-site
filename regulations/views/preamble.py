@@ -138,8 +138,8 @@ PreambleSect = namedtuple(
 )
 
 
-def make_preamble_toc(nodes, depth=1):
-    if depth >= 3:
+def make_preamble_toc(nodes, depth=1, max_depth=3):
+    if depth > max_depth:
         return []
     return [
         PreambleSect(
@@ -159,6 +159,7 @@ def make_preamble_toc(nodes, depth=1):
             children=make_preamble_toc(
                 node.get('children', []),
                 depth=depth + 1,
+                max_depth=max_depth,
             )
         )
         for node in nodes
