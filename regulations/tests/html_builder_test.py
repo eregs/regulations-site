@@ -3,7 +3,8 @@ from unittest import TestCase
 from mock import Mock
 
 from regulations.generator.html_builder import (
-    CFRHTMLBuilder, HTMLBuilder, PreambleHTMLBuilder)
+    CFRChangeHTMLBuilder, CFRHTMLBuilder, HTMLBuilder, PreambleHTMLBuilder)
+from regulations.generator.layers.diff_applier import DiffApplier
 from regulations.generator.layers.internal_citation import (
     InternalCitationLayer)
 from regulations.generator.layers.layers_applier import InlineLayersApplier
@@ -349,3 +350,32 @@ class PreambleHTMLBuilderTest(TestCase):
         self.builder.process_node(node)
         self.assertTrue(node.get('accepts_comments'))
         self.assertTrue(node.get('comments_calledout'))
+
+
+class CFRChangeHTMLBuilderTests(TestCase):
+    def setUp(self):
+        inline, par, sr = Mock(), Mock(), Mock()
+        inline.get_layer_pairs.return_value = []
+        par.apply_layers.side_effect = lambda x: x
+        sr.get_layer_pairs.return_value = []
+        diffs = DiffApplier({'111-22-a': {'op': 'deleted'}}, '111-22')
+        self.builder = CFRChangeHTMLBuilder(inline, par, sr, diffs)
+
+    def test_accepts_comment(self):
+        """We can only comment on changed paragraphs"""
+        node = {'label': ['111', '21', 'a'], 'text': 'Something',
+                'node_type': 'regtext', 'children': []}
+        self.builder.process_node(node)
+        self.assertFalse(node.get('accepts_comments'))
+
+        node['label'] = ['111', '22']
+        self.builder.process_node(node)
+        self.assertFalse(node.get('accepts_comments'))
+
+        node['label'] = ['111', '22', 'a', '5']
+        self.builder.process_node(node)
+        self.assertFalse(node.get('accepts_comments'))
+
+        node['label'] = ['111', '22', 'a']
+        self.builder.process_node(node)
+        self.assertTrue(node.get('accepts_comments'))

@@ -224,5 +224,6 @@ class CFRChangeHTMLBuilder(CFRHTMLBuilder):
     def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
         super(CFRHTMLBuilder, self).process_node(node, indexes=indexes)
-        node['accepts_comments'] = True
-        node['comments_calledout'] = True
+        label_id = '-'.join(node['label'])
+        node['accepts_comments'] = label_id in self.diff_applier.diff
+        node['comments_calledout'] = label_id in self.diff_applier.diff
