@@ -212,3 +212,17 @@ class PreambleHTMLBuilder(HTMLBuilder):
             return label
         else:
             return 'FR #' + prefix[0]
+
+    def process_node(self, node, indexes=None):
+        """Overrides with custom, additional processing"""
+        super(PreambleHTMLBuilder, self).process_node(node, indexes=indexes)
+        node['accepts_comments'] = True
+        node['comments_calledout'] = bool(node.get('title'))
+
+
+class CFRChangeHTMLBuilder(CFRHTMLBuilder):
+    def process_node(self, node, indexes=None):
+        """Overrides with custom, additional processing"""
+        super(CFRHTMLBuilder, self).process_node(node, indexes=indexes)
+        node['accepts_comments'] = True
+        node['comments_calledout'] = True

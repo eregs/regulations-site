@@ -308,6 +308,14 @@ class CFRHTMLBuilderTest(TestCase):
 
 
 class PreambleHTMLBuilderTest(TestCase):
+    def setUp(self):
+        inline, par, sr = Mock(), Mock(), Mock()
+        inline.get_layer_pairs.return_value = []
+        par.apply_layers.side_effect = lambda x: x
+        sr.get_layer_pairs.return_value = []
+
+        self.builder = PreambleHTMLBuilder(inline, par, sr)
+
     def test_human_label(self):
         self.assertEqual(
             'FR #111_22',
@@ -326,3 +334,18 @@ class PreambleHTMLBuilderTest(TestCase):
                 'indexes': [2, 0, 1, 3, 2, 4]
             }),
         )
+
+    def test_accepts_comment(self):
+        """All of the preamble can be commented on. Some of it is called
+        out"""
+        node = {'label': ['ABCD_123', 'II', 'B', 'p4'], 'text': 'Something',
+                'node_type': 'preamble', 'children': []}
+        self.builder.process_node(node)
+        self.assertTrue(node.get('accepts_comments'))
+        self.assertFalse(node.get('comments_calledout'))
+
+        node = {'title': 'B. Has a title', 'label': ['ABCD_123', 'II', 'B'],
+                'text': 'Something', 'node_type': 'preamble', 'children': []}
+        self.builder.process_node(node)
+        self.assertTrue(node.get('accepts_comments'))
+        self.assertTrue(node.get('comments_calledout'))

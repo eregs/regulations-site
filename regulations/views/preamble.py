@@ -9,7 +9,7 @@ from django.views.generic.base import View
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import (
-    CFRHTMLBuilder, PreambleHTMLBuilder)
+    CFRChangeHTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.utils import is_contained_in
 from regulations.generator.toc import fetch_toc
 from regulations.views import utils
@@ -150,7 +150,6 @@ class PreambleView(View):
         id_prefix = [doc_number, 'preamble']
         context = generate_html_tree(subtree, request, id_prefix=id_prefix)
 
-        context['use_comments'] = True
         template = context['node']['template_name']
 
         context = {
@@ -214,8 +213,6 @@ class CFRChangesView(View):
                 label_id=section,
             )
 
-        context['use_comments'] = True
-
         context = {
             'sub_context': context,
             'sub_template': 'regulations/cfr_changes.html',
@@ -259,7 +256,8 @@ class CFRChangesView(View):
         tree = ApiReader().regulation(label_id, versions.older)
         appliers = get_appliers(label_id, versions)
 
-        builder = CFRHTMLBuilder(*appliers, id_prefix=[str(doc_number), 'cfr'])
+        builder = CFRChangeHTMLBuilder(
+            *appliers, id_prefix=[str(doc_number), 'cfr'])
         builder.tree = tree
         builder.generate_html()
         return {'instructions': [a['instruction'] for a in relevant],
