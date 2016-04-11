@@ -221,6 +221,8 @@ class PreambleHTMLBuilder(HTMLBuilder):
 
 
 class CFRChangeHTMLBuilder(CFRHTMLBuilder):
+    """Generated HTML specifically related to changing CFR data, as displayed
+    in a notice. This assumes self.diff_applier is set"""
     def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
         super(CFRHTMLBuilder, self).process_node(node, indexes=indexes)
