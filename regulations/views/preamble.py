@@ -262,5 +262,8 @@ class CFRChangesView(View):
         builder = CFRHTMLBuilder(*appliers, id_prefix=[str(doc_number), 'cfr'])
         builder.tree = tree
         builder.generate_html()
-        return {'instructions': [a['instruction'] for a in relevant],
-                'tree': builder.tree}
+        return {
+            'instructions': [a['instruction'] for a in relevant],
+            'changes': sum((a['changes'].keys() for a in relevant), []),
+            'tree': builder.tree,
+        }
