@@ -82,8 +82,26 @@ comment.less contains styles related to commenting on sections
   width: 230px;
 
   &:hover {
-    color: #4A90E2;
+    color: @pacific_hover;
+
+    .comment-icon {
+      fill: @pacific_hover
+    }
   }
+
+  .comment-icon {
+    fill: @pacific_light;
+  }
+}
+
+.paragraph-comment-icon {
+  float: left;
+  margin-right: 5px;
+  clear: both;
+}
+
+.paragraph-comment {
+  overflow: hidden;
 }
 
 .activate-read {
