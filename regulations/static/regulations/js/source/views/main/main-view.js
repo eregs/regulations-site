@@ -124,8 +124,6 @@ var MainView = Backbone.View.extend({
         'preamble-section': PreambleView
     },
 
-    commentTypes: ['reg-section', 'preamble-section'],
-
     createView: function(id, options, type) {
         // close breakaway if open
         if (typeof this.breakawayCallback !== 'undefined') {
