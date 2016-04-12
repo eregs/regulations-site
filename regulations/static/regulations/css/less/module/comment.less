@@ -6,7 +6,30 @@ comment.less contains styles related to commenting on sections
 
 #preamble-read {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 15px;
+
+  li {
+    h2, h3, h4, h5, p {
+      width: 70%;
+    }
+  }
+
+  // neutralize padding for write comment link placing
+  .level-1 > li {
+    padding-top: 0;
+  }
+
+  // for paragraphs, only show write comment link when hovered
+  li:hover {
+    > p + .activate-write {
+      top: 15px;
+      display: block;
+    }
+  }
+
+  p + .activate-write {
+    display: none;
+  }
 }
 
 .preamble-header {
@@ -37,6 +60,11 @@ comment.less contains styles related to commenting on sections
   }
 }
 
+#preamble-write {
+  padding-left: 15px;
+  width: 70%;
+}
+
 #preamble-write,
 #preamble-read li {
   position: relative;
@@ -49,7 +77,7 @@ comment.less contains styles related to commenting on sections
   font-size: 15px;
   font-weight: bold;
   position: absolute;
-  right: -270px;
+  right: -40px;
   top: -5px;
   width: 230px;
 
@@ -398,6 +426,7 @@ a.comment-index-review {
 
 
 @media only screen and ( min-width: 780px ) {
+  .preamble-wrapper,
   .comment-review-wrapper {
     margin-right: 5%;
     padding-left: 35px;
@@ -405,6 +434,7 @@ a.comment-index-review {
 }
 
 @media only screen and ( min-width: 1100px ) {
+  .preamble-wrapper,
   .comment-review-wrapper {
     margin-right: 5%;
     padding-left: 35px;
