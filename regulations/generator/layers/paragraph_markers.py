@@ -1,10 +1,14 @@
 from django.template import loader
 
 from regulations.generator.layers import utils
-from regulations.generator.layers.base import SearchReplaceLayer
+from regulations.generator.layers.base import LayerBase, SearchReplaceLayer
 
 
 class ParagraphMarkersLayer(SearchReplaceLayer):
+    """This layer creates a new paragraph marker (with periods) and adds a
+    class to the old (to make it easier to hide). It exists for backwards
+    compatibility; new clients should be using MarkerHidingLayer and
+    MarkerInfoLayer instead"""
     shorthand = 'paragraph'
     data_source = 'paragraph-markers'
 
@@ -18,3 +22,37 @@ class ParagraphMarkersLayer(SearchReplaceLayer):
 
         context = {'paragraph': original, 'paragraph_stripped': stripped}
         yield utils.render_template(self.template, context)
+
+
+class MarkerHidingLayer(SearchReplaceLayer):
+    """This layer wraps the original marker in a class, making it easier to
+    hide."""
+    shorthand = 'marker-hiding'
+    data_source = 'paragraph-markers'
+
+    def __init__(self, layer):
+        self.layer = layer
+        self.template = loader.get_template(
+            'regulations/layers/marker_hiding.html')
+
+    def replacements_for(self, original, data):
+        context = {'paragraph': original}
+        yield utils.render_template(self.template, context)
+
+
+class MarkerInfoLayer(LayerBase):
+    """This layer adds the paragraph marker as an attribute of the node. This
+    is then used to display the marker outside of the normal position"""
+    shorthand = 'marker-info'
+    data_source = 'paragraph-markers'
+    layer_type = LayerBase.PARAGRAPH
+
+    def __init__(self, layer):
+        self.layer_data = layer
+
+    def apply_layer(self, text_index):
+        if self.layer_data.get(text_index):
+            original = self.layer_data[text_index][0]["text"]
+            stripped = original.replace('(', '').replace(')', '')
+            stripped = stripped.replace('.', '')
+            return 'paragraph_marker', stripped

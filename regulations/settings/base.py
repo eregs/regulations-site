@@ -222,7 +222,8 @@ DATA_LAYERS = (
     'regulations.generator.layers.interpretations.InterpretationsLayer',
     'regulations.generator.layers.key_terms.KeyTermsLayer',
     'regulations.generator.layers.meta.MetaLayer',
-    'regulations.generator.layers.paragraph_markers.ParagraphMarkersLayer',
+    'regulations.generator.layers.paragraph_markers.MarkerHidingLayer',
+    'regulations.generator.layers.paragraph_markers.MarkerInfoLayer',
     'regulations.generator.layers.toc_applier.TableOfContentsLayer',
     'regulations.generator.layers.graphics.GraphicsLayer',
 )

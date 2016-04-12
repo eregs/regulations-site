@@ -16,11 +16,16 @@
 
 {%if node.marked_up %}
 <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
+{% if node.paragraph_marker %}
+  <span class="stripped-marker">{{node.paragraph_marker}}.</span>
+{% endif %}
+<span class="paragraph-text">
 {% if node.node_type == "appendix" %}
     {{node.marked_up|safe|linebreaksbr}}
 {% else  %}
     {{node.marked_up|safe}}
 {% endif %}
+</span>
 </p>
 {% comment %}@TODO use node.comments_calledout{% endcomment %}
 {% if node.accepts_comments and not node.title %}
