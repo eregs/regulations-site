@@ -1,6 +1,6 @@
 {% load macros render_nested %}
 
-<section id="content-wrapper" class="preamble-wrapper" data-page-type="preamble-section">
+<section id="content-wrapper" data-page-type="preamble-section">
   <section id="{{full_id}}" data-doc-id="{{doc_number}}">
     <ul id="preamble-read">
       {% render_nested template=sub_template context=sub_context %}
