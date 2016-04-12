@@ -11,6 +11,7 @@ from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
+from regulations import docket
 from regulations import tasks
 
 logger = logging.getLogger(__name__)
@@ -89,8 +90,14 @@ def preview_comment(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def submit_comment(request):
-    """Submit a comment to the task queue."""
+    """Submit a comment to the task queue.
+       The request body is JSON with a 'comment' field and additional fields.
+    """
     body = json.loads(request.body.decode('utf-8'))
+    valid, message = docket.sanitize_fields(body)
+    if not valid:
+        logger.error(message)
+        return JsonResponse({'message': message}, status=403)
 
     files = extract_files(body)
     # Account for the main comment itself submitted as an attachment
