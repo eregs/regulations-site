@@ -21,7 +21,6 @@ var SxSView = Backbone.View.extend({
     initialize: function(options) {
         var render;
         this.options = options;
-        this.externalEvents = BreakawayEvents;
 
         // visibly open the SxS panel immediately
         this.$el.addClass('open-sxs');
@@ -43,7 +42,7 @@ var SxSView = Backbone.View.extend({
 
         SxSModel.get(this.options.url, render),
 
-        this.listenTo(this.externalEvents, 'sxs:close', this.remove);
+        this.listenTo(BreakawayEvents, 'sxs:close', this.remove);
 
         // if the browser doesn't support pushState, don't
         // trigger click events for links

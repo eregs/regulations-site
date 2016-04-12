@@ -7,19 +7,17 @@ Backbone.$ = $;
 
 var AnalyticsHandler = Backbone.View.extend({
     initialize: function() {
-        this.externalEvents = GAEvents;
-
-        this.externalEvents.on('section:open', this.sendEvent, 'open');
-        this.externalEvents.on('definition:open', this.sendEvent, 'open');
-        this.externalEvents.on('definition:close', this.sendEvent, 'close');
-        this.externalEvents.on('interp:expand', this.sendEvent, 'expand');
-        this.externalEvents.on('interp:collapse', this.sendEvent, 'collapse');
-        this.externalEvents.on('interp:followCitation', this.sendEvent, 'click citation');
-        this.externalEvents.on('definition:followCitation', this.sendEvent, 'click citation');
-        this.externalEvents.on('sxs:open', this.sendEvent, 'open');
-        this.externalEvents.on('drawer:open', this.sendEvent, 'open');
-        this.externalEvents.on('drawer:close', this.sendEvent, 'close');
-        this.externalEvents.on('drawer:switchTab', this.sendEvent, 'switch tab');
+        GAEvents.on('section:open', this.sendEvent, 'open');
+        GAEvents.on('definition:open', this.sendEvent, 'open');
+        GAEvents.on('definition:close', this.sendEvent, 'close');
+        GAEvents.on('interp:expand', this.sendEvent, 'expand');
+        GAEvents.on('interp:collapse', this.sendEvent, 'collapse');
+        GAEvents.on('interp:followCitation', this.sendEvent, 'click citation');
+        GAEvents.on('definition:followCitation', this.sendEvent, 'click citation');
+        GAEvents.on('sxs:open', this.sendEvent, 'open');
+        GAEvents.on('drawer:open', this.sendEvent, 'open');
+        GAEvents.on('drawer:close', this.sendEvent, 'close');
+        GAEvents.on('drawer:switchTab', this.sendEvent, 'switch tab');
 
         // not sure if this works
         $('#timeline .stop-button').on('click', function() {
