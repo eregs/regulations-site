@@ -52,7 +52,7 @@ var PreambleView = ChildView.extend({
 
   handleParagraphActive: function(id) {
     // update current Section ID as active paragraph changes
-    this.currentSectionId = id;
+    this.section = id;
   },
 
   handleWriteLink: function(e) {
@@ -67,7 +67,7 @@ var PreambleView = ChildView.extend({
   },
 
   handleWriteTab: function() {
-    var $section = $('#' + this.currentSectionId);
+    var $section = $('#' + this.section);
 
     this.write(
       $section.find('.activate-write').data('section'),
@@ -94,14 +94,14 @@ var PreambleView = ChildView.extend({
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
 
-    this.currentSectionId = this.$read.closest('section').attr('id');
+    this.section = this.$read.find('[data-permalink-section]').attr('id');
     this.docId = this.$read.closest('section').data('doc-id');
 
     this.preambleHeadView = new PreambleHeadView();
 
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
-      section: this.currentSectionId,
+      section: this.section,
       docId: this.docId
     });
 
