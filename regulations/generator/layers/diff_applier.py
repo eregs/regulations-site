@@ -148,6 +148,7 @@ class DiffApplier(object):
         self.add_nodes_to_tree(original_tree, adds)
 
     def apply_diff_changes(self, original, diff_list):
+        """Account for modified text"""
         self.deconstruct_text(original)
         for d in diff_list:
             if d[0] == self.INSERT:
@@ -170,6 +171,8 @@ class DiffApplier(object):
         return self.get_text()
 
     def apply_diff(self, original, label, component='text'):
+        """Here we delete or add whole nodes in addition to passing to
+        `apply_diff_changes` when text has been modified"""
         if label in self.diff:
             if self.diff[label]['op'] == self.DELETED_OP:
                 return self.delete_all(original)

@@ -4,7 +4,7 @@
 {% if node.header %}
 <div>
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
-  {% if use_comments %}
+  {% if node.accepts_comments %}
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
@@ -22,7 +22,8 @@
     {{node.marked_up|safe}}
 {% endif %}
 </p>
-{% if use_comments and not node.title %}
+{% comment %}@TODO use node.comments_calledout{% endcomment %}
+{% if node.accepts_comments and not node.title %}
   <div
       class="activate-write"
       data-section="{{ node.full_id }}"
