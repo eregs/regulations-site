@@ -23,10 +23,8 @@ var DrawerTabsView = Backbone.View.extend({
     },
 
     initialize: function() {
-        this.externalEvents = DrawerEvents;
-
-        this.listenTo(this.externalEvents, 'pane:change', this.changeActiveTab);
-        this.listenTo(this.externalEvents, 'pane:init', this.setStartingTab);
+        this.listenTo(DrawerEvents, 'pane:change', this.changeActiveTab);
+        this.listenTo(DrawerEvents, 'pane:init', this.setStartingTab);
         this.$activeEls = $('#menu, #site-header, #content-body, #primary-footer, #content-header');
 
         // view switcher buttons - TOC, calendar, search
@@ -114,7 +112,7 @@ var DrawerTabsView = Backbone.View.extend({
             this.openDrawer();
         }
 
-        this.externalEvents.trigger('pane:change', linkValue);
+        DrawerEvents.trigger('pane:change', linkValue);
     }
 });
 

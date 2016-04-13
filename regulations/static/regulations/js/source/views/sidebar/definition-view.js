@@ -28,11 +28,10 @@ var DefinitionView = SidebarModuleView.extend({
 
     initialize: function(options) {
         this.options = options;
-        this.externalEvents = SidebarEvents;
-        this.listenTo(this.externalEvents, 'definition:outOfScope', this.displayScopeMsg);
-        this.listenTo(this.externalEvents, 'definition:inScope', this.removeScopeMsg);
-        this.listenTo(this.externalEvents, 'definition:activate', this.unGrayDefinition);
-        this.listenTo(this.externalEvents, 'definition:deactivate', this.grayOutDefinition);
+        this.listenTo(SidebarEvents, 'definition:outOfScope', this.displayScopeMsg);
+        this.listenTo(SidebarEvents, 'definition:inScope', this.removeScopeMsg);
+        this.listenTo(SidebarEvents, 'definition:activate', this.unGrayDefinition);
+        this.listenTo(SidebarEvents, 'definition:deactivate', this.grayOutDefinition);
 
         if (typeof this.options.id !== 'undefined') {
             this.id = this.options.id;
@@ -89,7 +88,7 @@ var DefinitionView = SidebarModuleView.extend({
     updateDefinition: function(e) {
         e.preventDefault(e);
 
-        this.externalEvents.trigger('definition:open', {
+        SidebarEvents.trigger('definition:open', {
             id: $(e.target).data('definition'),
             term: this.term,
             cb: function() {

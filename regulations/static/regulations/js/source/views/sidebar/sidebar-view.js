@@ -25,13 +25,12 @@ var SidebarView = Backbone.View.extend({
     initialize: function() {
         var cache;
         this.openRegFolders = _.bind(this.openRegFolders, this);
-        this.externalEvents = SidebarEvents;
-        this.listenTo(this.externalEvents, 'update', this.updateChildViews);
-        this.listenTo(this.externalEvents, 'definition:open', this.openDefinition);
-        this.listenTo(this.externalEvents, 'definition:close', this.closeDefinition);
-        this.listenTo(this.externalEvents, 'section:loading', this.loading);
-        this.listenTo(this.externalEvents, 'section:error', this.loaded);
-        this.listenTo(this.externalEvents, 'breakaway:open', this.hideChildren);
+        this.listenTo(SidebarEvents, 'update', this.updateChildViews);
+        this.listenTo(SidebarEvents, 'definition:open', this.openDefinition);
+        this.listenTo(SidebarEvents, 'definition:close', this.closeDefinition);
+        this.listenTo(SidebarEvents, 'section:loading', this.loading);
+        this.listenTo(SidebarEvents, 'section:error', this.loaded);
+        this.listenTo(SidebarEvents, 'breakaway:open', this.hideChildren);
 
         this.childViews = {'sxs': new SxSList()};
         this.definitionModel = DefinitionModel;

@@ -10,15 +10,13 @@ var SubHeadView = Backbone.View.extend({
     el: '#content-header',
 
     initialize: function() {
-        this.externalEvents = HeaderEvents;
-
-        this.listenTo(this.externalEvents, 'section:open', this.changeTitle);
-        this.listenTo(this.externalEvents, 'search-results:open', this.displayCount);
-        this.listenTo(this.externalEvents, 'search-results:open', this.changeDate);
-        this.listenTo(this.externalEvents, 'search-results:open', this.removeSubpart);
-        this.listenTo(this.externalEvents, 'clear', this.reset);
-        this.listenTo(this.externalEvents, 'subpart:present', this.renderSubpart);
-        this.listenTo(this.externalEvents, 'subpart:absent', this.removeSubpart);
+        this.listenTo(HeaderEvents, 'section:open', this.changeTitle);
+        this.listenTo(HeaderEvents, 'search-results:open', this.displayCount);
+        this.listenTo(HeaderEvents, 'search-results:open', this.changeDate);
+        this.listenTo(HeaderEvents, 'search-results:open', this.removeSubpart);
+        this.listenTo(HeaderEvents, 'clear', this.reset);
+        this.listenTo(HeaderEvents, 'subpart:present', this.renderSubpart);
+        this.listenTo(HeaderEvents, 'subpart:absent', this.removeSubpart);
 
         // cache inner title DOM node for frequent reference
         this.$activeTitle = this.$el.find('.header-label');

@@ -34,17 +34,16 @@ var MainView = Backbone.View.extend({
     initialize: function() {
         this.dataTables = null;
         this.render = _.bind(this.render, this);
-        this.externalEvents = MainEvents;
 
         if (Router.hasPushState) {
-            this.externalEvents.on('search-results:open', this.createView, this);
-            this.externalEvents.on('section:open', this.createView, this);
-            this.externalEvents.on('diff:open', this.createView, this);
-            this.externalEvents.on('breakaway:open', this.breakawayOpen, this);
-            this.externalEvents.on('section:error', this.displayError, this);
+            this.listenTo(MainEvents, 'search-results:open', this.createView);
+            this.listenTo(MainEvents, 'section:open', this.createView);
+            this.listenTo(MainEvents, 'diff:open', this.createView);
+            this.listenTo(MainEvents, 'breakaway:open', this.breakawayOpen);
+            this.listenTo(MainEvents, 'section:error', this.displayError);
         }
-        this.externalEvents.on('section:resize', this.applyTablePlugin, this);
-        this.externalEvents.on('section:sethandlers', this.setHandlers, this);
+        this.listenTo(MainEvents, 'section:resize', this.applyTablePlugin);
+        this.listenTo(MainEvents, 'section:setHandlers', this.setHandlers);
 
         var childViewOptions = {},
             appendixOrSupplement;

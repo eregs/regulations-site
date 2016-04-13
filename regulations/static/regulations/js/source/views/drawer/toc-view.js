@@ -21,8 +21,7 @@ var TOCView = Backbone.View.extend({
     initialize: function() {
         var openSection = $('section[data-page-type]').attr('id');
 
-        this.externalEvents = DrawerEvents;
-        this.listenTo(this.externalEvents, 'section:open', this.setActive);
+        this.listenTo(DrawerEvents, 'section:open', this.setActive);
 
         if (openSection) {
             this.setActive(openSection);

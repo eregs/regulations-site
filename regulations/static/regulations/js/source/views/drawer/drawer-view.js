@@ -13,10 +13,8 @@ var DrawerView = Backbone.View.extend({
     el: '#menu',
 
     initialize: function() {
-        this.externalEvents = DrawerEvents;
-
-        this.listenTo(this.externalEvents, 'pane:change', this.setActivePane);
-        this.listenTo(this.externalEvents, 'pane:init', this.setActivePane);
+        this.listenTo(DrawerEvents, 'pane:change', this.setActivePane);
+        this.listenTo(DrawerEvents, 'pane:init', this.setActivePane);
 
         this.$label = $('.toc-type');
         this.$children = $('.toc-container');
