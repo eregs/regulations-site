@@ -27,6 +27,7 @@ var PreambleView = ChildView.extend({
     var parsed = helpers.parsePreambleId(this.options.id);
     var type = parsed.path[0];
 
+    this.tocId = null;
     this.id = [parsed.docId].concat(parsed.path).join('-');
     this.options.scrollToId = parsed.hash;
     this.url = parsed.path.join('/');
@@ -57,10 +58,12 @@ var PreambleView = ChildView.extend({
 
   handleWriteLink: function(e) {
     var $target = $(e.target);
+    var $section = $target.closest('[data-permalink-section]');
     this.write(
       $target.data('section'),
+      $section.data('toc-id'),
       $target.data('label'),
-      $target.closest('[data-permalink-section]')
+      $section
     );
 
     CommentEvents.trigger('comment:writeTabOpen');
@@ -71,16 +74,18 @@ var PreambleView = ChildView.extend({
 
     this.write(
       $section.find('.activate-write').data('section'),
+      $section.data('toc-id'),
       $section.find('.activate-write').data('label'),
       $section
     );
   },
 
-  write: function(section, label, $parent) {
+  write: function(section, tocId, label, $parent) {
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
       section: section,
+      tocId: tocId,
       label: label,
       $parent: $parent
     });
@@ -112,7 +117,7 @@ var PreambleView = ChildView.extend({
 
     if (this.options.mode === 'write') {
       var $parent = $('#' + this.options.section).find('[data-permalink-section]');
-      this.write(this.options.section, this.options.label, $parent);
+      this.write(this.options.section, this.options.tocId, this.options.label, $parent);
     } else {
       this.handleRead();
     }

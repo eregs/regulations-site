@@ -77,8 +77,9 @@ var ChildView = Backbone.View.extend({
     render: function() {
         this.updateWayfinding();
         this.loadImages();
-        HeaderEvents.trigger('section:open', this.id);
-        DrawerEvents.trigger('section:open', this.id);
+        // TODO: What is this for?
+        // HeaderEvents.trigger('section:open', this.id);
+        // DrawerEvents.trigger('section:open', this.id);
     },
 
     changeFocus: function(id) {
@@ -104,20 +105,23 @@ var ChildView = Backbone.View.extend({
                 if (_.isEmpty(this.activeSection) || (this.activeSection !== this.$sections[i].id)) {
                     this.activeSection = this.$sections[i][0].id;
                     this.$activeSection = $(this.$sections[i][0]);
-                    // **Event** trigger active section change
-                    HeaderEvents.trigger('section:open', this.activeSection);
-                    MainEvents.trigger('paragraph:active', this.activeSection);
+                    if (this.$activeSection.is(':visible')) {
+                        // **Event** trigger active section change
+                        HeaderEvents.trigger('section:open', this.activeSection);
+                        DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id'));
+                        MainEvents.trigger('paragraph:active', this.activeSection);
 
-                    if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
-                        // update hash in url
-                        window.history.replaceState(
-                            null,
-                            null,
-                            window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
-                        );
+                        if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
+                            // update hash in url
+                            window.history.replaceState(
+                                null,
+                                null,
+                                window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
+                            );
+                        }
+
+                        return;
                     }
-
-                    return;
                 }
             }
         }

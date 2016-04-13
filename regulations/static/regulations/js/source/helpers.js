@@ -161,8 +161,7 @@ module.exports = {
 
         if (id.indexOf('-') !== -1) {
             parts = id.split('-');
-        }
-        else {
+        } else {
             return id;
         }
 
@@ -300,7 +299,6 @@ module.exports = {
      *   hash: '2016_02749-I-A'
      * }
      * @example
-     * // Returns ['preamble', '2016_02749', 'cfr_changes', '478-32-a']
      * parsePreambleId('2016_02749-cfr-478-32-a-1')
      * {
      *    docId: '2016_02749',

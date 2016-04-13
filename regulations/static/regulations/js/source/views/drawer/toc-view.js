@@ -41,7 +41,7 @@ var TOCView = Backbone.View.extend({
     setActive: function(id) {
         var newActiveLink, subpart;
 
-        newActiveLink = this.$el.find('a[data-section-id="' + Helpers.findBaseSection(id) + '"]');
+        newActiveLink = this.$el.find('a[data-section-id="' + id + '"]');
 
         this.$el.find('.current').removeClass('current');
         newActiveLink.addClass('current');
