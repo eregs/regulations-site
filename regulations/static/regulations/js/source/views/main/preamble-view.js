@@ -25,10 +25,8 @@ var PreambleView = ChildView.extend({
     this.options = options;
 
     var parsed = helpers.parsePreambleId(this.options.id);
-    var type = parsed.path[0];
 
-    this.tocId = null;
-    this.id = [parsed.docId].concat(parsed.path).join('-');
+    this.id = [parsed.docId, parsed.type, parsed.hash].join('-');
     this.options.scrollToId = parsed.hash;
     this.url = parsed.path.join('/');
 
@@ -43,10 +41,16 @@ var PreambleView = ChildView.extend({
     this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
 
     CommentEvents.trigger('comment:readTabOpen');
-    DrawerEvents.trigger('pane:init', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
+    DrawerEvents.trigger(
+      'pane:init',
+      parsed.type === 'preamble' ?
+        'table-of-contents' :
+        'table-of-contents-secondary'
+    );
   },
 
   handleRead: function() {
+    this.mode = 'read';
     this.$write.hide();
     this.$read.show();
   },
@@ -81,6 +85,7 @@ var PreambleView = ChildView.extend({
   },
 
   write: function(section, tocId, label, $parent) {
+    this.mode = 'write';
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
     CommentEvents.trigger('comment:target', {
@@ -96,6 +101,7 @@ var PreambleView = ChildView.extend({
   render: function() {
     ChildView.prototype.render.apply(this, arguments);
 
+    this.mode = 'read';
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
 
@@ -127,6 +133,15 @@ var PreambleView = ChildView.extend({
     this.commentView.remove();
     this.commentIndex.remove();
     Backbone.View.prototype.remove.call(this);
+  },
+
+  /**
+   * Update section in viewport if in read mode.
+   */
+  checkActiveSection: function() {
+    if (this.mode === 'read') {
+      ChildView.prototype.checkActiveSection.call(this);
+    }
   }
 });
 

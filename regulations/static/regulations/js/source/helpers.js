@@ -320,6 +320,7 @@ module.exports = {
       }
       return {
         path: path,
+        type: type,
         hash: parts.join('-'),
         docId: docId
       };

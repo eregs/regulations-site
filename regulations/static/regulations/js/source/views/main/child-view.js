@@ -105,23 +105,21 @@ var ChildView = Backbone.View.extend({
                 if (_.isEmpty(this.activeSection) || (this.activeSection !== this.$sections[i].id)) {
                     this.activeSection = this.$sections[i][0].id;
                     this.$activeSection = $(this.$sections[i][0]);
-                    if (this.$activeSection.is(':visible')) {
-                        // **Event** trigger active section change
-                        HeaderEvents.trigger('section:open', this.activeSection);
-                        DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id'));
-                        MainEvents.trigger('paragraph:active', this.activeSection);
+                    // **Event** trigger active section change
+                    HeaderEvents.trigger('section:open', this.activeSection);
+                    DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
+                    MainEvents.trigger('paragraph:active', this.activeSection);
 
-                        if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
-                            // update hash in url
-                            window.history.replaceState(
-                                null,
-                                null,
-                                window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
-                            );
-                        }
-
-                        return;
+                    if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
+                        // update hash in url
+                        window.history.replaceState(
+                            null,
+                            null,
+                            window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
+                        );
                     }
+
+                    return;
                 }
             }
         }

@@ -38,10 +38,10 @@ var TOCView = Backbone.View.extend({
     },
 
     // update active classes, find new active based on the reg entity id in the anchor
-    setActive: function(id) {
+    setActive: function(tocId) {
         var newActiveLink, subpart;
 
-        newActiveLink = this.$el.find('a[data-section-id="' + id + '"]');
+        newActiveLink = this.$el.find('a[data-section-id="' + tocId + '"]');
 
         this.$el.find('.current').removeClass('current');
         newActiveLink.addClass('current');
