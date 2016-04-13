@@ -38,6 +38,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
 
   render: function() {
     var commentData = comments.toJSON({docId: this.docId});
+
     var html = this.template({comments: commentData});
     this.$index.html(html);
 

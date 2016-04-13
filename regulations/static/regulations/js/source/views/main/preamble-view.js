@@ -122,7 +122,7 @@ var PreambleView = ChildView.extend({
     });
 
     if (this.options.mode === 'write') {
-      var $parent = $('#' + this.options.section).find('[data-permalink-section]');
+      var $parent = $('#' + this.options.scrollToId);
       this.write(this.options.section, this.options.tocId, this.options.label, $parent);
     } else {
       this.handleRead();
