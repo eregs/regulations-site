@@ -7,6 +7,7 @@ import tempfile
 import contextlib
 import subprocess
 
+import six
 import markdown2
 
 import boto3
@@ -48,7 +49,7 @@ def submit_comment(self, body, files):
             # Add other submitted fields
             fields.extend([
                 (name, value)
-                for name, value in body.iteritems()
+                for name, value in six.iteritems(body)
                 if name != 'general_comment'
             ])
             fields.extend(attachments)

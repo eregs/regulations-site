@@ -1,6 +1,7 @@
 from collections import namedtuple
 import logging
 
+import six
 import requests
 from django.conf import settings
 
@@ -36,7 +37,7 @@ def get_document_fields(document_id):
 
 def sanitize_fields(body):
     document_fields = get_document_fields(settings.COMMENT_DOCUMENT_ID)
-    for name, field in document_fields.iteritems():
+    for name, field in six.iteritems(document_fields):
         if field.required and name not in body:
             return False, "Field {} is required".format(name)
         if name in body and len(body[name]) > field.max_length:
