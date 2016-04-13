@@ -42,7 +42,7 @@ var CommentReviewView = Backbone.View.extend({
     var section = this.docId + '-preamble-' + this.docId + '-I';
     var options = {id: section, section: section, mode: 'read'};
 
-    $('#content-body').removeClass('comment-review-wrapper').addClass('preamble-wrapper');
+    $('#content-body').removeClass('comment-review-wrapper');
 
     MainEvents.trigger('section:open', section, options, 'preamble-section');
   },
