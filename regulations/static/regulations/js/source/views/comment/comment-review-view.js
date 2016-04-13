@@ -51,7 +51,7 @@ var CommentReviewView = Backbone.View.extend({
     var section = $(e.target).closest('li').data('section');
     var options = {id: section, section: section, mode: 'write'};
 
-    $('#content-body').removeClass('comment-review-wrapper');
+    $('#content-body').removeClass('comment-review-wrapper').addClass('preamble-wrapper');
 
     MainEvents.trigger('section:open', section, options, 'preamble-section');
     CommentEvents.trigger('comment:writeTabOpen');
