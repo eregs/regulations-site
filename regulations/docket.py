@@ -39,10 +39,9 @@ def sanitize_fields(body):
     for name, field in document_fields.iteritems():
         if field.required and name not in body:
             return False, "Field {} is required".format(name)
-        if name in body:
-            if len(body[name]) > field.max_length:
-                return False, "Field {} exceeds expected length of {}".format(
-                    name, field.max_length)
+        if name in body and len(body[name]) > field.max_length:
+            return False, "Field {} exceeds expected length of {}".format(
+                name, field.max_length)
 
     # Remove extra fields if any
     extra_fields = [field for field in body if field not in document_fields]
