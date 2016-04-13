@@ -17,8 +17,7 @@ var ChildView = Backbone.View.extend({
         var cb;
 
         this.model = this.options.model;
-        this.externalEvents = MainEvents;
-        this.listenTo(this.externalEvents, 'section:rendered', this.setElement);
+        this.listenTo(MainEvents, 'section:rendered', this.setElement);
 
         // callback to be sent to model's get method
         // called after ajax resolves sucessfully
@@ -38,9 +37,8 @@ var ChildView = Backbone.View.extend({
 
                 this.attachWayfinding();
                 this.render();
-            }
-            else {
-                this.externalEvents.trigger('section:error');
+            } else {
+                MainEvents.trigger('section:error');
             }
         }.bind(this);
 
@@ -108,7 +106,7 @@ var ChildView = Backbone.View.extend({
                     this.$activeSection = $(this.$sections[i][0]);
                     // **Event** trigger active section change
                     HeaderEvents.trigger('section:open', this.activeSection);
-                    this.externalEvents.trigger('paragraph:active', this.activeSection);
+                    MainEvents.trigger('paragraph:active', this.activeSection);
 
                     if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
                         // update hash in url
