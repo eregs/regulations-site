@@ -25,6 +25,11 @@ class HTMLBuilder(object):
         self.search_applier = search_applier
         self.diff_applier = diff_applier
         self.id_prefix = id_prefix or []
+        self.preprocess()
+
+    def preprocess(self):
+        """Noop. Hook for subclasses"""
+        pass
 
     def generate_html(self):
         if self.diff_applier:
@@ -229,3 +234,19 @@ class CFRChangeHTMLBuilder(CFRHTMLBuilder):
         label_id = '-'.join(node['label'])
         node['accepts_comments'] = label_id in self.diff_applier.diff
         node['comments_calledout'] = label_id in self.diff_applier.diff
+
+        node['has_diff'] = label_id in self.diff_applier.diff
+        node['on_diff_path'] = tuple(node['label']) in self.diff_paths
+        node['stars_collapse'] = not (node['has_diff'] or node['on_diff_path'])
+
+    def preprocess(self):
+        """Pre-generate all of the "paths" associated with diffs; if there's a
+        diff for 111-22-c-4-v, we'd capture
+        (111,) (111, 22) (111, 22, c) (111, 22, c, 4) and (111, 22, c, 4, v)"""
+        self.diff_paths = set()
+        for label_id in self.diff_applier.diff:
+            label_parts = tuple(label_id.split('-'))
+            path = tuple()
+            for part in label_parts:
+                path = path + (part,)
+                self.diff_paths.add(path)

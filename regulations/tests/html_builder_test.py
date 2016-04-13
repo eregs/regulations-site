@@ -367,15 +367,39 @@ class CFRChangeHTMLBuilderTests(TestCase):
                 'node_type': 'regtext', 'children': []}
         self.builder.process_node(node)
         self.assertFalse(node.get('accepts_comments'))
+        self.assertFalse(node.get('has_diff'))
+        self.assertFalse(node.get('on_diff_path'))
+        self.assertTrue(node.get('stars_collapse'))
 
         node['label'] = ['111', '22']
         self.builder.process_node(node)
         self.assertFalse(node.get('accepts_comments'))
+        self.assertFalse(node.get('has_diff'))
+        self.assertTrue(node.get('on_diff_path'))
+        self.assertFalse(node.get('stars_collapse'))
 
         node['label'] = ['111', '22', 'a', '5']
         self.builder.process_node(node)
         self.assertFalse(node.get('accepts_comments'))
+        self.assertFalse(node.get('has_diff'))
+        self.assertFalse(node.get('on_diff_path'))
+        self.assertTrue(node.get('stars_collapse'))
 
         node['label'] = ['111', '22', 'a']
         self.builder.process_node(node)
         self.assertTrue(node.get('accepts_comments'))
+        self.assertTrue(node.get('has_diff'))
+        self.assertTrue(node.get('on_diff_path'))
+        self.assertFalse(node.get('stars_collapse'))
+
+    def test_preprocess(self):
+        diffs = DiffApplier({'111-22-a': {'op': 'deleted'},
+                             '111-33-b-5-v': {'op': 'deleted'}}, '111-22')
+        builder = CFRChangeHTMLBuilder(
+            self.builder.inline_applier, self.builder.p_applier,
+            self.builder.search_applier, diffs)
+        self.assertEqual(
+            builder.diff_paths,
+            {('111',), ('111', '22'), ('111', '22', 'a'), ('111', '33'),
+             ('111', '33', 'b'), ('111', '33', 'b', '5'),
+             ('111', '33', 'b', '5', 'v')})
