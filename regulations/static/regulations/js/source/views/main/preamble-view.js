@@ -12,6 +12,7 @@ var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
 var DrawerEvents = require('../../events/drawer-events');
+var StarProcessor = require('./star-processor');
 var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
@@ -43,6 +44,7 @@ var PreambleView = ChildView.extend({
 
     CommentEvents.trigger('comment:readTabOpen');
     DrawerEvents.trigger('pane:init', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
+    this.collapseStars();
   },
 
   handleRead: function() {
@@ -116,6 +118,15 @@ var PreambleView = ChildView.extend({
     } else {
       this.handleRead();
     }
+  },
+
+  collapseStars: function() {
+    var $expander;
+    this.$el.find('li[data-stars]').each(function(idx, elt) {
+      var $li = $(elt);
+      var starType = $li.data('stars');
+      $expander = StarProcessor[starType]($li, $expander);
+    });
   },
 
   remove: function() {
