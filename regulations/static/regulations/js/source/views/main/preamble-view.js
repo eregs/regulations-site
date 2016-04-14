@@ -25,7 +25,7 @@ var PreambleView = ChildView.extend({
     this.options = options;
 
     var parsed = helpers.parsePreambleId(this.options.id);
-    var type = parsed.path[0];
+    var type = parsed.type;
 
     this.id = [parsed.docId].concat(parsed.path).join('-');
     this.options.scrollToId = parsed.hash;
@@ -42,7 +42,14 @@ var PreambleView = ChildView.extend({
     this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
 
     CommentEvents.trigger('comment:readTabOpen');
-    DrawerEvents.trigger('pane:init', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
+
+    if (type === 'preamble') {
+      DrawerEvents.trigger('pane:init', 'table-of-contents');
+    }
+    else if (type === 'cfr') {
+      DrawerEvents.trigger('pane:init', 'table-of-contents-secondary');
+      DrawerEvents.trigger('pane:change', 'table-of-contents-secondary');
+    }
   },
 
   handleRead: function() {

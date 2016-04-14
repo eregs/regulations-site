@@ -323,7 +323,8 @@ module.exports = {
       return {
         path: path,
         hash: parts.join('-'),
-        docId: docId
+        docId: docId,
+        type: type
       };
     }
 };
