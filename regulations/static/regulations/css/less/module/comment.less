@@ -14,13 +14,8 @@ comment.less contains styles related to commenting on sections
     }
   }
 
-  // neutralize padding for write comment link placing
-  .level-1 > li {
-    padding-top: 0;
-  }
-
   // for paragraphs, only show write comment link when hovered
-  li:hover {
+  .node:hover {
     > p + .activate-write {
       top: 15px;
       display: block;
@@ -66,7 +61,7 @@ comment.less contains styles related to commenting on sections
 }
 
 #preamble-write,
-#preamble-read li {
+#preamble-read .node {
   position: relative;
 }
 
