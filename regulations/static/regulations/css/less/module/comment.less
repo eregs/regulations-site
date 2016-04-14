@@ -15,7 +15,7 @@ comment.less contains styles related to commenting on sections
   }
 
   // for paragraphs, only show write comment link when hovered
-  div:hover {
+  .node:hover {
     > p + .activate-write {
       top: 15px;
       display: block;
@@ -61,7 +61,7 @@ comment.less contains styles related to commenting on sections
 }
 
 #preamble-write,
-#preamble-read li > div {
+#preamble-read .node {
   position: relative;
 }
 

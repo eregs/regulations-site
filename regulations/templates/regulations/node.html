@@ -2,7 +2,7 @@
     Template for inner paragraphs of a reg section
 {% endcomment %}
 {% if node.header %}
-<div>
+<div class="node">
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
   {% if node.accepts_comments %}
     <div
@@ -14,7 +14,7 @@
 </div>
 {% endif %}
 
-<div>
+<div class="node">
 {%if node.marked_up %}
 <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
 {% if node.node_type == "appendix" %}
