@@ -27,11 +27,10 @@ var RegView = ChildView.extend({
 
     initialize: function(options) {
         this.options = options;
-        this.externalEvents = MainEvents;
 
-        this.listenTo(this.externalEvents, 'definition:close', this.closeDefinition);
-        this.listenTo(this.externalEvents, 'definition:carriedOver', this.checkDefinitionScope);
-        this.listenTo(this.externalEvents, 'paragraph:active', this.newActiveParagraph);
+        this.listenTo(MainEvents, 'definition:close', this.closeDefinition);
+        this.listenTo(MainEvents, 'definition:carriedOver', this.checkDefinitionScope);
+        this.listenTo(MainEvents, 'paragraph:active', this.newActiveParagraph);
 
         DrawerEvents.trigger('pane:init', 'table-of-contents');
 
@@ -91,7 +90,7 @@ var RegView = ChildView.extend({
                 config.scrollToId = href.substr(hashIndex + 1);
             }
 
-            this.externalEvents.trigger('section:open', Helpers.findBaseSection(id), config, 'reg-section');
+            MainEvents.trigger('section:open', Helpers.findBaseSection(id), config, 'reg-section');
         }
     },
 

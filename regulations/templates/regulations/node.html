@@ -2,9 +2,9 @@
     Template for inner paragraphs of a reg section
 {% endcomment %}
 {% if node.header %}
-<div>
+<div class="node">
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
-  {% if use_comments %}
+  {% if node.accepts_comments %}
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
@@ -26,6 +26,7 @@
 </div>
 {% endif %}
 
+<div class="node">
 {%if node.marked_up %}
 <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
 {% if node.node_type == "appendix" %}
@@ -34,7 +35,8 @@
     {{node.marked_up|safe}}
 {% endif %}
 </p>
-{% if use_comments and not node.title %}
+{% comment %}@TODO use node.comments_calledout{% endcomment %}
+{% if node.accepts_comments and not node.title %}
   <div
       class="activate-write"
       data-section="{{ node.full_id }}"
@@ -54,6 +56,7 @@
   </div>
 {% endif %}
 {% endif %}
+</div>
 
 {% if node.children %}
 <ol class="level-{{node.list_level|add:1}}">

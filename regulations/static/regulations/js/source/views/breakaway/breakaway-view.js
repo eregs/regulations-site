@@ -13,8 +13,7 @@ var BreakawayView = Backbone.View.extend({
     childViews: {},
 
     initialize: function() {
-        this.externalEvents = BreakawayEvents;
-        this.listenTo(this.externalEvents, 'sxs:open', this.openSxS);
+        this.listenTo(BreakawayEvents, 'sxs:open', this.openSxS);
     },
 
     openSxS: function(context) {
