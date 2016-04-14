@@ -271,7 +271,7 @@ a.comment-index-review {
   }
 
   .comment-content {
-    width: 480px;
+    max-width: 480px;
   }
 
   .edit-comment {
@@ -292,7 +292,7 @@ a.comment-index-review {
 
   .comment-attachments {
     margin-top: 5px;
-    width: 480px;
+    max-width: 480px;
 
     ul {
       background: @grey;
@@ -333,7 +333,7 @@ a.comment-index-review {
       font-size: 18px;
       line-height: 18px;
       text-transform: inherit;
-      width: 425px;
+      max-width: 425px;
 
       &:hover {
         cursor: pointer;
@@ -357,7 +357,7 @@ a.comment-index-review {
 
   .additional-info {
     padding: 0 0 10px 0;
-    width: 535px;
+    max-width: 535px;
 
     h4 {
       margin-bottom: 0.75em;
@@ -394,7 +394,7 @@ a.comment-index-review {
     border-top: 1px solid @text_area_border;
     padding: 10px 0 0;
     margin: 15px 0 25px 0;
-    width: 535px;
+    max-width: 535px;
 
     .required {
       color: @red_orange;
@@ -423,6 +423,67 @@ a.comment-index-review {
 .preamble-wrapper {
   .footnote-box {
     width: 70%;
+  }
+}
+
+
+@media only screen and ( max-width: 480px ) {
+
+  .preamble-header {
+    z-index: -1;
+
+    > span {
+      display: none;
+    }
+
+    .read-proposal,
+    .write-comment {
+      font-size: 13px;
+      width: 140px !important;
+    }
+  }
+
+  .activate-write {
+    padding: 5px 0;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: auto;
+
+    &:hover {
+      color: #4A90E2;
+    }
+  }
+
+  #preamble-read {
+    li {
+      h2, h3, h4, h5, h6, p {
+        width: 100%;
+      }
+    }
+    p + .activate-write {
+      display: block;
+    }
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    width: 100%;
+
+    .comment-index {
+      position: relative;
+      right: 0;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  #comment-review {
+    .edit-comment {
+      position: relative;
+      right: 0;
+      top: 5px;
+    }
   }
 }
 

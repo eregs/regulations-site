@@ -7,6 +7,7 @@ import tempfile
 import contextlib
 import subprocess
 
+import six
 import markdown2
 
 import boto3
@@ -31,6 +32,8 @@ def submit_comment(self, body, files):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
+    The main comment is converted to a PDF and added as an attachment; the
+    'general_comment' field refers to this attachment.
     '''
     html = json_to_html(body)
     try:
@@ -42,7 +45,15 @@ def submit_comment(self, body, files):
                 ('uploadedFile', ('comment.pdf', comment)),
                 ('general_comment', 'See attached comment.pdf'),
             ]
+
+            # Add other submitted fields
+            fields.extend([
+                (name, value)
+                for name, value in six.iteritems(body)
+                if name != 'general_comment'
+            ])
             fields.extend(attachments)
+
             data = MultipartEncoder(fields)
             response = requests.post(
                 settings.REGS_GOV_API_URL,
