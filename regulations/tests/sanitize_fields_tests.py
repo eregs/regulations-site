@@ -48,7 +48,7 @@ class SanitizeFieldsTest(TestCase):
         }
         valid, message = sanitize_fields(test_body)
         self.assertTrue(valid)
-        self.assertTrue("extra_field removed", "extra_field" not in test_body)
+        self.assertTrue("extra_field" not in test_body, "extra_field removed")
 
     def test_field_too_long(self):
         test_body = {
