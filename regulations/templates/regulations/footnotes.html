@@ -1,0 +1,15 @@
+  {% if sub_context.node.footnotes %}
+  <div class="footnote-box">
+      <h5>Footnotes</h5>
+      <ul class="footnotes">
+          {% for footnote in sub_context.node.footnotes %}
+          <li id="footnote-{{footnote.ref}}">
+              <span class="reference-num">{{footnote.ref}}.</span>
+              <p>
+                  {{footnote.note}}
+              </p>
+          </li>
+          {% endfor %}
+      </ul>
+  </div>
+  {% endif %}
