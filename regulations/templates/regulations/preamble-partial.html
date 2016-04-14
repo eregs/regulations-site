@@ -46,8 +46,8 @@
         data-comment-label="<%= comment.label %>">
       <div class="comment-index-section"><%= comment.label %></div>
       <div class="comment-index-modify">
-        <span class="comment-index-edit">edit</span>
-        <span class="comment-index-clear">remove</span>
+        <a class="comment-index-edit" title="Edit Comment"><i class="fa fa-pencil-square-o"></i></a>
+        <a class="comment-index-clear" title="Remove Comment"><i class="fa fa-times"></i></a>
       </div>
     </li>
   <% }); %>
