@@ -64,7 +64,7 @@ class DefinitionTest(BaseTest, unittest.TestCase):
 
         # load 1005.3, open definition
         new_definition_link = self.driver.find_element_by_xpath(
-            '//*[@id="1005-3-a"]/p/a[1]')
+            '//*[@id="1005-3-a"]//a[1]')
         new_definition_link.click()
         self.driver.find_element_by_xpath('//*[@id="1005-2-b-1"]')
 
