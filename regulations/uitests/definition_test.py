@@ -18,7 +18,7 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         WebDriverWait(self.driver, 30).until(
             lambda driver: 'selenium-start' in html.get_attribute('class'))
         definition_link = self.driver.find_element_by_xpath(
-            '//*[@id="1005-1-a"]/p/a')
+            '//*[@id="1005-1-a"]//a')
         # term link should have correct data attr
         self.assertTrue(
             '1005-2-a-1' in definition_link.get_attribute('data-definition'))
