@@ -134,7 +134,7 @@ var ChildView = Backbone.View.extend({
         this.$contentHeader = this.$contentHeader || $('header.reg-header');
 
         // sections that are eligible for being the active section
-        this.$contentContainer = $('#' + this.id).find('.level-1 li[id], .reg-section, .appendix-section, .supplement-section');
+        this.$contentContainer = $('#' + this.id).find('li[id], .reg-section, .appendix-section, .supplement-section');
 
         // cache jQobjs of each reg section
         len = this.$contentContainer.length;

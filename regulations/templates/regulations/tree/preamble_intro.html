@@ -1,0 +1,34 @@
+{% comment %}
+    Preamble intro has lots of extra fields
+{% endcomment %}
+
+<li
+    {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
+    id="{{node.markup_id}}" data-permalink-section
+>
+    <h4>{{ meta.primary_agency }}</h4>
+    <h3>{{ meta.title }}</h3>
+    <div>
+      <div>{{ meta.days_remaining }} Days</div>
+      <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
+        EST.</h5>
+      Rule published {{ meta.publication|date:"F j, Y"}} 
+    </div>
+    {% comment %}Jump links will go here{% endcomment %}
+    <hr />
+    <p>
+      {% for title_info in meta.cfr_parts %}
+        {{title_info.title}} CFR Parts {{ title_info.parts|join:", " }}<br />
+      {% endfor %}
+      {{meta.dockets|join:"; "}}<br />
+      {{meta.rins|join:"; "}}
+    </p>
+</li>
+<li><h4>Agency:</h4><p>{{ meta.agencies|join:", " }}.</p></li>
+<li><h4>Action:</h4><p>{{ meta.action}}.</p></li>
+{% for c in node.children %}
+  {% with node=c %}
+    {% include node.template_name %}
+  {% endwith %}
+{% endfor %}
+
