@@ -57,9 +57,11 @@ var PreambleView = ChildView.extend({
 
   handleWriteLink: function(e) {
     var $target = $(e.target);
+    var $dataTarget = $target.closest('.activate-write');
+
     this.write(
-      $target.data('section'),
-      $target.data('label'),
+      $dataTarget.data('section'),
+      $dataTarget.data('label'),
       $target.closest('[data-permalink-section]')
     );
 
