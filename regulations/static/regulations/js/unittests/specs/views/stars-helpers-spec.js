@@ -58,13 +58,14 @@ describe('starsHelpers.full', function() {
     starsHelpers = require('../../../source/views/main/stars-helpers');
   });
 
-  it('hides everything', function() {
+  it('hides everything within the li if no expander is provided', function() {
     var $li = $(
       '<li><p>' +
       '<span class="collapsed-marker">b.</span>' +
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
     starsHelpers.full($li, null);
+    expect($li.is(':visible')).to.be.true;
     expect($li.find('.collapsed-marker').is(':visible')).to.be.false;
     expect($li.find('.paragraph-text').is(':visible')).to.be.false;
   });
@@ -82,7 +83,7 @@ describe('starsHelpers.full', function() {
     expect($li.find('.paragraph-text').is(':visible')).to.be.true;
     expect($li.find($expander).length).to.equal(0);
   });
-  it('reuses an existing expander, if provided', function() {
+  it('reuses an existing expander, if provided and hides the li', function() {
     var $li = $(
       '<li><p class="collapsed">' +
       '<span class="collapsed-marker">b.</span>' +
@@ -91,9 +92,11 @@ describe('starsHelpers.full', function() {
     var $expander = $('<button>');
     starsHelpers.full($li, $expander);
 
+    expect($li.is(':visible')).to.be.false;
     expect($li.find('.collapsed-marker').is(':visible')).to.be.false;
     expect($li.find('.paragraph-text').is(':visible')).to.be.false;
     $expander.click();
+    expect($li.is(':visible')).to.be.true;
     expect($li.find('.collapsed-marker').is(':visible')).to.be.true;
     expect($li.find('.paragraph-text').is(':visible')).to.be.true;
   });

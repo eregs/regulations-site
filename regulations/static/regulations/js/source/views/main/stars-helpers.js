@@ -32,9 +32,12 @@ module.exports = {
     return $expander;
   },
   full: function($li, $expander) {
-    var $toShow = $li.children().hide();
+    var $toShow;
     /* Generally, we want to reuse the existing expander */
-    if (!$expander) {
+    if ($expander) {
+      $toShow = $li.hide();
+    } else {
+      $toShow = $li.children().hide();
       $expander = $('<button>STARS</button>').insertBefore($toShow);
       $expander.click(function() { $expander.remove(); });
     }
