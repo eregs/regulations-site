@@ -1,4 +1,5 @@
 from collections import namedtuple
+from datetime import date
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -10,7 +11,8 @@ from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
-from regulations.generator.layers.utils import is_contained_in
+from regulations.generator.layers.utils import (
+    convert_to_python, is_contained_in)
 from regulations.generator.toc import fetch_toc
 from regulations.views import utils
 from regulations.views.diff import Versions, get_appliers
@@ -139,7 +141,8 @@ PreambleSect = namedtuple(
 
 
 def make_preamble_toc(nodes, depth=1, max_depth=3):
-    if depth > max_depth:
+    intro_subheader = depth == 2 and any('intro' in n['label'] for n in nodes)
+    if depth > max_depth or intro_subheader:
         return []
     return [
         PreambleSect(
@@ -178,12 +181,23 @@ class PreambleView(View):
         if preamble is None:
             raise Http404
 
+        # @todo - right now we're shimming in fake data; eventually this data
+        # should come from the API
+        intro = getattr(settings, 'PREAMBLE_INTRO', {}).get(doc_number, {})
+        if intro.get('tree'):
+            preamble['children'].insert(0, intro['tree'])
+        intro['meta'] = convert_to_python(intro.get('meta', {}))
+        if 'comments_close' in intro['meta']:
+            intro['meta']['days_remaining'] = 1 + (
+                intro['meta']['comments_close'].date() - date.today()).days
+
         subtree = find_subtree(preamble, label_parts)
         if subtree is None:
             raise Http404
 
         id_prefix = [doc_number, 'preamble']
         context = generate_html_tree(subtree, request, id_prefix=id_prefix)
+        context['meta'] = intro['meta']
 
         template = context['node']['template_name']
 
