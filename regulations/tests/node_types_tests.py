@@ -34,10 +34,6 @@ class NodeTypesTest(TestCase):
         self.assertEqual(node_types.SUBPART,
                          node_types.type_from_label(['250', 'Subpart', 'C']))
 
-    def test_transform_part_none(self):
-        part = '30'
-        self.assertEqual('30', node_types.transform_part(part))
-
     def test_label_to_text(self):
         expectations = [
             (['2323', '4'], '2323.4'),

@@ -1,3 +1,5 @@
+import re
+
 from django.template import loader
 
 from regulations.generator.layers import utils
@@ -11,6 +13,7 @@ class ParagraphMarkersLayer(SearchReplaceLayer):
     MarkerInfoLayer instead"""
     shorthand = 'paragraph'
     data_source = 'paragraph-markers'
+    TO_STRIP_RE = re.compile(r'[\(\)\.]')
 
     def __init__(self, layer):
         self.layer = layer
@@ -18,7 +21,7 @@ class ParagraphMarkersLayer(SearchReplaceLayer):
             'regulations/layers/paragraph_markers.html')
 
     def replacements_for(self, original, data):
-        stripped = original.replace('(', '').replace(')', '').replace('.', '')
+        stripped = self.TO_STRIP_RE.sub('', original)
 
         context = {'paragraph': original, 'paragraph_stripped': stripped}
         yield utils.render_template(self.template, context)
