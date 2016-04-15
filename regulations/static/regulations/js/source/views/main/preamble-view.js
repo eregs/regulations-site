@@ -26,7 +26,7 @@ var PreambleView = ChildView.extend({
 
     var parsed = helpers.parsePreambleId(this.options.id);
 
-    this.id = [parsed.docId, parsed.type, parsed.hash].join('-');
+    this.id = [].concat(parsed.docId, parsed.type, parsed.section).join('-');
     this.options.scrollToId = parsed.hash;
     this.url = parsed.path.join('/');
 

@@ -311,17 +311,21 @@ module.exports = {
       var docId = parts.shift();
       var type = parts.shift();
       var path = ['preamble', docId];
+      var section;
       if (type === 'preamble') {
         // Note: Document ID appears twice in preamble IDs
         // TODO: Standardize IDs and drop the `slice`
         path = path.concat(parts.slice(1, 2));
+        section = [docId].concat(parts.slice(1, 2));
       } else if (type === 'cfr') {
         path = path.concat(['cfr_changes', parts.join('-')]);
+        section = parts.slice(0, 2);
       }
       return {
         path: path,
         type: type,
         hash: parts.join('-'),
+        section: section,
         docId: docId
       };
     }

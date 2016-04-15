@@ -78,8 +78,8 @@ var ChildView = Backbone.View.extend({
         this.updateWayfinding();
         this.loadImages();
         // TODO: What is this for?
-        // HeaderEvents.trigger('section:open', this.id);
-        // DrawerEvents.trigger('section:open', this.id);
+        HeaderEvents.trigger('section:open', this.id);
+        DrawerEvents.trigger('section:open', this.id);
     },
 
     changeFocus: function(id) {
