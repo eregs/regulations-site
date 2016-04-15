@@ -144,10 +144,10 @@ $ ./bin/django runserver
 ## Additional front end information
 
 ### Running Grunt tasks
-There are a number of tasks configured in [Gruntfile.js](https://github.com/eregs/regulations-site/blob/master/Gruntfile.js). On the last lines, you will find tasks that group subtasks into common goals. Running ```grunt build``` will run unit, functional and lint tests, and compress static assets. Its recommended that you run this task before deploying changes.
+There are a number of tasks configured in [Gruntfile.js](https://github.com/eregs/regulations-site/blob/master/Gruntfile.js). On the last lines, you will find tasks that group subtasks into common goals. Running `grunt test` will run unit, functional and lint tests.
 
 ### Unit and Functional Tests
-The Grunt build will run a suite of Selenium tests written in Python and a small suite of [Mocha.js](http://visionmedia.github.io/mocha/) unit tests. All tests run in [Sauce Labs](https://saucelabs.com). These tests run as part of the ```grunt build``` tasks. To use these, a little extra environment setup is required.
+The Grunt build will run a suite of Selenium tests written in Python and a small suite of [Mocha.js](http://visionmedia.github.io/mocha/) unit tests. All tests run in [Sauce Labs](https://saucelabs.com). These tests run as part of the `grunt test` task. To use these, a little extra environment setup is required.
 
 #### Sauce Labs Configuration
 After you create a [Sauce Labs](https://saucelabs.com) account:
@@ -158,6 +158,8 @@ After you create a [Sauce Labs](https://saucelabs.com) account:
 ##### For functional tests
 - They also require having the environment serving data from ```dummy_api/```. To start the dummy API, from the root of your repo, run ```./dummy_api/start.sh 0.0.0.0:8282```.
 - The tests run using [nose](http://nose.readthedocs.org/en/latest/). If you wish to run the tests outside of the Grunt environment, you may by running ```nosetests regulations/uitests/*.py``` from the root of the repo.
+- By default, functional tests run using a local PhantomJS driver. To run using a different local browser, pass the `local` option, e.g. `tc=local:Chrome`; the option should be a webdriver class within the `selenium.webdriver` module.
+- To run tests using Sauce Labs, set the `remote` option to a key in `regulations.uitests.base_test:remote_configs`, e.g. `--tc=remote:ie11`. Alternatively, run `grunt nose` to run against all configured browsers on Sauce Labs, or `grunt shell:nose-chrome` to run against a single remote browser.
 
 ##### For unit tests
 - Unit tests do not require running the dummy API.
