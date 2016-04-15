@@ -7,13 +7,7 @@
     {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
     {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
     {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
-    {% if node.has_diff %}
-      data-stars="none"
-    {% elif node.on_diff_path %}
-      data-stars="inline"
-    {% elif node.stars_collapse %}
-      data-stars="full"
-    {% endif %}
+    {% if node.stars_collapse %}data-stars="{{node.stars_collapse}}"{% endif %}
 >
     <div class="extract">
         {% include "regulations/node.html" %}

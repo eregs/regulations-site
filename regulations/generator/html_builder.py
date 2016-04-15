@@ -235,9 +235,14 @@ class CFRChangeHTMLBuilder(CFRHTMLBuilder):
         node['accepts_comments'] = label_id in self.diff_applier.diff
         node['comments_calledout'] = label_id in self.diff_applier.diff
 
-        node['has_diff'] = label_id in self.diff_applier.diff
-        node['on_diff_path'] = tuple(node['label']) in self.diff_paths
-        node['stars_collapse'] = not (node['has_diff'] or node['on_diff_path'])
+        has_diff = label_id in self.diff_applier.diff
+        on_diff_path = tuple(node['label']) in self.diff_paths
+        if has_diff:
+            node['stars_collapse'] = 'none'
+        elif on_diff_path:
+            node['stars_collapse'] = 'inline'
+        else:
+            node['stars_collapse'] = 'full'
 
     def preprocess(self):
         """Pre-generate all of the "paths" associated with diffs; if there's a
