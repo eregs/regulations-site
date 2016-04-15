@@ -5,7 +5,7 @@ This contains all of the styles specific to the TOC
 */
 .regulation-nav {
 
-    padding-top: 32px;
+    padding-top: 40px;
 
     &.preamble-nav {
       padding-top: 72px;
@@ -89,15 +89,17 @@ This contains all of the styles specific to the TOC
     color: #d14124;
 }
 
+
+/* Negative margin, positive padding to extend borders full width */
 .subpart-heading {
-    margin: 0;
+    margin: 0 0 0 -10px;
     padding: 10px 15px;
     display: block;
+    line-height: 1.4;
     background-color: #F8F8F8;
     .border-bottom-light (@width: 1px);
     .border-top-light (@width: 1px);
     .regulation-nav-subpart-heading-font;
-
 }
 
 .subpart-subhead {
