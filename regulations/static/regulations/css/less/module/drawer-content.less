@@ -5,15 +5,20 @@ This contains all of the styles specific to the TOC
 */
 .regulation-nav {
 
-    padding-top: 72px;
+    padding-top: 32px;
+
+    &.preamble-nav {
+      padding-top: 72px;
+    }
 
     ol {
         margin: 0;
-        padding: 5px 0 0 0;
+        padding: 0;
     }
 
     li {
         .regulation-nav-item-font;
+        padding: 0 0 0 10px;
         margin: 0;
         text-indent: 0;
     }
@@ -34,7 +39,7 @@ This contains all of the styles specific to the TOC
 
     a {
         display: block;
-        padding: 10px 15px;
+        padding: 7px 15px 8px 5px;
         line-height: 1.3;
     }
 
@@ -47,8 +52,10 @@ This contains all of the styles specific to the TOC
     a:hover,
     a:active,
     .current {
-        color: @black;
-        background-color: @green_light;
+      margin-left: -100px;
+      padding-left: 105px;
+      color: @black;
+      background-color: @green_light;
     }
 
     /*

@@ -9,7 +9,12 @@
         class="activate-write"
         data-section="{{ node.full_id }}"
         data-label="{{ node.human_label }}">
-      + Write a comment about {{ node.human_label }}</div>
+
+        <div class="paragraph-comment-icon">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </div>
+       <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+    </div>
   {% endif %}
 </div>
 {% endif %}
@@ -29,7 +34,12 @@
       class="activate-write"
       data-section="{{ node.full_id }}"
       data-label="{{ node.human_label }}">
-    + Write a comment about {{ node.human_label }}</div>
+
+      <div class="paragraph-comment-icon">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      </div>
+     <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+  </div>
 {% endif %}
 {% endif %}
 </div>

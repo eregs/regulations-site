@@ -77,8 +77,20 @@ comment.less contains styles related to commenting on sections
   width: 230px;
 
   &:hover {
-    color: #4A90E2;
+    color: @pacific_hover;
   }
+
+}
+
+.paragraph-comment-icon {
+  float: left;
+  margin-right: 8px;
+  line-height: 24px;
+  clear: both;
+}
+
+.paragraph-comment {
+  overflow: hidden;
 }
 
 .activate-read {
@@ -420,12 +432,19 @@ a.comment-index-review {
   }
 }
 
+.preamble-wrapper {
+  .footnote-box {
+    width: 70%;
+  }
+}
+
 // CFR
 .cfr-changes {
   .font-regular;
   padding-top: 15px;
   width: 70%;
 }
+
 
 @media only screen and ( max-width: 480px ) {
 
