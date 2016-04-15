@@ -200,7 +200,10 @@ class PreambleHTMLBuilder(HTMLBuilder):
         is_markerless = node_types.MARKERLESS_REGEX.match
         prefix = list(takewhile(lambda l: not is_markerless(l),
                                 node['label']))
-        if len(prefix) > 1:
+        if 'intro' in prefix:
+            title = node.get('title', '').rstrip(':')
+            return 'Intro: ' + title
+        elif len(prefix) > 1:
             label = 'Section ' + '.'.join(prefix[1:])
             count = len(node['label']) - len(prefix)
             if count:
