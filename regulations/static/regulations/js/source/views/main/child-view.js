@@ -77,6 +77,7 @@ var ChildView = Backbone.View.extend({
     render: function() {
         this.updateWayfinding();
         this.loadImages();
+        // TODO: What is this for?
         HeaderEvents.trigger('section:open', this.id);
         DrawerEvents.trigger('section:open', this.id);
     },
@@ -106,6 +107,7 @@ var ChildView = Backbone.View.extend({
                     this.$activeSection = $(this.$sections[i][0]);
                     // **Event** trigger active section change
                     HeaderEvents.trigger('section:open', this.activeSection);
+                    DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
                     MainEvents.trigger('paragraph:active', this.activeSection);
 
                     if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
