@@ -2,13 +2,13 @@ var chai = require('chai');
 var expect = chai.expect;
 var jsdom = require('mocha-jsdom');
 
-describe('StarProcessor.inline', function() {
+describe('starsHelpers.inline', function() {
   jsdom();
-  var StarProcessor;
+  var starsHelpers;
 
   before(function() {
     $ = require('jquery');
-    StarProcessor = require('../../../source/views/main/star-processor');
+    starsHelpers = require('../../../source/views/main/stars-helpers');
   });
 
   it('does not hide the marker, but does hide the intro text', function() {
@@ -17,7 +17,7 @@ describe('StarProcessor.inline', function() {
       '<span class="collapsed-marker">b.</span>' +
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
-    StarProcessor.inline($li);
+    starsHelpers.inline($li);
     expect($li.find('.collapsed-marker').is(':visible')).to.be.true;
     expect($li.find('.paragraph-text').is(':visible')).to.be.false;
   });
@@ -27,7 +27,7 @@ describe('StarProcessor.inline', function() {
       '<span class="collapsed-marker">b.</span>' +
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
-    var $expander = StarProcessor.inline($li);
+    var $expander = starsHelpers.inline($li);
     expect($li.find($expander)).to.be.ok;
 
     $expander.click();
@@ -41,7 +41,7 @@ describe('StarProcessor.inline', function() {
       '<span class="collapsed-marker">b.</span>' +
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
-    var $expander = StarProcessor.inline($li);
+    var $expander = starsHelpers.inline($li);
     expect($li.find('.collapsed')).not.to.be.truthy;
 
     $expander.click();
@@ -49,13 +49,13 @@ describe('StarProcessor.inline', function() {
   });
 });
 
-describe('StarProcessor.full', function() {
+describe('starsHelpers.full', function() {
   jsdom();
-  var StarProcessor;
+  var starsHelpers;
 
   before(function() {
     $ = require('jquery');
-    StarProcessor = require('../../../source/views/main/star-processor');
+    starsHelpers = require('../../../source/views/main/stars-helpers');
   });
 
   it('hides everything', function() {
@@ -64,7 +64,7 @@ describe('StarProcessor.full', function() {
       '<span class="collapsed-marker">b.</span>' +
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
-    StarProcessor.full($li, null);
+    starsHelpers.full($li, null);
     expect($li.find('.collapsed-marker').is(':visible')).to.be.false;
     expect($li.find('.paragraph-text').is(':visible')).to.be.false;
   });
@@ -74,7 +74,7 @@ describe('StarProcessor.full', function() {
       '<span class="collapsed-marker">b.</span>' +
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
-    var $expander = StarProcessor.full($li, null);
+    var $expander = starsHelpers.full($li, null);
     expect($li.find($expander)).to.be.ok;
 
     $expander.click();
@@ -89,7 +89,7 @@ describe('StarProcessor.full', function() {
       '<span class="paragraph-text">Remainder of the text</span>' +
       '</p></li>');
     var $expander = $('<button>');
-    StarProcessor.full($li, $expander);
+    starsHelpers.full($li, $expander);
 
     expect($li.find('.collapsed-marker').is(':visible')).to.be.false;
     expect($li.find('.paragraph-text').is(':visible')).to.be.false;

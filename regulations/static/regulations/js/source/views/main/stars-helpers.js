@@ -2,13 +2,13 @@
 
 var $ = require('jquery');
 
-/***
+/**
  * Functions to process the different types of "stars", indicators that text
  * can be expanded. Each accepts an $li which may need to be collapsed in
  * addition to an $expander to expand collapsed $li texts. Each method returns
  * an updated $expander.
- ***/
-var StarProcessor = {
+ */
+module.exports = {
   none: function() { return null; },  /* No changes, no new expander */
   inline: function($li) {
     var $toShow = $li.find('.paragraph-text:first').hide();
@@ -20,9 +20,11 @@ var StarProcessor = {
       $toShow.show();
     });
 
-    /* "Collapsed" paragraphs have no immediate content, only subparagraphs.
+    /**
+     * "Collapsed" paragraphs have no immediate content, only subparagraphs.
      * However, we're now _adding_ content, so we need to fiddle with the
-     * relevant classes and cleanup after ourselves when done */
+     * relevant classes and cleanup after ourselves when done
+     */
     if ($paragraph.hasClass('collapsed')) {
       $paragraph.removeClass('collapsed');
       $expander.click(function() { $paragraph.addClass('collapsed'); });
@@ -41,5 +43,3 @@ var StarProcessor = {
     return $expander;
   }
 };
-
-module.exports = StarProcessor;

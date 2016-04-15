@@ -12,7 +12,7 @@ var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
 var DrawerEvents = require('../../events/drawer-events');
-var StarProcessor = require('./star-processor');
+var starsHelpers = require('./stars-helpers');
 var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
@@ -125,7 +125,7 @@ var PreambleView = ChildView.extend({
     this.$el.find('li[data-stars]').each(function(idx, elt) {
       var $li = $(elt);
       var starType = $li.data('stars');
-      $expander = StarProcessor[starType]($li, $expander);
+      $expander = starsHelpers[starType]($li, $expander);
     });
   },
 
