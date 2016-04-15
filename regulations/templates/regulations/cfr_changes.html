@@ -1,9 +1,17 @@
 {% for instruction in instructions %}
-  <div style="border: 1px solid black;">{{ instruction }}</div>
+  <div class="cfr-changes">
+    {{ instruction }}
+  </div>
 {% endfor %}
+
 {% for authority in authorities %}
-<div><strong>Authority</strong>: {{ authority }}</div>
+  <div>
+    <strong>Authority</strong>: {{ authority }}
+  </div>
 {% endfor %}
-{% if tree %}{% with c=tree %}
-{% include "regulations/regulation_text.html" %}
-{% endwith %}{% endif %}
+
+{% if tree %}
+  {% with c=tree %}
+  {% include "regulations/regulation_text.html" %}
+  {% endwith %}
+{% endif %}
