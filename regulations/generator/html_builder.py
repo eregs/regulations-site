@@ -218,6 +218,9 @@ class PreambleHTMLBuilder(HTMLBuilder):
         super(PreambleHTMLBuilder, self).process_node(node, indexes=indexes)
         node['accepts_comments'] = True
         node['comments_calledout'] = bool(node.get('title'))
+        not_markerless = lambda l: not node_types.MARKERLESS_REGEX.match(l)
+        markers = takewhile(not_markerless, node['label'][:4])
+        node['toc_id'] = '-'.join(self.id_prefix + list(markers))
 
 
 class CFRChangeHTMLBuilder(CFRHTMLBuilder):

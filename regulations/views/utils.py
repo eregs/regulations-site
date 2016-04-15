@@ -4,6 +4,7 @@ import logging
 
 from regulations.generator import api_reader, generator
 from regulations.generator.layers.tree_builder import roman_nums
+from regulations.generator.layers.utils import convert_to_python
 from regulations.generator.toc import fetch_toc
 
 
@@ -34,7 +35,7 @@ def regulation_meta(cfr_part, version):
     meta = {}
     for data in layer_data.get(cfr_part, []):
         meta.update(data)
-    return meta
+    return convert_to_python(meta)
 
 
 def layer_names(request):
