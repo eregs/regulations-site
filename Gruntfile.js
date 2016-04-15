@@ -136,7 +136,7 @@ module.exports = function(grunt) {
 
     shell: {
       'nose-chrome': {
-        command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:chrome --tc=testUrl:<%= env.testUrl %>',
+        command: 'nosetests -s <%= env.testPath %> --tc=remote:chrome --tc=testUrl:<%= env.testUrl %>',
         options: {
             stdout: true,
             stderr: true
@@ -144,7 +144,7 @@ module.exports = function(grunt) {
       },
 
       'nose-ie11': {
-        command: 'nosetests -s <%= env.testPath %> --tc=webdriver.browser:ie11 --tc=testUrl:<%= env.testUrl %>',
+        command: 'nosetests -s <%= env.testPath %> --tc=remote:ie11 --tc=testUrl:<%= env.testUrl %>',
         options: {
             stdout: true,
             stderr: true
