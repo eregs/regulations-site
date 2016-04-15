@@ -4,6 +4,7 @@
 
 <li
     {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
+    {% if node.toc_id %}data-toc-id="{{node.toc_id}}"{% endif %}
     {% if not inline %}id="{{node.markup_id}}" data-permalink-section{% endif %}
     {% if node.interp %}data-interp-id="{{node.interp.markup_id}}"{% endif %}
     {% if node.stars_collapse %}data-stars="{{node.stars_collapse}}"{% endif %}

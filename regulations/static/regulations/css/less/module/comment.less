@@ -9,18 +9,13 @@ comment.less contains styles related to commenting on sections
   padding: 0 0 0 15px;
 
   li {
-    h2, h3, h4, h5, p {
+    h2, h3, h4, h5, h6, p {
       width: 70%;
     }
   }
 
-  // neutralize padding for write comment link placing
-  .level-1 > li {
-    padding-top: 0;
-  }
-
   // for paragraphs, only show write comment link when hovered
-  li:hover {
+  .node:hover {
     > p + .activate-write {
       top: 15px;
       display: block;
@@ -66,7 +61,7 @@ comment.less contains styles related to commenting on sections
 }
 
 #preamble-write,
-#preamble-read li {
+#preamble-read .node {
   position: relative;
 }
 
@@ -82,8 +77,20 @@ comment.less contains styles related to commenting on sections
   width: 230px;
 
   &:hover {
-    color: #4A90E2;
+    color: @pacific_hover;
   }
+
+}
+
+.paragraph-comment-icon {
+  float: left;
+  margin-right: 8px;
+  line-height: 24px;
+  clear: both;
+}
+
+.paragraph-comment {
+  overflow: hidden;
 }
 
 .activate-read {
@@ -276,7 +283,7 @@ a.comment-index-review {
   }
 
   .comment-content {
-    width: 480px;
+    max-width: 480px;
   }
 
   .edit-comment {
@@ -297,7 +304,7 @@ a.comment-index-review {
 
   .comment-attachments {
     margin-top: 5px;
-    width: 480px;
+    max-width: 480px;
 
     ul {
       background: @grey;
@@ -338,7 +345,7 @@ a.comment-index-review {
       font-size: 18px;
       line-height: 18px;
       text-transform: inherit;
-      width: 425px;
+      max-width: 425px;
 
       &:hover {
         cursor: pointer;
@@ -362,7 +369,7 @@ a.comment-index-review {
 
   .additional-info {
     padding: 0 0 10px 0;
-    width: 535px;
+    max-width: 535px;
 
     h4 {
       margin-bottom: 0.75em;
@@ -399,7 +406,7 @@ a.comment-index-review {
     border-top: 1px solid @text_area_border;
     padding: 10px 0 0;
     margin: 15px 0 25px 0;
-    width: 535px;
+    max-width: 535px;
 
     .required {
       color: @red_orange;
@@ -425,18 +432,82 @@ a.comment-index-review {
   }
 }
 
+.preamble-wrapper {
+  .footnote-box {
+    width: 70%;
+  }
+}
+
+
+@media only screen and ( max-width: 480px ) {
+
+  .preamble-header {
+    z-index: -1;
+
+    > span {
+      display: none;
+    }
+
+    .read-proposal,
+    .write-comment {
+      font-size: 13px;
+      width: 140px !important;
+    }
+  }
+
+  .activate-write {
+    padding: 5px 0;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: auto;
+
+    &:hover {
+      color: #4A90E2;
+    }
+  }
+
+  #preamble-read {
+    li {
+      h2, h3, h4, h5, h6, p {
+        width: 100%;
+      }
+    }
+    p + .activate-write {
+      display: block;
+    }
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    width: 100%;
+
+    .comment-index {
+      position: relative;
+      right: 0;
+      top: 0;
+      width: 100%;
+    }
+  }
+
+  #comment-review {
+    .edit-comment {
+      position: relative;
+      right: 0;
+      top: 5px;
+    }
+  }
+}
 
 @media only screen and ( min-width: 780px ) {
-  .preamble-wrapper,
-  .comment-review-wrapper {
+  .preamble-wrapper {
     margin-right: 5%;
     padding-left: 35px;
   }
 }
 
 @media only screen and ( min-width: 1100px ) {
-  .preamble-wrapper,
-  .comment-review-wrapper {
+  .preamble-wrapper {
     margin-right: 5%;
     padding-left: 35px;
   }

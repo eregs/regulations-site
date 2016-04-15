@@ -2,18 +2,24 @@
     Template for inner paragraphs of a reg section
 {% endcomment %}
 {% if node.header %}
-<div>
+<div class="node">
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
   {% if node.accepts_comments %}
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
         data-label="{{ node.human_label }}">
-      + Write a comment about {{ node.human_label }}</div>
+
+        <div class="paragraph-comment-icon">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        </div>
+       <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+    </div>
   {% endif %}
 </div>
 {% endif %}
 
+<div class="node">
 {%if node.marked_up %}
 <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
 {% if node.paragraph_marker %}
@@ -33,9 +39,15 @@
       class="activate-write"
       data-section="{{ node.full_id }}"
       data-label="{{ node.human_label }}">
-    + Write a comment about {{ node.human_label }}</div>
+
+      <div class="paragraph-comment-icon">
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+      </div>
+     <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+  </div>
 {% endif %}
 {% endif %}
+</div>
 
 {% if node.children %}
 <ol class="level-{{node.list_level|add:1}}">

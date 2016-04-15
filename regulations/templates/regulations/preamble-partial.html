@@ -1,9 +1,11 @@
 {% load macros render_nested %}
 
-<section id="{{full_id}}" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
+<section id="{{full_id}}" class="reg-section" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
   <ul id="preamble-read">
     {% render_nested template=sub_template context=sub_context %}
   </ul>
+
+  {% include "regulations/footnotes.html" %}
 
   <div id="preamble-write">
     <div class="comment-wrapper">
@@ -40,6 +42,7 @@
     <li
         class="comment-index-item group"
         data-comment-section="<%= comment.id %>"
+        data-comment-toc-section="<%= comment.tocId %>"
         data-comment-label="<%= comment.label %>">
       <div class="comment-index-section"><%= comment.label %></div>
       <div class="comment-index-modify">

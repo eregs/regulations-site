@@ -25,7 +25,7 @@
       <h3 class="toc-type">Table of Contents</h3>
       <h5 class="toc-subheader">Preamble</h5>
     </div><!-- /.drawer-header -->
-    <nav id="toc" class="regulation-nav drawer-content" role="navigation">
+    <nav id="toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
       {% include "regulations/toc-preamble.html" %}
     </nav>
   </div>
@@ -35,7 +35,7 @@
       <h3 class="toc-type">Table of Contents</h3>
       <h5 class="toc-subheader">Amendments to the CFR</h5>
     </div>
-    <nav id="cfr-toc" class="regulation-nav drawer-content" role="navigation">
+    <nav id="cfr-toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
       <ol>
         {% for cfr_part_toc in cfr_change_toc %}
           <li>
