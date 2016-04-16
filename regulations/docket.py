@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 def get_document_metadata(document_id):
     """ Retrieve document metadata from regulations.gov. """
+    logger.debug("Getting docket metadata")
     response = requests.get(
         settings.REGS_GOV_API_URL,
         params={'D': document_id},
         headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
     )
-    logger.debug("Getting docket metadata")
     if response.status_code == requests.codes.ok:
         return response.json()
     else:
