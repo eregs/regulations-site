@@ -1,9 +1,9 @@
 {% load macros render_nested %}
 
 <section id="{{full_id}}" class="reg-section" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
-  <div id="preamble-read">
+  <ul id="preamble-read">
     {% render_nested template=sub_template context=sub_context %}
-  </div>
+  </ul>
 
   {% include "regulations/footnotes.html" %}
 
