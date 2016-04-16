@@ -175,13 +175,7 @@ CACHES = {
         },
     },
     'regs_gov_cache': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'KEY_PREFIX': 'regs.gov',
-        'LOCATION': 'redis://localhost:6379/0',
-        'TIMEOUT': 60*60*24,
-        'OPTIONS': {
-            'IGNORE_EXCEPTIONS': True,
-        },
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 
