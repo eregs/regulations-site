@@ -161,8 +161,7 @@ module.exports = {
 
         if (id.indexOf('-') !== -1) {
             parts = id.split('-');
-        }
-        else {
+        } else {
             return id;
         }
 
@@ -300,7 +299,6 @@ module.exports = {
      *   hash: '2016_02749-I-A'
      * }
      * @example
-     * // Returns ['preamble', '2016_02749', 'cfr_changes', '478-32-a']
      * parsePreambleId('2016_02749-cfr-478-32-a-1')
      * {
      *    docId: '2016_02749',
@@ -313,18 +311,22 @@ module.exports = {
       var docId = parts.shift();
       var type = parts.shift();
       var path = ['preamble', docId];
+      var section;
       if (type === 'preamble') {
         // Note: Document ID appears twice in preamble IDs
         // TODO: Standardize IDs and drop the `slice`
         path = path.concat(parts.slice(1, 2));
+        section = [docId].concat(parts.slice(1, 2));
       } else if (type === 'cfr') {
         path = path.concat(['cfr_changes', parts.join('-')]);
+        section = parts.slice(0, 2);
       }
       return {
         path: path,
+        type: type,
         hash: parts.join('-'),
         docId: docId,
-        type: type
+        section: section
       };
     }
 };
