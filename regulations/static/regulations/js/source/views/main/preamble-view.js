@@ -12,6 +12,7 @@ var CommentView = require('../comment/comment-view');
 var CommentIndexView = require('../comment/comment-index-view');
 var CommentEvents = require('../../events/comment-events');
 var DrawerEvents = require('../../events/drawer-events');
+var starsHelpers = require('./stars-helpers');
 var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
@@ -131,6 +132,16 @@ var PreambleView = ChildView.extend({
     } else {
       this.handleRead();
     }
+    this.collapseStars();
+  },
+
+  collapseStars: function() {
+    var $expander;
+    this.$el.find('li[data-stars]').each(function(idx, elt) {
+      var $li = $(elt);
+      var starType = $li.data('stars');
+      $expander = starsHelpers[starType]($li, $expander);
+    });
   },
 
   remove: function() {

@@ -23,10 +23,7 @@ SUBJGRP = u'subjgrp'
 # sections which do not live inside a SUBPART/SUBJGRP to provide parallelism
 EMPTYPART = u'emptypart'
 
-
-def transform_part(p):
-    """ Transform a part of the id of a node. """
-    return p.replace('(', '').replace(')', '')
+PAREN_RE = re.compile(r'[()]')
 
 
 def to_markup_id(id_parts):
@@ -34,7 +31,7 @@ def to_markup_id(id_parts):
     be used in the front end"""
     new_id = list(id_parts)
     if type_from_label(id_parts) in (APPENDIX, INTERP):
-        return [transform_part(part) for part in new_id]
+        return [PAREN_RE.sub('', part) for part in new_id]
     return new_id
 
 

@@ -32,7 +32,8 @@ def get_appliers(label_id, versions):
 
     layer_creator = generator.DiffLayerCreator(versions.newer)
     layer_creator.add_layers(
-        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting'],
+        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
+         'marker-hiding', 'marker-info'],
         'cfr', label_id, version=versions.older)
     return layer_creator.get_appliers() + (diff, )
 

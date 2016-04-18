@@ -12,5 +12,5 @@ class MetaLayer(LayerBase):
 
     def apply_layer(self, text_index):
         """Return a pair of field-name (meta) + the layer data"""
-        if text_index in self.layer_data and self.layer_data[text_index]:
+        if self.layer_data.get(text_index):
             return 'meta', self.layer_data[text_index][0]
