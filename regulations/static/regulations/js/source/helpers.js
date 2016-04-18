@@ -325,8 +325,8 @@ module.exports = {
         path: path,
         type: type,
         hash: parts.join('-'),
-        section: section,
-        docId: docId
+        docId: docId,
+        section: section
       };
     }
 };

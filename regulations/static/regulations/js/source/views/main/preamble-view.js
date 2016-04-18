@@ -25,6 +25,7 @@ var PreambleView = ChildView.extend({
     this.options = options;
 
     var parsed = helpers.parsePreambleId(this.options.id);
+    var type = parsed.type;
 
     this.id = [].concat(parsed.docId, parsed.type, parsed.section).join('-');
     this.options.scrollToId = parsed.hash;
@@ -41,6 +42,7 @@ var PreambleView = ChildView.extend({
     this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
 
     CommentEvents.trigger('comment:readTabOpen');
+
     DrawerEvents.trigger(
       'pane:init',
       parsed.type === 'preamble' ?
