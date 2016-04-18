@@ -8,8 +8,7 @@ from regulations.uitests.base_test import BaseTest
 
 class DiffTest(BaseTest, unittest.TestCase):
 
-    def job_name(self):
-        return 'Diff test'
+    job_name = 'Diff test'
 
     def get_drawer_button(self):
         return self.driver.find_element_by_xpath('//*[@id="timeline-link"]')
@@ -97,6 +96,3 @@ class DiffTest(BaseTest, unittest.TestCase):
         WebDriverWait(self.driver, 30).until(
             lambda driver:
             driver.current_url == self.test_url + '/1005-3/2011-11111')
-
-if __name__ == '__main__':
-    unittest.main()

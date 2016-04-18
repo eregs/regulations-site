@@ -8,8 +8,7 @@ from regulations.uitests.base_test import BaseTest
 
 class DefinitionTest(BaseTest, unittest.TestCase):
 
-    def job_name(self):
-        return 'Definitions test'
+    job_name = 'Definitions test'
 
     def test_definition(self):
         self.driver.set_window_size(1024, 600)
@@ -98,6 +97,3 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         WebDriverWait(self.driver, 10).until(
             lambda driver: driver.find_element_by_xpath(
                 '//*[@id="1005-2-a-1"]'))
-
-if __name__ == '__main__':
-    unittest.main()
