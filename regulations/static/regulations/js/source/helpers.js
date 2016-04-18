@@ -318,7 +318,9 @@ module.exports = {
         path = path.concat(parts.slice(1, 2));
         section = [docId].concat(parts.slice(1, 2));
       } else if (type === 'cfr') {
-        path = path.concat(['cfr_changes', parts.join('-')]);
+        // Sections for CFR changes include the two first parts; the ID
+        // 478-32-p243 maps to the section 478-32
+        path = path.concat(['cfr_changes', parts.slice(0, 2).join('-')]);
         section = parts.slice(0, 2);
       }
       return {
