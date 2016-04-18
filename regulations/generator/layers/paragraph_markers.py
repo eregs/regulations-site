@@ -13,7 +13,7 @@ class ParagraphMarkersLayer(SearchReplaceLayer):
     MarkerInfoLayer instead"""
     shorthand = 'paragraph'
     data_source = 'paragraph-markers'
-    TO_STRIP_RE = re.compile(r'[\(\)\.]')
+    TO_STRIP_RE = re.compile(r'[().]')
 
     def __init__(self, layer):
         self.layer = layer

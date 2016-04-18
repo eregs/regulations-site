@@ -23,7 +23,7 @@ SUBJGRP = u'subjgrp'
 # sections which do not live inside a SUBPART/SUBJGRP to provide parallelism
 EMPTYPART = u'emptypart'
 
-PAREN_RE = re.compile(r'[\(\)]')
+PAREN_RE = re.compile(r'[()]')
 
 
 def to_markup_id(id_parts):
