@@ -215,10 +215,18 @@ a.comment-index-review {
     }
 
     .comment-index-modify {
-      font-size: 13px;
+      font-size: 15px;
       float: right;
-      line-height: 20px;
       width: 40px;
+
+      .fa {
+        vertical-align: middle;
+        margin-left: 5px;
+
+        &:hover {
+          color: darken(@black, 10%);
+        }
+      }
     }
 
     .comment-index-edit,
