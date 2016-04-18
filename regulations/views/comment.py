@@ -6,6 +6,7 @@ import logging
 import celery
 import requests
 from django.conf import settings
+from django.core.cache import caches
 from django.http import JsonResponse
 from django.utils.crypto import get_random_string
 from django.views.decorators.http import require_http_methods
@@ -138,17 +139,26 @@ def get_gov_agency_types(request):
 
 
 def lookup_regulations_gov(*args, **kwargs):
-    response = requests.get(
-        settings.REGS_GOV_API_LOOKUP_URL,
-        params=kwargs,
-        headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
-    )
-    if response.status_code == requests.codes.ok:
-        return JsonResponse(response.json()['list'], safe=False)
-    else:
-        logger.error("Failed to lookup regulations.gov: {}",
-                     response.status_code, response.text)
-        response.raise_for_status()
+    """ GET lookup values from regulations.gov. Use a cache """
+    cache = caches['regs_gov_cache']
+    cache_key = make_cache_key(**kwargs)
+    response = cache.get(cache_key)
+
+    if response is None:
+        logger.debug("Looking up in regs.gov")
+        response = requests.get(
+            settings.REGS_GOV_API_LOOKUP_URL,
+            params=kwargs,
+            headers={'X-Api-Key': settings.REGS_GOV_API_KEY}
+        )
+        if response.status_code == requests.codes.ok:
+            response = JsonResponse(response.json()['list'], safe=False)
+            cache.set(cache_key, response)
+        else:
+            logger.error("Failed to lookup regulations.gov: {}",
+                         response.status_code, response.text)
+            response.raise_for_status()
+    return response
 
 
 def validate_attachment(filename, size):
@@ -173,3 +183,10 @@ def extract_files(body):
         for section in body.get('sections', [])
         for file in section.get('files', [])
     ]
+
+
+def make_cache_key(*args, **kwargs):
+    """ Make a cache key of the form key1:value1:key2:value2.
+        Sort the keys to ensure repeatability
+    """
+    return ":".join((key + ":" + str(kwargs[key]) for key in sorted(kwargs)))

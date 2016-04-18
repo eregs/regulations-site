@@ -173,6 +173,9 @@ CACHES = {
         'OPTIONS': {
             'MAX_ENTRIES': 1000,
         },
+    },
+    'regs_gov_cache': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
 

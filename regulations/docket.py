@@ -3,7 +3,9 @@ import logging
 
 import six
 import requests
+
 from django.conf import settings
+from django.core.cache import caches
 
 Field = namedtuple('Field', 'max_length, required')
 
@@ -12,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 def get_document_metadata(document_id):
     """ Retrieve document metadata from regulations.gov. """
-    # TODO Cache this as it hardly changes
+    logger.debug("Getting docket metadata")
     response = requests.get(
         settings.REGS_GOV_API_URL,
         params={'D': document_id},
@@ -27,11 +29,21 @@ def get_document_metadata(document_id):
 
 
 def get_document_fields(document_id):
-    document_metadata = get_document_metadata(document_id)
-    fields = {
-        field['attributeName']: Field(field['maxLength'], field['required'])
-        for field in document_metadata['fieldList']
-    }
+    """ Retrieve the field list from the document metadata.
+        Use a cache as the data hardly ever changes.
+    """
+    cache = caches['regs_gov_cache']
+    cache_key = document_id
+    fields = cache.get(cache_key)
+
+    if fields is None:
+        document_metadata = get_document_metadata(document_id)
+        fields = {
+            field['attributeName']: Field(field['maxLength'],
+                                          field['required'])
+            for field in document_metadata['fieldList']
+        }
+        cache.set(cache_key, fields)
     return fields
 
 
