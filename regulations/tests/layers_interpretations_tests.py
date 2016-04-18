@@ -8,7 +8,7 @@ from regulations.generator.layers.interpretations import InterpretationsLayer
 class InterpretationsLayerTest(TestCase):
     def setUp(self):
         if not settings.configured:
-            settings.configure(TEMPLATE_DEBUG=False, API_BASE='')
+            settings.configure(API_BASE='')
 
     @patch('regulations.generator.layers.interpretations.generator')
     @patch('regulations.generator.layers.interpretations.SectionUrl')
