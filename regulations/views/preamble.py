@@ -1,4 +1,6 @@
 from collections import namedtuple
+from copy import deepcopy
+from datetime import date
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -10,7 +12,8 @@ from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
-from regulations.generator.layers.utils import is_contained_in
+from regulations.generator.layers.utils import (
+    convert_to_python, is_contained_in)
 from regulations.generator.toc import fetch_toc
 from regulations.views import utils
 from regulations.views.diff import Versions, get_appliers
@@ -139,7 +142,8 @@ PreambleSect = namedtuple(
 
 
 def make_preamble_toc(nodes, depth=1, max_depth=3):
-    if depth > max_depth:
+    intro_subheader = depth == 2 and any('intro' in n['label'] for n in nodes)
+    if depth > max_depth or intro_subheader:
         return []
     return [
         PreambleSect(
@@ -167,6 +171,34 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     ]
 
 
+def common_context(doc_number):
+    """All of the "preamble" views share common context, such as preamble
+    data, toc info, etc. This function retrieves that data and returns the
+    results as a dict. This may throw a 404"""
+    preamble = ApiReader().preamble(doc_number)
+    if preamble is None:
+        raise Http404
+
+    # @todo - right now we're shimming in fake data; eventually this data
+    # should come from the API
+    intro = getattr(settings, 'PREAMBLE_INTRO', {}).get(doc_number, {})
+    intro = deepcopy(intro)
+    if intro.get('tree'):
+        preamble['children'].insert(0, intro['tree'])
+    intro['meta'] = convert_to_python(intro.get('meta', {}))
+    if 'comments_close' in intro['meta']:
+        intro['meta']['days_remaining'] = 1 + (
+            intro['meta']['comments_close'].date() - date.today()).days
+
+    return {
+        'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number),
+        "doc_number": doc_number,
+        "meta": intro['meta'],
+        "preamble": preamble,
+        'preamble_toc': make_preamble_toc(preamble['children']),
+    }
+
+
 class PreambleView(View):
     """Displays either a notice preamble (or a subtree of that preamble). If
     using AJAX or specifically requesting, generate only the preamble markup;
@@ -174,27 +206,21 @@ class PreambleView(View):
     def get(self, request, *args, **kwargs):
         label_parts = kwargs.get('paragraphs', '').split('/')
         doc_number = label_parts[0]
-        preamble = ApiReader().preamble(doc_number)
-        if preamble is None:
-            raise Http404
+        context = common_context(doc_number)
 
-        subtree = find_subtree(preamble, label_parts)
+        subtree = find_subtree(context['preamble'], label_parts)
         if subtree is None:
             raise Http404
 
-        id_prefix = [doc_number, 'preamble']
-        context = generate_html_tree(subtree, request, id_prefix=id_prefix)
+        sub_context = generate_html_tree(subtree, request,
+                                         id_prefix=[doc_number, 'preamble'])
+        template = sub_context['node']['template_name']
 
-        template = context['node']['template_name']
-
-        context = {
-            'sub_context': context,
+        context.update({
+            'sub_context': sub_context,
             'sub_template': template,
-            'doc_number': doc_number,
-            'full_id': context['node']['full_id'],
-            'preamble_toc': make_preamble_toc(preamble['children']),
-            'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
-        }
+            'full_id': sub_context['node']['full_id']})
+
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
         else:
@@ -204,21 +230,11 @@ class PreambleView(View):
 
 
 class PrepareCommentView(View):
-    def get(self, request, *args, **kwargs):
-        preamble = ApiReader().preamble(kwargs['doc_number'])
-        if preamble is None:
-            raise Http404
+    def get(self, request, doc_number):
+        context = common_context(doc_number)
 
-        subtree = find_subtree(preamble, [kwargs['doc_number']])
-        if subtree is None:
-            raise Http404
-
-        id_prefix = [kwargs['doc_number'], 'preamble']
-        context = generate_html_tree(subtree, request, id_prefix=id_prefix)
-        context.update({
-            'preamble': preamble,
-            'doc_number': kwargs['doc_number'],
-        })
+        context.update(generate_html_tree(context['preamble'], request,
+                                          id_prefix=[doc_number, 'preamble']))
         template = 'regulations/comment-review-chrome.html'
 
         return TemplateResponse(request=request, template=template,
@@ -228,35 +244,31 @@ class PrepareCommentView(View):
 # @todo - this shares a lot of code w/ PreambleView. Can we merge them?
 class CFRChangesView(View):
     def get(self, request, doc_number, section):
+        context = common_context(doc_number)
+
         cfr_changes = getattr(settings, 'CFR_CHANGES', {})  # mock
         if doc_number not in cfr_changes:
             raise Http404("Doc # {} not found".format(doc_number))
-        preamble = ApiReader().preamble(doc_number)
-        if preamble is None:
-            raise Http404
         versions = cfr_changes[doc_number]["versions"]
         amendments = cfr_changes[doc_number]["amendments"]
         label_parts = section.split('-')
 
         if len(label_parts) == 1:
-            context = self.authorities_context(amendments, cfr_part=section)
+            sub_context = self.authorities_context(
+                amendments, cfr_part=section)
         else:
-            context = self.regtext_changes_context(
+            sub_context = self.regtext_changes_context(
                 amendments,
                 versions,
                 doc_number=doc_number,
                 label_id=section,
             )
 
-        context = {
-            'sub_context': context,
+        context.update({
+            'sub_context': sub_context,
             'sub_template': 'regulations/cfr_changes.html',
-            'preamble': preamble,
-            'doc_number': doc_number,
-            'full_id': '{}-cfr-{}'.format(doc_number, section),
-            'preamble_toc': make_preamble_toc(preamble['children']),
-            'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number)
-        }
+            'full_id': '{}-cfr-{}'.format(doc_number, section)
+        })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
