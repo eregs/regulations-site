@@ -1,7 +1,6 @@
 from .base import *
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
 CACHES['eregs_longterm_cache']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
