@@ -8,10 +8,6 @@ comment.less contains styles related to commenting on sections
   margin: 0;
   padding: 0 0 0 15px;
 
-  h2, h3, h4, h5, h6, p, .extract {
-    width: 70%;
-  }
-
   // for paragraphs, only show write comment link when hovered
   .node:hover {
     > p + .activate-write {
@@ -63,6 +59,10 @@ comment.less contains styles related to commenting on sections
   position: relative;
 }
 
+#preamble-read .node {
+  padding-right: 250px;
+}
+
 .activate-write {
   color: @pacific_light;
   cursor: pointer;
@@ -77,7 +77,6 @@ comment.less contains styles related to commenting on sections
   &:hover {
     color: @pacific_hover;
   }
-
 }
 
 .paragraph-comment-icon {
@@ -495,6 +494,10 @@ a.comment-index-review {
     }
     p + .activate-write {
       display: block;
+    }
+
+    .node {
+      padding-right: 0;
     }
   }
 
