@@ -118,7 +118,7 @@ def submit_comment(request):
     )
     chain = celery.chain(
         tasks.submit_comment.s(body, files),
-        tasks.publish_metadata.s(key=metadata_key),
+        tasks.publish_tracking_number.s(key=metadata_key),
     )
     chain.delay()
     return JsonResponse({

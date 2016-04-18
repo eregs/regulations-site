@@ -75,7 +75,7 @@ def submit_comment(self, body, files):
 
 
 @shared_task
-def publish_metadata(response, key):
+def publish_tracking_number(response, key):
     s3 = make_s3_client()
     body = {'trackingNumber': response['trackingNumber']}
     s3.put_object(
