@@ -19,11 +19,13 @@ from requests.exceptions import RequestException
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from celery import shared_task
+from celery.app.task import Task
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
 from django.template import loader
 
+from regulations.models import FailedCommentSubmission
 logger = get_task_logger(__name__)
 
 
@@ -72,6 +74,12 @@ def submit_comment(self, body, files):
     except (ClientError, RequestException) as exc:
         logger.exception(exc)
         raise self.retry(exc=exc)
+    except Task.MaxRetriesExceededError as exc:
+        message = "Exceeded retries, saving failed submission"
+        logger.exception(message)
+        failed_submission = FailedCommentSubmission(body=body, files=files)
+        failed_submission.save()
+        return {'message': message, 'trackingNumber': None}
 
 
 @shared_task
