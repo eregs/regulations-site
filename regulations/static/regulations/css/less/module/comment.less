@@ -208,6 +208,7 @@ a.comment-index-review {
     cursor: default;
     font-weight: 500;
     padding: 15px;
+    margin-top: 10px;
 
     .comment-index-section {
       float: left;
@@ -221,7 +222,9 @@ a.comment-index-review {
 
       .fa {
         vertical-align: middle;
+        visibility: hidden;
         margin-left: 5px;
+        color: @dark_field;
 
         &:hover {
           color: darken(@black, 10%);
@@ -239,7 +242,11 @@ a.comment-index-review {
     }
 
     &:hover {
-      background: darken(@80_gray, 10%);;
+      background: darken(@80_gray, 10%);
+
+      .fa {
+        visibility: visible;
+      }
     }
   }
 }
