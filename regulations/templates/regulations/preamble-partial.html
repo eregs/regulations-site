@@ -2,9 +2,14 @@
 
 <section id="{{full_id}}" class="reg-section" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
   <div id="preamble-read">
+    {% if type == "preamble" %}
     <ul>
       {% render_nested template=sub_template context=sub_context %}
     </ul>
+    {% else %}
+      {% render_nested template=sub_template context=sub_context %}
+    {% endif %}
+
     {% include "regulations/footnotes.html" %}
   </div>
 

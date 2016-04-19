@@ -219,7 +219,9 @@ class PreambleView(View):
         context.update({
             'sub_context': sub_context,
             'sub_template': template,
-            'full_id': sub_context['node']['full_id']})
+            'full_id': sub_context['node']['full_id'],
+            'type': "preamble"
+        })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
             template = 'regulations/preamble-chrome.html'
@@ -267,7 +269,8 @@ class CFRChangesView(View):
         context.update({
             'sub_context': sub_context,
             'sub_template': 'regulations/cfr_changes.html',
-            'full_id': '{}-cfr-{}'.format(doc_number, section)
+            'full_id': '{}-cfr-{}'.format(doc_number, section),
+            'type': "cfr"
         })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
