@@ -7,6 +7,7 @@ comment.less contains styles related to commenting on sections
 #preamble-read {
   margin: 0;
   padding: 0 0 0 15px;
+  word-wrap: break-word;
 
   // for paragraphs, only show write comment link when hovered
   .node:hover {
@@ -444,12 +445,6 @@ a.comment-index-review {
   }
 }
 
-.preamble-wrapper {
-  .footnote-box {
-    width: 70%;
-  }
-}
-
 // CFR
 .cfr-instructions {
   .font-regular;
@@ -487,6 +482,12 @@ a.comment-index-review {
   }
 
   #preamble-read {
+    padding-left: 0;
+
+    ol, ul {
+      padding-left: 0;
+    }
+
     li {
       h2, h3, h4, h5, h6, p {
         width: 100%;
@@ -533,5 +534,11 @@ a.comment-index-review {
   .preamble-wrapper {
     margin-right: 5%;
     padding-left: 35px;
+
+    // don't need max-width to account for a right sidebar
+    // so preamble text will fill the space when nav is minimized
+    &.close {
+      max-width: 100%;
+    }
   }
 }
