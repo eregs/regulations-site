@@ -100,7 +100,7 @@ def submit_comment(request):
         logger.error(message)
         return JsonResponse({'message': message}, status=403)
 
-    files = extract_files(body)
+    files = extract_files(body['general_comment'])
     # Account for the main comment itself submitted as an attachment
     if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
         message = "Too many attachments"
