@@ -7,8 +7,7 @@ from regulations.uitests.base_test import BaseTest
 
 class NavigationTest(BaseTest, unittest.TestCase):
 
-    def job_name(self):
-        return 'Navigation test'
+    job_name = 'Navigation test'
 
     def test_navigation(self):
         self.driver.get(self.test_url + '/1005-5/2012-12121')
@@ -40,6 +39,3 @@ class NavigationTest(BaseTest, unittest.TestCase):
         # should navigate to 1005-4
         WebDriverWait(self.driver, 30).until(
             lambda driver: driver.find_element_by_id('1005-4'))
-
-if __name__ == '__main__':
-    unittest.main()

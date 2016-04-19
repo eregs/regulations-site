@@ -19,6 +19,8 @@ remote_configs = {
 
 class BaseTest():
 
+    job_name = 'eRegs UI Test'
+
     def setUp(self):
         self.test_url = config['testUrl']
         self.driver = (
@@ -48,7 +50,7 @@ class BaseTest():
 
         username = os.environ['SAUCE_USERNAME']
         key = os.environ['SAUCE_ACCESS_KEY']
-        capabilities['name'] = self.job_name()
+        capabilities['name'] = self.job_name
         capabilities['platform'] = selenium_config['platform']
         capabilities['version'] = selenium_config['version']
         hub_url = "%s:%s" % (username, key)
@@ -58,9 +60,6 @@ class BaseTest():
         jobid = driver.session_id
         print("Sauce Labs job: https://saucelabs.com/jobs/%s" % jobid)
         return driver
-
-    def job_name(self):
-        return 'eRegs UI Test'
 
     def tearDown(self):
         self.driver.quit()

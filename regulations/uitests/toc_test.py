@@ -7,8 +7,7 @@ from regulations.uitests.base_test import BaseTest
 
 class TOCTest(BaseTest, unittest.TestCase):
 
-    def job_name(self):
-        return 'TOC test'
+    job_name = 'TOC test'
 
     def test_toc(self):
         self.driver.set_window_size(1024, 600)
@@ -58,6 +57,3 @@ class TOCTest(BaseTest, unittest.TestCase):
         # make sure that the current class has been removed from the prev
         # section
         self.assertFalse('current' in toc_link_1005_1.get_attribute('class'))
-
-if __name__ == '__main__':
-    unittest.main()

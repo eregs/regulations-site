@@ -7,8 +7,7 @@ from regulations.uitests.base_test import BaseTest
 
 class InterpTest(BaseTest, unittest.TestCase):
 
-    def job_name(self):
-        return 'Interp test'
+    job_name = 'Interp test'
 
     def test_interps(self):
         self.driver.get(self.test_url + '/1005-2/2012-12121')
@@ -60,6 +59,3 @@ class InterpTest(BaseTest, unittest.TestCase):
 
         # header should reflect close
         self.assertTrue('SHOW' in interp_dropdown.text)
-
-if __name__ == '__main__':
-    unittest.main()

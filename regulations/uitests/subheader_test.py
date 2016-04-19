@@ -4,8 +4,7 @@ from regulations.uitests.base_test import BaseTest
 
 
 class SubheaderTests(BaseTest, unittest.TestCase):
-    def job_name(self):
-        return 'Subheader tests'
+    job_name = 'Subheader tests'
 
     def test_effective_date(self):
         self.driver.get(self.test_url + '/1005-1/2012-12121')
