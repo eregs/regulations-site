@@ -19,7 +19,7 @@ from requests.exceptions import RequestException
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from celery import shared_task
-from celery.app.task import Task
+from celery.exceptions import MaxRetriesExceededError
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
@@ -37,46 +37,47 @@ def submit_comment(self, body, files):
     The main comment is converted to a PDF and added as an attachment; the
     'general_comment' field refers to this attachment.
     '''
-    html = json_to_html(body)
     try:
-        with html_to_pdf(html) as comment, \
-                build_attachments(files) as attachments:
-            fields = [
-                ('comment_on', settings.COMMENT_DOCUMENT_ID),
-                # TODO: Ensure this name is unique
-                ('uploadedFile', ('comment.pdf', comment)),
-                ('general_comment', 'See attached comment.pdf'),
-            ]
+        html = json_to_html(body)
+        try:
+            with html_to_pdf(html) as comment, \
+                    build_attachments(files) as attachments:
+                fields = [
+                    ('comment_on', settings.COMMENT_DOCUMENT_ID),
+                    # TODO: Ensure this name is unique
+                    ('uploadedFile', ('comment.pdf', comment)),
+                    ('general_comment', 'See attached comment.pdf'),
+                ]
 
-            # Add other submitted fields
-            fields.extend([
-                (name, value)
-                for name, value in six.iteritems(body)
-                if name != 'general_comment'
-            ])
-            fields.extend(attachments)
+                # Add other submitted fields
+                fields.extend([
+                    (name, value)
+                    for name, value in six.iteritems(body)
+                    if name != 'general_comment'
+                ])
+                fields.extend(attachments)
 
-            data = MultipartEncoder(fields)
-            response = requests.post(
-                settings.REGS_GOV_API_URL,
-                data=data,
-                headers={
-                    'Content-Type': data.content_type,
-                    'X-Api-Key': settings.REGS_GOV_API_KEY,
-                }
-            )
-            if response.status_code != requests.codes.created:
-                logger.warn("Post to regulations.gov failed: %s %s",
-                            response.status_code, response.text)
-                raise self.retry()
-            logger.info(response.text)
-            return response.json()
-    except (ClientError, RequestException) as exc:
-        logger.exception(exc)
-        raise self.retry(exc=exc)
-    except Task.MaxRetriesExceededError as exc:
+                data = MultipartEncoder(fields)
+                response = requests.post(
+                    settings.REGS_GOV_API_URL,
+                    data=data,
+                    headers={
+                        'Content-Type': data.content_type,
+                        'X-Api-Key': settings.REGS_GOV_API_KEY,
+                    }
+                )
+                if response.status_code != requests.codes.created:
+                    logger.warn("Post to regulations.gov failed: %s %s",
+                                response.status_code, response.text)
+                    raise self.retry()
+                logger.info(response.text)
+                return response.json()
+        except (RequestException, ClientError):
+            logger.exception("Unable to submit comment")
+            raise self.retry()
+    except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
-        logger.exception(message)
+        logger.error(message)
         failed_submission = FailedCommentSubmission(body=body, files=files)
         failed_submission.save()
         return {'message': message, 'trackingNumber': None}
