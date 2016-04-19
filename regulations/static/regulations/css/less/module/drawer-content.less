@@ -8,23 +8,30 @@ This contains all of the styles specific to the TOC
     padding-top: 40px;
 
     &.preamble-nav {
-      padding: 62px 0 0 15px;
+      padding: 62px 0 0 10px;
 
-      a {
+      .toc-item {
         text-indent: -15px;
+        padding: 7px 15px 5px 5px;
+      }
+
+      a:hover,
+      a:active,
+      .current {
+        padding-left: 105px;
       }
 
       .toc-level-1 > a {
         margin-left: -100px;
-        padding-left: 110px;
+        padding: 9px 0 9px 110px;
         .font-bold;
-        border-top: 1px solid @dark_field;
+        border-top: 1px solid @light_field;
       }
 
       .toc-level-1 > ol {
         margin-left: -100px;
-        padding-left: 110px;
-        border-top: 1px solid @dark_field;
+        padding: 4px 0 10px 105px;
+        border-top: 1px solid @light_field;
       }
     }
 
@@ -58,6 +65,7 @@ This contains all of the styles specific to the TOC
         display: block;
         padding: 7px 15px 8px 5px;
         line-height: 1.3;
+        outline: none;
     }
 
     a:link,

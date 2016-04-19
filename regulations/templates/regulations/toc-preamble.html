@@ -1,15 +1,18 @@
-<ol>
-  {% for item in preamble_toc %}
-    <li {% if item.depth == 1 %} class="toc-level-1" {% endif %}>
-        <a
-            href="{{item.url}}"
-            data-section-id="{{item.full_id}}">
-          {{item.title}}
-        </a>
+{% if preamble_toc %}
+  <ol>
+    {% for item in preamble_toc %}
+      <li {% if item.depth == 1 %} class="toc-level-1" {% endif %}>
+          <a
+              href="{{item.url}}"
+              data-section-id="{{item.full_id}}"
+              class="toc-item">
+            {{item.title}}
+          </a>
 
-      {% with preamble_toc=item.children %}
-        {% include "regulations/toc-preamble.html" %}
-      {% endwith %}
-    </li>
-    {% endfor %}
-</ol>
+        {% with preamble_toc=item.children %}
+          {% include "regulations/toc-preamble.html" %}
+        {% endwith %}
+      </li>
+      {% endfor %}
+  </ol>
+{% endif %}
