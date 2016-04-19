@@ -1,3 +1,6 @@
+{% comment %} 
+Check for preamble_toc first so empty <ol>s aren't drawn when it loops back through.
+{% endcomment %}
 {% if preamble_toc %}
   <ol>
     {% for item in preamble_toc %}
