@@ -8,7 +8,24 @@ This contains all of the styles specific to the TOC
     padding-top: 40px;
 
     &.preamble-nav {
-      padding-top: 72px;
+      padding: 62px 0 0 15px;
+
+      a {
+        text-indent: -15px;
+      }
+
+      .toc-level-1 > a {
+        margin-left: -100px;
+        padding-left: 110px;
+        .font-bold;
+        border-top: 1px solid @dark_field;
+      }
+
+      .toc-level-1 > ol {
+        margin-left: -100px;
+        padding-left: 110px;
+        border-top: 1px solid @dark_field;
+      }
     }
 
     ol {
@@ -92,8 +109,8 @@ This contains all of the styles specific to the TOC
 
 /* Negative margin, positive padding to extend borders full width */
 .subpart-heading {
-    margin: 0 0 0 -10px;
-    padding: 10px 15px;
+    margin: 0 0 0 -100px;
+    padding: 10px 105px;
     display: block;
     line-height: 1.4;
     background-color: #F8F8F8;
