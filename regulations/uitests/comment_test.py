@@ -11,7 +11,7 @@ class CommentTest(BaseTest, unittest.TestCase):
     job_name = 'Comment test'
 
     def test_comment(self):
-        self.driver.get(self.test_url + '/preamble/2016_02749')
+        self.driver.get(self.test_url + '/preamble/2016_02749/I')
         html = self.driver.find_element_by_tag_name('html')
         WebDriverWait(self.driver, 60).until(
             lambda driver: 'selenium-start' in html.get_attribute('class'))
@@ -45,7 +45,7 @@ class CommentTest(BaseTest, unittest.TestCase):
             '.comment-index-review').click()
 
         # Verify comment in review text
-        text = self.driver.find_element_by_css_selector(
-            '.comments').text
-        assert_in(comment_label, text)
-        assert_in('i prefer not to', text)
+        html = self.driver.find_element_by_css_selector(
+            '.comments').get_attribute('innerHTML')
+        assert_in(comment_label, html)
+        assert_in('i prefer not to', html)
