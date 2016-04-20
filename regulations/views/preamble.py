@@ -215,6 +215,7 @@ class PreambleView(View):
         sub_context = generate_html_tree(subtree, request,
                                          id_prefix=[doc_number, 'preamble'])
         template = sub_context['node']['template_name']
+        sub_context['meta'] = context['meta']
 
         context.update({
             'sub_context': sub_context,
@@ -265,6 +266,7 @@ class CFRChangesView(View):
                 doc_number=doc_number,
                 label_id=section,
             )
+        sub_context['meta'] = context['meta']
 
         context.update({
             'sub_context': sub_context,
