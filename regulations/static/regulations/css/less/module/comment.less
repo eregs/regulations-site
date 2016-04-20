@@ -37,10 +37,15 @@ comment.less contains styles related to commenting on sections
     cursor: pointer;
     display: inline-block;
     .font-regular;
+    height: 34px;
     font-size: 15px;
     text-align: center;
     margin-right: -4px;
     width: 245px;
+
+    &:hover:not(.active-mode) {
+      height: 33px;
+    }
   }
 
   .active-mode {
