@@ -1,0 +1,73 @@
+{% extends "regulations/chrome.html" %}
+{% load static from staticfiles %}
+{% load macros render_nested %}
+
+{% block title %}Preamble {{doc_number}}{% endblock %}
+
+{% block sidebar-icons %}
+<li>
+  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Preamble Table of Contents">Pre</a>
+</li>
+<li>
+  <a href="#table-of-contents-secondary" id="table-of-contents-secondary-link" class="toc-nav-link" title="CFR Changes">CFR</a>
+</li>
+{% endblock %}
+
+{% block wayfinding %}{% endblock %}
+
+{% block header-secondary %}
+  {% include "regulations/preamble-header.html" %}
+{% endblock %}
+
+{% block whole-toc %}
+<div id="menu" class="panel">
+  <div class="toc-drawer toc-container current hidden diff-toc" id="table-of-contents">
+    <div class="drawer-header">
+      <h3 class="toc-type">Table of Contents</h3>
+      <h5 class="toc-subheader">Preamble</h5>
+    </div><!-- /.drawer-header -->
+    <nav id="toc" class="regulation-nav drawer-content" role="navigation">
+      <ol>
+        {% for child in preamble.children %}
+          {% if child.title %}
+            <li>
+              <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}">{{child.title}}</a>
+            </li>
+            {% for subchild in child.children %}
+              {% if subchild.title %}
+                <li><a href="{% url "chrome_preamble" paragraphs=subchild.label|join:"/" %}"
+                       style="padding-left: 2em;">{{subchild.title}}</a></li>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </nav>
+  </div>
+
+  <div id="table-of-contents-secondary" class="toc-container hidden">
+    <div class="drawer-header">
+      <h3 class="toc-type">Table of Contents</h3>
+      <h5 class="toc-subheader">Amendments to the CFR</h5>
+    </div>
+    <nav id="cfr-toc" class="regulation-nav drawer-content" role="navigation">
+      <ol>
+        {% for cfr_part_toc in cfr_change_toc %}
+          <li>
+            <h3 class="subpart-heading">{{cfr_part_toc.title}} CFR {{cfr_part_toc.part}}</h3>
+          </li>
+          <li><a href="{{cfr_part_toc.authority_url}}">Authority</a></li>
+          {% for section_toc in cfr_part_toc.sections %}
+            <li><a href="{{section_toc.url}}" data-section-id="{{section_toc.full_id}}">{{section_toc.title}}</a></li>
+          {% endfor %}
+        {% endfor %}
+      </ol>
+    </nav>
+  </div>
+
+</div> <!-- /.panel -->
+{% endblock %}
+
+{% block chrome-content %}{% endblock %}
+
+{% block chrome-sidebar %}{% endblock %}
