@@ -7,6 +7,7 @@ module.exports = Backbone.Model.extend({
   defaults: {
     label: '',
     comment: '',
+    commentHtml: '',
     files: []
   }
 });
