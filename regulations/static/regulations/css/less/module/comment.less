@@ -11,13 +11,13 @@ comment.less contains styles related to commenting on sections
 
   // for paragraphs, only show write comment link when hovered
   .node:hover {
-    > p + .activate-write {
+    > p + .activate-write:not(.called-out) {
       top: 15px;
       display: block;
     }
   }
 
-  p + .activate-write {
+  p + .activate-write:not(.called-out) {
     display: none;
   }
 }

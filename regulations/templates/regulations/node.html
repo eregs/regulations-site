@@ -33,10 +33,10 @@
 {% endif %}
 </span>
 </p>
-{% comment %}@TODO use node.comments_calledout{% endcomment %}
+
 {% if node.accepts_comments and not node.title %}
   <div
-      class="activate-write"
+      class="activate-write{% if node.comments_calledout %} called-out{% endif %}"
       data-section="{{ node.full_id }}"
       data-label="{{ node.human_label }}">
 
