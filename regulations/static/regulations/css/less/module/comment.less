@@ -9,16 +9,16 @@ comment.less contains styles related to commenting on sections
   padding: 0 0 0 15px;
   word-wrap: break-word;
 
-  // for paragraphs, only show write comment link when hovered
-  .node:hover {
-    > p + .activate-write:not(.called-out) {
-      top: 15px;
-      display: block;
+  .not-called-out {
+    .activate-write {
+      display: none;
     }
-  }
 
-  p + .activate-write:not(.called-out) {
-    display: none;
+    &:hover {
+      .activate-write {
+        display: block;
+      }
+    }
   }
 }
 
@@ -78,6 +78,10 @@ comment.less contains styles related to commenting on sections
   &:hover {
     color: @pacific_hover;
   }
+}
+
+p + .activate-write {
+  top: 15px;
 }
 
 .paragraph-comment-icon {
