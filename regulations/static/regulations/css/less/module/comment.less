@@ -9,11 +9,15 @@ comment.less contains styles related to commenting on sections
   padding: 0 0 0 15px;
   word-wrap: break-word;
 
+  // for hiding write comment links on paragraphs
+  // when section is not called out for comment
   .not-called-out {
     .activate-write {
       display: none;
     }
 
+    // then show write comment links when paragraph
+    // section is hovered
     &:hover {
       .activate-write {
         display: block;
