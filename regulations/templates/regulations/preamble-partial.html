@@ -29,7 +29,7 @@
     </div>
     <div class="comment-index">
       <ul class="comment-index-items"></ul>
-      <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review</a>
+      <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review and Submit</a>
     </div>
   </div>
 </section>
@@ -44,6 +44,9 @@
 </script>
 
 <script id="comment-index-template" type="text/template">
+  <p class="comment-index-description">
+    You have <span class="comment-count"><%= comments.length == 1 ? comments.length + ' comment' : comments.length + ' comments' %></span> pending. Are you ready to review and submit your full comment?
+  </p>
   <% _.each(comments, function(comment) { %>
     <li
         class="comment-index-item group"
