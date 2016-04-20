@@ -134,11 +134,6 @@ def get_tree_paragraph(paragraph_id, version):
     return api.regulation(paragraph_id, version)
 
 
-def get_all_notices():
-    api = api_reader.ApiReader()
-    return notices.fetch_all(api)
-
-
 def get_notice(document_number):
     """ Get a the data from a particular notice, given the Federal Register
     document number. """
