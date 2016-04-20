@@ -54,4 +54,5 @@ class CommentTest(BaseTest, unittest.TestCase):
         """Verify that the intro meta data is visible"""
         self.driver.get(self.test_url + '/preamble/2016_02749/intro')
         html = self.driver.find_element_by_tag_name('html')
-        self.assertIn('Addition of a Subsurface Intrusion Component', html)
+        self.assertIn('Addition of a Subsurface Intrusion Component',
+                      html.text)
