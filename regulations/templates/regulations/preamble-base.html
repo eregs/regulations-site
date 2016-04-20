@@ -26,22 +26,8 @@
       <h3 class="toc-type">Table of Contents</h3>
       <h5 class="toc-subheader">Preamble</h5>
     </div><!-- /.drawer-header -->
-    <nav id="toc" class="regulation-nav drawer-content" role="navigation">
-      <ol>
-        {% for child in preamble.children %}
-          {% if child.title %}
-            <li>
-              <a href="{% url "chrome_preamble" paragraphs=child.label|join:"/" %}">{{child.title}}</a>
-            </li>
-            {% for subchild in child.children %}
-              {% if subchild.title %}
-                <li><a href="{% url "chrome_preamble" paragraphs=subchild.label|join:"/" %}"
-                       style="padding-left: 2em;">{{subchild.title}}</a></li>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
-      </ol>
+    <nav id="toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
+      {% include "regulations/toc-preamble.html" %}
     </nav>
   </div>
 
@@ -50,7 +36,7 @@
       <h3 class="toc-type">Table of Contents</h3>
       <h5 class="toc-subheader">Amendments to the CFR</h5>
     </div>
-    <nav id="cfr-toc" class="regulation-nav drawer-content" role="navigation">
+    <nav id="cfr-toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
       <ol>
         {% for cfr_part_toc in cfr_change_toc %}
           <li>
@@ -64,7 +50,6 @@
       </ol>
     </nav>
   </div>
-
 </div> <!-- /.panel -->
 {% endblock %}
 
