@@ -44,8 +44,9 @@
 </script>
 
 <script id="comment-index-template" type="text/template">
+  <h3>Your Comment</h3>
   <p class="comment-index-description">
-    You have <span class="comment-count"><%= comments.length == 1 ? comments.length + ' comment' : comments.length + ' comments' %></span> pending. Are you ready to review and submit your full comment?
+    You have <span class="comment-count"><%= comments.length == 1 ? comments.length + ' response' : comments.length + ' responses' %></span> pending.
   </p>
   <% _.each(comments, function(comment) { %>
     <li
