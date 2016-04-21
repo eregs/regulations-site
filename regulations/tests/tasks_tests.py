@@ -23,45 +23,46 @@ from regulations.tasks import submit_comment
 )
 class TestSubmitComment(SimpleTestCase):
 
+    def setUp(self):
+        self.file_handle = six.BytesIO("some-content")
+        self.submission = {'assembled_comment': [
+            {"id": "A1", "comment": "A simple comment", "files": []},
+            {"id": "A5", "comment": "Another comment", "files": []}
+        ]}
+
     def test_submit_comment(self, html_to_pdf, post, retry,
                             save_failed_submission):
-        file_handle = six.BytesIO("foobar")
         html_to_pdf.return_value.__enter__ = mock.Mock(
-            return_value=file_handle)
+            return_value=self.file_handle)
 
-        expected_result = {'tracking_number': '133321'}
+        expected_result = {'tracking_number': 'some-tracking-number'}
         post.return_value.status_code = 201
         post.return_value.json.return_value = expected_result
 
-        body = {'assembled_comment': {'sections': []}}
-        result = submit_comment(body)
+        result = submit_comment(self.submission)
 
         self.assertEqual(result, expected_result)
 
     def test_failed_submit_raises_retry(self, html_to_pdf, post, retry,
                                         save_failed_submission):
-        file_handle = six.BytesIO("foobar")
         html_to_pdf.return_value.__enter__ = mock.Mock(
-            return_value=file_handle)
+            return_value=self.file_handle)
 
         post.side_effect = [RequestException]
 
         retry.return_value = Retry()
 
-        body = {'assembled_comment': {'sections': []}}
         with self.assertRaises(Retry):
-            submit_comment(body)
+            submit_comment(self.submission)
 
     def test_failed_submit_maximum_retries(self, html_to_pdf, post, retry,
                                            save_failed_submission):
-        file_handle = six.BytesIO("foobar")
         html_to_pdf.return_value.__enter__ = mock.Mock(
-            return_value=file_handle)
+            return_value=self.file_handle)
 
         post.side_effect = [RequestException]
 
         retry.return_value = MaxRetriesExceededError()
 
-        body = {'assembled_comment': {'sections': []}}
-        submit_comment(body)
-        save_failed_submission.assert_called_with(json.dumps(body))
+        submit_comment(self.submission)
+        save_failed_submission.assert_called_with(json.dumps(self.submission))
