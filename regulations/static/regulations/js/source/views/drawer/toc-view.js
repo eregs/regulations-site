@@ -68,7 +68,7 @@ var TOCView = Backbone.View.extend({
         e.preventDefault();
 
         var sectionId = $(e.currentTarget).data('section-id');
-        var type = $('section[data-page-type]').data('page-type');
+        var type = this.$el.closest('.panel').data('page-type');
         DrawerEvents.trigger('section:open', sectionId);
         MainEvents.trigger('section:open', sectionId, {}, type);
     },

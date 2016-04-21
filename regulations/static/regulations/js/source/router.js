@@ -19,14 +19,12 @@ else {
     RegsRouter = Backbone.Router.extend({
         routes: {
             'sxs/:section/:version': 'loadSxS',
-            'search/:reg': 'loadSearchResults',
+            'search/:docType/:reg': 'loadSearchResults',
             'diff/:section/:baseVersion/:newerVersion': 'loadDiffSection',
             ':section/:version': 'loadSection',
-            ':section': 'loadSection'
-        },
-
-        initialize: function() {
-          this.route(/preamble\/(.*)/, 'loadPreamble');
+            ':section': 'loadSection',
+            'preamble/:docId': 'loadPreamble',
+            'preamble/:docId/:section': 'loadPreamble'
         },
 
         loadSection: function(section) {
@@ -41,12 +39,17 @@ else {
             MainEvents.trigger('section:open', section, options, 'reg-section');
         },
 
-        loadPreamble: function(section) {
-            section = section.split('/').join('-');
-            var options = {id: section};
+        loadPreamble: function(docId, section) {
+            var parts = [docId];
+            if (section) {
+              parts.concat(section);
+            }
 
-            // ask the view not to route, its not needed
-            options.noRoute = true;
+            var options = {
+              id: parts.join('-'),
+              scrollToId: Backbone.history.getHash(),
+              noRoute: true
+            };
 
             MainEvents.trigger('section:open', section, options, 'preamble-section');
         },
@@ -71,10 +74,11 @@ else {
             });
         },
 
-        loadSearchResults: function(reg, params) {
+        loadSearchResults: function(docType, reg, params) {
             var config = {
                 query: params.q,
-                regVersion: params.regVersion
+                regVersion: params.regVersion,
+                docType: docType
             };
 
             // if there is a page number for the query string

@@ -78,7 +78,7 @@
 {% endcomment %}
 {% block whole-toc %}
 {% with active_version=version %}
-<div id="menu" class="panel" data-reg-id="{{ reg_part }}" data-cfr-title-number="{{meta.cfr_title_number}}">
+<div id="menu" class="panel" data-page-type="reg-section" data-doc-id="{{ reg_part }}" data-cfr-title-number="{{meta.cfr_title_number}}">
     {% block drawer-toc %}
         {%if TOC %}
             {% with nav_class='regulation-nav' toc_items=TOC top_toc=True %}

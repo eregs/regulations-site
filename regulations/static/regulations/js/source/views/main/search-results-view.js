@@ -1,5 +1,6 @@
 'use strict';
 var $ = require('jquery');
+var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var SearchModel = require('../../models/search-model.js');
@@ -23,7 +24,7 @@ var SearchResultsView = ChildView.extend({
         // because the user can select a different version to pull search results from
         this.resultsRegVersion = this.options.regVersion;
         this.page = parseInt(this.options.page, 10) || 0;
-        this.title = 'Search of ' + this.options.regPart + ' for ' + this.query + ' | eRegulations';
+        this.title = 'Search of ' + this.options.docId + ' for ' + this.query + ' | eRegulations';
 
         // if the browser doesn't support pushState, don't
         // trigger click events for links
@@ -39,6 +40,8 @@ var SearchResultsView = ChildView.extend({
             this.url = 'search/' + this.options.id;
 
             ChildView.prototype.initialize.apply(this, arguments);
+        } else {
+            this.options.docType = this.$el.data('doc-type');
         }
 
     },
@@ -48,15 +51,16 @@ var SearchResultsView = ChildView.extend({
     },
 
     assembleSearchURL: function(options) {
-        var url = options.regPart;
-        url += '?q=' + options.query;
-        url += '&version=' + options.regVersion;
-
-        if (typeof options.page !== 'undefined') {
-            url += '&page=' + options.page;
+        var docType = options.docType || 'cfr';
+        var path = [docType, options.docId].join('/');
+        var query = {q: options.query};
+        if (options.regVersion) {
+          query.version = options.regVersion;
         }
-
-        return url;
+        if (typeof options.page !== 'undefined') {
+          query.page = options.page;
+        }
+        return URI(path).query(query).toString();
     },
 
     render: function() {
@@ -78,28 +82,30 @@ var SearchResultsView = ChildView.extend({
     paginate: function(e) {
         e.preventDefault();
 
-        var page = $(e.target).hasClass('previous') ? this.page - 1 : this.page + 1,
-            config = {
-                query: this.query,
-                regVersion: this.resultsRegVersion,
-                page: page
-            };
+        var options = {
+          query: this.options.query,
+          docType: this.options.docType,
+          regVersion: this.options.regVersion,
+          page: this.page + ($(e.target).hasClass('previous') ? -1 : 1)
+        };
 
-        MainEvents.trigger('search-results:open', null, config, 'search-results');
+        MainEvents.trigger('search-results:open', null, options, 'search-results');
     },
 
     openResult: function(e) {
         // TOC version retains the version the reg was loaded on whereas the content base section
         // changes to match the search results
         // page should reload if the TOC version doesn't match the searched version
-        if (this.resultsRegVersion === $('nav#toc').attr('data-toc-version')) {
+        if (!this.resultsRegVersion || this.resultsRegVersion === $('nav#toc').attr('data-toc-version')) {
             e.preventDefault();
-            var $resultLink = $(e.target),
-                config = {};
+            var $resultLink = $(e.target);
+            var pageType = this.options.docType === 'cfr' ? 'reg-section' : 'preamble-section';
+            var options = {
+              regVersion: $resultLink.data('linked-version'),
+              scrollToId: $resultLink.data('linked-subsection')
+            };
 
-            config.regVersion = $resultLink.data('linked-version');
-            config.scrollToId = $resultLink.data('linked-subsection');
-            MainEvents.trigger('section:open', $resultLink.data('linked-section'), config, 'reg-section');
+            MainEvents.trigger('section:open', $resultLink.data('linked-section'), options, pageType);
         }
     }
 });

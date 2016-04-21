@@ -2,12 +2,12 @@
 Partial Search Results.
 {% endcomment %}
 
-<div id="content-wrapper" class="search-results">
+<div id="content-wrapper" class="search-results" data-doc-type="{{doc_type}}">
     {% for warning in warnings %}
     <div class="error">{{ warning }}</div>
     {% endfor %}
 
-    <section data-page-type="search-results" data-base-version="{{ version }}">
+    <section data-page-type="search-results" data-base-version="{{ version|default:"" }}">
         <h2 class="search-term">Searching for “{{ q }}”</h2>
         {% if not skip_count %}
         <span id="result-count">{{ results.total_hits }} result{{ results.results|pluralize }}</span>
@@ -28,11 +28,11 @@ Partial Search Results.
     {% if results.results %}
     <footer class="search-nav">
     {% if previous %}
-    <a class="previous" href="{% url 'chrome_search' regulation %}?q={{ q|urlencode }}&version={{ version|urlencode }}&page={{ previous.page }}"><span class="cf-icon cf-icon-left"></span>Previous {{ previous.length }} Results</a>
+    <a class="previous" href="{% url url_rule regulation %}?q={{ q|urlencode }}&version={{ version|urlencode }}&page={{ previous.page }}"><span class="cf-icon cf-icon-left"></span>Previous {{ previous.length }} Results</a>
     {% endif %}
 
     {% if next %}
-    <a class="next" href="{% url 'chrome_search' regulation %}?q={{ q|urlencode }}&version={{ version|urlencode }}&page={{ next.page }}"><span class="cf-icon cf-icon-right"></span>Next {{ next.length }} Results</a>
+    <a class="next" href="{% url url_rule regulation %}?q={{ q|urlencode }}&version={{ version|urlencode }}&page={{ next.page }}"><span class="cf-icon cf-icon-right"></span>Next {{ next.length }} Results</a>
     {% endif %}
 
     <div class="pager">Page {{ current.page }} of {{ current.total }}</div>

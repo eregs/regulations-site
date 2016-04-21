@@ -37,8 +37,12 @@ var SubHeadView = Backbone.View.extend({
 
     changeDate: function() {
         this.version = $('section[data-base-version]').data('base-version');
-        this.displayDate = $('select[name=version] option[value='+this.version+']').text();
-        $('.effective-date').html('<strong>Effective date:</strong> ' + this.displayDate);
+        if (this.version) {
+          this.displayDate = $('select[name=version] option[value=' + this.version + ']').text();
+          $('.effective-date').html('<strong>Effective date:</strong> ' + this.displayDate);
+        } else {
+          $('.effective-date').html('');
+        }
     },
 
     renderSubpart: function(label) {

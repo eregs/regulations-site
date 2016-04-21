@@ -60,7 +60,7 @@ var MainView = Backbone.View.extend({
             //  Find the first child which *does* have a label
             this.sectionId = this.$topSection.find('section[id]').attr('id');
         }
-        this.regPart = $('#menu').data('reg-id');
+        this.docId = $('#menu').data('doc-id');
         this.cfrTitle = $('#menu').data('cfr-title-number');
 
         // build options object to pass into child view constructor
@@ -151,7 +151,7 @@ var MainView = Backbone.View.extend({
         options.id = id;
         options.type = this.contentType;
         options.regVersion = this.regVersion;
-        options.regPart = this.regPart;
+        options.docId = this.docId;
         options.model = this.modelmap[this.contentType];
         options.cb = this.render;
         options.cfrTitle = this.cfrTitle;

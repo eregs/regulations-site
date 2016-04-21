@@ -1,0 +1,22 @@
+{% extends "regulations/preamble-base.html" %}
+
+{% block title %}
+Search of {{reg_part}} for {{q}} | eRegulations
+{% endblock %}
+
+{% block active_title %}
+<em class="header-label">
+<span class="subpart">Search results</span> {{ results.total_hits }} result{{ results.total_hits|pluralize }}
+</em>
+{% endblock %}
+
+{% block chrome-content %}
+<main role="main">
+  <div id="content-body" class="main-content">
+      {% load render_nested %}
+      {% if main_content_template %}
+          {% render_nested template=main_content_template context=main_content_context %}
+      {% endif %}
+  </div> <!-- /.main-content -->
+</main>
+{% endblock %}

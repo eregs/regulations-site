@@ -17,7 +17,8 @@ from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
 from regulations.views.preamble import (
-    CFRChangesView, PreambleView, PrepareCommentView)
+    CFRChangesView, PreambleView, PrepareCommentView,
+    ChromePreambleSearchView)
 from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
@@ -31,9 +32,10 @@ newer_version_pattern = meta_version % 'newer_version'
 notice_pattern = meta_version % 'notice_id'
 
 reg_pattern = r'(?P<label_id>[\d]+)'
+preamble_pattern = r'(?P<label_id>[\w]+)'
 section_pattern = r'(?P<label_id>[\d]+[-][\w]+)'
-interp_pattern = r'(?P<label_id>[-\d\w]+[-]Interp)'
-paragraph_pattern = r'(?P<label_id>[-\d\w]+)'
+interp_pattern = r'(?P<label_id>[-\w]+[-]Interp)'
+paragraph_pattern = r'(?P<label_id>[-\w]+)'
 subterp_pattern = r'(?P<label_id>[\d]+-(Appendices|Subpart(-[A-Z]+)?)-Interp)'
 
 lt_cache = cache_page(settings.CACHES['eregs_longterm_cache']['TIMEOUT'],
@@ -67,9 +69,12 @@ urlpatterns = patterns(
         name='chrome_sxs_view'),
     # Search results for non-JS viewers
     # Example: http://.../search?q=term&version=2011-1738
-    url(r'^search/%s$' % reg_pattern,
-        ChromeSearchView.as_view(),
-        name='chrome_search'),
+    url(r'^search(?:/cfr)?/%s$' % reg_pattern,
+        ChromeSearchView.as_view(), name='chrome_search',
+        kwargs={'doc_type': 'cfr'}),
+    url(r'^search/preamble/%s$' % preamble_pattern,
+        ChromePreambleSearchView.as_view(), name='chrome_search_preamble',
+        kwargs={'doc_type': 'preamble'}),
     # Diff view of a section for non-JS viewers (or book markers)
     # Example: http://.../diff/201-4/2011-1738/2013-10704
     url(r'^diff/%s/%s/%s$' %
@@ -130,9 +135,12 @@ urlpatterns = patterns(
         name='sidebar'),
 
     # Load just search results
-    url(r'^partial/search/%s$' % reg_pattern,
-        PartialSearch.as_view(),
-        name='partial_search'),
+    url(r'^partial/search(?:/cfr)?/%s$' % reg_pattern,
+        PartialSearch.as_view(), name='partial_search',
+        kwargs={'doc_type': 'cfr'}),
+    url(r'^partial/search/preamble/%s$' % preamble_pattern,
+        PartialSearch.as_view(), name='partial_search',
+        kwargs={'doc_type': 'preamble'}),
 
     # A diff view of a section (without chrome)
     url(r'^partial/diff/%s/%s/%s$' % (
