@@ -8,11 +8,14 @@ var $ = require('jquery');
  * addition to an $expander to expand collapsed $li texts. Each method returns
  * an updated $expander.
  */
+
+var starContent = '<button class="show-more-context">&#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733; <span>Show more context</span> &#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733;</button>';
+
 module.exports = {
   none: function() { return null; },  /* No changes, no new expander */
   inline: function($li) {
     var $toShow = $li.find('.paragraph-text:first').hide();
-    var $expander = $('<button>* * *</button>').insertBefore($toShow);
+    var $expander = $(starContent).insertBefore($toShow);
     var $paragraph = $expander.parent();
 
     $expander.click(function() {
@@ -38,7 +41,7 @@ module.exports = {
       $toShow = $li.hide();
     } else {
       $toShow = $li.children().hide();
-      $expander = $('<button>STARS</button>').insertBefore($toShow);
+      $expander = $(starContent).insertBefore($toShow);
       $expander.click(function() { $expander.remove(); });
     }
 
