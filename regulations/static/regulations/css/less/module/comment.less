@@ -69,8 +69,6 @@ comment.less contains styles related to commenting on sections
 }
 
 .activate-write {
-  color: @pacific_light;
-  cursor: pointer;
   font-family: Arial, sans-serif;
   font-size: 15px;
   font-weight: bold;
@@ -79,7 +77,12 @@ comment.less contains styles related to commenting on sections
   top: -5px;
   width: 230px;
 
-  &:hover {
+  a {
+    color: @pacific_light;
+    display: block;
+  }
+
+  &:hover a, a:focus {
     color: @pacific_hover;
   }
 }
