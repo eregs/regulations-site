@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import title
 
 from regulations.generator import api_reader, node_types
+from regulations.generator.html_builder import PreambleHTMLBuilder
 from regulations.generator.section_url import SectionUrl
 from regulations.generator.versions import fetch_grouped_history
 from regulations.views.partial import PartialView
@@ -86,33 +87,51 @@ class PartialSearch(PartialView):
                 context['regulation'], api_page)
 
         self.reduce_results(results, page)
-        section_url = SectionUrl()
-
-        for result in results['results']:
-            result['header'] = node_types.label_to_text(result['label'])
-            if 'title' in result:
-                result['header'] += ' ' + title(result['title'])
-            if doc_type == 'cfr':
-                result['section_id'] = section_url.view_label_id(
-                    result['label'], context['version'])
-                result['url'] = section_url.fetch(
-                    result['label'], context['version'], sectional=True)
-            else:
-                result['section_id'] = '-'.join(
-                    [result['label'][0], 'preamble'] + result['label'])
-                result['url'] = reverse(
-                    'chrome_preamble',
-                    kwargs={'paragraphs': '/'.join(result['label'][:2])},
-                )
-        context['results'] = results
 
         if doc_type == 'cfr':
-            for version in fetch_grouped_history(context['regulation']):
-                for notice in version['notices']:
-                    if notice['document_number'] == context['version']:
-                        context['version_by_date'] = notice['effective_on']
+            transform_context_for_cfr(context, results)
+        else:
+            transform_context_for_preamble(context, results)
 
         self.add_prev_next(page, context)
         self.final_context = context
 
         return context
+
+
+def transform_context_for_cfr(context, results):
+    """Modify the results of a search over the CFR by adding a human-readable
+    label, appropriate links, and version information"""
+    section_url = SectionUrl()
+
+    for result in results['results']:
+        result['header'] = node_types.label_to_text(result['label'])
+        if 'title' in result:
+            result['header'] += ' ' + title(result['title'])
+        result['section_id'] = section_url.view_label_id(
+            result['label'], context['version'])
+        result['url'] = section_url.fetch(
+            result['label'], context['version'], sectional=True)
+
+    context['results'] = results
+
+    for version in fetch_grouped_history(context['regulation']):
+        for notice in version['notices']:
+            if notice['document_number'] == context['version']:
+                context['version_by_date'] = notice['effective_on']
+
+
+def transform_context_for_preamble(context, results):
+    """Modify the results of a search over a notice preamble by adding a
+    human-readable label, appropriate links, etc."""
+    for result in results['results']:
+        result['header'] = PreambleHTMLBuilder.human_label(result)
+        if 'title' in result:
+            result['header'] += ' ' + title(result['title'])
+        result['section_id'] = '-'.join(
+            [result['label'][0], 'preamble'] + result['label'])
+        result['url'] = reverse(
+            'chrome_preamble',
+            kwargs={'paragraphs': '/'.join(result['label'][:2])},
+        )
+    context['results'] = results

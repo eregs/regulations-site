@@ -211,7 +211,7 @@ class PreambleHTMLBuilder(HTMLBuilder):
         elif len(prefix) > 1:
             label = 'Section ' + '.'.join(prefix[1:])
             count = len(node['label']) - len(prefix)
-            if count:
+            if count and node.get('indexes'):
                 paragraphs = '.'.join(
                     str(idx + 1)
                     for idx in node['indexes'][-count:]
