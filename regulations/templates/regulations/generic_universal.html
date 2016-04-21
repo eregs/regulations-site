@@ -44,7 +44,7 @@
     <div class="group">
       <div class="content-primary column-l bump">
         <h2 class="small-header light-header">
-            Title {{cfr_title_number|upper}} {{cfr_title_text}}
+            {% block cfr_title %}Title {{cfr_title_number|upper}} {{cfr_title_text}}{% endblock %}
         </h2>
 
         <ul class="reg-list">
