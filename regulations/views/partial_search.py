@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.template.defaultfilters import title
 
 from regulations.generator import api_reader, node_types
@@ -46,13 +47,14 @@ class PartialSearch(PartialView):
         results['total_hits'] -= num_results_ignored
         results['results'] = results['results'][page_idx:page_idx + PAGE_SIZE]
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, doc_type, **kwargs):
         # We don't want to run the content data of PartialView -- it assumes
         # we will be applying layers
         context = super(PartialView, self).get_context_data(**kwargs)
 
         context['q'] = self.request.GET.get('q')
         context['version'] = self.request.GET.get('version')
+        context['doc_type'] = doc_type
 
         context['regulation'] = context['label_id'].split('-')[0]
 
@@ -66,15 +68,15 @@ class PartialSearch(PartialView):
         context['warnings'] = []
         if not context['q']:
             context['warnings'].append('Please provide a query.')
-        if not context['version']:
+        if not doc_type == 'cfr' and context['version']:
             context['warnings'].append('Please provide a version.')
 
         if context['warnings']:
             results = {'results': [], 'total_hits': 0}
         else:
             results = api_reader.ApiReader().search(
-                context['q'], context['version'], context['regulation'],
-                api_page)
+                context['q'], context['doc_type'], context['version'],
+                context['regulation'], api_page)
 
         self.reduce_results(results, page)
         section_url = SectionUrl()
@@ -83,16 +85,25 @@ class PartialSearch(PartialView):
             result['header'] = node_types.label_to_text(result['label'])
             if 'title' in result:
                 result['header'] += ' ' + title(result['title'])
-            result['section_id'] = section_url.view_label_id(
-                result['label'], context['version'])
-            result['url'] = section_url.fetch(
-                result['label'], context['version'], sectional=True)
+            if doc_type == 'cfr':
+                result['section_id'] = section_url.view_label_id(
+                    result['label'], context['version'])
+                result['url'] = section_url.fetch(
+                    result['label'], context['version'], sectional=True)
+            else:
+                result['section_id'] = '-'.join(
+                    [result['label'][0], 'preamble'] + result['label'])
+                result['url'] = reverse(
+                    'chrome_preamble',
+                    kwargs={'paragraphs': '/'.join(result['label'][:2])},
+                )
         context['results'] = results
 
-        for version in fetch_grouped_history(context['regulation']):
-            for notice in version['notices']:
-                if notice['document_number'] == context['version']:
-                    context['version_by_date'] = notice['effective_on']
+        if doc_type == 'cfr':
+            for version in fetch_grouped_history(context['regulation']):
+                for notice in version['notices']:
+                    if notice['document_number'] == context['version']:
+                        context['version_by_date'] = notice['effective_on']
 
         self.add_prev_next(page, context)
         self.final_context = context

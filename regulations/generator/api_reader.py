@@ -120,7 +120,8 @@ class ApiReader(object):
             ['notice', fr_document_number],
             'notice/%s' % fr_document_number)
 
-    def search(self, query, version=None, regulation=None, page=0):
+    def search(self, query, doc_type='cfr', version=None, regulation=None,
+               page=0):
         """Search via the API. Never cache these (that's the duty of the search
         index)"""
         params = {'q': query, 'page': page}
@@ -128,7 +129,7 @@ class ApiReader(object):
             params['version'] = version
         if regulation:
             params['regulation'] = regulation
-        return self.client.get('search', params)
+        return self.client.get('/'.join(['search', doc_type]), params)
 
     def preamble(self, doc_number):
         return self._get(

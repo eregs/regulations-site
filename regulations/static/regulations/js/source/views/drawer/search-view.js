@@ -25,11 +25,13 @@ var SearchView = Backbone.View.extend({
         sessionStorage.setItem('drawerDefault', 'search');
 
         e.preventDefault();
-        var $form = $(e.target),
-            options = {};
+        var $form = $(e.target);
+        var options = {
+          docType: $form.data('doc-type'),
+          query: $form.find('input[name="q"]').val(),
+          searchVersion: $form.find('select[name=version]').val()
+        };
 
-        options.query = $form.find('input[name=q]')[0].value;
-        options.searchVersion = $form.find('select[name=version]')[0].value;
         MainEvents.trigger('search-results:open', null, options, 'search-results');
     }
 

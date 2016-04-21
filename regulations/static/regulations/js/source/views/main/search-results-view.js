@@ -48,9 +48,12 @@ var SearchResultsView = ChildView.extend({
     },
 
     assembleSearchURL: function(options) {
-        var url = options.regPart;
+        var docType = options.docType || 'cfr';
+        var url = [docType, options.regPart].join('/');
         url += '?q=' + options.query;
-        url += '&version=' + options.regVersion;
+        if (options.regVersion) {
+          url += '&version=' + options.regVersion;
+        }
 
         if (typeof options.page !== 'undefined') {
             url += '&page=' + options.page;
@@ -78,28 +81,30 @@ var SearchResultsView = ChildView.extend({
     paginate: function(e) {
         e.preventDefault();
 
-        var page = $(e.target).hasClass('previous') ? this.page - 1 : this.page + 1,
-            config = {
-                query: this.query,
-                regVersion: this.resultsRegVersion,
-                page: page
-            };
+        var options = {
+          query: this.options.query,
+          docType: this.options.docType,
+          regVersion: this.options.regVersion,
+          page: this.page + ($(e.target).hasClass('previous') ? -1 : 1)
+        };
 
-        MainEvents.trigger('search-results:open', null, config, 'search-results');
+        MainEvents.trigger('search-results:open', null, options, 'search-results');
     },
 
     openResult: function(e) {
         // TOC version retains the version the reg was loaded on whereas the content base section
         // changes to match the search results
         // page should reload if the TOC version doesn't match the searched version
-        if (this.resultsRegVersion === $('nav#toc').attr('data-toc-version')) {
+        if (!this.resultsRegVersion || this.resultsRegVersion === $('nav#toc').attr('data-toc-version')) {
             e.preventDefault();
-            var $resultLink = $(e.target),
-                config = {};
+            var $resultLink = $(e.target);
+            var pageType = this.options.docType === 'cfr' ? 'reg-section' : 'preamble-section';
+            var options = {
+              regVersion: $resultLink.data('linked-version'),
+              scrollToId: $resultLink.data('linked-subsection')
+            };
 
-            config.regVersion = $resultLink.data('linked-version');
-            config.scrollToId = $resultLink.data('linked-subsection');
-            MainEvents.trigger('section:open', $resultLink.data('linked-section'), config, 'reg-section');
+            MainEvents.trigger('section:open', $resultLink.data('linked-section'), options, pageType);
         }
     }
 });

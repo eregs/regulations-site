@@ -30,7 +30,7 @@ version_pattern = meta_version % 'version'
 newer_version_pattern = meta_version % 'newer_version'
 notice_pattern = meta_version % 'notice_id'
 
-reg_pattern = r'(?P<label_id>[\d]+)'
+reg_pattern = r'(?P<label_id>[\w]+)'
 section_pattern = r'(?P<label_id>[\d]+[-][\w]+)'
 interp_pattern = r'(?P<label_id>[-\d\w]+[-]Interp)'
 paragraph_pattern = r'(?P<label_id>[-\d\w]+)'
@@ -67,9 +67,12 @@ urlpatterns = patterns(
         name='chrome_sxs_view'),
     # Search results for non-JS viewers
     # Example: http://.../search?q=term&version=2011-1738
-    url(r'^search/%s$' % reg_pattern,
-        ChromeSearchView.as_view(),
-        name='chrome_search'),
+    url(r'^search(?:/cfr)?/%s$' % reg_pattern,
+        ChromeSearchView.as_view(), name='chrome_search',
+        kwargs={'doc_type': 'cfr'}),
+    url(r'^search/preamble/%s$' % reg_pattern,
+        ChromeSearchView.as_view(), name='chrome_search',
+        kwargs={'doc_type': 'preamble'}),
     # Diff view of a section for non-JS viewers (or book markers)
     # Example: http://.../diff/201-4/2011-1738/2013-10704
     url(r'^diff/%s/%s/%s$' %
@@ -130,9 +133,12 @@ urlpatterns = patterns(
         name='sidebar'),
 
     # Load just search results
-    url(r'^partial/search/%s$' % reg_pattern,
-        PartialSearch.as_view(),
-        name='partial_search'),
+    url(r'^partial/search(?:/cfr)?/%s$' % reg_pattern,
+        PartialSearch.as_view(), name='partial_search',
+        kwargs={'doc_type': 'cfr'}),
+    url(r'^partial/search/preamble/%s$' % reg_pattern,
+        PartialSearch.as_view(), name='partial_search',
+        kwargs={'doc_type': 'preamble'}),
 
     # A diff view of a section (without chrome)
     url(r'^partial/diff/%s/%s/%s$' % (
