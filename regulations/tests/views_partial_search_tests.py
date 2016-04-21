@@ -45,12 +45,11 @@ class PartialSearchTest(TestCase):
     @patch('regulations.views.partial_search.fetch_grouped_history')
     def test_root_info(self, fetch_grouped_history, api_reader):
         api_reader.ApiReader.return_value.search.return_value = {
-            'total_hits': 3,
+            'total_hits': 2,
             'results': [
                 {'label': ['444', '22'], 'text': 'tttt', 'version': 'vvv',
                  'title':"consumer's"},
                 {'label': ['444', '24', 'a'], 'text': 'o', 'version': 'vvv'},
-                {'label': ['444'], 'text': 'more', 'version': 'vvv'}
             ]
         }
         fetch_grouped_history.return_value = [
@@ -153,21 +152,3 @@ class PartialSearchTest(TestCase):
         view.add_prev_next(7, context)
         self.assertEqual(context['previous'], {'page': 6, 'length': 10})
         self.assertFalse('next' in context)
-
-    def test_reduce_results(self):
-        """Verify that root nodes, subparts, and subject groups get removed"""
-        results = {
-            'total_hits': 5,
-            'results': [
-                {'label': ['111'], 'text': 'Root'},
-                {'label': ['111', 'Subpart'], 'text': 'Empty Part'},
-                {'label': ['111', 'Subpart', 'A'], 'text': 'Subpart A'},
-                {'label': ['111', 'Subjgrp', 'ABC'], 'text': 'Subject group'},
-                {'label': ['111', '12', 'a'], 'text': '111.12(a)'}]
-        }
-        PartialSearch().reduce_results(results, 0)
-
-        self.assertEqual(results['results'], [
-            {'label': ['111', '12', 'a'], 'text': '111.12(a)'}
-        ])
-        self.assertEqual(results['total_hits'], 1)
