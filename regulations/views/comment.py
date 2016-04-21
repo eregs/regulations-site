@@ -91,8 +91,8 @@ def preview_comment(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def submit_comment(request):
-    """Submit a comment to the task queue.
-       The request body is JSON with a 'comment' field and additional fields.
+    """Submit a comment to the task queue. The request body is JSON
+    with an 'assembled_comment' field and additional fields.
     """
     body = json.loads(request.body.decode('utf-8'))
     valid, message = docket.sanitize_fields(body)
@@ -100,7 +100,7 @@ def submit_comment(request):
         logger.error(message)
         return JsonResponse({'message': message}, status=403)
 
-    files = tasks.extract_files(body['general_comment'])
+    files = tasks.extract_files(body['assembled_comment'])
     # Account for the main comment itself submitted as an attachment
     if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
         message = "Too many attachments"

@@ -41,7 +41,7 @@ def submit_comment(self, body):
     '''
     try:
         html = json_to_html(body)
-        files = extract_files(body['general_comment'])
+        files = extract_files(body['assembled_comment'])
         try:
             with html_to_pdf(html) as comment, \
                     build_attachments(files) as attachments:
@@ -56,7 +56,7 @@ def submit_comment(self, body):
                 fields.extend([
                     (name, value)
                     for name, value in six.iteritems(body)
-                    if name != 'general_comment'
+                    if name != 'assembled_comment'
                 ])
                 fields.extend(attachments)
 
