@@ -9,44 +9,53 @@
         class="activate-write"
         data-section="{{ node.full_id }}"
         data-label="{{ node.human_label }}">
-
+      <a href="#">
         <div class="paragraph-comment-icon">
           <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
         </div>
-       <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+        <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+      </a>
     </div>
   {% endif %}
 </div>
 {% endif %}
 
-<div class="node">
-{%if node.marked_up %}
-<p {% if node.is_collapsed %}class="collapsed"{% endif %}>
-{% if node.paragraph_marker %}
-  <span class="stripped-marker">{{node.paragraph_marker}}.</span>
-{% endif %}
-<span class="paragraph-text">
-{% if node.node_type == "appendix" %}
-    {{node.marked_up|safe|linebreaksbr}}
-{% else  %}
-    {{node.marked_up|safe}}
-{% endif %}
-</span>
-</p>
-{% comment %}@TODO use node.comments_calledout{% endcomment %}
-{% if node.accepts_comments and not node.title %}
-  <div
-      class="activate-write"
-      data-section="{{ node.full_id }}"
-      data-label="{{ node.human_label }}">
+<div class="node{% if not node.comments_calledout %} not-called-out{% endif %}">
 
-      <div class="paragraph-comment-icon">
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-      </div>
-     <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
-  </div>
-{% endif %}
-{% endif %}
+  {%if node.marked_up %}
+    <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
+
+      {% if node.paragraph_marker %}
+        <span class="stripped-marker">{{node.paragraph_marker}}.</span>
+      {% endif %}
+
+      <span class="paragraph-text">
+      {% if node.node_type == "appendix" %}
+          {{node.marked_up|safe|linebreaksbr}}
+      {% else  %}
+          {{node.marked_up|safe}}
+      {% endif %}
+      </span>
+
+    </p>
+
+    {% if node.accepts_comments and not node.title %}
+    <div
+        class="activate-write"
+        data-section="{{ node.full_id }}"
+        data-label="{{ node.human_label }}">
+
+      <a href="#">
+        <div class="paragraph-comment-icon">
+          <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+        </div>
+        <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+      </a>
+    </div>
+    {% endif %}
+
+  {% endif %}
+
 </div>
 
 {% if node.children %}

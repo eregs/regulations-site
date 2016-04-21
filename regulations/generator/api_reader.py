@@ -2,19 +2,7 @@ from django.core.cache import caches
 from regulations.generator import api_client
 
 
-class ApiCache(object):
-    """ Interface with the cache. """
-    def __init__(self):
-        self.cache = caches['api_cache']
-
-    def get(self, key):
-        return self.cache.get(key)
-
-    def set(self, key, value):
-        self.cache.set(key, value)
-
-    def generate_key(self, cache_key_elements):
-        return '-'.join(cache_key_elements)
+_cache_key = '-'.join
 
 
 class ApiReader(object):
@@ -22,7 +10,7 @@ class ApiReader(object):
     hit the API instead and cache the results. """
 
     def __init__(self):
-        self.cache = ApiCache()
+        self.cache = caches['api_cache']
         self.client = api_client.ApiClient()
 
     def all_regulations_versions(self):
@@ -41,8 +29,7 @@ class ApiReader(object):
         interpretations, we don't perform additional fetches)"""
         if is_root or reg_tree.get('title'):
             tree_id = '-'.join(reg_tree['label'])
-            cache_key = self.cache.generate_key(['regulation', tree_id,
-                                                 version])
+            cache_key = _cache_key(['regulation', tree_id, version])
             self.cache.set(cache_key, reg_tree)
 
         for child in reg_tree['children']:
@@ -50,7 +37,7 @@ class ApiReader(object):
                 self.cache_root_and_interps(child, version, False)
 
     def regulation(self, label, version):
-        cache_key = self.cache.generate_key(['regulation', label, version])
+        cache_key = _cache_key(['regulation', label, version])
         cached = self.cache.get(cache_key)
 
         if cached is not None:
@@ -64,8 +51,7 @@ class ApiReader(object):
 
     def _get(self, cache_key_elements, api_suffix, api_params={}):
         """ Retrieve from the cache whenever possible, or get from the API """
-
-        cache_key = self.cache.generate_key(cache_key_elements)
+        cache_key = _cache_key(cache_key_elements)
         cached = self.cache.get(cache_key)
 
         if cached is not None:

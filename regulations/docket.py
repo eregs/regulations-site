@@ -31,6 +31,7 @@ def get_document_metadata(document_id):
 def get_document_fields(document_id):
     """ Retrieve the field list from the document metadata.
         Use a cache as the data hardly ever changes.
+        We ignore the 'general_comment' field as it has special treatment.
     """
     cache = caches['regs_gov_cache']
     cache_key = document_id
@@ -42,12 +43,18 @@ def get_document_fields(document_id):
             field['attributeName']: Field(field['maxLength'],
                                           field['required'])
             for field in document_metadata['fieldList']
+            if field['attributeName'] != 'general_comment'
         }
         cache.set(cache_key, fields)
     return fields
 
 
 def sanitize_fields(body):
+    """ Validate fields against the document metadata.
+        Remove any extra fields that are not in the document metadata.
+        Special treatment for 'assembled_comment' - allow to pass through
+        as it holds the text form of the entire submission
+    """
     document_fields = get_document_fields(settings.COMMENT_DOCUMENT_ID)
     for name, field in six.iteritems(document_fields):
         if field.required and name not in body:
@@ -56,8 +63,9 @@ def sanitize_fields(body):
             return False, "Field {} exceeds expected length of {}".format(
                 name, field.max_length)
 
-    # Remove extra fields if any
+    # Remove extra fields if any, other than 'assembled_comment'
     extra_fields = [field for field in body if field not in document_fields]
     for field in extra_fields:
-        del body[field]
+        if field != 'assembled_comment':
+            del body[field]
     return True, ""

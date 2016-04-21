@@ -49,3 +49,10 @@ class CommentTest(BaseTest, unittest.TestCase):
             '.comments').get_attribute('innerHTML')
         assert_in(comment_label, html)
         assert_in('i prefer not to', html)
+
+    def test_intro(self):
+        """Verify that the intro meta data is visible"""
+        self.driver.get(self.test_url + '/preamble/2016_02749/intro')
+        html = self.driver.find_element_by_tag_name('html')
+        self.assertIn('Addition of a Subsurface Intrusion Component',
+                      html.text)

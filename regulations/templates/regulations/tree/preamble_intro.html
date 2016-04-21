@@ -24,8 +24,6 @@
       {{meta.rins|join:"; "}}
     </p>
 </li>
-<li><h4>Agency:</h4><p>{{ meta.agencies|join:", " }}.</p></li>
-<li><h4>Action:</h4><p>{{ meta.action}}.</p></li>
 {% for c in node.children %}
   {% with node=c %}
     {% include node.template_name %}

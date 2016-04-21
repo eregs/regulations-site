@@ -72,8 +72,11 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   serialize: function() {
+    // TODO(vrajmohan) Add other regs.gov fields
     return {
-      sections: comments.toJSON({docId: this.docId})
+        assembled_comment:  {
+            sections: comments.toJSON({docId: this.docId})
+        }
     };
   },
 
