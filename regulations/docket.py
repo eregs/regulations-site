@@ -52,7 +52,7 @@ def get_document_fields(document_id):
 def sanitize_fields(body):
     """ Validate fields against the document metadata.
         Remove any extra fields that are not in the document metadata.
-        Specila treatment for 'assembled_comment' - allow to pass through
+        Special treatment for 'assembled_comment' - allow to pass through
         as it holds the text form of the entire submission
     """
     document_fields = get_document_fields(settings.COMMENT_DOCUMENT_ID)
