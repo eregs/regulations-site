@@ -147,6 +147,7 @@ var CommentView = Backbone.View.extend({
     e.preventDefault();
     this.model.set({
       comment: this.editor.getContent('markdown'),
+      commentHtml: this.editor.getContent('html'),
       files: _.map(this.attachmentViews, function(view) {
         return {
           key: view.options.key,
