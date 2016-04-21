@@ -9,7 +9,7 @@ from django.test import SimpleTestCase, override_settings
 from regulations.tasks import submit_comment
 
 
-@mock.patch('regulations.models.FailedCommentSubmission.objects')
+@mock.patch('regulations.tasks.save_failed_submission')
 @mock.patch('regulations.tasks.submit_comment.retry')
 @mock.patch('requests.post')
 @mock.patch('regulations.tasks.html_to_pdf')
@@ -23,7 +23,8 @@ from regulations.tasks import submit_comment
 )
 class TestSubmitComment(SimpleTestCase):
 
-    def test_submit_comment(self, html_to_pdf, post, retry, query_set):
+    def test_submit_comment(self, html_to_pdf, post, retry,
+                            save_failed_submission):
         file_handle = six.BytesIO("foobar")
         html_to_pdf.return_value.__enter__ = mock.Mock(
             return_value=file_handle)
@@ -38,7 +39,7 @@ class TestSubmitComment(SimpleTestCase):
         self.assertEqual(result, expected_result)
 
     def test_failed_submit_raises_retry(self, html_to_pdf, post, retry,
-                                        query_set):
+                                        save_failed_submission):
         file_handle = six.BytesIO("foobar")
         html_to_pdf.return_value.__enter__ = mock.Mock(
             return_value=file_handle)
@@ -52,7 +53,7 @@ class TestSubmitComment(SimpleTestCase):
             submit_comment(body)
 
     def test_failed_submit_maximum_retries(self, html_to_pdf, post, retry,
-                                           query_set):
+                                           save_failed_submission):
         file_handle = six.BytesIO("foobar")
         html_to_pdf.return_value.__enter__ = mock.Mock(
             return_value=file_handle)
@@ -63,4 +64,4 @@ class TestSubmitComment(SimpleTestCase):
 
         body = {'assembled_comment': {'sections': []}}
         submit_comment(body)
-        query_set.create.assert_called_with(body=json.dumps(body))
+        save_failed_submission.assert_called_with(json.dumps(body))
