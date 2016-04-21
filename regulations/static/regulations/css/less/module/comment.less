@@ -24,6 +24,29 @@ comment.less contains styles related to commenting on sections
       }
     }
   }
+
+  // hidden content (with stars) on CFR
+  .show-more-context {
+    background-color: @grey;
+    color: @pacific;
+    font-size: 10px;
+    margin: 5px 0;
+    text-align: center;
+    width: 100%;
+
+    span {
+      font-size: 13px;
+      padding: 0 30px;
+    }
+  }
+
+  li > .show-more-context {
+    width: 75%;
+  }
+
+  .section-title {
+    width: 75%;
+  }
 }
 
 .preamble-header {
@@ -74,7 +97,7 @@ comment.less contains styles related to commenting on sections
 
 #preamble-write {
   padding-left: 15px;
-  width: 70%;
+  width: 75%;
 }
 
 #preamble-write,
@@ -83,17 +106,17 @@ comment.less contains styles related to commenting on sections
 }
 
 #preamble-read .node {
-  padding-right: 250px;
+  padding-right: 200px;
 }
 
 .activate-write {
   font-family: Arial, sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   position: absolute;
-  right: -40px;
+  right: -100px;
   top: -5px;
-  width: 230px;
+  width: 250px;
 
   a {
     color: @pacific_light;
@@ -221,7 +244,7 @@ a.comment-index-review {
 .comment-index {
   .font-regular;
   position: absolute;
-  right: -320px;
+  right: -290px;
   top: 15px;
   width: 250px;
 
