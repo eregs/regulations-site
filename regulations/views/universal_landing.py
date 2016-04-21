@@ -49,6 +49,7 @@ def universal(request):
     context['cfr_title_text'] = regs[0]['meta']['cfr_title_text']
     context['cfr_title_number'] = utils.to_roman(
         regs[0]['meta']['cfr_title_number'])
+    context['cfr_titleno_arabic'] = regs[0]['meta']['cfr_title_number'])
 
     c = RequestContext(request, context)
     t = select_template([
