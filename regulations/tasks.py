@@ -36,6 +36,8 @@ def submit_comment(self, body):
     Number of retries and time between retries is managed by Celery settings.
     The main comment is converted to a PDF and added as an attachment; the
     'general_comment' field refers to this attachment.
+
+    :param body: dict of fields and values to be posted to regulations.gov
     '''
     try:
         html = json_to_html(body)
@@ -79,7 +81,7 @@ def submit_comment(self, body):
     except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
-        failed_submission = FailedCommentSubmission(body=body)
+        failed_submission = FailedCommentSubmission(body=json.dumps(body))
         failed_submission.save()
         return {'message': message, 'trackingNumber': None}
 
