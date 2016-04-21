@@ -17,7 +17,8 @@ from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
 from regulations.views.preamble import (
-    CFRChangesView, PreambleView, PrepareCommentView)
+    CFRChangesView, PreambleView, PrepareCommentView,
+    ChromePreambleSearchView)
 from regulations.views.redirect import diff_redirect, redirect_by_date
 from regulations.views.redirect import redirect_by_date_get
 from regulations.views.sidebar import SideBarView
@@ -71,7 +72,7 @@ urlpatterns = patterns(
         ChromeSearchView.as_view(), name='chrome_search',
         kwargs={'doc_type': 'cfr'}),
     url(r'^search/preamble/%s$' % reg_pattern,
-        ChromeSearchView.as_view(), name='chrome_search',
+        ChromePreambleSearchView.as_view(), name='chrome_search_preamble',
         kwargs={'doc_type': 'preamble'}),
     # Diff view of a section for non-JS viewers (or book markers)
     # Example: http://.../diff/201-4/2011-1738/2013-10704

@@ -68,7 +68,7 @@ class PartialSearch(PartialView):
         context['warnings'] = []
         if not context['q']:
             context['warnings'].append('Please provide a query.')
-        if not doc_type == 'cfr' and context['version']:
+        if doc_type == 'cfr' and not context['version']:
             context['warnings'].append('Please provide a version.')
 
         if context['warnings']:

@@ -2,12 +2,12 @@
 Partial Search Results.
 {% endcomment %}
 
-<div id="content-wrapper" class="search-results">
+<div id="content-wrapper" class="search-results" data-doc-type="{{doc_type}}">
     {% for warning in warnings %}
     <div class="error">{{ warning }}</div>
     {% endfor %}
 
-    <section data-page-type="search-results" data-base-version="{{ version }}">
+    <section data-page-type="search-results" data-base-version="{{ version|default:"" }}">
         <h2 class="search-term">Searching for “{{ q }}”</h2>
         {% if not skip_count %}
         <span id="result-count">{{ results.total_hits }} result{{ results.results|pluralize }}</span>

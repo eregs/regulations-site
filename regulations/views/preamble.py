@@ -16,6 +16,7 @@ from regulations.generator.layers.utils import (
     convert_to_python, is_contained_in)
 from regulations.generator.toc import fetch_toc
 from regulations.views import utils
+from regulations.views import chrome
 from regulations.views.diff import Versions, get_appliers
 
 
@@ -229,6 +230,28 @@ class PreambleView(View):
             template = 'regulations/preamble-partial.html'
         return TemplateResponse(request=request, template=template,
                                 context=context)
+
+
+class ChromePreambleSearchView(chrome.ChromeSearchView):
+    template_name = 'regulations/chrome-preamble-search.html'
+
+    def get_context_data(self, **kwargs):
+        label_parts = kwargs.get('label_id', '').split('/')
+        doc_number = label_parts[0]
+        context = common_context(doc_number)
+        context['doc_type'] = 'preamble'
+        context['label_id'] = kwargs.get('label_id', '')
+
+        subtree = find_subtree(context['preamble'], label_parts)
+        if subtree is None:
+            raise Http404
+
+        context.update(generate_html_tree(context['preamble'], self.request,
+                                          id_prefix=[doc_number, 'preamble']))
+        self.add_main_content(context)
+        context['sidebar_content'] = self.sidebar(
+            context['label_id'], version=None)
+        return context
 
 
 class PrepareCommentView(View):

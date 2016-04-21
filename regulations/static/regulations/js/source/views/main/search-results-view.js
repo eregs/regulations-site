@@ -39,6 +39,8 @@ var SearchResultsView = ChildView.extend({
             this.url = 'search/' + this.options.id;
 
             ChildView.prototype.initialize.apply(this, arguments);
+        } else {
+            this.options.docType = this.$el.data('doc-type');
         }
 
     },
