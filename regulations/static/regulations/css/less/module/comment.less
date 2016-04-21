@@ -32,7 +32,14 @@ comment.less contains styles related to commenting on sections
 
   span {
     padding: 0 10px;
+
+    &.tab-descriptions {
+      font-size: 14px;
+      color: @dark_field;
+    }
   }
+
+
 
   .read-proposal,
   .write-comment {
@@ -41,10 +48,21 @@ comment.less contains styles related to commenting on sections
     cursor: pointer;
     display: inline-block;
     .font-regular;
+    height: 34px;
     font-size: 15px;
     text-align: center;
     margin-right: -4px;
     width: 245px;
+
+    .read-icon,
+    .write-icon {
+      padding: 0;
+      font-size: 14px;
+    }
+
+    &:hover:not(.active-mode) {
+      height: 33px;
+    }
   }
 
   .active-mode {
