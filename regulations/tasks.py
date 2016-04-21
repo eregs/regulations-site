@@ -81,8 +81,7 @@ def submit_comment(self, body):
     except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
-        failed_submission = FailedCommentSubmission(body=json.dumps(body))
-        failed_submission.save()
+        FailedCommentSubmission.objects.create(body=json.dumps(body))
         return {'message': message, 'trackingNumber': None}
 
 
