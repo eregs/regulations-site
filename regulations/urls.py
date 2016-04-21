@@ -31,10 +31,11 @@ version_pattern = meta_version % 'version'
 newer_version_pattern = meta_version % 'newer_version'
 notice_pattern = meta_version % 'notice_id'
 
-reg_pattern = r'(?P<label_id>[\w]+)'
+reg_pattern = r'(?P<label_id>[\d]+)'
+preamble_pattern = r'(?P<label_id>[\w]+)'
 section_pattern = r'(?P<label_id>[\d]+[-][\w]+)'
-interp_pattern = r'(?P<label_id>[-\d\w]+[-]Interp)'
-paragraph_pattern = r'(?P<label_id>[-\d\w]+)'
+interp_pattern = r'(?P<label_id>[-\w]+[-]Interp)'
+paragraph_pattern = r'(?P<label_id>[-\w]+)'
 subterp_pattern = r'(?P<label_id>[\d]+-(Appendices|Subpart(-[A-Z]+)?)-Interp)'
 
 lt_cache = cache_page(settings.CACHES['eregs_longterm_cache']['TIMEOUT'],
@@ -71,7 +72,7 @@ urlpatterns = patterns(
     url(r'^search(?:/cfr)?/%s$' % reg_pattern,
         ChromeSearchView.as_view(), name='chrome_search',
         kwargs={'doc_type': 'cfr'}),
-    url(r'^search/preamble/%s$' % reg_pattern,
+    url(r'^search/preamble/%s$' % preamble_pattern,
         ChromePreambleSearchView.as_view(), name='chrome_search_preamble',
         kwargs={'doc_type': 'preamble'}),
     # Diff view of a section for non-JS viewers (or book markers)
@@ -137,7 +138,7 @@ urlpatterns = patterns(
     url(r'^partial/search(?:/cfr)?/%s$' % reg_pattern,
         PartialSearch.as_view(), name='partial_search',
         kwargs={'doc_type': 'cfr'}),
-    url(r'^partial/search/preamble/%s$' % reg_pattern,
+    url(r'^partial/search/preamble/%s$' % preamble_pattern,
         PartialSearch.as_view(), name='partial_search',
         kwargs={'doc_type': 'preamble'}),
 

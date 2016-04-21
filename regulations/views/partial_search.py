@@ -11,6 +11,12 @@ API_PAGE_SIZE = 50
 PAGE_SIZE = 10
 
 
+url_rules = {
+    'cfr': 'chrome_search',
+    'preamble': 'chrome_search_preamble',
+}
+
+
 class PartialSearch(PartialView):
     """Display search results without any chrome."""
     template_name = 'regulations/search-results.html'
@@ -57,6 +63,7 @@ class PartialSearch(PartialView):
         context['doc_type'] = doc_type
 
         context['regulation'] = context['label_id'].split('-')[0]
+        context['url_rule'] = url_rules[doc_type]
 
         try:
             page = int(self.request.GET.get('page', '0'))

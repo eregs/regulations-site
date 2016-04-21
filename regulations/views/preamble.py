@@ -249,8 +249,6 @@ class ChromePreambleSearchView(chrome.ChromeSearchView):
         context.update(generate_html_tree(context['preamble'], self.request,
                                           id_prefix=[doc_number, 'preamble']))
         self.add_main_content(context)
-        context['sidebar_content'] = self.sidebar(
-            context['label_id'], version=None)
         return context
 
 

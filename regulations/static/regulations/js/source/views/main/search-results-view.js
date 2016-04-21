@@ -1,5 +1,6 @@
 'use strict';
 var $ = require('jquery');
+var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var SearchModel = require('../../models/search-model.js');
@@ -23,7 +24,7 @@ var SearchResultsView = ChildView.extend({
         // because the user can select a different version to pull search results from
         this.resultsRegVersion = this.options.regVersion;
         this.page = parseInt(this.options.page, 10) || 0;
-        this.title = 'Search of ' + this.options.regPart + ' for ' + this.query + ' | eRegulations';
+        this.title = 'Search of ' + this.options.docId + ' for ' + this.query + ' | eRegulations';
 
         // if the browser doesn't support pushState, don't
         // trigger click events for links
@@ -51,17 +52,15 @@ var SearchResultsView = ChildView.extend({
 
     assembleSearchURL: function(options) {
         var docType = options.docType || 'cfr';
-        var url = [docType, options.regPart].join('/');
-        url += '?q=' + options.query;
+        var path = [docType, options.docId].join('/');
+        var query = {q: options.query};
         if (options.regVersion) {
-          url += '&version=' + options.regVersion;
+          query.version = options.regVersion;
         }
-
         if (typeof options.page !== 'undefined') {
-            url += '&page=' + options.page;
+          query.page = options.page;
         }
-
-        return url;
+        return URI(path).query(query).toString();
     },
 
     render: function() {

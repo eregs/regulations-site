@@ -40,7 +40,7 @@ var RegView = ChildView.extend({
         this.$activeSection = $('#' + this.activeSection);
         this.$sections = {};
         this.url = this.id + '/' + this.options.regVersion;
-        this.regPart = this.options.regPart;
+        this.docId = this.options.docId;
         this.cfrTitle = this.options.cfrTitle;
 
         if (typeof this.options.subContentType !== 'undefined') {
@@ -98,10 +98,10 @@ var RegView = ChildView.extend({
         var newTitle;
         if (typeof this.subContentType !== 'undefined') {
             if (this.subContentType === 'supplement') {
-                newTitle = 'Supplement I to Part ' + this.regPart + ' | eRegulations';
+                newTitle = 'Supplement I to Part ' + this.docId + ' | eRegulations';
             }
             else if (this.subContentType === 'appendix') {
-                newTitle = 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.regPart + ' | eRegulations';
+                newTitle = 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
 
             }
         }
