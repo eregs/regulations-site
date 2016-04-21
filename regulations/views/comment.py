@@ -100,7 +100,7 @@ def submit_comment(request):
         logger.error(message)
         return JsonResponse({'message': message}, status=403)
 
-    files = extract_files(body['general_comment'])
+    files = tasks.extract_files(body['general_comment'])
     # Account for the main comment itself submitted as an attachment
     if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
         message = "Too many attachments"
@@ -117,7 +117,7 @@ def submit_comment(request):
         },
     )
     chain = celery.chain(
-        tasks.submit_comment.s(body, files),
+        tasks.submit_comment.s(body),
         tasks.publish_tracking_number.s(key=metadata_key),
     )
     chain.delay()
@@ -168,21 +168,6 @@ def validate_attachment(filename, size):
     if ext[1:].lower() not in settings.VALID_ATTACHMENT_EXTENSIONS:
         return False, "Invalid attachment type"
     return True, ""
-
-
-def extract_files(body):
-    '''
-    Extracts the files that are to be attached to the comment.
-    Returns a collection of dicts where for each dict:
-        - dict['key'] specifies the file to be attached from S3
-        - dict['name'] specifies the name under which the file is to be
-          attached.
-    '''
-    return [
-        file
-        for section in body.get('sections', [])
-        for file in section.get('files', [])
-    ]
 
 
 def make_cache_key(*args, **kwargs):

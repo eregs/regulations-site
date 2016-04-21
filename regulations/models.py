@@ -8,4 +8,3 @@ class FailedCommentSubmission(models.Model):
     the comments.
     """
     body = models.TextField()
-    files = models.TextField()

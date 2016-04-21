@@ -30,7 +30,7 @@ logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True)
-def submit_comment(self, body, files):
+def submit_comment(self, body):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
@@ -39,6 +39,7 @@ def submit_comment(self, body, files):
     '''
     try:
         html = json_to_html(body)
+        files = extract_files(body['general_comment'])
         try:
             with html_to_pdf(html) as comment, \
                     build_attachments(files) as attachments:
@@ -78,7 +79,7 @@ def submit_comment(self, body, files):
     except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
-        failed_submission = FailedCommentSubmission(body=body, files=files)
+        failed_submission = FailedCommentSubmission(body=body)
         failed_submission.save()
         return {'message': message, 'trackingNumber': None}
 
@@ -161,3 +162,18 @@ def make_s3_client():
         aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
     return session.client('s3', config=Config(signature_version='s3v4'))
+
+
+def extract_files(body):
+    '''
+    Extracts the files that are to be attached to the comment.
+    Returns a collection of dicts where for each dict:
+        - dict['key'] specifies the file to be attached from S3
+        - dict['name'] specifies the name under which the file is to be
+          attached.
+    '''
+    return [
+        file
+        for section in body.get('sections', [])
+        for file in section.get('files', [])
+    ]
