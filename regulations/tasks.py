@@ -39,9 +39,10 @@ def submit_comment(self, body):
 
     :param body: dict of fields and values to be posted to regulations.gov
     '''
+    sections = body.get('assembled_comment', [])
     try:
-        html = json_to_html(body)
-        files = extract_files(body['assembled_comment'])
+        html = json_to_html(sections)
+        files = extract_files(sections)
         try:
             with html_to_pdf(html) as comment, \
                     build_attachments(files) as attachments:
@@ -97,8 +98,9 @@ def publish_tracking_number(response, key):
     )
 
 
-def json_to_html(body):
-    md = loader.render_to_string('regulations/comment.md', body)
+def json_to_html(sections):
+    md = loader.render_to_string(
+        'regulations/comment.md', {'sections': sections})
     return markdown2.markdown(md)
 
 
@@ -165,7 +167,7 @@ def make_s3_client():
     return session.client('s3', config=Config(signature_version='s3v4'))
 
 
-def extract_files(body):
+def extract_files(sections):
     '''
     Extracts the files that are to be attached to the comment.
     Returns a collection of dicts where for each dict:
@@ -175,6 +177,6 @@ def extract_files(body):
     '''
     return [
         file
-        for section in body.get('sections', [])
+        for section in sections
         for file in section.get('files', [])
     ]
