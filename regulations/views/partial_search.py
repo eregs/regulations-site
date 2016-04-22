@@ -130,8 +130,11 @@ def transform_context_for_preamble(context, results):
             result['header'] += ' ' + title(result['title'])
         result['section_id'] = '-'.join(
             [result['label'][0], 'preamble'] + result['label'])
-        result['url'] = reverse(
-            'chrome_preamble',
-            kwargs={'paragraphs': '/'.join(result['label'][:2])},
+        result['url'] = '{}#{}'.format(
+            reverse(
+                'chrome_preamble',
+                kwargs={'paragraphs': '/'.join(result['label'][:2])},
+            ),
+            '-'.join(result['label']),
         )
     context['results'] = results
