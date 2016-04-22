@@ -105,6 +105,7 @@ var SearchResultsView = ChildView.extend({
               scrollToId: $resultLink.data('linked-subsection')
             };
 
+            DrawerEvents.trigger('pane:change', 'table-of-contents');
             MainEvents.trigger('section:open', $resultLink.data('linked-section'), options, pageType);
         }
     }
