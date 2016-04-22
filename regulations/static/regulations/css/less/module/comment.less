@@ -47,6 +47,12 @@ comment.less contains styles related to commenting on sections
   .section-title {
     width: 75%;
   }
+
+  .cfr-instructions {
+    .font-regular;
+    padding-top: 15px;
+    width: 75%;
+  }
 }
 
 .preamble-header {
@@ -512,27 +518,33 @@ a.comment-index-review {
   }
 }
 
-// CFR
-.cfr-instructions {
-  .font-regular;
-  padding-top: 15px;
-  width: 70%;
-}
-
 
 @media only screen and ( max-width: 480px ) {
 
+  .preamble-sub-head {
+    height: 35px;
+
+    .toc-head {
+      z-index: 100;
+    }
+  }
+
   .preamble-header {
-    z-index: -1;
+    left: 40px;
+    z-index: 10;
 
     > span {
       display: none;
     }
 
+    .read-proposal {
+      border-left: none;
+    }
+
     .read-proposal,
     .write-comment {
       font-size: 13px;
-      width: 140px !important;
+      width: 50% !important;
     }
   }
 
@@ -548,6 +560,10 @@ a.comment-index-review {
     }
   }
 
+  p + .activate-write {
+    top: 0;
+  }
+
   #preamble-read {
     padding-left: 0;
 
@@ -559,6 +575,9 @@ a.comment-index-review {
       h2, h3, h4, h5, h6, p {
         width: 100%;
       }
+      h4 {
+        margin-top: 0;
+      }
     }
     p + .activate-write {
       display: block;
@@ -566,6 +585,24 @@ a.comment-index-review {
 
     .node {
       padding-right: 0;
+    }
+
+    .show-more-context {
+      font-size: 9px;
+
+      span {
+        font-size: 12px;
+        padding: 0 5px;
+      }
+    }
+
+    li > .show-more-context,
+    .section-title {
+      width: 100%;
+    }
+
+    .cfr-instructions {
+      width: 100%;
     }
   }
 
@@ -578,6 +615,10 @@ a.comment-index-review {
       right: 0;
       top: 0;
       width: 100%;
+
+      ul {
+        padding-left: 0;
+      }
     }
   }
 
