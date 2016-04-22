@@ -94,10 +94,6 @@ var PreambleView = ChildView.extend({
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
 
-    if (section.indexOf('cfr') > -1) {
-      label = '§ ' + label;
-    }
-
     CommentEvents.trigger('comment:target', {
       section: section,
       tocId: tocId,
