@@ -2,13 +2,13 @@ from __future__ import absolute_import
 
 import os
 import json
+import codecs
 import shutil
 import tempfile
 import contextlib
 import subprocess
 
 import six
-import markdown2
 
 import boto3
 from botocore.client import Config
@@ -99,9 +99,8 @@ def publish_tracking_number(response, key):
 
 
 def json_to_html(sections):
-    md = loader.render_to_string(
-        'regulations/comment.md', {'sections': sections})
-    return markdown2.markdown(md)
+    return loader.render_to_string(
+        'regulations/comment.html', {'sections': sections})
 
 
 @contextlib.contextmanager
@@ -110,7 +109,7 @@ def html_to_pdf(html):
         path = tempfile.mkdtemp()
         html_path = os.path.join(path, 'document.html')
         pdf_path = os.path.join(path, 'document.pdf')
-        with open(html_path, 'w') as fp:
+        with codecs.open(html_path, 'w', 'utf-8') as fp:
             fp.write(html)
         subprocess.check_output(
             [settings.WKHTMLTOPDF_PATH, html_path, pdf_path])
