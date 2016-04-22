@@ -11,7 +11,7 @@ from regulations.tasks import submit_comment
 
 @mock.patch('regulations.tasks.save_failed_submission')
 @mock.patch('regulations.tasks.submit_comment.retry')
-@mock.patch('requests.post')
+@mock.patch('regulations.tasks.post_submission')
 @mock.patch('regulations.tasks.html_to_pdf')
 @override_settings(
     ATTACHMENT_BUCKET='test-bucket',
@@ -30,37 +30,37 @@ class TestSubmitComment(SimpleTestCase):
             {"id": "A5", "comment": "Another comment", "files": []}
         ]}
 
-    def test_submit_comment(self, html_to_pdf, post, retry,
+    def test_submit_comment(self, html_to_pdf, post_submission, retry,
                             save_failed_submission):
         html_to_pdf.return_value.__enter__ = mock.Mock(
             return_value=self.file_handle)
 
         expected_result = {'tracking_number': 'some-tracking-number'}
-        post.return_value.status_code = 201
-        post.return_value.json.return_value = expected_result
+        post_submission.return_value.status_code = 201
+        post_submission.return_value.json.return_value = expected_result
 
         result = submit_comment(self.submission)
 
         self.assertEqual(result, expected_result)
 
-    def test_failed_submit_raises_retry(self, html_to_pdf, post, retry,
-                                        save_failed_submission):
+    def test_failed_submit_raises_retry(self, html_to_pdf, post_submission,
+                                        retry, save_failed_submission):
         html_to_pdf.return_value.__enter__ = mock.Mock(
             return_value=self.file_handle)
 
-        post.side_effect = [RequestException]
+        post_submission.side_effect = [RequestException]
 
         retry.return_value = Retry()
 
         with self.assertRaises(Retry):
             submit_comment(self.submission)
 
-    def test_failed_submit_maximum_retries(self, html_to_pdf, post, retry,
-                                           save_failed_submission):
+    def test_failed_submit_maximum_retries(self, html_to_pdf, post_submission,
+                                           retry, save_failed_submission):
         html_to_pdf.return_value.__enter__ = mock.Mock(
             return_value=self.file_handle)
 
-        post.side_effect = [RequestException]
+        post_submission.side_effect = [RequestException]
 
         retry.return_value = MaxRetriesExceededError()
 

@@ -47,14 +47,7 @@ def submit_comment(self, body):
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
                 data = build_multipart_encoded(body, comment_pdf, attachments)
-                response = requests.post(
-                    settings.REGS_GOV_API_URL,
-                    data=data,
-                    headers={
-                        'Content-Type': data.content_type,
-                        'X-Api-Key': settings.REGS_GOV_API_KEY,
-                    }
-                )
+                response = post_submission(data)
                 if response.status_code != requests.codes.created:
                     logger.warn("Post to regulations.gov failed: %s %s",
                                 response.status_code, response.text)
@@ -190,3 +183,14 @@ def build_multipart_encoded(body, comment_pdf, attachments):
 
 def save_failed_submission(body):
     FailedCommentSubmission.objects.create(body=body)
+
+
+def post_submission(data):
+    return requests.post(
+        settings.REGS_GOV_API_URL,
+        data=data,
+        headers={
+            'Content-Type': data.content_type,
+            'X-Api-Key': settings.REGS_GOV_API_KEY,
+        }
+    )
