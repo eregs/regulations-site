@@ -3,6 +3,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+var filesize = require('filesize');
 Backbone.$ = $;
 
 var edit = require('prosemirror/dist/edit');
@@ -121,7 +122,7 @@ var CommentView = Backbone.View.extend({
           $parent: this.$attachments,
           previewUrl: resp.urls.get,
           name: file.name,
-          size: file.size,
+          size: filesize(file.size),
           key: resp.key,
           xhr: xhr
         })
