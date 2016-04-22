@@ -24,7 +24,7 @@ from regulations.tasks import submit_comment
 class TestSubmitComment(SimpleTestCase):
 
     def setUp(self):
-        self.file_handle = six.BytesIO("some-content")
+        self.file_handle = six.BytesIO(b"some-byte-content")
         self.submission = {'assembled_comment': [
             {"id": "A1", "comment": "A simple comment", "files": []},
             {"id": "A5", "comment": "Another comment", "files": []}
