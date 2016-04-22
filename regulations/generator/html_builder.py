@@ -195,7 +195,7 @@ class CFRHTMLBuilder(HTMLBuilder):
     @staticmethod
     def human_label(node):
         """Derive a human-readable description for this node. Override"""
-        return node_types.label_to_text(node['label'])
+        return "§ " + node_types.label_to_text(node['label'])
 
 
 class PreambleHTMLBuilder(HTMLBuilder):
