@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import title
 
@@ -89,9 +91,14 @@ class PartialSearch(PartialView):
         self.reduce_results(results, page)
 
         if doc_type == 'cfr':
-            transform_context_for_cfr(context, results)
+            context['results'] = process_cfr_results(results,
+                                                     context['version'])
+            for version in fetch_grouped_history(context['regulation']):
+                for notice in version['notices']:
+                    if notice['document_number'] == context['version']:
+                        context['version_by_date'] = notice['effective_on']
         else:
-            transform_context_for_preamble(context, results)
+            context['results'] = process_preamble_results(results)
 
         self.add_prev_next(page, context)
         self.final_context = context
@@ -99,31 +106,26 @@ class PartialSearch(PartialView):
         return context
 
 
-def transform_context_for_cfr(context, results):
+def process_cfr_results(results, version):
     """Modify the results of a search over the CFR by adding a human-readable
     label, appropriate links, and version information"""
     section_url = SectionUrl()
-
+    results = deepcopy(results)
     for result in results['results']:
         result['header'] = node_types.label_to_text(result['label'])
         if 'title' in result:
             result['header'] += ' ' + title(result['title'])
         result['section_id'] = section_url.view_label_id(
-            result['label'], context['version'])
+            result['label'], version)
         result['url'] = section_url.fetch(
-            result['label'], context['version'], sectional=True)
-
-    context['results'] = results
-
-    for version in fetch_grouped_history(context['regulation']):
-        for notice in version['notices']:
-            if notice['document_number'] == context['version']:
-                context['version_by_date'] = notice['effective_on']
+            result['label'], version, sectional=True)
+    return results
 
 
-def transform_context_for_preamble(context, results):
+def process_preamble_results(results):
     """Modify the results of a search over a notice preamble by adding a
     human-readable label, appropriate links, etc."""
+    results = deepcopy(results)
     for result in results['results']:
         result['header'] = PreambleHTMLBuilder.human_label(result)
         if 'title' in result:
@@ -134,4 +136,4 @@ def transform_context_for_preamble(context, results):
             'chrome_preamble',
             kwargs={'paragraphs': '/'.join(result['label'][:2])},
         )
-    context['results'] = results
+    return results
