@@ -304,7 +304,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEqual(
             'Regulation 111', CFRHTMLBuilder.human_label({'label': ['111']}))
         self.assertEqual(
-            '111.22(f)',
+            '§ 111.22(f)',
             CFRHTMLBuilder.human_label({'label': ['111', '22', 'f']}))
 
 
