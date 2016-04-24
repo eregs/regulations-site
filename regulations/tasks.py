@@ -44,32 +44,10 @@ def submit_comment(self, body):
         html = json_to_html(sections)
         files = extract_files(sections)
         try:
-            with html_to_pdf(html) as comment, \
+            with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
-                fields = [
-                    ('comment_on', settings.COMMENT_DOCUMENT_ID),
-                    # TODO: Ensure this name is unique
-                    ('uploadedFile', ('comment.pdf', comment)),
-                    ('general_comment', 'See attached comment.pdf'),
-                ]
-
-                # Add other submitted fields
-                fields.extend([
-                    (name, value)
-                    for name, value in six.iteritems(body)
-                    if name != 'assembled_comment'
-                ])
-                fields.extend(attachments)
-
-                data = MultipartEncoder(fields)
-                response = requests.post(
-                    settings.REGS_GOV_API_URL,
-                    data=data,
-                    headers={
-                        'Content-Type': data.content_type,
-                        'X-Api-Key': settings.REGS_GOV_API_KEY,
-                    }
-                )
+                data = build_multipart_encoded(body, comment_pdf, attachments)
+                response = post_submission(data)
                 if response.status_code != requests.codes.created:
                     logger.warn("Post to regulations.gov failed: %s %s",
                                 response.status_code, response.text)
@@ -82,7 +60,7 @@ def submit_comment(self, body):
     except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
-        FailedCommentSubmission.objects.create(body=json.dumps(body))
+        save_failed_submission(json.dumps(body))
         return {'message': message, 'trackingNumber': None}
 
 
@@ -180,3 +158,39 @@ def extract_files(sections):
         for section in sections
         for file in section.get('files', [])
     ]
+
+
+def build_multipart_encoded(body, comment_pdf, attachments):
+    """ Build a MultiPartEncoded payload from the extra body fields,
+        the main comment PDF and the set of attachments
+    """
+    fields = [
+        ('comment_on', settings.COMMENT_DOCUMENT_ID),
+        # TODO: Ensure this name is unique
+        ('uploadedFile', ('comment.pdf', comment_pdf)),
+        ('general_comment', 'See attached comment.pdf'),
+    ]
+
+    # Add other submitted fields
+    fields.extend([
+        (name, value)
+        for name, value in six.iteritems(body)
+        if name != 'assembled_comment'
+    ])
+    fields.extend(attachments)
+    return MultipartEncoder(fields)
+
+
+def save_failed_submission(body):
+    FailedCommentSubmission.objects.create(body=body)
+
+
+def post_submission(data):
+    return requests.post(
+        settings.REGS_GOV_API_URL,
+        data=data,
+        headers={
+            'Content-Type': data.content_type,
+            'X-Api-Key': settings.REGS_GOV_API_KEY,
+        }
+    )
