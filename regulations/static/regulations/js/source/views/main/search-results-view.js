@@ -36,7 +36,7 @@ var SearchResultsView = ChildView.extend({
 
         // if the site wasn't loaded on the search results page
         if (this.options.render) {
-            this.options.id = this.assembleSearchURL(this.options);
+            this.options.id = this.model.assembleSearchURL(this.options);
             this.url = 'search/' + this.options.id;
 
             ChildView.prototype.initialize.apply(this, arguments);
@@ -48,19 +48,6 @@ var SearchResultsView = ChildView.extend({
 
     setElement: function() {
         Backbone.View.prototype.setElement.call(this, '#content-wrapper.search-results');
-    },
-
-    assembleSearchURL: function(options) {
-        var docType = options.docType || 'cfr';
-        var path = [docType, options.docId].join('/');
-        var query = {q: options.query};
-        if (options.regVersion) {
-          query.version = options.regVersion;
-        }
-        if (typeof options.page !== 'undefined') {
-          query.page = options.page;
-        }
-        return URI(path).query(query).toString();
     },
 
     render: function() {

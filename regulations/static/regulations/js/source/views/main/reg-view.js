@@ -43,10 +43,6 @@ var RegView = ChildView.extend({
         this.docId = this.options.docId;
         this.cfrTitle = this.options.cfrTitle;
 
-        if (typeof this.options.subContentType !== 'undefined') {
-            this.subContentType = this.options.subContentType;
-        }
-
         HeaderEvents.trigger('section:open', this.activeSection);
 
         if (Router.hasPushState) {
@@ -95,21 +91,13 @@ var RegView = ChildView.extend({
     },
 
     assembleTitle: function() {
-        var newTitle;
-        if (typeof this.subContentType !== 'undefined') {
-            if (this.subContentType === 'supplement') {
-                newTitle = 'Supplement I to Part ' + this.docId + ' | eRegulations';
-            }
-            else if (this.subContentType === 'appendix') {
-                newTitle = 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
-
-            }
-        }
-        else {
-            newTitle = this.cfrTitle + ' CFR ' + Helpers.idToRef(this.id) + ' | eRegulations';
-        }
-
-        return newTitle;
+      if (this.options.subContentType === 'supplement') {
+        return 'Supplement I to Part ' + this.docId + ' | eRegulations';
+      } else if (this.options.subContentType === 'appendix') {
+        return 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
+      } else {
+        return this.cfrTitle + ' CFR ' + Helpers.idToRef(this.id) + ' | eRegulations';
+      }
     },
 
     // if an inline definition is open, check the links here to see
