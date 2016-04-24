@@ -32,8 +32,7 @@ class TestSubmitComment(SimpleTestCase):
 
     def test_submit_comment(self, html_to_pdf, post_submission, retry,
                             save_failed_submission):
-        html_to_pdf.return_value.__enter__ = mock.Mock(
-            return_value=self.file_handle)
+        html_to_pdf.return_value.__enter__.return_value = self.file_handle
 
         expected_result = {'tracking_number': 'some-tracking-number'}
         post_submission.return_value.status_code = 201
@@ -45,10 +44,9 @@ class TestSubmitComment(SimpleTestCase):
 
     def test_failed_submit_raises_retry(self, html_to_pdf, post_submission,
                                         retry, save_failed_submission):
-        html_to_pdf.return_value.__enter__ = mock.Mock(
-            return_value=self.file_handle)
+        html_to_pdf.return_value.__enter__.return_value = self.file_handle
 
-        post_submission.side_effect = [RequestException]
+        post_submission.side_effect = RequestException
 
         retry.return_value = Retry()
 
@@ -57,10 +55,9 @@ class TestSubmitComment(SimpleTestCase):
 
     def test_failed_submit_maximum_retries(self, html_to_pdf, post_submission,
                                            retry, save_failed_submission):
-        html_to_pdf.return_value.__enter__ = mock.Mock(
-            return_value=self.file_handle)
+        html_to_pdf.return_value.__enter__.return_value = self.file_handle
 
-        post_submission.side_effect = [RequestException]
+        post_submission.side_effect = RequestException
 
         retry.return_value = MaxRetriesExceededError()
 
