@@ -22,7 +22,10 @@ var CommentConfirmView = Backbone.View.extend({
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
 
-    this.poll();
+    if (this.metadataUrl) {
+      this.poll(this.metadataUrl);
+      comments.remove(comments.filter(this.docId), {silent: true});
+    }
   },
 
   findElms: function() {
@@ -38,10 +41,10 @@ var CommentConfirmView = Backbone.View.extend({
     MainEvents.trigger('section:open', section, options, 'preamble-section');
   },
 
-  poll: function() {
+  poll: function(url) {
     this.interval = window.setInterval(
       function() {
-        $.getJSON(this.metadataUrl).then(function(resp) {
+        $.getJSON(url).then(function(resp) {
           window.clearInterval(this.interval);
           this.setTrackingNumber(resp.trackingNumber);
         }.bind(this));
@@ -51,12 +54,7 @@ var CommentConfirmView = Backbone.View.extend({
   },
 
   setTrackingNumber: function(number) {
-    this.$status.html(
-      '<div>Comment submitted</div>' +
-      '<div>Tracking number: ' +
-        '<a href="http://www.regulations.gov/#!searchResults;rpp=25;po=0;s=' + number + '">' + number + '</a>' +
-      '</div>'
-    );
+    this.$status.html('<div>Comment tracking number: ' + number + '</div>');
   }
 });
 

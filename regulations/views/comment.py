@@ -104,12 +104,14 @@ class SubmitCommentView(View):
         context = common_context(doc_number)
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
+        context.update({'message': None, 'metadata_url': None})
 
         valid, context['message'] = self.validate(comments, form)
-        context['metadata_url'] = (
-            self.enqueue(comments, form) if valid
-            else None
-        )
+
+        try:
+            context['metadata_url'] = self.enqueue(comments, form)
+        except Exception as exc:
+            logger.exception(exc)
 
         template = 'regulations/comment-confirm-chrome.html'
         return TemplateResponse(request=request, template=template,

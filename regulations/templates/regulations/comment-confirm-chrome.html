@@ -8,8 +8,68 @@
         data-page-type="comment-confirm"
         data-meta-url="{{metadata_url}}"
         data-doc-id="{{doc_number}}">
+      {% if message %}
+        Comment submission failed.
+        {{ message }}
+      {% elif not metadata_url %}
+        Comment submission failed.
+        We're sorry, something went wrong with our system, and submitting your comment did not work.
+        Return to your draft comment to try submitting again.
+      {% else %}
+        Success!
+        Thank you for submitting your coment to EPA. You're done!
+      {% end if %}
+
+      <h3>Your comment tracking number</h3>
+      <div>
+        The first step EPA takes is to assign your comment a tracking number.
+        This page automatically displays that number when received:
+      </div>
       <div class="status">
         Waiting to receive comment tracking number.
+      </div>
+      <div>
+        Your comment tracking number can help you find and view your public
+        comment later if you want to.
+      </div>
+
+      <h3>What will happen to your comment</h3>
+      <h4>EPA will post it publicly</h4>
+      <ul>
+        <li>
+          EPA will process your comment before posting it, which may take a
+          few days or weeks depending on the number of comments received.
+        </li>
+        <li>
+          Then EPA will post your comment to <a href="#" target="_blank">the docket folder for
+          this proposed rule</a> (with <a href="#" target="_blank">a few exceptions</a>). You
+          will be able to find your comment there or by searching
+          <a href="https://regulations.gov" target="_blank">Regulations.gov</a>
+          for your comment tracking number or keywords from your comment.
+        </li>
+      </ul>
+
+      <h4>EPA will review it & publish a final rule</h4>
+      <ul>
+        <li>
+          After this comment period ends, EPA will review all comments and
+          prepare a final rule that includes reponses to comments.
+        </li>
+        <li>
+          If you'd like to hear about this final rule, you can
+          <a href="#" target="_blank">subscribe to EPA rulemaking updates</a>.
+        </li>
+      </ul>
+
+      <div>
+        <h3>You can give feedback on this tool</h3>
+        <div>
+          This eRegulations commenting tool was developed by 18F (part of the General
+          Services Administration) in partnership with EPA. The designers and developers
+          would like to hear your thoughts about this tool, including suggestions for
+          improving it. To give feedback open a new issue in this repository
+          (requires a free login).
+        </div>
       </div>
     </section>
   </div>
