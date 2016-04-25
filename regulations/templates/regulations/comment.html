@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+  {% for section in sections %}
+    <h1>{{section.label}}</h1>
+    {{section.commentHtml|safe}}
+    {% if section.files %}
+      <h2>Attachments</h2>
+      <ul>
+        {% for file in section.files %}
+          <li>{{file.name}}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if not forloop.last %}
+      <hr />
+    {% endif %}
+  {% endfor %}
+</body>
+
+</html>
