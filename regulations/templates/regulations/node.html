@@ -4,7 +4,7 @@
 
 {% if node.header %}
 <div class="node">
-  <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
+  <h{{ node.list_level|add:"+2" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+2" }}>
   {% if node.accepts_comments %}
     <div
         class="activate-write"
