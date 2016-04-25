@@ -24,7 +24,9 @@ var CommentConfirmView = Backbone.View.extend({
 
     if (this.metaUrl) {
       this.poll(this.metaUrl);
-      comments.remove(comments.filter(this.docId), {silent: true});
+      comments.filter(this.docId).forEach(function(comment) {
+        comment.destroy();
+      });
     }
   },
 
