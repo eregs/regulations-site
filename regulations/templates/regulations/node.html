@@ -1,6 +1,7 @@
 {% comment %}
     Template for inner paragraphs of a reg section
 {% endcomment %}
+
 {% if node.header %}
 <div class="node">
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>

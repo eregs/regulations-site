@@ -23,16 +23,20 @@ class CommentTest(BaseTest, unittest.TestCase):
         comment_toggle.click()
 
         # Comment index starts empty
-        index_items = self.driver.find_elements_by_css_selector(
+        item_container = self.driver.find_element_by_css_selector(
+            '.comment-index-items')
+        self.driver.implicitly_wait(0)
+        index_items = item_container.find_elements_by_css_selector(
             '.comment-index-item')
         assert_equal(len(index_items), 0)
+        self.driver.implicitly_wait(30)
 
         # Write and save a comment
         textarea = self.driver.find_element_by_css_selector(
             '.ProseMirror-content')
         textarea.send_keys('i prefer not to')
         self.driver.find_element_by_css_selector(
-            'button[type="submit"]').click()
+            '.comment button[type="submit"]').click()
 
         # Comment index is populated
         index_items = self.driver.find_elements_by_css_selector(

@@ -195,7 +195,7 @@ class CFRHTMLBuilder(HTMLBuilder):
     @staticmethod
     def human_label(node):
         """Derive a human-readable description for this node. Override"""
-        return node_types.label_to_text(node['label'])
+        return node_types.label_to_text(node['label'], include_marker=True)
 
 
 class PreambleHTMLBuilder(HTMLBuilder):
@@ -211,7 +211,7 @@ class PreambleHTMLBuilder(HTMLBuilder):
         elif len(prefix) > 1:
             label = 'Section ' + '.'.join(prefix[1:])
             count = len(node['label']) - len(prefix)
-            if count:
+            if count and node.get('indexes'):
                 paragraphs = '.'.join(
                     str(idx + 1)
                     for idx in node['indexes'][-count:]

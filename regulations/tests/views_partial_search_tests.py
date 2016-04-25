@@ -129,6 +129,24 @@ class PartialSearchTest(TestCase):
         response = Client().get('/partial/search/111?q=vvv')
         self.assertIn(b'provide a version', response.content)
 
+    @patch('regulations.views.partial_search.api_reader')
+    def test_preamble_search(self, api_reader):
+        api_reader.ApiReader.return_value.search.return_value = {
+            'total_hits': 3333,
+            'results': [
+                {'label': ['111_22', 'I', 'A'], 'text': 'tttt',
+                 'title': 'A. Something'},
+                {'label': ['111_22', 'I', 'p1'], 'text': 'eee'}
+            ]
+        }
+        response = Client().get('/partial/search/preamble/111?q=none')
+        self.assertIn(b'111_22-I-A', response.content)
+        self.assertIn(b'111_22-I-p1', response.content)
+        self.assertIn(b'tttt', response.content)
+        self.assertIn(b'eee', response.content)
+        self.assertIn(b'A. Something', response.content)
+        self.assertIn(b'Section I.A', response.content)
+
     def test_add_prev_next(self):
         view = PartialSearch()
         context = {'results': {'total_hits': 77}}
