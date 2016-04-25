@@ -1,4 +1,4 @@
-import os.path
+import os
 import json
 import time
 import logging
@@ -8,10 +8,10 @@ import requests
 from django.conf import settings
 from django.core.cache import caches
 from django.http import JsonResponse
-from django.utils.crypto import get_random_string
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.template.response import TemplateResponse
+from django.utils.crypto import get_random_string
 from django.views.generic.base import View
 
 from regulations import tasks
@@ -34,27 +34,20 @@ def upload_proxy(request):
     if not valid:
         logger.error(message)
         return JsonResponse({'message': message}, status=400)
-    s3 = tasks.make_s3_client()
-    key = get_random_string(50)
-    put_url = s3.generate_presigned_url(
-        ClientMethod='put_object',
-        Params={
+    key, put_url = tasks.SignedUrl.generate(
+        method='put_object',
+        params={
             'ContentLength': size,
             'ContentType': request.GET.get('type', 'application/octet-stream'),
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': key,
             'Metadata': {'name': filename},
         },
-
     )
     disposition = 'attachment; filename="{}"'.format(filename)
-    get_url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
+    _, get_url = tasks.SignedUrl.generate(
+        key=key,
+        params={
             'ResponseExpires': time.time() + PREVIEW_EXPIRATION_SECONDS,
             'ResponseContentDisposition': disposition,
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': key,
         },
     )
     return JsonResponse({
@@ -73,22 +66,15 @@ def preview_comment(request):
     sections = body.get('assembled_comment', [])
     html = tasks.json_to_html(sections)
     key = '/'.join([settings.ATTACHMENT_PREVIEW_PREFIX, get_random_string(50)])
-    s3 = tasks.make_s3_client()
     with tasks.html_to_pdf(html) as pdf:
-        s3.put_object(
+        tasks.s3_client.put_object(
             Body=pdf,
             ContentType='application/pdf',
             ContentDisposition='attachment; filename="comment.pdf"',
             Bucket=settings.ATTACHMENT_BUCKET,
             Key=key,
         )
-    url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': key,
-        },
-    )
+    _, url = tasks.SignedUrl.generate(key=key)
     return JsonResponse({'url': url})
 
 
@@ -104,12 +90,12 @@ class SubmitCommentView(View):
         context = common_context(doc_number)
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
-        context.update({'message': None, 'metadata_url': None})
+        context.update({'message': None, 'meta': None})
 
         valid, context['message'] = self.validate(comments, form)
 
         try:
-            context['metadata_url'] = self.enqueue(comments, form)
+            context['meta'] = self.enqueue(comments, form)
         except Exception as exc:
             logger.exception(exc)
 
@@ -133,21 +119,13 @@ class SubmitCommentView(View):
         return True, ''
 
     def enqueue(self, comments, form):
-        s3 = tasks.make_s3_client()
-        metadata_key = get_random_string(50)
-        metadata_url = s3.generate_presigned_url(
-            ClientMethod='get_object',
-            Params={
-                'Bucket': settings.ATTACHMENT_BUCKET,
-                'Key': metadata_key,
-            },
-        )
+        meta = tasks.SignedUrl.generate()
         chain = celery.chain(
-            tasks.submit_comment.s(comments, form),
-            tasks.publish_tracking_number.s(key=metadata_key),
+            tasks.submit_comment.s(comments, form, meta),
+            tasks.publish_tracking_number.s(meta=meta),
         )
         chain.delay()
-        return metadata_url
+        return meta
 
 
 @require_http_methods(['GET', 'HEAD'])

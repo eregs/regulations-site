@@ -18,17 +18,18 @@ var CommentConfirmView = Backbone.View.extend({
     this.findElms();
 
     this.docId = this.$el.data('doc-id');
-    this.metadataUrl = this.$el.data('meta-url');
+    this.metaUrl = this.$el.data('meta-url');
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
 
-    if (this.metadataUrl) {
-      this.poll(this.metadataUrl);
+    if (this.metaUrl) {
+      this.poll(this.metaUrl);
       comments.remove(comments.filter(this.docId), {silent: true});
     }
   },
 
   findElms: function() {
+    this.$pdf = this.$el.find('.pdf');
     this.$status = this.$el.find('.status');
   },
 
@@ -45,12 +46,19 @@ var CommentConfirmView = Backbone.View.extend({
     this.interval = window.setInterval(
       function() {
         $.getJSON(url).then(function(resp) {
-          window.clearInterval(this.interval);
-          this.setTrackingNumber(resp.trackingNumber);
+          this.setPdfUrl(resp.pdfUrl);
+          if (resp.trackingNumber) {
+            this.setTrackingNumber(resp.trackingNumber);
+            window.clearInterval(this.interval);
+          }
         }.bind(this));
       }.bind(this),
       5000
     );
+  },
+
+  setPdfUrl: function(url) {
+    this.$pdf.html('<a href="' + url + '">Download PDF</a>');
   },
 
   setTrackingNumber: function(number) {

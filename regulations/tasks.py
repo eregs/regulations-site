@@ -7,6 +7,7 @@ import shutil
 import tempfile
 import contextlib
 import subprocess
+import collections
 
 import six
 
@@ -24,13 +25,14 @@ from celery.utils.log import get_task_logger
 
 from django.conf import settings
 from django.template import loader
+from django.utils.crypto import get_random_string
 
 from regulations.models import FailedCommentSubmission
 logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True)
-def submit_comment(self, comments, form):
+def submit_comment(self, comments, form, meta):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
@@ -39,6 +41,7 @@ def submit_comment(self, comments, form):
 
     :param comments: List of sectional comments
     :param form: Dict of form data
+    :param meta:
     '''
     try:
         html = json_to_html(comments)
@@ -46,6 +49,7 @@ def submit_comment(self, comments, form):
         try:
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
+                pdf_url = cache_pdf(comment_pdf, meta)
                 data = build_multipart_encoded(form, comment_pdf, attachments)
                 response = post_submission(data)
                 if response.status_code != requests.codes.created:
@@ -53,7 +57,11 @@ def submit_comment(self, comments, form):
                                 response.status_code, response.text)
                     raise self.retry()
                 logger.info(response.text)
-                return response.json()
+                data = response.json()
+                return {
+                    'trackingNumber': data['trackingNumber'],
+                    'pdfUrl': pdf_url.url,
+                }
         except (RequestException, ClientError):
             logger.exception("Unable to submit comment")
             raise self.retry()
@@ -63,18 +71,24 @@ def submit_comment(self, comments, form):
         save_failed_submission(
             json.dumps({'comments': comments, 'form': form})
         )
-        return {'message': message, 'trackingNumber': None}
+        return {
+            'pdfUrl': pdf_url.url,
+            'trackingNumber': None,
+        }
 
 
 @shared_task
-def publish_tracking_number(response, key):
+def publish_tracking_number(response, meta):
     s3 = make_s3_client()
-    body = {'trackingNumber': response['trackingNumber']}
+    body = {
+        'pdfUrl': response['pdfUrl'],
+        'trackingNumber': response['trackingNumber'],
+    }
     s3.put_object(
         Body=json.dumps(body).encode(),
         Bucket=settings.ATTACHMENT_BUCKET,
         ContentType='application/json',
-        Key=key,
+        Key=meta.key,
     )
 
 
@@ -97,6 +111,22 @@ def html_to_pdf(html):
             yield pdf_file
     finally:
         shutil.rmtree(path)
+
+
+def cache_pdf(pdf, meta):
+    """Update submission metadata and cache comment PDF."""
+    url = SignedUrl.generate()
+    s3_client.put_object(
+        Body=json.dumps({'pdf_url': meta.url}),
+        Bucket=settings.ATTACHMENT_BUCKET,
+        Key=meta.key,
+    )
+    s3_client.put_object(
+        Body=pdf,
+        Bucket=settings.ATTACHMENT_BUCKET,
+        Key=url.key,
+    )
+    return url
 
 
 @contextlib.contextmanager
@@ -144,6 +174,22 @@ def make_s3_client():
         aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
     return session.client('s3', config=Config(signature_version='s3v4'))
+
+
+s3_client = make_s3_client()
+
+
+class SignedUrl(collections.namedtuple('SignedUrl', ['key', 'url'])):
+    @classmethod
+    def generate(cls, key=None, method='get_object', params=None):
+        key = key or get_random_string(50)
+        params = params or {}
+        params.update({'Bucket': settings.ATTACHMENT_BUCKET, 'Key': key})
+        url = s3_client.generate_presigned_url(
+            ClientMethod=method,
+            Params=params,
+        )
+        return cls(key, url)
 
 
 def extract_files(sections):

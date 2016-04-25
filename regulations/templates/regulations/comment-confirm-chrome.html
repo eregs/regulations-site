@@ -6,19 +6,21 @@
     <section
         id="comment-confirm"
         data-page-type="comment-confirm"
-        data-meta-url="{{metadata_url}}"
+        data-meta-url="{{meta.url}}"
         data-doc-id="{{doc_number}}">
       {% if message %}
         Comment submission failed.
         {{ message }}
-      {% elif not metadata_url %}
+      {% elif not meta %}
         Comment submission failed.
         We're sorry, something went wrong with our system, and submitting your comment did not work.
         Return to your draft comment to try submitting again.
       {% else %}
         Success!
         Thank you for submitting your coment to EPA. You're done!
-      {% end if %}
+      {% endif %}
+
+      <div class="pdf">Waiting to receive PDF.</div>
 
       <h3>Your comment tracking number</h3>
       <div>
