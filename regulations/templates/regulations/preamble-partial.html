@@ -20,10 +20,16 @@
         <div class="comment-context"></div>
         <form>
           <div class="editor-container"></div>
-          <div class="comment-attachments"></div>
-          <input type="file" multiple>
-          <button type="submit">Save</button>
-          <div class="status"></div>
+          <div class="comment-controls">
+            <div class="comment-attachments"></div>
+            <button class="comment-upload-button file-upload">
+              Upload Attachment<input type="file" multiple/>
+            </span>
+          </div>
+          <div class="comment-submission">
+            <button class="comment-button" type="submit">Save Response</button>
+            <div class="status"></div>
+          </div>
         </form>
       </div>
     </div>
@@ -35,11 +41,11 @@
 </section>
 
 <script id="comment-attachment-template" type="text/template">
-  <div>
-    <%= name %>
-    <%= size %>
-    <span class="attachment-remove">Remove</span>
-    <span class="attachment-progress"><span>
+  <div class="comment-attachment">
+    <span class="attachment-progress"></span>
+    <span class="attachment-filename"><%= name %></span>
+    <span class="attachment-size"><%= size %></span>
+    <span class="fa fa-times attachment-remove"></span>
   </div>
 </script>
 
