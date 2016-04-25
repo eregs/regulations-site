@@ -55,8 +55,8 @@ class PartialSectionView(PartialView):
         if nav_sections:
             p_sect, n_sect = nav_sections
 
-            nav = {'previous': p_sect, 'next': n_sect}
-            return nav
+            return {'previous': p_sect, 'next': n_sect,
+                    'page_type': 'reg-section'}
 
     def transform_context(self, context, builder):
         child_of_root = builder.tree
@@ -69,7 +69,6 @@ class PartialSectionView(PartialView):
         context['tree'] = {'children': [child_of_root]}
         context['navigation'] = self.section_navigation(
             context['label_id'], context['version'])
-        context['page_type'] = 'reg-section'
 
         return context
 

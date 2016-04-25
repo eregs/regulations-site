@@ -172,39 +172,35 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     ]
 
 
-def section_navigation(full_id, toc, depth=1):
-    toc_flat = [sect for sect in toc if sect.depth == depth]
-    nav = {'previous': None, 'next': None}
-    for idx, sect in enumerate(toc_flat):
+def section_navigation(full_id, toc):
+    nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
+    for idx, sect in enumerate(toc):
         if sect.full_id == full_id:
             if idx > 0:
-                nav['previous'] = section_to_nav(toc_flat[idx - 1])
-            if idx <= len(toc) - 1:
-                nav['next'] = section_to_nav(toc_flat[idx + 1])
+                nav['previous'] = NavItem.from_section(toc[idx - 1])
+            if idx < len(toc) - 1:
+                nav['next'] = NavItem.from_section(toc[idx + 1])
     return nav
 
 
-NavItem = namedtuple(
-    'NavItem',
-    ['url', 'section_id', 'markup_prefix', 'sub_label'],
-)
-
-
-def section_to_nav(sect):
-    """Parse `PreambleSect` to `NavItem` for rendering footer nav."""
-    # Hack: Reconstitute node prefix and title
-    # TODO: Emit these fields in a ToC layer in -parser instead
-    top = sect.full_id.split('-')[3]
-    if sect.title.lower().startswith('{}. '.format(top.lower())):
-        prefix, label = sect.title.split('. ', 1)
-    else:
-        prefix, label = top, sect.title
-    return NavItem(
-        url=sect.url,
-        section_id=sect.full_id,
-        markup_prefix=prefix,
-        sub_label=label,
-    )
+class NavItem(namedtuple('NavItem',
+                         ['url', 'section_id', 'markup_prefix', 'sub_label'])):
+    @classmethod
+    def from_section(cls, sect):
+        """Parse `PreambleSect` to `NavItem` for rendering footer nav."""
+        # Hack: Reconstitute node prefix and title
+        # TODO: Emit these fields in a ToC layer in -parser instead
+        top = sect.full_id.split('-')[3]
+        if sect.title.lower().startswith('{}. '.format(top.lower())):
+            prefix, label = sect.title.split('. ', 1)
+        else:
+            prefix, label = top, sect.title
+        return cls(
+            url=sect.url,
+            section_id=sect.full_id,
+            markup_prefix=prefix,
+            sub_label=label,
+        )
 
 
 def common_context(doc_number):
@@ -261,7 +257,6 @@ class PreambleView(View):
             'full_id': sub_context['node']['full_id'],
             'type': 'preamble',
             'navigation': nav,
-            'page_type': 'preamble-section',
         })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
