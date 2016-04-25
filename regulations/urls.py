@@ -51,7 +51,9 @@ urlpatterns = patterns(
     url(r'^comments/review/(?P<doc_number>[\w-]+)$',
         PrepareCommentView.as_view(), name='comment_review'),
     url(r'^comments/preview$', comment.preview_comment),
-    url(r'^comments/comment$', comment.submit_comment),
+    url(r'^comments/comment/(?P<doc_number>[\w-]+)$',
+        comment.SubmitCommentView.as_view(),
+        name='comment_submit'),
     url(r'^comments/federal_agencies$', comment.get_federal_agencies),
     url(r'^comments/gov_agency_types$', comment.get_gov_agency_types),
     # Redirect to version by date (by GET)

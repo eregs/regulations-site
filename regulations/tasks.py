@@ -30,23 +30,23 @@ logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True)
-def submit_comment(self, body):
+def submit_comment(self, comments, form):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
     The main comment is converted to a PDF and added as an attachment; the
     'general_comment' field refers to this attachment.
 
-    :param body: dict of fields and values to be posted to regulations.gov
+    :param comments: List of sectional comments
+    :param form: Dict of form data
     '''
-    sections = body.get('assembled_comment', [])
     try:
-        html = json_to_html(sections)
-        files = extract_files(sections)
+        html = json_to_html(comments)
+        files = extract_files(comments)
         try:
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
-                data = build_multipart_encoded(body, comment_pdf, attachments)
+                data = build_multipart_encoded(form, comment_pdf, attachments)
                 response = post_submission(data)
                 if response.status_code != requests.codes.created:
                     logger.warn("Post to regulations.gov failed: %s %s",
@@ -60,7 +60,9 @@ def submit_comment(self, body):
     except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
-        save_failed_submission(json.dumps(body))
+        save_failed_submission(
+            json.dumps({'comments': comments, 'form': form})
+        )
         return {'message': message, 'trackingNumber': None}
 
 
@@ -159,7 +161,7 @@ def extract_files(sections):
     ]
 
 
-def build_multipart_encoded(body, comment_pdf, attachments):
+def build_multipart_encoded(form, comment_pdf, attachments):
     """ Build a MultiPartEncoded payload from the extra body fields,
         the main comment PDF and the set of attachments
     """
@@ -173,8 +175,7 @@ def build_multipart_encoded(body, comment_pdf, attachments):
     # Add other submitted fields
     fields.extend([
         (name, value)
-        for name, value in six.iteritems(body)
-        if name != 'assembled_comment'
+        for name, value in six.iteritems(form)
     ])
     fields.extend(attachments)
     return MultipartEncoder(fields)

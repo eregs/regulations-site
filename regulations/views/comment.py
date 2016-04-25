@@ -9,11 +9,14 @@ from django.conf import settings
 from django.core.cache import caches
 from django.http import JsonResponse
 from django.utils.crypto import get_random_string
-from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.template.response import TemplateResponse
+from django.views.generic.base import View
 
-from regulations import docket
 from regulations import tasks
+from regulations import docket
+from regulations.views.preamble import common_context, generate_html_tree
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +43,7 @@ def upload_proxy(request):
             'ContentType': request.GET.get('type', 'application/octet-stream'),
             'Bucket': settings.ATTACHMENT_BUCKET,
             'Key': key,
-            'Metadata': {'name': filename}
+            'Metadata': {'name': filename},
         },
 
     )
@@ -89,43 +92,60 @@ def preview_comment(request):
     return JsonResponse({'url': url})
 
 
-@csrf_exempt
-@require_http_methods(['POST'])
-def submit_comment(request):
-    """Submit a comment to the task queue. The request body is JSON
-    with an 'assembled_comment' field and additional fields.
-    """
-    body = json.loads(request.body.decode('utf-8'))
-    valid, message = docket.sanitize_fields(body)
-    if not valid:
-        logger.error(message)
-        return JsonResponse({'message': message}, status=403)
+class SubmitCommentView(View):
 
-    files = tasks.extract_files(body['assembled_comment'])
-    # Account for the main comment itself submitted as an attachment
-    if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
-        message = "Too many attachments"
-        logger.error(message)
-        return JsonResponse({'message': message}, status=403)
+    def post(self, request, doc_number):
+        form = {
+            key: value for key, value in request.POST.items()
+            if key not in {'comments', 'csrfmiddlewaretoken'}
+        }
+        comments = json.loads(request.POST.get('comments', '[]'))
 
-    s3 = tasks.make_s3_client()
-    metadata_key = get_random_string(50)
-    metadata_url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': metadata_key,
-        },
-    )
-    chain = celery.chain(
-        tasks.submit_comment.s(body),
-        tasks.publish_tracking_number.s(key=metadata_key),
-    )
-    chain.delay()
-    return JsonResponse({
-        'status': 'submitted',
-        'metadata_url': metadata_url,
-    })
+        context = common_context(doc_number)
+        context.update(generate_html_tree(context['preamble'], request,
+                                          id_prefix=[doc_number, 'preamble']))
+
+        valid, context['message'] = self.validate(comments, form)
+        context['metadata_url'] = (
+            self.enqueue(comments, form) if valid
+            else None
+        )
+
+        template = 'regulations/comment-confirm-chrome.html'
+        return TemplateResponse(request=request, template=template,
+                                context=context)
+
+    def validate(self, comments, form):
+        valid, message = docket.sanitize_fields(form)
+        if not valid:
+            logger.error(message)
+            return valid, message
+
+        files = tasks.extract_files(comments)
+        # Account for the main comment itself submitted as an attachment
+        if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
+            message = "Too many attachments"
+            logger.error(message)
+            return False, message
+
+        return True, ''
+
+    def enqueue(self, comments, form):
+        s3 = tasks.make_s3_client()
+        metadata_key = get_random_string(50)
+        metadata_url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': settings.ATTACHMENT_BUCKET,
+                'Key': metadata_key,
+            },
+        )
+        chain = celery.chain(
+            tasks.submit_comment.s(comments, form),
+            tasks.publish_tracking_number.s(key=metadata_key),
+        )
+        chain.delay()
+        return metadata_url
 
 
 @require_http_methods(['GET', 'HEAD'])

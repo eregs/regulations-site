@@ -25,10 +25,11 @@ class TestSubmitComment(TestCase):
 
     def setUp(self):
         self.file_handle = six.BytesIO(b"some-byte-content")
-        self.submission = {'assembled_comment': [
+        self.comments = [
             {"id": "A1", "comment": "A simple comment", "files": []},
             {"id": "A5", "comment": "Another comment", "files": []}
-        ]}
+        ]
+        self.form = {}
 
     def tearDown(self):
         FailedCommentSubmission.objects.all().delete()
@@ -40,7 +41,7 @@ class TestSubmitComment(TestCase):
         post_submission.return_value.status_code = 201
         post_submission.return_value.json.return_value = expected_result
 
-        result = submit_comment(self.submission)
+        result = submit_comment(self.comments, self.form)
 
         self.assertEqual(result, expected_result)
         self.assertFalse(FailedCommentSubmission.objects.all(),
@@ -55,7 +56,7 @@ class TestSubmitComment(TestCase):
         retry.return_value = Retry()
 
         with self.assertRaises(Retry):
-            submit_comment(self.submission)
+            submit_comment(self.comments, self.form)
         self.assertFalse(FailedCommentSubmission.objects.all(),
                          "No submissions saved")
 
@@ -67,6 +68,12 @@ class TestSubmitComment(TestCase):
 
         retry.return_value = MaxRetriesExceededError()
 
-        submit_comment(self.submission)
+        submit_comment(self.comments, self.form)
         saved_submission = FailedCommentSubmission.objects.all()[0]
-        self.assertEqual(json.dumps(self.submission), saved_submission.body)
+        self.assertEqual(
+            json.dumps({
+                'comments': self.comments,
+                'form': self.form,
+            }),
+            saved_submission.body,
+        )

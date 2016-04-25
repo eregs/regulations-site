@@ -1,0 +1,17 @@
+{% extends "regulations/preamble-base.html" %}
+
+{% block chrome-content %}
+<main role="main">
+  <div id="content-body" class="main-content preamble-wrapper comment-review-wrapper">
+    <section
+        id="comment-confirm"
+        data-page-type="comment-confirm"
+        data-meta-url="{{metadata_url}}"
+        data-doc-id="{{doc_number}}">
+      <div class="status">
+        Waiting to receive comment tracking number.
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

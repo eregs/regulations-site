@@ -24,6 +24,7 @@ var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
 var CommentReviewView = require('../comment/comment-review-view');
+var CommentConfirmView = require('../comment/comment-confirm-view');
 var PreambleView = require('./preamble-view');
 var Resources = require('../../resources');
 Backbone.$ = $;
@@ -120,6 +121,7 @@ var MainView = Backbone.View.extend({
         'appendix': RegView,
         'interpretation': RegView,
         'comment-review': CommentReviewView,
+        'comment-confirm': CommentConfirmView,
         'preamble-section': PreambleView
     },
 
