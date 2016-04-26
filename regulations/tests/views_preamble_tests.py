@@ -156,12 +156,12 @@ class PreambleToCTests(TestCase):
         toc = preamble.make_preamble_toc(self.nodes)
 
         nav = preamble.preamble_section_navigation(
-            'abc-preamble-abc-123-I', toc)
+            'abc-preamble-abc-123-I', toc, [])
         assert_equal(nav['next'].section_id, 'abc-preamble-abc-123-II')
         assert_is_none(nav['previous'])
 
         nav = preamble.preamble_section_navigation(
-            'abc-preamble-abc-123-II', toc)
+            'abc-preamble-abc-123-II', toc, [])
         assert_equal(nav['previous'].section_id, 'abc-preamble-abc-123-I')
         assert_is_none(nav['next'])
 
@@ -237,10 +237,10 @@ class CFRChangeToCTests(TestCase):
             )
         ]
 
-        nav = preamble.cfr_section_navigation('478-99', toc)
+        nav = preamble.cfr_section_navigation('478-99', [], toc)
         assert_equal(nav['next'].section_id, '2016_02749-cfr-478-120')
-        assert_is_none(nav['previous'])
+        assert_equal(nav['previous'].markup_prefix, 'Authority')
 
-        nav = preamble.cfr_section_navigation('478-120', toc)
+        nav = preamble.cfr_section_navigation('478-120', [], toc)
         assert_equal(nav['previous'].section_id, '2016_02749-cfr-478-99')
         assert_is_none(nav['next'])

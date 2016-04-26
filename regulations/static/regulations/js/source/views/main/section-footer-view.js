@@ -20,12 +20,14 @@ var SectionFooterView = Backbone.View.extend({
     },
 
     sendNavEvent: function(e) {
-        e.preventDefault();
         var $target = $(e.currentTarget);
         var sectionId = $target.data('linked-section');
         var pageType = $target.data('page-type') || 'reg-section';
 
-        MainEvents.trigger('section:open', sectionId, {}, pageType);
+        if (sectionId && pageType) {
+          e.preventDefault();
+          MainEvents.trigger('section:open', sectionId, {}, pageType);
+        }
     },
 
     remove: function() {

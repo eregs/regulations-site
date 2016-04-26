@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import re
+import itertools
 from copy import deepcopy
 from datetime import date
 from collections import namedtuple
@@ -177,28 +178,63 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     ]
 
 
-def preamble_section_navigation(full_id, toc):
+def preamble_section_navigation(full_id, preamble_toc, cfr_toc):
     nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
-    for idx, sect in enumerate(toc):
+    for idx, sect in enumerate(preamble_toc):
         if sect.full_id == full_id:
             if idx > 0:
-                nav['previous'] = NavItem.from_preamble_section(toc[idx - 1])
-            if idx < len(toc) - 1:
-                nav['next'] = NavItem.from_preamble_section(toc[idx + 1])
+                nav['previous'] = NavItem.from_preamble_section(
+                    preamble_toc[idx - 1])
+            if idx < len(preamble_toc) - 1:
+                nav['next'] = NavItem.from_preamble_section(
+                    preamble_toc[idx + 1])
+            elif cfr_toc:
+                nav['next'] = NavItem.from_object(cfr_toc[0])
     return nav
 
 
-def cfr_section_navigation(label_id, toc):
-    part, section = label_id.split('-')
-    sections = next((each.sections for each in toc if each.part == part), [])
+def cfr_section_navigation(label_id, preamble_toc, cfr_toc):
+    parts = label_id.split('-')
+    if len(parts) == 1:
+        part, section = parts[0], None
+    else:
+        part, section = parts[:2]
     nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
-    for idx, sect in enumerate(sections):
-        if sect.section == section:
+    pairs = list(CfrChangePair.from_toc(cfr_toc))
+    for idx, pair in enumerate(pairs):
+        if pair.match(part, section):
             if idx > 0:
-                nav['previous'] = NavItem.from_cfr_section(sections[idx - 1])
-            if idx < len(sections) - 1:
-                nav['next'] = NavItem.from_cfr_section(sections[idx + 1])
+                nav['previous'] = NavItem.from_object(pairs[idx - 1].item)
+            else:
+                nav['previous'] = NavItem.from_object(preamble_toc[-1])
+            if idx < len(pairs) - 1:
+                nav['next'] = NavItem.from_object(pairs[idx + 1].item)
+            break
     return nav
+
+
+class CfrChangePair(namedtuple('CfrChangePair', ['part', 'item'])):
+    def match(self, part, sect):
+        return self.match_part(part) and self.match_sect(sect)
+
+    def match_part(self, part):
+        return self.part == part
+
+    def match_sect(self, sect):
+        return (
+            sect is None or
+            (isinstance(self.item, ToCSect) and self.item.section == sect)
+        )
+
+    @classmethod
+    def from_toc(cls, toc):
+        return itertools.chain.from_iterable(
+            (
+                [cls(part.part, part)] +
+                [cls(part.part, sect) for sect in part.sections]
+            )
+            for part in toc
+        )
 
 
 class NavItem(namedtuple('NavItem',
@@ -238,6 +274,26 @@ class NavItem(namedtuple('NavItem',
             markup_prefix=prefix,
             sub_label=label,
         )
+
+    @classmethod
+    def from_cfr_part(cls, part):
+        return cls(
+            url=part.authority_url,
+            section_id='',
+            markup_prefix='Authority',
+            sub_label='Authority',
+        )
+
+    @classmethod
+    def from_object(cls, obj):
+        if isinstance(obj, ToCPart):
+            return cls.from_cfr_part(obj)
+        if isinstance(obj, ToCSect):
+            return cls.from_cfr_section(obj)
+        if isinstance(obj, PreambleSect):
+            return cls.from_preamble_section(obj)
+        raise ValueError(
+            'Value must be `ToCPart`, `ToCSect`, or `PreambleSect`')
 
 
 def common_context(doc_number):
@@ -285,7 +341,8 @@ class PreambleView(View):
                                          id_prefix=[doc_number, 'preamble'])
         template = sub_context['node']['template_name']
         nav = preamble_section_navigation(
-            sub_context['node']['full_id'], context['preamble_toc'])
+            sub_context['node']['full_id'], context['preamble_toc'],
+            context['cfr_change_toc'])
         sub_context['meta'] = context['meta']
 
         context.update({
@@ -357,9 +414,10 @@ class CFRChangesView(View):
                 versions,
                 doc_number=doc_number,
                 label_id=section,
-                context=context,
             )
         sub_context['meta'] = context['meta']
+        sub_context['navigation'] = cfr_section_navigation(
+            section, context['preamble_toc'], context['cfr_change_toc'])
 
         context.update({
             'sub_context': sub_context,
@@ -385,7 +443,7 @@ class CFRChangesView(View):
 
     @staticmethod
     def regtext_changes_context(amendments, version_info, label_id,
-                                doc_number, context):
+                                doc_number):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
         relevant = []
@@ -407,9 +465,7 @@ class CFRChangesView(View):
         builder.tree = tree
         builder.generate_html()
 
-        nav = cfr_section_navigation(label_id, context['cfr_change_toc'])
         return {
             'instructions': [a['instruction'] for a in relevant],
             'tree': builder.tree,
-            'navigation': nav,
         }
