@@ -7,8 +7,7 @@ import shutil
 import tempfile
 import contextlib
 import subprocess
-
-import six
+import collections
 
 import boto3
 from botocore.client import Config
@@ -24,55 +23,66 @@ from celery.utils.log import get_task_logger
 
 from django.conf import settings
 from django.template import loader
+from django.utils.crypto import get_random_string
 
 from regulations.models import FailedCommentSubmission
 logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True)
-def submit_comment(self, body):
+def submit_comment(self, comments, form_data, metadata_url):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
     The main comment is converted to a PDF and added as an attachment; the
     'general_comment' field refers to this attachment.
 
-    :param body: dict of fields and values to be posted to regulations.gov
+    :param comments: List of sectional comments
+    :param form_data: Dict of fields accepted by regulations.gov
+    :param metadata_url: SignedUrl for comment metadata
     '''
-    sections = body.get('assembled_comment', [])
     try:
-        html = json_to_html(sections)
-        files = extract_files(sections)
+        html = json_to_html(comments)
+        files = extract_files(comments)
         try:
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
-                data = build_multipart_encoded(body, comment_pdf, attachments)
+                pdf_url = cache_pdf(comment_pdf, metadata_url)
+                data = build_multipart_encoded(
+                    form_data, comment_pdf, attachments)
                 response = post_submission(data)
                 if response.status_code != requests.codes.created:
                     logger.warn("Post to regulations.gov failed: %s %s",
                                 response.status_code, response.text)
                     raise self.retry()
                 logger.info(response.text)
-                return response.json()
+                data = response.json()
+                return {
+                    'trackingNumber': data['trackingNumber'],
+                    'pdfUrl': pdf_url.url,
+                }
         except (RequestException, ClientError):
             logger.exception("Unable to submit comment")
             raise self.retry()
     except MaxRetriesExceededError:
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
-        save_failed_submission(json.dumps(body))
-        return {'message': message, 'trackingNumber': None}
+        save_failed_submission(
+            json.dumps({'comments': comments, 'form_data': form_data})
+        )
+        return {
+            'pdfUrl': pdf_url.url,
+            'trackingNumber': None,
+        }
 
 
 @shared_task
-def publish_tracking_number(response, key):
-    s3 = make_s3_client()
-    body = {'trackingNumber': response['trackingNumber']}
-    s3.put_object(
-        Body=json.dumps(body).encode(),
+def publish_tracking_number(response, metadata_url):
+    s3_client.put_object(
+        Body=json.dumps(response).encode(),
         Bucket=settings.ATTACHMENT_BUCKET,
         ContentType='application/json',
-        Key=key,
+        Key=metadata_url.key,
     )
 
 
@@ -95,6 +105,22 @@ def html_to_pdf(html):
             yield pdf_file
     finally:
         shutil.rmtree(path)
+
+
+def cache_pdf(pdf, metadata_url):
+    """Update submission metadata and cache comment PDF."""
+    url = SignedUrl.generate()
+    s3_client.put_object(
+        Body=json.dumps({'pdf_url': metadata_url.url}),
+        Bucket=settings.ATTACHMENT_BUCKET,
+        Key=metadata_url.key,
+    )
+    s3_client.put_object(
+        Body=pdf,
+        Bucket=settings.ATTACHMENT_BUCKET,
+        Key=url.key,
+    )
+    return url
 
 
 @contextlib.contextmanager
@@ -130,9 +156,8 @@ def fetch_file(path, key, name):
     whose content is downloaded from S3 where it is stored under ``key``
 
     '''
-    s3 = make_s3_client()
     dest = os.path.join(path, name)
-    s3.download_file(settings.ATTACHMENT_BUCKET, key, dest)
+    s3_client.download_file(settings.ATTACHMENT_BUCKET, key, dest)
     return open(dest, "rb")
 
 
@@ -142,6 +167,22 @@ def make_s3_client():
         aws_secret_access_key=settings.ATTACHMENT_SECRET_ACCESS_KEY,
     )
     return session.client('s3', config=Config(signature_version='s3v4'))
+
+
+s3_client = make_s3_client()
+
+
+class SignedUrl(collections.namedtuple('SignedUrl', ['key', 'url'])):
+    @classmethod
+    def generate(cls, key=None, method='get_object', params=None):
+        key = key or get_random_string(50)
+        params = params or {}
+        params.update({'Bucket': settings.ATTACHMENT_BUCKET, 'Key': key})
+        url = s3_client.generate_presigned_url(
+            ClientMethod=method,
+            Params=params,
+        )
+        return cls(key, url)
 
 
 def extract_files(sections):
@@ -159,7 +200,7 @@ def extract_files(sections):
     ]
 
 
-def build_multipart_encoded(body, comment_pdf, attachments):
+def build_multipart_encoded(form_data, comment_pdf, attachments):
     """ Build a MultiPartEncoded payload from the extra body fields,
         the main comment PDF and the set of attachments
     """
@@ -171,11 +212,7 @@ def build_multipart_encoded(body, comment_pdf, attachments):
     ]
 
     # Add other submitted fields
-    fields.extend([
-        (name, value)
-        for name, value in six.iteritems(body)
-        if name != 'assembled_comment'
-    ])
+    fields.extend(form_data.items())
     fields.extend(attachments)
     return MultipartEncoder(fields)
 

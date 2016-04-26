@@ -62,41 +62,47 @@
 
       </div>
 
-      <div class="additional-info">
-        <h4>Include your information (Optional)</h4>
+      <form action="{% url 'comment_submit' doc_number=doc_number %}" method="post">
+        {% csrf_token %}
 
-        <fieldset>
-          <legend>Your name</legend>
-          <span>First and last name of the person submitting the comment.</span>
-          <input type="text" class="your-name">
-        </fieldset>
+        <input type="hidden" name="comments" />
 
-        <fieldset>
-          <input type="checkbox" class="org-submit">
-          <label for="org-submit">I am submitting on behalf of an organization.</label>
-        </fieldset>
+        <div class="additional-info">
+          <h4>Include your information (Optional)</h4>
 
-        <fieldset>
-          <input type="checkbox" class="agency-submit">
-          <label for="agency-submit">I am submitting on behalf of a government agency.</label>
-        </fieldset>
+          <fieldset>
+            <legend>Your name</legend>
+            <span>First and last name of the person submitting the comment.</span>
+            <input type="text" class="your-name">
+          </fieldset>
 
-      </div>
+          <fieldset>
+            <input type="checkbox" class="org-submit">
+            <label for="org-submit">I am submitting on behalf of an organization.</label>
+          </fieldset>
 
-      <div class="statement">
-        <p>You are filling a document into an official docket.
-        Any personal information entered on this form may be publicly viewable on the web.
-        </p>
+          <fieldset>
+            <input type="checkbox" class="agency-submit">
+            <label for="agency-submit">I am submitting on behalf of a government agency.</label>
+          </fieldset>
 
-        <input type="checkbox" class="agree">
-        <label for="agree">
-          I read and understand the statement above.
-          <span class="required">(Required to submit.)</span>
-        </label>
-      </div>
+        </div>
 
-      <button class="submit-button" disabled>Submit your comment</button>
-      <div class="status"></div>
+        <div class="statement">
+          <p>You are filling a document into an official docket.
+          Any personal information entered on this form may be publicly viewable on the web.
+          </p>
+
+          <input type="checkbox" class="agree">
+          <label for="agree">
+            I read and understand the statement above.
+            <span class="required">(Required to submit.)</span>
+          </label>
+        </div>
+
+        <button class="submit-button" disabled>Submit your comment</button>
+
+      </form>
 
     <% } else { %>
       <p>There are no comments to review or submit.</p>

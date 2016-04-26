@@ -15,8 +15,7 @@ var CommentReviewView = Backbone.View.extend({
   events: {
     'click .edit-comment': 'editComment',
     'click .preview-button': 'preview',
-    'change .agree': 'toggleSubmit',
-    'click .submit-button': 'submit'
+    'change .agree': 'toggleSubmit'
   },
 
   initialize: function(options) {
@@ -35,7 +34,7 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   findElms: function() {
-    this.$status = this.$el.find('.status');
+    this.$form = this.$el.find('form');
   },
 
   handleRead: function() {
@@ -67,22 +66,19 @@ var CommentReviewView = Backbone.View.extend({
     this.$content.html(html);
     this.findElms();
 
+    this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
+
     this.preambleHeadView = new PreambleHeadView();
     CommentEvents.trigger('comment:writeTabOpen');
-  },
-
-  serialize: function() {
-    // TODO(vrajmohan) Add other regs.gov fields
-    return {
-      assembled_comment: comments.toJSON({docId: this.docId})
-    };
   },
 
   preview: function() {
     var $xhr = $.ajax({
       type: 'POST',
       url: window.APP_PREFIX + 'comments/preview',
-      data: JSON.stringify(this.serialize()),
+      data: JSON.stringify({
+        assembled_comment: comments.toJSON({docId: this.docId})
+      }),
       contentType: 'application/json',
       dataType: 'json'
     });
@@ -99,49 +95,6 @@ var CommentReviewView = Backbone.View.extend({
 
   toggleSubmit: function() {
     $('.submit-button').prop('disabled', function(i, v) { return !v; });
-  },
-
-  submit: function() {
-    var prefix = window.APP_PREFIX || '/';
-    var $xhr = $.ajax({
-      type: 'POST',
-      url: prefix + 'comments/comment',
-      data: JSON.stringify(this.serialize()),
-      contentType: 'application/json',
-      dataType: 'json'
-    });
-    $xhr.done(this.submitSuccess.bind(this));
-    $xhr.fail(this.submitError.bind(this));
-  },
-
-  submitSuccess: function(resp) {
-    this.$status.text('Comment processing').fadeIn();
-    this.poll(resp.metadata_url);
-  },
-
-  submitError: function() {
-    // TODO(jmcarp) Figure out desired behavior
-  },
-
-  poll: function(url) {
-    this.interval = window.setInterval(
-      function() {
-        $.getJSON(url).then(function(resp) {
-          window.clearInterval(this.interval);
-          this.setTrackingNumber(resp.trackingNumber);
-        }.bind(this));
-      }.bind(this),
-      5000
-    );
-  },
-
-  setTrackingNumber: function(number) {
-    this.$status.html(
-      '<div>Comment submitted</div>' +
-      '<div>Tracking number: ' +
-        '<a href="http://www.regulations.gov/#!searchResults;rpp=25;po=0;s=' + number + '">' + number + '</a>' +
-      '</div>'
-    );
   }
 });
 
