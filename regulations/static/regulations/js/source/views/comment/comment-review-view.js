@@ -72,17 +72,13 @@ var CommentReviewView = Backbone.View.extend({
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  serialize: function() {
-    return {
-      assembled_comment: comments.toJSON({docId: this.docId})
-    };
-  },
-
   preview: function() {
     var $xhr = $.ajax({
       type: 'POST',
       url: window.APP_PREFIX + 'comments/preview',
-      data: JSON.stringify(this.serialize()),
+      data: JSON.stringify({
+        assembled_comment: comments.toJSON({docId: this.docId})
+      }),
       contentType: 'application/json',
       dataType: 'json'
     });

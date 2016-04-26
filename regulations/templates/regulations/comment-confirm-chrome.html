@@ -6,12 +6,12 @@
     <section
         id="comment-confirm"
         data-page-type="comment-confirm"
-        data-meta-url="{{meta.url}}"
+        data-metadata-url="{{metadata_url}}"
         data-doc-id="{{doc_number}}">
       {% if message %}
         Comment submission failed.
         {{ message }}
-      {% elif not meta %}
+      {% elif not metadata_url %}
         Comment submission failed.
         We're sorry, something went wrong with our system, and submitting your comment did not work.
         Return to your draft comment to try submitting again.

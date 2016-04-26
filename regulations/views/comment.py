@@ -81,21 +81,24 @@ def preview_comment(request):
 class SubmitCommentView(View):
 
     def post(self, request, doc_number):
-        form = {
+        form_data = {
             key: value for key, value in request.POST.items()
-            if key not in {'comments', 'csrfmiddlewaretoken'}
+            if key != 'comments'
         }
         comments = json.loads(request.POST.get('comments', '[]'))
 
         context = common_context(doc_number)
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
-        context.update({'message': None, 'meta': None})
+        context.update({'message': None, 'metadata_url': None})
 
-        valid, context['message'] = self.validate(comments, form)
+        valid, context['message'] = self.validate(comments, form_data)
 
+        # Catch any errors related to enqueueing comment submission. Because
+        # this step can fail for many reasons (e.g. no connection to broker,
+        # broker fails to write, etc.), catch `Exception`.
         try:
-            context['meta'] = self.enqueue(comments, form)
+            _, context['metadata_url'] = self.enqueue(comments, form_data)
         except Exception as exc:
             logger.exception(exc)
 
@@ -103,8 +106,8 @@ class SubmitCommentView(View):
         return TemplateResponse(request=request, template=template,
                                 context=context)
 
-    def validate(self, comments, form):
-        valid, message = docket.sanitize_fields(form)
+    def validate(self, comments, form_data):
+        valid, message = docket.sanitize_fields(form_data)
         if not valid:
             logger.error(message)
             return valid, message
@@ -118,10 +121,10 @@ class SubmitCommentView(View):
 
         return True, ''
 
-    def enqueue(self, comments, form):
+    def enqueue(self, comments, form_data):
         metadata_url = tasks.SignedUrl.generate()
         chain = celery.chain(
-            tasks.submit_comment.s(comments, form, metadata_url),
+            tasks.submit_comment.s(comments, form_data, metadata_url),
             tasks.publish_tracking_number.s(metadata_url=metadata_url),
         )
         chain.delay()

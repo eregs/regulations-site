@@ -18,12 +18,12 @@ var CommentConfirmView = Backbone.View.extend({
     this.findElms();
 
     this.docId = this.$el.data('doc-id');
-    this.metaUrl = this.$el.data('meta-url');
+    this.metadataUrl = this.$el.data('metadata-url');
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
 
-    if (this.metaUrl) {
-      this.poll(this.metaUrl);
+    if (this.metadataUrl) {
+      this.poll(this.metadataUrl);
       comments.filter(this.docId).forEach(function(comment) {
         comment.destroy();
       });

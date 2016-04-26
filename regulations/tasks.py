@@ -9,8 +9,6 @@ import contextlib
 import subprocess
 import collections
 
-import six
-
 import boto3
 from botocore.client import Config
 from botocore.exceptions import ClientError
@@ -80,13 +78,8 @@ def submit_comment(self, comments, form_data, metadata_url):
 
 @shared_task
 def publish_tracking_number(response, metadata_url):
-    s3 = make_s3_client()
-    body = {
-        'pdfUrl': response['pdfUrl'],
-        'trackingNumber': response['trackingNumber'],
-    }
-    s3.put_object(
-        Body=json.dumps(body).encode(),
+    s3_client.put_object(
+        Body=json.dumps(response).encode(),
         Bucket=settings.ATTACHMENT_BUCKET,
         ContentType='application/json',
         Key=metadata_url.key,
@@ -163,9 +156,8 @@ def fetch_file(path, key, name):
     whose content is downloaded from S3 where it is stored under ``key``
 
     '''
-    s3 = make_s3_client()
     dest = os.path.join(path, name)
-    s3.download_file(settings.ATTACHMENT_BUCKET, key, dest)
+    s3_client.download_file(settings.ATTACHMENT_BUCKET, key, dest)
     return open(dest, "rb")
 
 
@@ -208,7 +200,7 @@ def extract_files(sections):
     ]
 
 
-def build_multipart_encoded(form, comment_pdf, attachments):
+def build_multipart_encoded(form_data, comment_pdf, attachments):
     """ Build a MultiPartEncoded payload from the extra body fields,
         the main comment PDF and the set of attachments
     """
@@ -220,10 +212,7 @@ def build_multipart_encoded(form, comment_pdf, attachments):
     ]
 
     # Add other submitted fields
-    fields.extend([
-        (name, value)
-        for name, value in six.iteritems(form)
-    ])
+    fields.extend(form_data.items())
     fields.extend(attachments)
     return MultipartEncoder(fields)
 
