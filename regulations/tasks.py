@@ -32,7 +32,7 @@ logger = get_task_logger(__name__)
 
 
 @shared_task(bind=True)
-def submit_comment(self, comments, form, meta):
+def submit_comment(self, comments, form_data, metadata_url):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
     Number of retries and time between retries is managed by Celery settings.
@@ -40,8 +40,8 @@ def submit_comment(self, comments, form, meta):
     'general_comment' field refers to this attachment.
 
     :param comments: List of sectional comments
-    :param form: Dict of form data
-    :param meta:
+    :param form_data: Dict of fields accepted by regulations.gov
+    :param metadata_url: SignedUrl for comment metadata
     '''
     try:
         html = json_to_html(comments)
@@ -49,8 +49,9 @@ def submit_comment(self, comments, form, meta):
         try:
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
-                pdf_url = cache_pdf(comment_pdf, meta)
-                data = build_multipart_encoded(form, comment_pdf, attachments)
+                pdf_url = cache_pdf(comment_pdf, metadata_url)
+                data = build_multipart_encoded(
+                    form_data, comment_pdf, attachments)
                 response = post_submission(data)
                 if response.status_code != requests.codes.created:
                     logger.warn("Post to regulations.gov failed: %s %s",
@@ -69,7 +70,7 @@ def submit_comment(self, comments, form, meta):
         message = "Exceeded retries, saving failed submission"
         logger.error(message)
         save_failed_submission(
-            json.dumps({'comments': comments, 'form': form})
+            json.dumps({'comments': comments, 'form_data': form_data})
         )
         return {
             'pdfUrl': pdf_url.url,
@@ -78,7 +79,7 @@ def submit_comment(self, comments, form, meta):
 
 
 @shared_task
-def publish_tracking_number(response, meta):
+def publish_tracking_number(response, metadata_url):
     s3 = make_s3_client()
     body = {
         'pdfUrl': response['pdfUrl'],
@@ -88,7 +89,7 @@ def publish_tracking_number(response, meta):
         Body=json.dumps(body).encode(),
         Bucket=settings.ATTACHMENT_BUCKET,
         ContentType='application/json',
-        Key=meta.key,
+        Key=metadata_url.key,
     )
 
 
@@ -113,13 +114,13 @@ def html_to_pdf(html):
         shutil.rmtree(path)
 
 
-def cache_pdf(pdf, meta):
+def cache_pdf(pdf, metadata_url):
     """Update submission metadata and cache comment PDF."""
     url = SignedUrl.generate()
     s3_client.put_object(
-        Body=json.dumps({'pdf_url': meta.url}),
+        Body=json.dumps({'pdf_url': metadata_url.url}),
         Bucket=settings.ATTACHMENT_BUCKET,
-        Key=meta.key,
+        Key=metadata_url.key,
     )
     s3_client.put_object(
         Body=pdf,

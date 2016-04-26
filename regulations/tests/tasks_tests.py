@@ -85,7 +85,7 @@ class TestSubmitComment(TestCase):
         self.assertEqual(
             json.dumps({
                 'comments': self.comments,
-                'form': self.form,
+                'form_data': self.form,
             }),
             saved_submission.body,
         )

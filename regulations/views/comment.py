@@ -119,13 +119,13 @@ class SubmitCommentView(View):
         return True, ''
 
     def enqueue(self, comments, form):
-        meta = tasks.SignedUrl.generate()
+        metadata_url = tasks.SignedUrl.generate()
         chain = celery.chain(
-            tasks.submit_comment.s(comments, form, meta),
-            tasks.publish_tracking_number.s(meta=meta),
+            tasks.submit_comment.s(comments, form, metadata_url),
+            tasks.publish_tracking_number.s(metadata_url=metadata_url),
         )
         chain.delay()
-        return meta
+        return metadata_url
 
 
 @require_http_methods(['GET', 'HEAD'])
