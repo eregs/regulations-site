@@ -18,8 +18,6 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var RegView = ChildView.extend({
-    el: '#content-wrapper',
-
     events: {
         'click .definition': 'termLinkHandler',
         'click .inline-interp-header': 'expandInterp'
@@ -68,17 +66,17 @@ var RegView = ChildView.extend({
     },
 
     openSection: function(e) {
-        var $e = $(e.target),
-            id = $e.attr('data-section-id') || $e.attr('data-linked-section'),
-            href = $e.attr('href'),
-            config = {},
-            hashIndex;
+        var $target = $(e.currentTarget);
+        var id = $target.data('section-id') || $target.data('linked-section');
+        var href = $target.attr('href');
+        var config = {};
+        var hashIndex;
 
         if (typeof href !== 'undefined') {
             hashIndex = href.indexOf('#');
         }
 
-        if (id.length > 0) {
+        if (id) {
             e.preventDefault();
             config.id = id;
 

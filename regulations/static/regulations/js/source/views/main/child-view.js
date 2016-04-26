@@ -26,11 +26,11 @@ var ChildView = Backbone.View.extend({
           this.render();
         } else if (this.options.id) {
           MainEvents.trigger('section:sethandlers');
-          DrawerEvents.trigger('section:open', this.id);
+          DrawerEvents.trigger('section:open', this.options.id);
         }
 
         this.$sections = this.$sections || {};
-        this.activeSection = this.id;
+        this.activeSection = this.options.id;
         this.$activeSection = $('#' + this.activeSection);
 
         this.loadImages();
@@ -104,7 +104,6 @@ var ChildView = Backbone.View.extend({
                 }
             }
         }
-
 
         return this;
     },

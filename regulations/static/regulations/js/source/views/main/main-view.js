@@ -64,6 +64,7 @@ var MainView = Backbone.View.extend({
       }
 
       var options = {
+        el: '#' + this.sectionId,
         subContentType: this.isAppendixOrSupplement(),
         render: false
       };
@@ -125,7 +126,7 @@ var MainView = Backbone.View.extend({
       this.loading();
       SidebarEvents.trigger('section:loading');
 
-      this.setChildOptions(options);
+      this.setChildOptions(_.extend({render: true}, options));
 
       this.childModel = this.modelmap[this.contentType];
       this.childModel.get(id, this.childOptions)
@@ -163,6 +164,7 @@ var MainView = Backbone.View.extend({
         this.$el.html(html);
       }
 
+      this.childOptions.el = this.$el.children().get(0);
       this.childView = new this.viewmap[this.contentType](this.childOptions);
 
       // Destroy and recreate footer
