@@ -31,14 +31,15 @@ class TestSubmitComment(TestCase):
             {"id": "A5", "comment": "Another comment", "files": []}
         ]
         self.form = {}
-        self.meta = SignedUrl.generate()
+        self.meta = SignedUrl('meta', 'https://s3.amazonaws.com/bucket/meta')
 
     def tearDown(self):
         FailedCommentSubmission.objects.all().delete()
 
     def test_submit_comment(self, cache_pdf, html_to_pdf, post_submission,
                             retry):
-        cache_pdf.return_value = SignedUrl.generate()
+        cache_pdf.return_value = SignedUrl(
+            'pdf', 'https://s3.amazonaws.com/bucket/pdf')
         html_to_pdf.return_value.__enter__.return_value = self.file_handle
 
         expected_result = {'trackingNumber': 'some-tracking-number'}
@@ -59,7 +60,8 @@ class TestSubmitComment(TestCase):
 
     def test_failed_submit_raises_retry(self, cache_pdf, html_to_pdf,
                                         post_submission, retry):
-        cache_pdf.return_value = SignedUrl.generate()
+        cache_pdf.return_value = SignedUrl(
+            'pdf', 'https://s3.amazonaws.com/bucket/pdf')
         html_to_pdf.return_value.__enter__.return_value = self.file_handle
 
         post_submission.side_effect = RequestException
@@ -73,7 +75,8 @@ class TestSubmitComment(TestCase):
 
     def test_failed_submit_maximum_retries(self, cache_pdf, html_to_pdf,
                                            post_submission, retry):
-        cache_pdf.return_value = SignedUrl.generate()
+        cache_pdf.return_value = SignedUrl(
+            'pdf', 'https://s3.amazonaws.com/bucket/pdf')
         html_to_pdf.return_value.__enter__.return_value = self.file_handle
 
         post_submission.side_effect = RequestException
