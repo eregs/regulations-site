@@ -10,10 +10,13 @@ var edit = require('prosemirror/dist/edit');
 require('prosemirror/dist/menu/tooltipmenu');
 require('prosemirror/dist/markdown');
 
+var MainEvents = require('../../events/main-events');
+var DrawerEvents = require('../../events/drawer-events');
 var CommentModel = require('../../models/comment-model');
 var CommentEvents = require('../../events/comment-events');
 var AttachmentView = require('../../views/comment/attachment-view');
 var comments = require('../../collections/comment-collection');
+var helpers = require('../../helpers');
 
 /**
  * Get a presigned upload URL.
@@ -37,6 +40,7 @@ var CommentView = Backbone.View.extend({
     'change input[type="file"]': 'addAttachments',
     'dragenter input[type="file"]': 'highlightDropzone',
     'dragleave input[type="file"]': 'unhighlightDropzone',
+    'click .comment-header': 'openComment',
     'submit form': 'save'
   },
 
@@ -44,6 +48,7 @@ var CommentView = Backbone.View.extend({
     this.options = options;
 
     this.$context = this.$el.find('.comment-context');
+    this.$header = this.$el.find('.comment-header');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
     this.$attachments = this.$el.find('.comment-attachments');
@@ -77,11 +82,30 @@ var CommentView = Backbone.View.extend({
   },
 
   target: function(options) {
+    if (options.section) {
+      var parsed = helpers.parsePreambleId(options.section);
+      var href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
+      this.$header.html('<a href="' + href + '">' + options.label + '</a>');
+    }
     this.setSection(options.section, options.tocId, options.label);
     this.$context.empty();
     if (options.$parent) {
       this.$context.append(options.$parent);
     }
+  },
+
+  openComment: function(e) {
+    e.preventDefault();
+    var options = {
+      section: this.model.get('id'),
+      tocId: this.model.get('tocId'),
+      label: this.model.get('label')
+    };
+    // TODO: Push this logic into `PreambleView`
+    var type = options.section.split('-')[1];
+    DrawerEvents.trigger('section:open', options.tocId);
+    DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
+    MainEvents.trigger('section:open', options.section, options, 'preamble-section');
   },
 
   render: function() {
