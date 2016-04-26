@@ -100,7 +100,7 @@ comment.less contains styles related to commenting on sections
 }
 
 #preamble-write {
-  padding-left: 15px;
+  padding-left: 25px;
   width: 75%;
 }
 
@@ -388,6 +388,7 @@ a.comment-index-review {
 #comment-review {
   .font-regular;
   margin-bottom: 50px;
+  padding-left: 25px;
 
   h2, h3 {
     margin: 0.5em 0 0;
@@ -685,6 +686,8 @@ a.comment-index-review {
   }
 
   #comment-review {
+    padding-left: 0;
+
     .edit-comment {
       position: relative;
       right: 0;
@@ -699,8 +702,8 @@ a.comment-index-review {
 @media only screen and ( min-width: 780px ) {
   .preamble-wrapper {
     margin-right: 5%;
-    margin-left: 3%;
-    padding-left: 35px;
+    margin-left: 40px; /*240px; - offsets collapsed .panel */
+    padding-left: 15px;
   }
 
   #comment-review {
@@ -718,7 +721,7 @@ a.comment-index-review {
   .preamble-wrapper {
     margin-right: 5%;
     margin-left: 240px; /*240px; - offsets .panel */
-    padding-left: 35px;
+    padding-left: 15px;
 
     // don't need max-width to account for a right sidebar
     // so preamble text will fill the space when nav is minimized
