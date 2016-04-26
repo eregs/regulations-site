@@ -82,14 +82,20 @@ var CommentView = Backbone.View.extend({
   },
 
   target: function(options) {
-    if (options.section) {
-      var parsed = helpers.parsePreambleId(options.section);
-      var href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
-      this.$header.html('<a href="' + href + '">' + options.label + '</a>');
-    }
     this.setSection(options.section, options.tocId, options.label);
     this.$context.empty();
     if (options.$parent) {
+      var label = options.label;
+      var parsed = helpers.parsePreambleId(options.section);
+      var href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
+      // Splice section label and context title, if present
+      // TODO: Build this upstream
+      var $sectionHeader = options.$parent.find('.node:first :header, .section-title:header');
+      if ($sectionHeader.length) {
+        label = [label, $sectionHeader.text().split('. ').slice(1)].join('. ');
+        $sectionHeader.remove();
+      }
+      this.$header.html('<a href="' + href + '">' + label + '</a>');
       this.$context.append(options.$parent);
     }
   },
