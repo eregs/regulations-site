@@ -5,6 +5,13 @@
 </head>
 
 <body>
+
+  {% if mark_as_draft %}
+    <div class="watermark">
+        <p class="watermark-text" >DRAFT</p>
+    </div>
+  {% endif %}
+
   {% for section in sections %}
     <h1>{{section.label}}</h1>
     {{section.commentHtml|safe}}

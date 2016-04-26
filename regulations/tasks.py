@@ -22,6 +22,7 @@ from celery.exceptions import MaxRetriesExceededError
 from celery.utils.log import get_task_logger
 
 from django.conf import settings
+from django.contrib.staticfiles import finders
 from django.template import loader
 from django.utils.crypto import get_random_string
 
@@ -86,21 +87,35 @@ def publish_tracking_number(response, metadata_url):
     )
 
 
-def json_to_html(sections):
+def json_to_html(sections, mark_as_draft=False):
+    """
+    Render the comment as HTML
+
+    :param sections: The section-by-section comments
+    :param mark_as_draft: Indicates if the HTML is to be marked as DRAFT
+    """
     return loader.render_to_string(
-        'regulations/comment.html', {'sections': sections})
+        'regulations/comment.html',
+        {'sections': sections, 'mark_as_draft': mark_as_draft}
+    )
 
 
 @contextlib.contextmanager
 def html_to_pdf(html):
+    print(html)
     try:
         path = tempfile.mkdtemp()
         html_path = os.path.join(path, 'document.html')
         pdf_path = os.path.join(path, 'document.pdf')
         with codecs.open(html_path, 'w', 'utf-8') as fp:
             fp.write(html)
-        subprocess.check_output(
-            [settings.WKHTMLTOPDF_PATH, html_path, pdf_path])
+        subprocess.check_output([
+            settings.WKHTMLTOPDF_PATH,
+            "--user-style-sheet", finders.find(
+                'regulations/css/regulations.min.css'),
+            html_path,
+            pdf_path
+        ])
         with open(pdf_path, 'rb') as pdf_file:
             yield pdf_file
     finally:
