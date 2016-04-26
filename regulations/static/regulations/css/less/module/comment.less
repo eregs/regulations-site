@@ -757,10 +757,6 @@ a.comment-index-review {
     }
   }
 
-  .comment-controls  {
-    display: none;
-  }
-
   .comment-submission {
     width: 100%;
     float: none;
@@ -780,5 +776,12 @@ a.comment-index-review {
 
   .section-nav .previous {
     margin-left: -10px;
+  }
+}
+
+@media only screen and ( max-device-width: 780px ) {
+  // Hide attachment controls for tablets/mobile devices
+  .comment-controls {
+    display: none;
   }
 }
