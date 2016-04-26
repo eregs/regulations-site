@@ -430,15 +430,15 @@ a.comment-index-review {
   }
 
   .comment-content {
-    max-width: 480px;
+    max-width: 95%;
   }
 
   .edit-comment {
     color: @pacific;
     cursor: pointer;
     position: absolute;
-    right: 25px;
-    top: 20px;
+    right: 2%;
+    top: 0;
 
     .write-icon {
       fill: @pacific;
@@ -693,16 +693,31 @@ a.comment-index-review {
   }
 }
 
+// margins in .preamble-wrapper are overrides for things defined in .main-content
+// because the preamble doesn't use the right sidebar
+
 @media only screen and ( min-width: 780px ) {
   .preamble-wrapper {
     margin-right: 5%;
+    margin-left: 3%;
     padding-left: 35px;
+  }
+
+  #comment-review {
+    .comment-content {
+      max-width: 75%;
+    }
+    .edit-comment {
+      right: 2%;
+      top: 35px;
+    }
   }
 }
 
 @media only screen and ( min-width: 1100px ) {
   .preamble-wrapper {
     margin-right: 5%;
+    margin-left: 240px; /*240px; - offsets .panel */
     padding-left: 35px;
 
     // don't need max-width to account for a right sidebar
