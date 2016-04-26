@@ -1,6 +1,11 @@
-from collections import namedtuple
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
+import re
 from copy import deepcopy
 from datetime import date
+from collections import namedtuple
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -172,21 +177,34 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     ]
 
 
-def section_navigation(full_id, toc):
+def preamble_section_navigation(full_id, toc):
     nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
     for idx, sect in enumerate(toc):
         if sect.full_id == full_id:
             if idx > 0:
-                nav['previous'] = NavItem.from_section(toc[idx - 1])
+                nav['previous'] = NavItem.from_preamble_section(toc[idx - 1])
             if idx < len(toc) - 1:
-                nav['next'] = NavItem.from_section(toc[idx + 1])
+                nav['next'] = NavItem.from_preamble_section(toc[idx + 1])
+    return nav
+
+
+def cfr_section_navigation(label_id, toc):
+    part, section = label_id.split('-')
+    sections = next((each.sections for each in toc if each.part == part), [])
+    nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
+    for idx, sect in enumerate(sections):
+        if sect.section == section:
+            if idx > 0:
+                nav['previous'] = NavItem.from_cfr_section(sections[idx - 1])
+            if idx < len(sections) - 1:
+                nav['next'] = NavItem.from_cfr_section(sections[idx + 1])
     return nav
 
 
 class NavItem(namedtuple('NavItem',
                          ['url', 'section_id', 'markup_prefix', 'sub_label'])):
     @classmethod
-    def from_section(cls, sect):
+    def from_preamble_section(cls, sect):
         """Parse `PreambleSect` to `NavItem` for rendering footer nav."""
         # Hack: Reconstitute node prefix and title
         # TODO: Emit these fields in a ToC layer in -parser instead
@@ -195,6 +213,25 @@ class NavItem(namedtuple('NavItem',
             prefix, label = sect.title.split('. ', 1)
         else:
             prefix, label = top, sect.title
+        return cls(
+            url=sect.url,
+            section_id=sect.full_id,
+            markup_prefix=prefix,
+            sub_label=label,
+        )
+
+    cfr_re = re.compile(r'(§ [\d.]+) (.*)')
+
+    @classmethod
+    def from_cfr_section(cls, sect):
+        """Parse `ToCSect` to `NavItem` for rendering footer nav."""
+        # Hack: Reconstitute node prefix and title
+        # TODO: Emit these fields in a ToC layer in -parser instead
+        match = cls.cfr_re.search(sect.title)
+        if match:
+            prefix, label = match.groups()
+        else:
+            prefix, label = sect.title, None
         return cls(
             url=sect.url,
             section_id=sect.full_id,
@@ -247,7 +284,7 @@ class PreambleView(View):
         sub_context = generate_html_tree(subtree, request,
                                          id_prefix=[doc_number, 'preamble'])
         template = sub_context['node']['template_name']
-        nav = section_navigation(
+        nav = preamble_section_navigation(
             sub_context['node']['full_id'], context['preamble_toc'])
         sub_context['meta'] = context['meta']
 
@@ -320,6 +357,7 @@ class CFRChangesView(View):
                 versions,
                 doc_number=doc_number,
                 label_id=section,
+                context=context,
             )
         sub_context['meta'] = context['meta']
 
@@ -347,7 +385,7 @@ class CFRChangesView(View):
 
     @staticmethod
     def regtext_changes_context(amendments, version_info, label_id,
-                                doc_number):
+                                doc_number, context):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
         relevant = []
@@ -368,5 +406,10 @@ class CFRChangesView(View):
             *appliers, id_prefix=[str(doc_number), 'cfr'])
         builder.tree = tree
         builder.generate_html()
-        return {'instructions': [a['instruction'] for a in relevant],
-                'tree': builder.tree}
+
+        nav = cfr_section_navigation(label_id, context['cfr_change_toc'])
+        return {
+            'instructions': [a['instruction'] for a in relevant],
+            'tree': builder.tree,
+            'navigation': nav,
+        }

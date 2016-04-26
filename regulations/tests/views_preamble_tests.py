@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mock import patch
 from unittest import TestCase
 
@@ -153,11 +155,13 @@ class PreambleToCTests(TestCase):
     def test_navigation(self):
         toc = preamble.make_preamble_toc(self.nodes)
 
-        nav = preamble.section_navigation('abc-preamble-abc-123-I', toc)
+        nav = preamble.preamble_section_navigation(
+            'abc-preamble-abc-123-I', toc)
         assert_equal(nav['next'].section_id, 'abc-preamble-abc-123-II')
         assert_is_none(nav['previous'])
 
-        nav = preamble.section_navigation('abc-preamble-abc-123-II', toc)
+        nav = preamble.preamble_section_navigation(
+            'abc-preamble-abc-123-II', toc)
         assert_equal(nav['previous'].section_id, 'abc-preamble-abc-123-I')
         assert_is_none(nav['next'])
 
@@ -208,3 +212,35 @@ class CFRChangeToCTests(TestCase):
                 title='99', part='222', name='Some title for reg 222',
                 authority_url='/preamble/docdoc/cfr_changes/222',
                 sections=[])])
+
+    def test_navigation(self):
+        toc = [
+            preamble.ToCPart(
+                part='478',
+                title='27',
+                name='Commerce',
+                authority_url='',
+                sections=[
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-478-99',
+                        url='/preamble/2016_02749/cfr_changes/478-99',
+                        title=u'§ 478.99 Certain prohibited',
+                        section='99',
+                    ),
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-478-120',
+                        url='/preamble/2016_02749/cfr_changes/478-120',
+                        title=u'§ 478.120 Firearms',
+                        section='120',
+                    ),
+                ],
+            )
+        ]
+
+        nav = preamble.cfr_section_navigation('478-99', toc)
+        assert_equal(nav['next'].section_id, '2016_02749-cfr-478-120')
+        assert_is_none(nav['previous'])
+
+        nav = preamble.cfr_section_navigation('478-120', toc)
+        assert_equal(nav['previous'].section_id, '2016_02749-cfr-478-99')
+        assert_is_none(nav['next'])
