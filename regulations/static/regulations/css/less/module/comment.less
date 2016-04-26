@@ -66,6 +66,10 @@ comment.less contains styles related to commenting on sections
       font-size: 14px;
       color: @dark_field;
     }
+
+    &.hide-mobile {
+      padding: 0;
+    }
   }
 
   .read-proposal,
@@ -321,7 +325,7 @@ a.comment-index-review {
 
       .fa {
         vertical-align: middle;
-        visibility: hidden;
+        display: none;
         margin-left: 5px;
         color: @dark_field;
 
@@ -344,7 +348,7 @@ a.comment-index-review {
       background: darken(@80_gray, 10%);
 
       .fa {
-        visibility: visible;
+        display: inline-block;
       }
     }
   }
@@ -472,7 +476,7 @@ a.comment-index-review {
 
     .filename {
       float: left;
-      width: 370px;
+      max-width: 370px;
     }
 
     .attachment-preview {
@@ -506,7 +510,7 @@ a.comment-index-review {
       float: right;
       font-size: 14px;
       text-align: right;
-      width: 250px;
+      max-width: 250px;
     }
   }
 
@@ -581,6 +585,66 @@ a.comment-index-review {
 }
 
 
+@media only screen and ( min-width: 1100px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    padding-left: 35px;
+
+    // don't need max-width to account for a right sidebar
+    // so preamble text will fill the space when nav is minimized
+    &.close {
+      max-width: 100%;
+    }
+  }
+}
+
+
+@media only screen and ( min-width: 780px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    padding-left: 35px;
+  }
+}
+
+
+// tablet + mobile
+@media only screen and ( max-width: 780px ) {
+  .hide-mobile {
+    display: none;
+  }
+
+  #preamble-read {
+    padding-left: 0;
+  }
+
+  .activate-write {
+    right: -60px;
+    width: 220px;
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    padding-bottom: 35px;
+    width: 70%;
+
+    .comment-index {
+      right: -220px;
+      width: 210px;
+
+
+      li {
+        .comment-index-section {
+          width: 120px;
+        }
+
+        .comment-index-modify .fa {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
 @media only screen and ( max-width: 480px ) {
 
   .preamble-sub-head {
@@ -610,12 +674,16 @@ a.comment-index-review {
     }
   }
 
+  h3.section-title {
+    font-size: 30px;
+  }
+
   .activate-write {
     padding: 5px 0;
     position: relative;
     right: 0;
     top: 0;
-    width: auto;
+    width: 100%;
 
     &:hover {
       color: #4A90E2;
@@ -672,6 +740,11 @@ a.comment-index-review {
     padding-left: 0;
     width: 100%;
 
+    .comment h2 {
+      font-size: 30px;
+      margin-top: 0;
+    }
+
     .comment-index {
       position: relative;
       right: 0;
@@ -682,6 +755,19 @@ a.comment-index-review {
         padding-left: 0;
       }
     }
+
+    .comment-controls {
+      margin-bottom: 5px;
+    }
+
+    .comment-button {
+      float: none;
+    }
+  }
+
+  .comment-submission {
+    width: 100%;
+    float: none;
   }
 
   #comment-review {
@@ -690,25 +776,13 @@ a.comment-index-review {
       right: 0;
       top: 5px;
     }
-  }
-}
 
-@media only screen and ( min-width: 780px ) {
-  .preamble-wrapper {
-    margin-right: 5%;
-    padding-left: 35px;
-  }
-}
-
-@media only screen and ( min-width: 1100px ) {
-  .preamble-wrapper {
-    margin-right: 5%;
-    padding-left: 35px;
-
-    // don't need max-width to account for a right sidebar
-    // so preamble text will fill the space when nav is minimized
-    &.close {
-      max-width: 100%;
+    .download-comment .details {
+      font-size: 12px;
     }
+  }
+
+  .section-nav .previous {
+    margin-left: -10px;
   }
 }
