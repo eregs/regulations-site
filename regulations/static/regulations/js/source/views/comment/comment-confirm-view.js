@@ -7,7 +7,6 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var MainEvents = require('../../events/main-events');
-var PreambleHeadView = require('../header/preamble-head-view');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
 
@@ -20,8 +19,6 @@ var CommentConfirmView = Backbone.View.extend({
     this.docId = this.$el.data('doc-id');
     this.metadataUrl = this.$el.data('metadata-url');
 
-    this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
-
     if (this.metadataUrl) {
       this.poll(this.metadataUrl);
       comments.filter(this.docId).forEach(function(comment) {
@@ -33,15 +30,6 @@ var CommentConfirmView = Backbone.View.extend({
   findElms: function() {
     this.$pdf = this.$el.find('.pdf');
     this.$status = this.$el.find('.status');
-  },
-
-  handleRead: function() {
-    var section = this.docId + '-preamble-' + this.docId + '-I';
-    var options = {id: section, section: section, mode: 'read'};
-
-    $('#content-body').removeClass('comment-review-wrapper');
-
-    MainEvents.trigger('section:open', section, options, 'preamble-section');
   },
 
   poll: function(url) {

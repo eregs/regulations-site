@@ -90,6 +90,7 @@ class SubmitCommentView(View):
         context = common_context(doc_number)
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
+        context['comment_mode'] = 'write'
         context.update({'message': None, 'metadata_url': None})
 
         valid, context['message'] = self.validate(comments, form_data)

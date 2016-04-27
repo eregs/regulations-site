@@ -7,7 +7,6 @@ var Backbone = require('backbone');
 Backbone.$ = $;
 
 var MainEvents = require('../../events/main-events');
-var PreambleHeadView = require('../header/preamble-head-view');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
 
@@ -28,22 +27,11 @@ var CommentReviewView = Backbone.View.extend({
 
     this.previewLoading = false;
 
-    this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
-
     this.render();
   },
 
   findElms: function() {
     this.$form = this.$el.find('form');
-  },
-
-  handleRead: function() {
-    var section = this.docId + '-preamble-' + this.docId + '-I';
-    var options = {id: section, section: section, mode: 'read'};
-
-    $('#content-body').removeClass('comment-review-wrapper');
-
-    MainEvents.trigger('section:open', section, options, 'preamble-section');
   },
 
   editComment: function(e) {
@@ -68,7 +56,6 @@ var CommentReviewView = Backbone.View.extend({
 
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
-    this.preambleHeadView = new PreambleHeadView();
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
