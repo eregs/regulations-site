@@ -2,14 +2,12 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 </head>
 
 <body>
-
   {% if mark_as_draft %}
     <div class="watermark">
-        <p class="watermark-text" >DRAFT</p>
-    </div>
   {% endif %}
 
   {% for section in sections %}
@@ -27,6 +25,9 @@
       <hr />
     {% endif %}
   {% endfor %}
+  {% if mark_as_draft %}
+    </div>
+  {% endif %}
 </body>
 
 </html>
