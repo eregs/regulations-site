@@ -222,12 +222,15 @@ def common_context(doc_number):
         intro['meta']['days_remaining'] = 1 + (
             intro['meta']['comments_close'].date() - date.today()).days
 
+    preamble_toc = make_preamble_toc(preamble['children'])
+
     return {
         'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number),
         'doc_number': doc_number,
         'meta': intro['meta'],
         'preamble': preamble,
-        'preamble_toc': make_preamble_toc(preamble['children']),
+        'preamble_toc': preamble_toc,
+        'preamble_url': preamble_toc[0].url if preamble_toc else '#',
     }
 
 
@@ -293,6 +296,7 @@ class PrepareCommentView(View):
 
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
+        context['comment_mode'] = 'write'
         template = 'regulations/comment-review-chrome.html'
 
         return TemplateResponse(request=request, template=template,
