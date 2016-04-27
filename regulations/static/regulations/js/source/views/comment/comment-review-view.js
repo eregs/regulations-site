@@ -66,10 +66,53 @@ var CommentReviewView = Backbone.View.extend({
     this.$content.html(html);
     this.findElms();
 
+    this.initTabs();
+    this.initDependencies();
+
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
     this.preambleHeadView = new PreambleHeadView();
     CommentEvents.trigger('comment:writeTabOpen');
+  },
+
+  initTabs: function() {
+    function updateTabs(tab) {
+      $('[data-tab]').removeClass('current');
+      $('[data-tab="' + tab + '"]').addClass('current');
+      $('[data-tabs]').each(function(idx, elm) {
+        var $elm = $(elm);
+        var tabs = $elm.data('tabs');
+        if (tabs.indexOf(tab) !== -1) {
+          $elm.show();
+        } else {
+          $elm.hide();
+        }
+      });
+    }
+    var $tabs = $('[data-tab]');
+    updateTabs($tabs.eq(0).data('tab'));
+    $tabs.on('click', function() {
+      var tab = $(this).data('tab');
+      updateTabs(tab);
+    });
+  },
+
+  initDependencies: function() {
+    $('select[data-depends-on]').each(function(idx, elm) {
+      var $elm = $(elm);
+      var $dependsOn = $('[name="' + $elm.data('depends-on') + '"]');
+      var dependencies = $elm.data('dependencies');
+      function updateOptions() {
+        $elm.find('option[value]').remove();
+        var pairs = dependencies[$(this).val()] || [];
+        $.each(pairs, function(idx, pair) {
+          $elm.append('<option value="' + pair[0] + '">' + pair[1] + '</option>');
+        });
+        $elm.val(null);
+      }
+      updateOptions.apply($dependsOn);
+      $dependsOn.on('change', updateOptions);
+    });
   },
 
   preview: function() {
