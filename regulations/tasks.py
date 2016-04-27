@@ -102,7 +102,6 @@ def json_to_html(sections, mark_as_draft=False):
 
 @contextlib.contextmanager
 def html_to_pdf(html):
-    print(html)
     try:
         path = tempfile.mkdtemp()
         html_path = os.path.join(path, 'document.html')
