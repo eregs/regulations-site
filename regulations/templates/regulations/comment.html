@@ -5,10 +5,7 @@
 
 </head>
 
-<body>
-  {% if mark_as_draft %}
-    <div class="watermark">
-  {% endif %}
+<body {% if mark_as_draft %}class="watermark"{% endif %}>
 
   {% for section in sections %}
     <h1>{{section.label}}</h1>
@@ -25,9 +22,7 @@
       <hr />
     {% endif %}
   {% endfor %}
-  {% if mark_as_draft %}
-    </div>
-  {% endif %}
+
 </body>
 
 </html>
