@@ -78,6 +78,9 @@ def preview_comment(request):
     return JsonResponse({'url': url})
 
 
+regs_gov_fmt = 'https://www.regulations.gov/#!documentDetail;D={document}'
+
+
 class SubmitCommentView(View):
 
     def post(self, request, doc_number):
@@ -93,6 +96,8 @@ class SubmitCommentView(View):
         context.update({'message': None, 'metadata_url': None})
 
         valid, context['message'] = self.validate(comments, form_data)
+        context['regs_gov_url'] = regs_gov_fmt.format(
+            document=settings.COMMENT_DOCUMENT_ID)
 
         # Catch any errors related to enqueueing comment submission. Because
         # this step can fail for many reasons (e.g. no connection to broker,
