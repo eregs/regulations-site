@@ -60,7 +60,7 @@ comment.less contains styles related to commenting on sections
   right: 0;
 
   span {
-    padding: 0 10px;
+    padding: 0 5px;
 
     &.tab-descriptions {
       font-size: 14px;
@@ -104,8 +104,8 @@ comment.less contains styles related to commenting on sections
 }
 
 #preamble-write {
-  padding-left: 15px;
-  width: 75%;
+  padding-left: 25px;
+  width: 70%;
 }
 
 #preamble-write,
@@ -392,6 +392,7 @@ a.comment-index-review {
 #comment-review {
   .font-regular;
   margin-bottom: 50px;
+  padding-left: 25px;
 
   h2, h3 {
     margin: 0.5em 0 0;
@@ -434,15 +435,15 @@ a.comment-index-review {
   }
 
   .comment-content {
-    max-width: 480px;
+    max-width: 95%;
   }
 
   .edit-comment {
     color: @pacific;
     cursor: pointer;
     position: absolute;
-    right: 25px;
-    top: 20px;
+    right: 2%;
+    top: 0;
 
     .write-icon {
       fill: @pacific;
@@ -584,11 +585,32 @@ a.comment-index-review {
   }
 }
 
+// margins in .preamble-wrapper are overrides for things defined in .main-content
+// because the preamble doesn't use the right sidebar
+
+@media only screen and ( min-width: 780px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    margin-left: 40px; /*40px; - offsets collapsed .panel */
+    padding-left: 15px;
+  }
+
+  #comment-review {
+    .comment-content {
+      max-width: 75%;
+    }
+    .edit-comment {
+      right: 2%;
+      top: 35px;
+    }
+  }
+}
 
 @media only screen and ( min-width: 1100px ) {
   .preamble-wrapper {
     margin-right: 5%;
-    padding-left: 35px;
+    margin-left: 240px; /*240px; - offsets .panel */
+    padding-left: 15px;
 
     // don't need max-width to account for a right sidebar
     // so preamble text will fill the space when nav is minimized
@@ -596,13 +618,13 @@ a.comment-index-review {
       max-width: 100%;
     }
   }
-}
 
+  #preamble-write {
+    width: 75%;
+  }
 
-@media only screen and ( min-width: 780px ) {
-  .preamble-wrapper {
-    margin-right: 5%;
-    padding-left: 35px;
+  .section-nav .previous {
+    margin-left: -10px;
   }
 }
 
@@ -611,6 +633,7 @@ a.comment-index-review {
 @media only screen and ( max-width: 780px ) {
   .hide-mobile {
     display: none;
+    padding: 0;
   }
 
   #preamble-read {
@@ -625,7 +648,7 @@ a.comment-index-review {
   #preamble-write {
     padding-left: 0;
     padding-bottom: 35px;
-    width: 70%;
+    width: 73%;
 
     .comment-index {
       right: -220px;
@@ -764,25 +787,24 @@ a.comment-index-review {
       float: none;
     }
   }
-
   .comment-submission {
     width: 100%;
     float: none;
   }
 
   #comment-review {
+    padding-left: 0;
+
     .edit-comment {
       position: relative;
       right: 0;
       top: 5px;
     }
-
     .download-comment .details {
       font-size: 12px;
     }
   }
-
-  .section-nav .previous {
+  .section-nav .previous {		
     margin-left: -10px;
   }
 }
