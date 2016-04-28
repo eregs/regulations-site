@@ -2,9 +2,11 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 </head>
 
-<body>
+<body {% if mark_as_draft %}class="watermark"{% endif %}>
+
   {% for section in sections %}
     <h1>{{section.label}}</h1>
     {{section.commentHtml|safe}}
@@ -20,6 +22,7 @@
       <hr />
     {% endif %}
   {% endfor %}
+
 </body>
 
 </html>

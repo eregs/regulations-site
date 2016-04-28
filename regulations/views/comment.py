@@ -64,7 +64,7 @@ def preview_comment(request):
     """
     body = json.loads(request.body.decode('utf-8'))
     sections = body.get('assembled_comment', [])
-    html = tasks.json_to_html(sections)
+    html = tasks.json_to_html(sections, mark_as_draft=True)
     key = '/'.join([settings.ATTACHMENT_PREVIEW_PREFIX, get_random_string(50)])
     with tasks.html_to_pdf(html) as pdf:
         tasks.s3_client.put_object(
