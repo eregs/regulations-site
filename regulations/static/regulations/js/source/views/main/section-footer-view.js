@@ -24,7 +24,7 @@ var SectionFooterView = Backbone.View.extend({
         var sectionId = $target.data('linked-section');
         var pageType = $target.data('page-type') || 'reg-section';
 
-        if (sectionId && pageType) {
+        if (sectionId) {
           e.preventDefault();
           MainEvents.trigger('section:open', sectionId, {}, pageType);
         }

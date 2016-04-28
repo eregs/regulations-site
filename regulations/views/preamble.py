@@ -58,9 +58,50 @@ def generate_html_tree(subtree, request, id_prefix=None):
             'markup_page_type': 'reg-section'}
 
 
-ToCPart = namedtuple('ToCPart', ['title', 'part', 'name', 'authority_url',
-                                 'sections'])
-ToCSect = namedtuple('ToCSect', ['section', 'url', 'title', 'full_id'])
+NavItem = namedtuple(
+    'NavItem',
+    ['url', 'section_id', 'markup_prefix', 'sub_label'],
+)
+
+
+class ToCPart(namedtuple('ToCPart',
+              ['title', 'part', 'name', 'authority_url', 'sections'])):
+    def to_nav_item(self):
+        return NavItem(
+            url=self.authority_url,
+            section_id='',
+            markup_prefix='Authority',
+            sub_label='Authority',
+        )
+
+    def match_ids(self, ids):
+        return self.part == ids.get('part') and ids.get('section') is None
+
+
+class ToCSect(namedtuple('ToCSect',
+              ['part', 'section', 'url', 'title', 'full_id'])):
+    cfr_re = re.compile(r'(§ [\d.]+) (.*)')
+
+    def to_nav_item(self):
+        # Hack: Reconstitute node prefix and title
+        # TODO: Emit these fields in a ToC layer in -parser instead
+        match = self.cfr_re.search(self.title)
+        if match:
+            prefix, label = match.groups()
+        else:
+            prefix, label = self.title, None
+        return NavItem(
+            url=self.url,
+            section_id=self.full_id,
+            markup_prefix=prefix,
+            sub_label=label,
+        )
+
+    def match_ids(self, ids):
+        return (
+            self.part == ids.get('part') and
+            ids.get('section') == self.section
+        )
 
 
 class CFRChangeToC(object):
@@ -120,6 +161,7 @@ class CFRChangeToC(object):
 
             section = '-'.join(label_parts[:2])
             self.current_section = ToCSect(
+                part=self.current_part.part,
                 section=change_section,
                 title=self.section_titles.get(change_section),
                 full_id='{}-cfr-{}'.format(self.doc_number, section),
@@ -142,10 +184,25 @@ class CFRChangeToC(object):
         return builder.toc
 
 
-PreambleSect = namedtuple(
-    'PreambleSect',
-    ['depth', 'full_id', 'title', 'url', 'children'],
-)
+class PreambleSect(namedtuple('PreambleSect',
+                   ['depth', 'full_id', 'title', 'url', 'children'])):
+    def to_nav_item(self):
+        # Hack: Reconstitute node prefix and title
+        # TODO: Emit these fields in a ToC layer in -parser instead
+        top = self.full_id.split('-')[3]
+        if self.title.lower().startswith('{}. '.format(top.lower())):
+            prefix, label = self.title.split('. ', 1)
+        else:
+            prefix, label = top, self.title
+        return NavItem(
+            url=self.url,
+            section_id=self.full_id,
+            markup_prefix=prefix,
+            sub_label=label,
+        )
+
+    def match_ids(self, ids):
+        return self.full_id == ids.get('full_id')
 
 
 def make_preamble_toc(nodes, depth=1, max_depth=3):
@@ -178,122 +235,25 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     ]
 
 
-def preamble_section_navigation(full_id, preamble_toc, cfr_toc):
+def section_navigation(preamble_toc, cfr_toc, **ids):
+    # Build flattened list of `PreambleSect`, `ToCPart`, and `ToCSect` items
+    # in table of contents order
+    items = itertools.chain(
+        preamble_toc,
+        *(
+            [part] + part.sections
+            for part in cfr_toc
+        )
+    )
+    items = list(items)
     nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
-    for idx, sect in enumerate(preamble_toc):
-        if sect.full_id == full_id:
+    for idx, item in enumerate(items):
+        if item.match_ids(ids):
             if idx > 0:
-                nav['previous'] = NavItem.from_preamble_section(
-                    preamble_toc[idx - 1])
-            if idx < len(preamble_toc) - 1:
-                nav['next'] = NavItem.from_preamble_section(
-                    preamble_toc[idx + 1])
-            elif cfr_toc:
-                nav['next'] = NavItem.from_object(cfr_toc[0])
+                nav['previous'] = items[idx - 1].to_nav_item()
+            if idx < len(items) - 1:
+                nav['next'] = items[idx + 1].to_nav_item()
     return nav
-
-
-def cfr_section_navigation(label_id, preamble_toc, cfr_toc):
-    parts = label_id.split('-')
-    if len(parts) == 1:
-        part, section = parts[0], None
-    else:
-        part, section = parts[:2]
-    nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
-    pairs = list(CfrChangePair.from_toc(cfr_toc))
-    for idx, pair in enumerate(pairs):
-        if pair.match(part, section):
-            if idx > 0:
-                nav['previous'] = NavItem.from_object(pairs[idx - 1].item)
-            else:
-                nav['previous'] = NavItem.from_object(preamble_toc[-1])
-            if idx < len(pairs) - 1:
-                nav['next'] = NavItem.from_object(pairs[idx + 1].item)
-            break
-    return nav
-
-
-class CfrChangePair(namedtuple('CfrChangePair', ['part', 'item'])):
-    def match(self, part, sect):
-        return self.match_part(part) and self.match_sect(sect)
-
-    def match_part(self, part):
-        return self.part == part
-
-    def match_sect(self, sect):
-        return (
-            sect is None or
-            (isinstance(self.item, ToCSect) and self.item.section == sect)
-        )
-
-    @classmethod
-    def from_toc(cls, toc):
-        return itertools.chain.from_iterable(
-            (
-                [cls(part.part, part)] +
-                [cls(part.part, sect) for sect in part.sections]
-            )
-            for part in toc
-        )
-
-
-class NavItem(namedtuple('NavItem',
-                         ['url', 'section_id', 'markup_prefix', 'sub_label'])):
-    @classmethod
-    def from_preamble_section(cls, sect):
-        """Parse `PreambleSect` to `NavItem` for rendering footer nav."""
-        # Hack: Reconstitute node prefix and title
-        # TODO: Emit these fields in a ToC layer in -parser instead
-        top = sect.full_id.split('-')[3]
-        if sect.title.lower().startswith('{}. '.format(top.lower())):
-            prefix, label = sect.title.split('. ', 1)
-        else:
-            prefix, label = top, sect.title
-        return cls(
-            url=sect.url,
-            section_id=sect.full_id,
-            markup_prefix=prefix,
-            sub_label=label,
-        )
-
-    cfr_re = re.compile(r'(§ [\d.]+) (.*)')
-
-    @classmethod
-    def from_cfr_section(cls, sect):
-        """Parse `ToCSect` to `NavItem` for rendering footer nav."""
-        # Hack: Reconstitute node prefix and title
-        # TODO: Emit these fields in a ToC layer in -parser instead
-        match = cls.cfr_re.search(sect.title)
-        if match:
-            prefix, label = match.groups()
-        else:
-            prefix, label = sect.title, None
-        return cls(
-            url=sect.url,
-            section_id=sect.full_id,
-            markup_prefix=prefix,
-            sub_label=label,
-        )
-
-    @classmethod
-    def from_cfr_part(cls, part):
-        return cls(
-            url=part.authority_url,
-            section_id='',
-            markup_prefix='Authority',
-            sub_label='Authority',
-        )
-
-    @classmethod
-    def from_object(cls, obj):
-        if isinstance(obj, ToCPart):
-            return cls.from_cfr_part(obj)
-        if isinstance(obj, ToCSect):
-            return cls.from_cfr_section(obj)
-        if isinstance(obj, PreambleSect):
-            return cls.from_preamble_section(obj)
-        raise ValueError(
-            'Value must be `ToCPart`, `ToCSect`, or `PreambleSect`')
 
 
 def common_context(doc_number):
@@ -340,9 +300,11 @@ class PreambleView(View):
         sub_context = generate_html_tree(subtree, request,
                                          id_prefix=[doc_number, 'preamble'])
         template = sub_context['node']['template_name']
-        nav = preamble_section_navigation(
-            sub_context['node']['full_id'], context['preamble_toc'],
-            context['cfr_change_toc'])
+        nav = section_navigation(
+            context['preamble_toc'],
+            context['cfr_change_toc'],
+            full_id=sub_context['node']['full_id'],
+        )
         sub_context['meta'] = context['meta']
 
         context.update({
@@ -406,9 +368,11 @@ class CFRChangesView(View):
         label_parts = section.split('-')
 
         if len(label_parts) == 1:
+            ids = {'part': label_parts[0]}
             sub_context = self.authorities_context(
                 amendments, cfr_part=section)
         else:
+            ids = {'part': label_parts[0], 'section': label_parts[1]}
             sub_context = self.regtext_changes_context(
                 amendments,
                 versions,
@@ -416,8 +380,11 @@ class CFRChangesView(View):
                 label_id=section,
             )
         sub_context['meta'] = context['meta']
-        sub_context['navigation'] = cfr_section_navigation(
-            section, context['preamble_toc'], context['cfr_change_toc'])
+        sub_context['navigation'] = section_navigation(
+            context['preamble_toc'],
+            context['cfr_change_toc'],
+            **ids
+        )
 
         context.update({
             'sub_context': sub_context,
