@@ -27,11 +27,9 @@ describe('Sidebar Model:', function() {
     it('getAJAXUrl returns the correct URL endpoint with /sidebar supplemental path', function() {
         expect(SidebarModel.getAJAXUrl('1005-2')).to.equal('/eregulations/partial/sidebar/1005-2/2014-20681');
 
-
-        window.APP_PREFIX = ''; // Test without a urlPrefix
+        window.APP_PREFIX = '/'; // Test without a urlPrefix
         expect(SidebarModel.getAJAXUrl('1005-2')).to.equal('/partial/sidebar/1005-2/2014-20681');
 
         window.APP_PREFIX = '/eregulations/'; //Return to normal
-
     });
 });

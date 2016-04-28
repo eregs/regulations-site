@@ -35,9 +35,9 @@ var MainView = Backbone.View.extend({
       this.dataTables = null;
 
       if (Router.hasPushState) {
-        this.listenTo(MainEvents, 'search-results:open', this.createView);
-        this.listenTo(MainEvents, 'section:open', this.createView);
-        this.listenTo(MainEvents, 'diff:open', this.createView);
+        this.listenTo(MainEvents, 'search-results:open', this.openSection);
+        this.listenTo(MainEvents, 'section:open', this.openSection);
+        this.listenTo(MainEvents, 'diff:open', this.openSection);
         this.listenTo(MainEvents, 'breakaway:open', this.breakawayOpen);
         this.listenTo(MainEvents, 'section:error', this.displayError);
       }
@@ -56,15 +56,14 @@ var MainView = Backbone.View.extend({
       this.docId = $('#menu').data('doc-id');
       this.cfrTitle = $('#menu').data('cfr-title-number');
 
-      if (this.sectionId && this.modelmap[this.contentType]) {
+      this.childModel = this.modelmap[this.contentType];
+      if (this.sectionId && this.childModel) {
         // store the contents of our $el in the model so that we
         // can re-render it later
         this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
-        this.childModel = this.modelmap[this.contentType];
       }
 
       var options = {
-        el: '#' + this.sectionId,
         subContentType: this.isAppendixOrSupplement(),
         render: false
       };
@@ -80,7 +79,7 @@ var MainView = Backbone.View.extend({
         DrawerEvents.trigger('pane:change', 'table-of-contents');
       }
 
-      this.renderView(null);
+      this.renderSection(null);
     },
 
     modelmap: {
@@ -104,7 +103,7 @@ var MainView = Backbone.View.extend({
         'preamble-section': PreambleView
     },
 
-    createView: function(id, options, type) {
+    openSection: function(id, options, type) {
       // Close breakaway if open
       if (typeof this.breakawayCallback !== 'undefined') {
         this.breakawayCallback();
@@ -126,11 +125,16 @@ var MainView = Backbone.View.extend({
       this.loading();
       SidebarEvents.trigger('section:loading');
 
+      this.childModel = this.modelmap[this.contentType];
       this.setChildOptions(_.extend({render: true}, options));
 
-      this.childModel = this.modelmap[this.contentType];
-      this.childModel.get(id, this.childOptions)
-        .then(this.renderView.bind(this))
+      // Cancel pending load, if any
+      if (this.$promise) {
+        this.$promise.abort();
+      }
+
+      this.$promise = this.childModel.get(id, this.childOptions)
+        .then(this.renderSection.bind(this))
         .fail(this.renderError.bind(this));
     },
 
@@ -159,7 +163,7 @@ var MainView = Backbone.View.extend({
       }
     },
 
-    renderView: function(html) {
+    renderSection: function(html) {
       if (html) {
         this.$el.html(html);
       }

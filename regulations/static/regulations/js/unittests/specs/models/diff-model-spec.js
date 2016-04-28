@@ -27,11 +27,9 @@ describe('Diff Model:', function() {
     it('getAJAXUrl returns the correct URL endpoint with /diff supplemental path', function() {
         expect(DiffModel.getAJAXUrl('1005-2')).to.equal('/eregulations/partial/diff/1005-2/2014-20681');
 
-
-        window.APP_PREFIX = ''; // Test without a urlPrefix
+        window.APP_PREFIX = '/'; // Test without a urlPrefix
         expect(DiffModel.getAJAXUrl('1005-2')).to.equal('/partial/diff/1005-2/2014-20681');
 
         window.APP_PREFIX = '/eregulations/'; //Return to normalt
-
     });
 });

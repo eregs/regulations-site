@@ -56,11 +56,9 @@ var MetaModel = Backbone.Model.extend({
     },
 
     get: function(id, options) {
-      return this.has(id) ? this.retrieve(id) : this.request(id, options);
-    },
-
-    retrieve: function(id) {
-      return $.when(this.content[id]);
+      return this.has(id) ?
+        $.when(this.content[id]) :
+        this.request(id, options);
     },
 
     request: function(id, options) {

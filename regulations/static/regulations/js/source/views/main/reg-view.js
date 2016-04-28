@@ -66,26 +66,26 @@ var RegView = ChildView.extend({
     },
 
     openSection: function(e) {
-        var $target = $(e.currentTarget);
-        var id = $target.data('section-id') || $target.data('linked-section');
-        var href = $target.attr('href');
-        var config = {};
-        var hashIndex;
+      var $target = $(e.currentTarget);
+      var id = $target.attr('data-section-id') || $target.attr('data-linked-section');
+      var href = $target.attr('href');
+      var config = {};
+      var hashIndex;
 
-        if (typeof href !== 'undefined') {
-            hashIndex = href.indexOf('#');
+      if (typeof href !== 'undefined') {
+        hashIndex = href.indexOf('#');
+      }
+
+      if (id) {
+        e.preventDefault();
+        config.id = id;
+
+        if (hashIndex !== -1) {
+          config.scrollToId = href.substr(hashIndex + 1);
         }
 
-        if (id) {
-            e.preventDefault();
-            config.id = id;
-
-            if (hashIndex !== -1) {
-                config.scrollToId = href.substr(hashIndex + 1);
-            }
-
-            MainEvents.trigger('section:open', Helpers.findBaseSection(id), config, 'reg-section');
-        }
+        MainEvents.trigger('section:open', Helpers.findBaseSection(id), config, 'reg-section');
+      }
     },
 
     assembleTitle: function() {

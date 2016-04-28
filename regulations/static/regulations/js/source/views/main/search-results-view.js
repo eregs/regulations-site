@@ -36,14 +36,11 @@ var SearchResultsView = ChildView.extend({
 
         // if the site wasn't loaded on the search results page
         if (this.options.render) {
-            this.options.id = this.model.assembleSearchURL(this.options);
-            this.url = 'search/' + this.options.id;
-
+            this.url = 'search/' + this.model.assembleSearchURL(this.options);
             ChildView.prototype.initialize.apply(this, arguments);
         } else {
             this.options.docType = this.$el.data('doc-type');
         }
-
     },
 
     setElement: function() {
@@ -61,7 +58,7 @@ var SearchResultsView = ChildView.extend({
 
         if (Router.hasPushState) {
             if (typeof this.options.id !== 'undefined') {
-                Router.navigate('search/' + this.options.id);
+                Router.navigate(this.url);
             }
         }
     },

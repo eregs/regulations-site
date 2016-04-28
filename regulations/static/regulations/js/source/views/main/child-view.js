@@ -12,13 +12,15 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var ChildView = Backbone.View.extend({
+    el: '#content-wrapper',
+
     initialize: function(options) {
         this.options = options;
 
         this.attachWayfinding();
 
         if (this.options.render) {
-          if (this.title) {
+          if (!this.title) {
             this.title = this.assembleTitle();
           }
           this.route(this.options);
