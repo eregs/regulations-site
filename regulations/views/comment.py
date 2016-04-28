@@ -8,6 +8,7 @@ import requests
 from django.conf import settings
 from django.core.cache import caches
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.template.response import TemplateResponse
@@ -82,6 +83,9 @@ regs_gov_fmt = 'https://www.regulations.gov/#!documentDetail;D={document}'
 
 
 class SubmitCommentView(View):
+
+    def get(self, request, doc_number):
+        return redirect('chrome_preamble', paragraphs=doc_number)
 
     def post(self, request, doc_number):
         form_data = {
