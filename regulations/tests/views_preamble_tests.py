@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mock import patch
 from unittest import TestCase
 
@@ -153,11 +155,13 @@ class PreambleToCTests(TestCase):
     def test_navigation(self):
         toc = preamble.make_preamble_toc(self.nodes)
 
-        nav = preamble.section_navigation('abc-preamble-abc-123-I', toc)
+        nav = preamble.section_navigation(
+            toc, [], full_id='abc-preamble-abc-123-I')
         assert_equal(nav['next'].section_id, 'abc-preamble-abc-123-II')
         assert_is_none(nav['previous'])
 
-        nav = preamble.section_navigation('abc-preamble-abc-123-II', toc)
+        nav = preamble.section_navigation(
+            toc, [], full_id='abc-preamble-abc-123-II')
         assert_equal(nav['previous'].section_id, 'abc-preamble-abc-123-I')
         assert_is_none(nav['next'])
 
@@ -199,12 +203,44 @@ class CFRChangeToCTests(TestCase):
                 sections=[
                     preamble.ToCSect(section='1', title='Section 1',
                                      url='/preamble/docdoc/cfr_changes/111-1',
-                                     full_id='docdoc-cfr-111-1'),
+                                     full_id='docdoc-cfr-111-1', part='111'),
                     preamble.ToCSect(section='3', title='Section 3',
                                      url='/preamble/docdoc/cfr_changes/111-3',
-                                     full_id='docdoc-cfr-111-3')
+                                     full_id='docdoc-cfr-111-3', part='111')
                 ]),
             preamble.ToCPart(
                 title='99', part='222', name='Some title for reg 222',
                 authority_url='/preamble/docdoc/cfr_changes/222',
                 sections=[])])
+
+    def test_navigation(self):
+        toc = [
+            preamble.ToCPart(
+                part='478',
+                title='27',
+                name='Commerce',
+                authority_url='',
+                sections=[
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-478-99',
+                        url='/preamble/2016_02749/cfr_changes/478-99',
+                        title=u'§ 478.99 Certain prohibited',
+                        part='478', section='99',
+                    ),
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-478-120',
+                        url='/preamble/2016_02749/cfr_changes/478-120',
+                        title=u'§ 478.120 Firearms',
+                        part='478', section='120',
+                    ),
+                ],
+            )
+        ]
+
+        nav = preamble.section_navigation([], toc, part='478', section='99')
+        assert_equal(nav['next'].section_id, '2016_02749-cfr-478-120')
+        assert_equal(nav['previous'].markup_prefix, '27 CFR 478')
+
+        nav = preamble.section_navigation([], toc, part='478', section='120')
+        assert_equal(nav['previous'].section_id, '2016_02749-cfr-478-99')
+        assert_is_none(nav['next'])
