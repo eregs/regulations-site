@@ -130,12 +130,7 @@ var MainView = Backbone.View.extend({
       this.childModel = this.modelmap[this.contentType];
       this.setChildOptions(_.extend({render: true}, options));
 
-      // Cancel pending load, if any
-      if (this.$promise) {
-        this.$promise.abort();
-      }
-
-      this.$promise = this.childModel.get(id, this.childOptions)
+      this.childModel.get(id, this.childOptions)
         .then(this.renderSection.bind(this))
         .fail(this.renderError.bind(this));
     },

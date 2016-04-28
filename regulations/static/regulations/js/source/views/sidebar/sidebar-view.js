@@ -23,8 +23,6 @@ var SidebarView = Backbone.View.extend({
     },
 
     initialize: function() {
-        var cache;
-        this.openRegFolders = _.bind(this.openRegFolders, this);
         this.listenTo(SidebarEvents, 'update', this.updateChildViews);
         this.listenTo(SidebarEvents, 'definition:open', this.openDefinition);
         this.listenTo(SidebarEvents, 'definition:close', this.closeDefinition);
@@ -43,28 +41,18 @@ var SidebarView = Backbone.View.extend({
     },
 
     openDefinition: function(config) {
-        var createDefView = function(cb, success, res) {
-            var errorMsg;
+      this.childViews.definition = new Definition({
+        id: config.id,
+        term: config.term
+      });
 
-            if (success) {
-                this.childViews.definition.render(res);
-            }
-            else {
-                errorMsg = 'We tried to load that definition, but something went wrong. ';
-                errorMsg += '<a href="#" class="update-definition inactive internal" data-definition="' + this.childViews.definition.id + '">Try again?</a>';
-
-                this.childViews.definition.renderError(errorMsg);
-            }
-        }.bind(this);
-
-        this.childViews.definition = new Definition({
-            id: config.id,
-            term: config.term
-        });
-
-        config.cb = config.cb || null;
-
-        this.definitionModel.get(config.id, _.partial(createDefView, config.cb));
+      this.definitionModel.get(config.id, {}).then(function(resp) {
+        this.childViews.definition.render(resp);
+      }.bind(this)).fail(function() {
+        var errorMsg = 'We tried to load that definition, but something went wrong. ';
+        errorMsg += '<a href="#" class="update-definition inactive internal" data-definition="' + this.childViews.definition.id + '">Try again?</a>';
+        this.childViews.definition.renderError(errorMsg);
+      }.bind(this));
     },
 
     closeDefinition: function() {
@@ -74,36 +62,36 @@ var SidebarView = Backbone.View.extend({
     },
 
     updateChildViews: function(context) {
-        this.$definition = this.$definition || this.$el.find('#definition');
-        switch (context.type) {
-            case 'reg-section':
-                this.model.get(context.id, this.openRegFolders);
-                MainEvents.trigger('definition:carriedOver');
+      this.$definition = this.$definition || this.$el.find('#definition');
+      switch (context.type) {
+        case 'reg-section':
+          this.model.get(context.id, {}).then(this.openRegFolders.bind(this));
+          MainEvents.trigger('definition:carriedOver');
 
-                // definition container is hidden when SxS opens
-                if (this.$definition.is(':hidden')) {
-                    this.$definition.show();
-                }
+          // definition container is hidden when SxS opens
+          if (this.$definition.is(':hidden')) {
+            this.$definition.show();
+          }
 
-                break;
-            case 'search':
-                this.removeChildren();
-                this.loaded();
-                break;
-            case 'diff':
-                this.loaded();
-                break;
-            default:
-                this.removeChildren();
-                this.loaded();
-        }
+          break;
+        case 'search':
+          this.removeChildren();
+          this.loaded();
+          break;
+        case 'diff':
+          this.loaded();
+          break;
+        default:
+          this.removeChildren();
+          this.loaded();
+      }
 
-        this.removeLandingSidebar();
+      this.removeLandingSidebar();
     },
 
     /* AJAX retrieved a sidebar. Replace the relevant portions of the
      * existing sidebar */
-    openRegFolders: function(success, html) {
+    openRegFolders: function(html) {
         // remove all except definition
         this.removeChildren('definition');
 

@@ -19,40 +19,29 @@ var SxSView = Backbone.View.extend({
     },
 
     initialize: function(options) {
-        var render;
-        this.options = options;
+      this.options = options;
 
-        // visibly open the SxS panel immediately
-        this.$el.addClass('open-sxs');
+      // visibly open the SxS panel immediately
+      this.$el.addClass('open-sxs');
 
-        // give it a state of `progress` until content loads
-        this.changeState('inprogress');
+      // give it a state of `progress` until content loads
+      this.changeState('inprogress');
 
-        // callback to be sent to model's get method
-        // called after ajax resolves sucessfully
-        render = function(success, returned) {
-            this.changeState('completed');
-            if (success) {
-                this.render(returned);
-            }
-            else {
-                this.render('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>');
-            }
-        }.bind(this);
+      SxSModel.get(this.options.url, {}).then(function(resp) {
+        this.$el.html(resp);
+      }.bind(this)).fail(function() {
+        this.$el.html('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>');
+      }.bind(this)).always(function() {
+        this.changeState('completed');
+      }.bind(this));
 
-        SxSModel.get(this.options.url, render),
+      this.listenTo(BreakawayEvents, 'sxs:close', this.remove);
 
-        this.listenTo(BreakawayEvents, 'sxs:close', this.remove);
-
-        // if the browser doesn't support pushState, don't
-        // trigger click events for links
-        if (Router.hasPushState === false) {
-            this.events = {};
-        }
-    },
-
-    render: function(analysis) {
-        this.$el.html(analysis);
+      // if the browser doesn't support pushState, don't
+      // trigger click events for links
+      if (Router.hasPushState === false) {
+        this.events = {};
+      }
     },
 
     changeState: function(state) {
