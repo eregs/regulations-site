@@ -70,9 +70,8 @@
         {% include 'regulations/comment-additional-info.html' %}
 
         <div class="statement">
-          <p>You are filing a document into an official docket.
-          Any personal information entered on this form may be publicly viewable on the web.
-          </p>
+
+          {% include 'regulations/comment-disclaimer.html' %}
 
           <input type="checkbox" class="agree">
           <label for="agree">
