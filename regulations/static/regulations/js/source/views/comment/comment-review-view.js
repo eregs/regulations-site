@@ -98,7 +98,7 @@ var CommentReviewView = Backbone.View.extend({
         }).appendTo($elm);
         $elm.val(null);
       }
-      updateOptions.apply($dependsOn);
+      updateOptions($dependsOn.val());
       $dependsOn.on('change', function() {
         updateOptions($(this).val());
       });
