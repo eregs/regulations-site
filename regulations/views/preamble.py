@@ -172,6 +172,37 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     ]
 
 
+def section_navigation(full_id, toc):
+    nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
+    for idx, sect in enumerate(toc):
+        if sect.full_id == full_id:
+            if idx > 0:
+                nav['previous'] = NavItem.from_section(toc[idx - 1])
+            if idx < len(toc) - 1:
+                nav['next'] = NavItem.from_section(toc[idx + 1])
+    return nav
+
+
+class NavItem(namedtuple('NavItem',
+                         ['url', 'section_id', 'markup_prefix', 'sub_label'])):
+    @classmethod
+    def from_section(cls, sect):
+        """Parse `PreambleSect` to `NavItem` for rendering footer nav."""
+        # Hack: Reconstitute node prefix and title
+        # TODO: Emit these fields in a ToC layer in -parser instead
+        top = sect.full_id.split('-')[3]
+        if sect.title.lower().startswith('{}. '.format(top.lower())):
+            prefix, label = sect.title.split('. ', 1)
+        else:
+            prefix, label = top, sect.title
+        return cls(
+            url=sect.url,
+            section_id=sect.full_id,
+            markup_prefix=prefix,
+            sub_label=label,
+        )
+
+
 def common_context(doc_number):
     """All of the "preamble" views share common context, such as preamble
     data, toc info, etc. This function retrieves that data and returns the
@@ -191,12 +222,15 @@ def common_context(doc_number):
         intro['meta']['days_remaining'] = 1 + (
             intro['meta']['comments_close'].date() - date.today()).days
 
+    preamble_toc = make_preamble_toc(preamble['children'])
+
     return {
         'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number),
-        "doc_number": doc_number,
-        "meta": intro['meta'],
-        "preamble": preamble,
-        'preamble_toc': make_preamble_toc(preamble['children']),
+        'doc_number': doc_number,
+        'meta': intro['meta'],
+        'preamble': preamble,
+        'preamble_toc': preamble_toc,
+        'preamble_url': preamble_toc[0].url if preamble_toc else '#',
     }
 
 
@@ -216,13 +250,16 @@ class PreambleView(View):
         sub_context = generate_html_tree(subtree, request,
                                          id_prefix=[doc_number, 'preamble'])
         template = sub_context['node']['template_name']
+        nav = section_navigation(
+            sub_context['node']['full_id'], context['preamble_toc'])
         sub_context['meta'] = context['meta']
 
         context.update({
             'sub_context': sub_context,
             'sub_template': template,
             'full_id': sub_context['node']['full_id'],
-            'type': "preamble"
+            'type': 'preamble',
+            'navigation': nav,
         })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
@@ -259,6 +296,7 @@ class PrepareCommentView(View):
 
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
+        context['comment_mode'] = 'write'
         template = 'regulations/comment-review-chrome.html'
 
         return TemplateResponse(request=request, template=template,
@@ -293,7 +331,7 @@ class CFRChangesView(View):
             'sub_context': sub_context,
             'sub_template': 'regulations/cfr_changes.html',
             'full_id': '{}-cfr-{}'.format(doc_number, section),
-            'type': "cfr"
+            'type': 'cfr',
         })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':

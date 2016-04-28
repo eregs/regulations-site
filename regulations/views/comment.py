@@ -1,4 +1,4 @@
-import os.path
+import os
 import json
 import time
 import logging
@@ -8,12 +8,15 @@ import requests
 from django.conf import settings
 from django.core.cache import caches
 from django.http import JsonResponse
-from django.utils.crypto import get_random_string
-from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.template.response import TemplateResponse
+from django.utils.crypto import get_random_string
+from django.views.generic.base import View
 
-from regulations import docket
 from regulations import tasks
+from regulations import docket
+from regulations.views.preamble import common_context, generate_html_tree
 
 logger = logging.getLogger(__name__)
 
@@ -31,27 +34,20 @@ def upload_proxy(request):
     if not valid:
         logger.error(message)
         return JsonResponse({'message': message}, status=400)
-    s3 = tasks.make_s3_client()
-    key = get_random_string(50)
-    put_url = s3.generate_presigned_url(
-        ClientMethod='put_object',
-        Params={
+    key, put_url = tasks.SignedUrl.generate(
+        method='put_object',
+        params={
             'ContentLength': size,
             'ContentType': request.GET.get('type', 'application/octet-stream'),
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': key,
-            'Metadata': {'name': filename}
+            'Metadata': {'name': filename},
         },
-
     )
     disposition = 'attachment; filename="{}"'.format(filename)
-    get_url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
+    _, get_url = tasks.SignedUrl.generate(
+        key=key,
+        params={
             'ResponseExpires': time.time() + PREVIEW_EXPIRATION_SECONDS,
             'ResponseContentDisposition': disposition,
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': key,
         },
     )
     return JsonResponse({
@@ -70,62 +66,70 @@ def preview_comment(request):
     sections = body.get('assembled_comment', [])
     html = tasks.json_to_html(sections)
     key = '/'.join([settings.ATTACHMENT_PREVIEW_PREFIX, get_random_string(50)])
-    s3 = tasks.make_s3_client()
     with tasks.html_to_pdf(html) as pdf:
-        s3.put_object(
+        tasks.s3_client.put_object(
             Body=pdf,
             ContentType='application/pdf',
             ContentDisposition='attachment; filename="comment.pdf"',
             Bucket=settings.ATTACHMENT_BUCKET,
             Key=key,
         )
-    url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': key,
-        },
-    )
+    _, url = tasks.SignedUrl.generate(key=key)
     return JsonResponse({'url': url})
 
 
-@csrf_exempt
-@require_http_methods(['POST'])
-def submit_comment(request):
-    """Submit a comment to the task queue. The request body is JSON
-    with an 'assembled_comment' field and additional fields.
-    """
-    body = json.loads(request.body.decode('utf-8'))
-    valid, message = docket.sanitize_fields(body)
-    if not valid:
-        logger.error(message)
-        return JsonResponse({'message': message}, status=403)
+class SubmitCommentView(View):
 
-    files = tasks.extract_files(body['assembled_comment'])
-    # Account for the main comment itself submitted as an attachment
-    if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
-        message = "Too many attachments"
-        logger.error(message)
-        return JsonResponse({'message': message}, status=403)
+    def post(self, request, doc_number):
+        form_data = {
+            key: value for key, value in request.POST.items()
+            if key != 'comments'
+        }
+        comments = json.loads(request.POST.get('comments', '[]'))
 
-    s3 = tasks.make_s3_client()
-    metadata_key = get_random_string(50)
-    metadata_url = s3.generate_presigned_url(
-        ClientMethod='get_object',
-        Params={
-            'Bucket': settings.ATTACHMENT_BUCKET,
-            'Key': metadata_key,
-        },
-    )
-    chain = celery.chain(
-        tasks.submit_comment.s(body),
-        tasks.publish_tracking_number.s(key=metadata_key),
-    )
-    chain.delay()
-    return JsonResponse({
-        'status': 'submitted',
-        'metadata_url': metadata_url,
-    })
+        context = common_context(doc_number)
+        context.update(generate_html_tree(context['preamble'], request,
+                                          id_prefix=[doc_number, 'preamble']))
+        context['comment_mode'] = 'write'
+        context.update({'message': None, 'metadata_url': None})
+
+        valid, context['message'] = self.validate(comments, form_data)
+
+        # Catch any errors related to enqueueing comment submission. Because
+        # this step can fail for many reasons (e.g. no connection to broker,
+        # broker fails to write, etc.), catch `Exception`.
+        try:
+            _, context['metadata_url'] = self.enqueue(comments, form_data)
+        except Exception as exc:
+            logger.exception(exc)
+
+        template = 'regulations/comment-confirm-chrome.html'
+        return TemplateResponse(request=request, template=template,
+                                context=context)
+
+    def validate(self, comments, form_data):
+        valid, message = docket.sanitize_fields(form_data)
+        if not valid:
+            logger.error(message)
+            return valid, message
+
+        files = tasks.extract_files(comments)
+        # Account for the main comment itself submitted as an attachment
+        if len(files) > settings.MAX_ATTACHMENT_COUNT - 1:
+            message = "Too many attachments"
+            logger.error(message)
+            return False, message
+
+        return True, ''
+
+    def enqueue(self, comments, form_data):
+        metadata_url = tasks.SignedUrl.generate()
+        chain = celery.chain(
+            tasks.submit_comment.s(comments, form_data, metadata_url),
+            tasks.publish_tracking_number.s(metadata_url=metadata_url),
+        )
+        chain.delay()
+        return metadata_url
 
 
 @require_http_methods(['GET', 'HEAD'])

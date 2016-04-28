@@ -1,8 +1,9 @@
+from mock import patch
 from unittest import TestCase
 
+from nose.tools import *  # noqa
 from django.http import Http404
 from django.test import RequestFactory
-from mock import patch
 
 from regulations.views import preamble
 
@@ -108,7 +109,11 @@ class PreambleToCTests(TestCase):
                         'label': ['abc', '123', 'I', 'A'],
                     }
                 ]
-            }
+            },
+            {
+                'title': 'l2',
+                'label': ['abc', '123', 'II'],
+            },
         ]
 
     def test_preamble_toc(self):
@@ -130,13 +135,31 @@ class PreambleToCTests(TestCase):
                             children=[],
                         )
                     ]
-                )
+                ),
+                preamble.PreambleSect(
+                    depth=1,
+                    title='l2',
+                    url='/preamble/abc/123#abc-123-II',
+                    full_id='abc-preamble-abc-123-II',
+                    children=[]
+                ),
             ],
         )
 
     def test_max_depth(self):
         toc = preamble.make_preamble_toc(self.nodes, max_depth=1)
         self.assertEqual(toc[0].children, [])
+
+    def test_navigation(self):
+        toc = preamble.make_preamble_toc(self.nodes)
+
+        nav = preamble.section_navigation('abc-preamble-abc-123-I', toc)
+        assert_equal(nav['next'].section_id, 'abc-preamble-abc-123-II')
+        assert_is_none(nav['previous'])
+
+        nav = preamble.section_navigation('abc-preamble-abc-123-II', toc)
+        assert_equal(nav['previous'].section_id, 'abc-preamble-abc-123-I')
+        assert_is_none(nav['next'])
 
 
 class CFRChangeToCTests(TestCase):

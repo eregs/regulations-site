@@ -1,11 +1,11 @@
 <div class="preamble-header">
   <span class="tab-descriptions">Actions:</span>
-  <div class="read-proposal active-mode">
+  <div class="read-proposal{% if comment_mode != 'write' %} active-mode{% endif %}">
     <span class="read-icon fa fa-book" aria-hidden="true"></span>
-    <span>Read the proposal</span>
+    <a href="{{preamble_url}}">Read <span class="hide-mobile">the proposal</span></a>
   </div>
-  <div class="write-comment">
+  <div class="write-comment{% if comment_mode == 'write' %} active-mode{% endif %}">
     <span class="write-icon fa fa-pencil-square-o" aria-hidden="true"></span>
-    <span>Write a comment</span>
+    <span>Write <span class="hide-mobile">a comment</span></span>
   </div>
 </div>

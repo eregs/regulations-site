@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import title
 
@@ -8,7 +10,6 @@ from regulations.generator.versions import fetch_grouped_history
 from regulations.views.partial import PartialView
 import math
 
-API_PAGE_SIZE = 50
 PAGE_SIZE = 10
 
 
@@ -36,24 +37,6 @@ class PartialSearch(PartialView):
             context['next'] = {'page': current_page + 1,
                                'length': min(remaining, PAGE_SIZE)}
 
-    def reduce_results(self, results, page):
-        """Ignore results found in non-displayable nodes such as the root,
-        subparts, etc. Further, the page size returned by the API does not
-        match what we display, so we need to reduce the result count
-        accordingly. @TODO this is a hack -- we should be able to limit
-        results in the request instead"""
-        # API page size is API_PAGE_SIZE, but we show only PAGE_SIZE
-        page_idx = (page % (API_PAGE_SIZE // PAGE_SIZE)) * PAGE_SIZE
-        original_count = len(results['results'])
-        is_root = lambda r: len(r['label']) == 1
-        is_subpart = lambda r: node_types.type_from_label(r['label']) in (
-            node_types.EMPTYPART, node_types.SUBPART, node_types.SUBJGRP)
-        results['results'] = [r for r in results['results']
-                              if not is_root(r) and not is_subpart(r)]
-        num_results_ignored = original_count - len(results['results'])
-        results['total_hits'] -= num_results_ignored
-        results['results'] = results['results'][page_idx:page_idx + PAGE_SIZE]
-
     def get_context_data(self, doc_type, **kwargs):
         # We don't want to run the content data of PartialView -- it assumes
         # we will be applying layers
@@ -71,8 +54,6 @@ class PartialSearch(PartialView):
         except ValueError:
             page = 0
 
-        api_page = page // (API_PAGE_SIZE / PAGE_SIZE)
-
         context['warnings'] = []
         if not context['q']:
             context['warnings'].append('Please provide a query.')
@@ -84,46 +65,44 @@ class PartialSearch(PartialView):
         else:
             results = api_reader.ApiReader().search(
                 context['q'], context['doc_type'], context['version'],
-                context['regulation'], api_page)
-
-        self.reduce_results(results, page)
+                context['regulation'], page=page, is_root='false',
+                is_subpart='false')
 
         if doc_type == 'cfr':
-            transform_context_for_cfr(context, results)
+            context['results'] = process_cfr_results(results,
+                                                     context['version'])
+            for version in fetch_grouped_history(context['regulation']):
+                for notice in version['notices']:
+                    if notice['document_number'] == context['version']:
+                        context['version_by_date'] = notice['effective_on']
         else:
-            transform_context_for_preamble(context, results)
+            context['results'] = process_preamble_results(results)
 
         self.add_prev_next(page, context)
-        self.final_context = context
 
         return context
 
 
-def transform_context_for_cfr(context, results):
+def process_cfr_results(results, version):
     """Modify the results of a search over the CFR by adding a human-readable
     label, appropriate links, and version information"""
     section_url = SectionUrl()
-
+    results = deepcopy(results)
     for result in results['results']:
         result['header'] = node_types.label_to_text(result['label'])
         if 'title' in result:
             result['header'] += ' ' + title(result['title'])
         result['section_id'] = section_url.view_label_id(
-            result['label'], context['version'])
+            result['label'], version)
         result['url'] = section_url.fetch(
-            result['label'], context['version'], sectional=True)
-
-    context['results'] = results
-
-    for version in fetch_grouped_history(context['regulation']):
-        for notice in version['notices']:
-            if notice['document_number'] == context['version']:
-                context['version_by_date'] = notice['effective_on']
+            result['label'], version, sectional=True)
+    return results
 
 
-def transform_context_for_preamble(context, results):
+def process_preamble_results(results):
     """Modify the results of a search over a notice preamble by adding a
     human-readable label, appropriate links, etc."""
+    results = deepcopy(results)
     for result in results['results']:
         result['header'] = PreambleHTMLBuilder.human_label(result)
         if 'title' in result:
@@ -137,4 +116,4 @@ def transform_context_for_preamble(context, results):
             ),
             '-'.join(result['label']),
         )
-    context['results'] = results
+    return results
