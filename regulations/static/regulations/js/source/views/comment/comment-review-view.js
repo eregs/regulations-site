@@ -54,9 +54,55 @@ var CommentReviewView = Backbone.View.extend({
     this.$content.html(html);
     this.findElms();
 
+    this.initTabs();
+    this.initDependencies();
+
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
     CommentEvents.trigger('comment:writeTabOpen');
+  },
+
+  initTabs: function() {
+    function updateTabs(tab, tabSet) {
+      var tabSelector = '[data-tab="' + tab + '"]';
+      var setSelector = '[data-tab-set="' + tabSet + '"]';
+      $(setSelector).removeClass('current');
+      $(setSelector + tabSelector).addClass('current');
+      $(setSelector + '[data-tabs]').each(function(idx, elm) {
+        var $elm = $(elm);
+        var tabs = $elm.data('tabs');
+        if (tabs.indexOf(tab) !== -1) {
+          $elm.show();
+        } else {
+          $elm.hide();
+        }
+      });
+    }
+    var $tabs = $('[data-tab]');
+    updateTabs($tabs.data('tab'), $tabs.data('tab-set'));
+    $tabs.on('click', function() {
+      var $tab = $(this);
+      updateTabs($tab.data('tab'), $tab.data('tab-set'));
+    });
+  },
+
+  initDependencies: function() {
+    $('select[data-depends-on]').each(function(idx, elm) {
+      var $elm = $(elm);
+      var $dependsOn = $('[name="' + $elm.data('depends-on') + '"]');
+      var $options = $elm.find('option[value]').detach().clone();
+      function updateOptions(value) {
+        $elm.find('option[value]').remove();
+        $options.filter(function(idx, elm) {
+          return $(elm).data('dependency') === value;
+        }).appendTo($elm);
+        $elm.val(null);
+      }
+      updateOptions.apply($dependsOn);
+      $dependsOn.on('change', function() {
+        updateOptions($(this).val());
+      });
+    });
   },
 
   preview: function() {

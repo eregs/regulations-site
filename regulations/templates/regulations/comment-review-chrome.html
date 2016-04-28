@@ -67,26 +67,7 @@
 
         <input type="hidden" name="comments" />
 
-        <div class="additional-info">
-          <h4>Include your information (Optional)</h4>
-
-          <fieldset>
-            <legend>Your name</legend>
-            <span>First and last name of the person submitting the comment.</span>
-            <input type="text" class="your-name">
-          </fieldset>
-
-          <fieldset>
-            <input type="checkbox" class="org-submit">
-            <label for="org-submit">I am submitting on behalf of an organization.</label>
-          </fieldset>
-
-          <fieldset>
-            <input type="checkbox" class="agency-submit">
-            <label for="agency-submit">I am submitting on behalf of a government agency.</label>
-          </fieldset>
-
-        </div>
+        {% include 'regulations/comment-additional-info.html' %}
 
         <div class="statement">
           <p>You are filling a document into an official docket.
