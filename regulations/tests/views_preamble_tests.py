@@ -239,7 +239,7 @@ class CFRChangeToCTests(TestCase):
 
         nav = preamble.section_navigation([], toc, part='478', section='99')
         assert_equal(nav['next'].section_id, '2016_02749-cfr-478-120')
-        assert_equal(nav['previous'].markup_prefix, 'Authority')
+        assert_equal(nav['previous'].markup_prefix, '27 CFR 478')
 
         nav = preamble.section_navigation([], toc, part='478', section='120')
         assert_equal(nav['previous'].section_id, '2016_02749-cfr-478-99')

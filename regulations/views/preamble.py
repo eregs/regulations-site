@@ -70,7 +70,7 @@ class ToCPart(namedtuple('ToCPart',
         return NavItem(
             url=self.authority_url,
             section_id='',
-            markup_prefix='Authority',
+            markup_prefix='{} CFR {}'.format(self.title, self.part),
             sub_label='Authority',
         )
 
