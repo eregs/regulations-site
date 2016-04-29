@@ -79,6 +79,21 @@ class PreambleViewTests(TestCase):
             '4',
         )
 
+    @patch('regulations.views.preamble.CFRChangeToC')
+    @patch('regulations.generator.generator.api_reader')
+    @patch('regulations.views.preamble.ApiReader')
+    def test_get_top_level_redirect(self, ApiReader, api_reader, CFRChangeToC):
+        ApiReader.return_value.preamble.return_value = self._mock_preamble
+        api_reader.ApiReader.return_value.layer.return_value = {
+            '1-c-x': ['something']
+        }
+        view = preamble.PreambleView.as_view()
+
+        path = '/preamble/1'
+        response = view(RequestFactory().get(path), paragraphs='1')
+        assert_equal(response.status_code, 302)
+        assert_equal(response.get('Location'), '/preamble/1/c')
+
     @patch('regulations.views.preamble.ApiReader')
     def test_get_404(self, ApiReader):
         """When a requested doc is not present, we should return a 404"""
