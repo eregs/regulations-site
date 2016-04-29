@@ -159,6 +159,7 @@ class PartialSectionDiffViewTests(TestCase):
         """Verify that the generated nav contains the appropriate url entries
         for prev and next"""
         nav = self.view.footer_nav(section_id, self.toc, self.versions)
+        self.assertEqual(nav['page_type'], 'diff')
         if prev:
             self.assert_url_contains_versions(nav['previous']['url'], prev)
         else:

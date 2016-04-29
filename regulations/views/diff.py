@@ -67,6 +67,9 @@ class PartialSectionDiffView(PartialView):
         for entry in nav.values():
             entry['url'] = reverse_chrome_diff_view(
                 entry['section_id'], *versions)
+
+        nav['page_type'] = 'diff'
+
         return nav
 
     def get_context_data(self, **kwargs):
