@@ -32,6 +32,8 @@ var CommentReviewView = Backbone.View.extend({
 
   findElms: function() {
     this.$form = this.$el.find('form');
+    this.$submit = this.$el.find('.submit-button');
+    this.$agree = this.$el.find('.agree');
   },
 
   editComment: function(e) {
@@ -54,8 +56,11 @@ var CommentReviewView = Backbone.View.extend({
     this.$content.html(html);
     this.findElms();
 
+    this.toggleSubmit();
+
     this.initTabs();
     this.initDependencies();
+    this.initToggles();
 
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
@@ -63,12 +68,13 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   initTabs: function() {
+    var self = this;
     function updateTabs(tab, tabSet) {
       var tabSelector = '[data-tab="' + tab + '"]';
       var setSelector = '[data-tab-set="' + tabSet + '"]';
-      $(setSelector).removeClass('current');
-      $(setSelector + tabSelector).addClass('current');
-      $(setSelector + '[data-tabs]').each(function(idx, elm) {
+      self.$el.find(setSelector).removeClass('current');
+      self.$el.find(setSelector + tabSelector).addClass('current');
+      self.$el.find(setSelector + '[data-tabs]').each(function(idx, elm) {
         var $elm = $(elm);
         var tabs = $elm.data('tabs');
         if (tabs.indexOf(tab) !== -1) {
@@ -78,7 +84,7 @@ var CommentReviewView = Backbone.View.extend({
         }
       });
     }
-    var $tabs = $('[data-tab]');
+    var $tabs = self.$el.find('[data-tab]');
     updateTabs($tabs.data('tab'), $tabs.data('tab-set'));
     $tabs.on('click', function() {
       var $tab = $(this);
@@ -87,9 +93,10 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   initDependencies: function() {
-    $('select[data-depends-on]').each(function(idx, elm) {
+    var self = this;
+    self.$el.find('select[data-depends-on]').each(function(idx, elm) {
       var $elm = $(elm);
-      var $dependsOn = $('[name="' + $elm.data('depends-on') + '"]');
+      var $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
       var $options = $elm.find('option[value]').detach().clone();
       function updateOptions(value) {
         $elm.find('option[value]').remove();
@@ -102,6 +109,26 @@ var CommentReviewView = Backbone.View.extend({
       $dependsOn.on('change', function() {
         updateOptions($(this).val());
       });
+    });
+  },
+
+  initToggles: function() {
+    function toggle($elm) {
+      var $target = $('#' + $elm.data('toggle'));
+      if ($target.is(':visible')) {
+        $target.hide();
+        $elm.text($target.data('more-text') || 'Show more');
+      } else {
+        $target.show();
+        $elm.text($target.data('less-text') || 'Show less');
+      }
+    }
+    var $toggles = this.$el.find('[data-toggle]');
+    $toggles.each(function(idx, elm) {
+      toggle($(elm));
+    });
+    $toggles.on('click', function() {
+      toggle($(this));
     });
   },
 
@@ -127,7 +154,9 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   toggleSubmit: function() {
-    $('.submit-button').prop('disabled', function(i, v) { return !v; });
+    if (this.$agree.length) {
+      this.$submit.prop('disabled', !this.$agree.prop('checked'));
+    }
   }
 });
 
