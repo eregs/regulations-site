@@ -7,8 +7,8 @@ import celery
 import requests
 from django.conf import settings
 from django.core.cache import caches
-from django.http import JsonResponse
 from django.shortcuts import redirect
+from django.http import Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.template.response import TemplateResponse
@@ -17,7 +17,9 @@ from django.views.generic.base import View
 
 from regulations import tasks
 from regulations import docket
-from regulations.views.preamble import common_context, generate_html_tree
+from regulations.views.preamble import (
+    common_context, generate_html_tree, get_preamble,
+    first_preamble_section)
 
 logger = logging.getLogger(__name__)
 
@@ -85,7 +87,12 @@ regs_gov_fmt = 'https://www.regulations.gov/#!documentDetail;D={document}'
 class SubmitCommentView(View):
 
     def get(self, request, doc_number):
-        return redirect('chrome_preamble', paragraphs=doc_number)
+        preamble, _ = get_preamble(doc_number)
+        section = first_preamble_section(preamble)
+        if section is None:
+            raise Http404
+        return redirect(
+            'chrome_preamble', paragraphs='/'.join(section['label']))
 
     def post(self, request, doc_number):
         form_data = {
