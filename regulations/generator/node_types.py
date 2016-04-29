@@ -60,15 +60,19 @@ def label_to_text(label, include_section=True, include_marker=False):
             or _l2t_section(label, include_section, include_marker))
 
 
-MARKERLESS_REGEX = re.compile(r'p\d+')
+MARKERLESS_REGEX = re.compile(r'^[hp]\d+')
+
+
+def take_until_markerless(label_parts):
+    not_markerless = lambda l: not MARKERLESS_REGEX.match(l)
+    return list(takewhile(not_markerless, label_parts))
 
 
 def _join_paragraph_tail(label_parts, join_with, prefix='', suffix=''):
     """Given the tail of paragraph markers in a label, convert them into a
     string, separated by the appropriate strings (join_with). Also remove any
     markers following a markerless paragraph"""
-    not_markerless = lambda l: not MARKERLESS_REGEX.match(l)
-    label_parts = list(takewhile(not_markerless, label_parts))
+    label_parts = take_until_markerless(label_parts)
     if label_parts:
         return prefix + join_with.join(label_parts) + suffix
     else:
@@ -93,7 +97,7 @@ def _l2t_interp(label):
     if 'Interp' in label:
         # Interpretation
         prefix = list(takewhile(lambda l: l != 'Interp', label))
-        suffix = label[label.index('Interp')+1:]
+        suffix = label[label.index('Interp') + 1:]
         if len(prefix) == 1 and suffix:
             # Interpretation introduction; for now we cop out
             return 'This Section'
@@ -101,9 +105,9 @@ def _l2t_interp(label):
             return 'Supplement I to Part %s' % prefix[0]
         elif suffix:
             suffix = _join_paragraph_tail(suffix, '.')
-            return 'Comment for %s-%s' % (label_to_text(prefix), suffix)
+            return 'Supplement to %s-%s' % (label_to_text(prefix), suffix)
         else:
-            return 'Comment for %s' % label_to_text(prefix)
+            return 'Supplement to %s' % label_to_text(prefix)
 
 
 def _l2t_appendix(label):
@@ -111,6 +115,7 @@ def _l2t_appendix(label):
     _l2t_subterp and _l2t_interp failed"""
     if type_from_label(label) == APPENDIX:
         # Appendix
+        label = take_until_markerless(label)
         if len(label) == 2:  # e.g. 225-B
             return 'Appendix ' + label[1] + ' to Part ' + label[0]
         elif len(label) == 3:  # e.g. 225-B-3

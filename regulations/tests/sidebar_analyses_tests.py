@@ -59,12 +59,12 @@ class AnalysesSidebarTests(TestCase):
             analyses.Analyses('111-22-Interp', 'vvv').context(self.client,
                                                               None),
             {'version': 'vvv',
-             'human_label_id': 'Comment for 111.22',
+             'human_label_id': 'Supplement to 111.22',
              'analyses': [
                  {'doc_number': '2007-22', 'label_id': '111-22-Interp',
-                  'text': 'Comment for 111.22'},
+                  'text': 'Supplement to 111.22'},
                  {'doc_number': '2007-22', 'label_id': '111-22-Interp-2',
-                  'text': 'Comment for 111.22-2'}
+                  'text': 'Supplement to 111.22-2'}
              ]})
 
     def test_context_interp_child(self):
@@ -74,8 +74,8 @@ class AnalysesSidebarTests(TestCase):
             analyses.Analyses('111-22-Interp-2', 'vvv').context(self.client,
                                                                 None),
             {'version': 'vvv',
-             'human_label_id': 'Comment for 111.22-2',
+             'human_label_id': 'Supplement to 111.22-2',
              'analyses': [
                  {'doc_number': '2007-22', 'label_id': '111-22-Interp-2',
-                  'text': 'Comment for 111.22-2'}
+                  'text': 'Supplement to 111.22-2'}
              ]})
