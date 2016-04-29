@@ -106,7 +106,7 @@ var RegView = ChildView.extend({
             }
         }
         else {
-            newTitle = this.cfrTitle + ' CFR ' + Helpers.idToRef(this.id) + ' | eRegulations';
+            newTitle = this.cfrTitle + ' CFR ' + this.sectionLabel + ' | eRegulations';
         }
 
         return newTitle;

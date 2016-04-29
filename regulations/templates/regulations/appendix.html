@@ -1,5 +1,5 @@
 {% comment %}
-    Display an appendix section. 
+    Display an appendix section.
 {% endcomment %}
 
 {% if c.node_type == "appendix" %}
@@ -7,7 +7,7 @@
         <h2 class="appendix-title" tabindex="0"> {{c.header|safe}} </h2>
          {%if c.TOC %}
             {% with nav_class='appendix-nav' toc_items=c.TOC %}
-               {% include "regulations/toc.html" %} 
+               {% include "regulations/toc.html" %}
             {% endwith %}
          {%endif%}
 
@@ -19,8 +19,8 @@
             <h3 class="appendix-heading{% if not level_one.text and not level_one.children %} empty-header{% endif %}" tabindex="0"> {{level_one.header|safe}} </h3>
 
             {% if level_one.marked_up %}
-            <p> 
-                {{level_one.marked_up|safe|linebreaksbr}} 
+            <p>
+                {{level_one.marked_up|safe|linebreaksbr}}
             </p>
             {% endif %}
 

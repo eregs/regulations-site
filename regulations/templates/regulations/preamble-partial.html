@@ -1,6 +1,11 @@
 {% load macros render_nested %}
 
-<section id="{{full_id}}" class="reg-section" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
+<section
+    id="{{full_id}}"
+    class="reg-section"
+    data-page-type="preamble-section"
+    data-doc-id="{{doc_number}}"
+    data-label="{{section_label}}">
   <div id="preamble-read">
     {% if type == "preamble" %}
     <ul>

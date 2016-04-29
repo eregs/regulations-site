@@ -36,6 +36,11 @@ var ChildView = Backbone.View.extend({
                 GAEvents.trigger('section:open', this.options);
 
                 this.attachWayfinding();
+
+                // TODO: Simplify after merging #290
+                this.$topSection = this.$el.is('[data-page-type]') ? this.$el : this.$el.find('[data-page-type]');
+                this.sectionLabel = this.$topSection.data('label');
+
                 this.render();
             } else {
                 MainEvents.trigger('section:error');
@@ -78,7 +83,7 @@ var ChildView = Backbone.View.extend({
         this.updateWayfinding();
         this.loadImages();
         // TODO: What is this for?
-        HeaderEvents.trigger('section:open', this.id);
+        HeaderEvents.trigger('section:open', this.sectionLabel);
         DrawerEvents.trigger('section:open', this.id);
     },
 
@@ -89,7 +94,7 @@ var ChildView = Backbone.View.extend({
     assembleTitle: function() {
         var titleParts, newTitle;
         titleParts = _.compact(document.title.split(' '));
-        newTitle = [titleParts[0], titleParts[1], Helpers.idToRef(this.id), '|', 'eRegulations'];
+        newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
         return newTitle.join(' ');
     },
 
@@ -106,7 +111,7 @@ var ChildView = Backbone.View.extend({
                     this.activeSection = this.$sections[i][0].id;
                     this.$activeSection = $(this.$sections[i][0]);
                     // **Event** trigger active section change
-                    HeaderEvents.trigger('section:open', this.activeSection);
+                    HeaderEvents.trigger('section:open', this.$activeSection.data('label'));
                     DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
                     MainEvents.trigger('paragraph:active', this.activeSection);
 

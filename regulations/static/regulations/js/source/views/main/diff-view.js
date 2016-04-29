@@ -35,7 +35,7 @@ var DiffView = ChildView.extend({
     assembleTitle: function() {
         var titleParts, newTitle;
         titleParts = _.compact(document.title.split(' '));
-        newTitle = [titleParts[0], titleParts[1], Helpers.idToRef(this.id), '|', 'eRegulations'];
+        newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
         return newTitle.join(' ');
     },
 

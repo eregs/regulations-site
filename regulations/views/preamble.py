@@ -314,6 +314,7 @@ class PreambleView(View):
             'sub_context': sub_context,
             'sub_template': template,
             'full_id': sub_context['node']['full_id'],
+            'section_label': sub_context['node']['human_label'],
             'type': 'preamble',
             'navigation': nav,
         })
@@ -375,6 +376,7 @@ class CFRChangesView(View):
             ids = {'part': label_parts[0]}
             sub_context = self.authorities_context(
                 amendments, cfr_part=section)
+            section_label = None
         else:
             ids = {'part': label_parts[0], 'section': label_parts[1]}
             sub_context = self.regtext_changes_context(
@@ -383,6 +385,7 @@ class CFRChangesView(View):
                 doc_number=doc_number,
                 label_id=section,
             )
+            section_label = sub_context['tree']['human_label']
         sub_context['meta'] = context['meta']
         sub_context['navigation'] = section_navigation(
             context['preamble_toc'],
@@ -394,6 +397,7 @@ class CFRChangesView(View):
             'sub_context': sub_context,
             'sub_template': 'regulations/cfr_changes.html',
             'full_id': '{}-cfr-{}'.format(doc_number, section),
+            'section_label': section_label,
             'type': 'cfr',
         })
 

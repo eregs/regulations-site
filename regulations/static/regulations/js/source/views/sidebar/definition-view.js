@@ -102,7 +102,7 @@ var DefinitionView = SidebarModuleView.extend({
     // whole open section
     displayScopeMsg: function(id) {
         var msg = '<p>This term has a different definition for some portions of ';
-        msg += (id) ? Helpers.idToRef(id) + '.' : 'this section.';
+        msg += id ? $('#' + id).data('label') + '.' : 'this section.';
         msg += '</p>';
 
         this.$warningContainer = this.$warningContainer || this.$el.find('.definition-warning');
@@ -132,7 +132,7 @@ var DefinitionView = SidebarModuleView.extend({
         }
 
         $msg = this.$warningContainer.find('.msg');
-        linkText += (defId) ? Helpers.idToRef(activeSectionId) : 'this section';
+        linkText += (defId) ? $('#' + activeSectionId).data('label') : 'this section';
         link = '<a href="' + href + '" class="update-definition inactive internal" data-definition="' + defId + '">';
         link += linkText + '</a>';
 
