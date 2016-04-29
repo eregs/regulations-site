@@ -20,10 +20,8 @@ var DiffView = ChildView.extend({
         this.fromVersion = this.options.fromVersion || this.newerVersion;
         // we preserve the section id as is in config obj because
         this.options.sectionId = this.id;
-        // the model builds url off of id (?)
-        this.options.id = this.assembleDiffURL(this.options);
 
-        this.url = 'diff/' + this.options.id;
+        this.url = 'diff/' + this.model.assembleDiffURL(this.options);
         ChildView.prototype.initialize.apply(this, arguments);
 
         if (typeof this.options.render === 'undefined') {
@@ -37,17 +35,7 @@ var DiffView = ChildView.extend({
         titleParts = _.compact(document.title.split(' '));
         newTitle = [titleParts[0], titleParts[1], Helpers.idToRef(this.id), '|', 'eRegulations'];
         return newTitle.join(' ');
-    },
-
-    // ex: diff/1005-1/2011-12121/2012-11111/?from_version=2012-11111
-    assembleDiffURL: function(options) {
-        var url = options.id + '/' + options.baseVersion;
-        url += '/' + options.newerVersion;
-        url += '?from_version=' + options.fromVersion;
-
-        return url;
     }
-
 });
 
 module.exports = DiffView;
