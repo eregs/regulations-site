@@ -7,6 +7,22 @@ Backbone.LocalStorage = require('backbone.localstorage');
 
 var CommentModel = require('../models/comment-model');
 
+var commentComparator = function(first, second) {
+    var returnValue;
+    if (first.get("tocId") < second.get("tocId")) {
+        returnValue = -1;
+    } else if (first.get("tocId") > second.get("tocId")) {
+        returnValue = 1;
+    } else if (first.get("indexes") < second.get("indexes")) {
+        returnValue = -1;
+    } else if (first.get("indexes") > second.get("indexes")) {
+        returnValue = 1;
+    } else {
+    returnValue = 0;
+    }
+    return returnValue;
+}
+
 var CommentCollection = Backbone.Collection.extend({
   model: CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
@@ -22,11 +38,12 @@ var CommentCollection = Backbone.Collection.extend({
     return _.map(models, function(model) {
       return model.toJSON(options);
     });
-  }
+  },
+
+  comparator: commentComparator
 });
 
 var comments = new CommentCollection();
-comments.comparator = 'label';
 comments.fetch();
 
 module.exports = comments;
