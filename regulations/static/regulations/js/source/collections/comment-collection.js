@@ -5,26 +5,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.LocalStorage = require('backbone.localstorage');
 
-var CommentModel = require('../models/comment-model');
-
-var commentComparator = function(first, second) {
-    var returnValue;
-    if (first.get("tocId") < second.get("tocId")) {
-        returnValue = -1;
-    } else if (first.get("tocId") > second.get("tocId")) {
-        returnValue = 1;
-    } else if (first.get("indexes") < second.get("indexes")) {
-        returnValue = -1;
-    } else if (first.get("indexes") > second.get("indexes")) {
-        returnValue = 1;
-    } else {
-    returnValue = 0;
-    }
-    return returnValue;
-}
+var comment_model = require('../models/comment-model');
 
 var CommentCollection = Backbone.Collection.extend({
-  model: CommentModel,
+  model: comment_model.CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
 
   filter: function(docId) {
@@ -40,7 +24,7 @@ var CommentCollection = Backbone.Collection.extend({
     });
   },
 
-  comparator: commentComparator
+  comparator: comment_model.commentComparator
 });
 
 var comments = new CommentCollection();
