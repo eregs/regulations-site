@@ -13,7 +13,7 @@ require('prosemirror/dist/markdown');
 
 var MainEvents = require('../../events/main-events');
 var DrawerEvents = require('../../events/drawer-events');
-var CommentModel = require('../../models/comment-model');
+var CommentModel = require('../../models/comment-model').CommentModel;
 var CommentEvents = require('../../events/comment-events');
 var AttachmentView = require('../../views/comment/attachment-view');
 var comments = require('../../collections/comment-collection');
