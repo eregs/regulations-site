@@ -76,9 +76,9 @@ def sanitize_fields(body):
     for name, field in six.iteritems(document_fields):
         if field['required'] and name not in body:
             return False, "Field {} is required".format(name)
-        if name in body and len(body[name]) > field['max_length']:
+        if name in body and len(body[name]) > field['maxLength']:
             return False, "Field {} exceeds maximum length of {}".format(
-                name, field['max_length'])
+                name, field['maxLength'])
 
     # Remove extra fields if any, other than 'assembled_comment'
     extra_fields = [field for field in body if field not in document_fields]
