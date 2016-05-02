@@ -2,7 +2,7 @@
 from mock import patch
 from unittest import TestCase
 
-from regulations.docket import sanitize_fields, Field
+from regulations.docket import sanitize_fields
 
 
 class SanitizeFieldsTest(TestCase):
@@ -11,8 +11,8 @@ class SanitizeFieldsTest(TestCase):
             'regulations.docket.get_document_fields')
         mock_object = self.patch_document_fields.start()
         mock_object.return_value = {
-            "required_field": Field(10, True),
-            "optional_field": Field(10, False),
+            'required_field': {'max_length': 10, 'required': True},
+            'optional_field': {'max_length': 10, 'required': False},
         }
 
     def tearDown(self):
@@ -56,5 +56,5 @@ class SanitizeFieldsTest(TestCase):
         }
         valid, message = sanitize_fields(test_body)
         self.assertFalse(valid)
-        self.assertEqual("Field required_field exceeds expected length of 10",
+        self.assertEqual("Field required_field exceeds maximum length of 10",
                          message)

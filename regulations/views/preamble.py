@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
+from regulations import docket
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import (
@@ -377,6 +378,8 @@ class PrepareCommentView(View):
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
         context['comment_mode'] = 'write'
+        context['comment_fields'] = docket.get_document_fields(
+            settings.COMMENT_DOCUMENT_ID)
         template = 'regulations/comment-review-chrome.html'
 
         return TemplateResponse(request=request, template=template,
