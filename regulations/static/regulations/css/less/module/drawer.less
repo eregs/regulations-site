@@ -119,7 +119,7 @@ Panel Slide Button
     display: block;
     height: 34px; /* match height of main header */
     line-height: 34px;
-    width: 40px;
+    width: @closed_drawer_width;
     float: right;
     cursor: pointer;
     text-align: center;
@@ -187,7 +187,7 @@ currently these are TOC, History, and Search
     .close & {
         display: block;
         border-right: none;
-        width: 40px;
+        width: @closed_drawer_width - 1;
     }
 
     /* Fall back to PNG images for drawer icons when @font-face isn't supported */
@@ -236,7 +236,7 @@ currently these are TOC, History, and Search
 
     .close & {
         position: absolute;
-        width: 40px;
+        width: @closed_drawer_width;
         top: 33px;
         border-top: 1px solid @medium_gray;
         right: 0;
