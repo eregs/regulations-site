@@ -36,25 +36,30 @@ def get_document_fields(document_id):
         if field['attributeName'] != 'general_comment'
     }
 
-    add_options(fields)
-    add_dependent_options(fields)
+    add_picklist_options(fields)
+    add_combo_options(fields)
 
     cache.set(document_id, fields)
     return fields
 
 
-def add_options(fields):
-    """Augment fields with options."""
+def add_picklist_options(fields):
+    """Augment list fields with options. Adds a list of options to each field
+    of type "picklist".
+    """
     for name, field in fields.items():
-        if 'lookupUrl' in field and 'dependsOn' not in field:
+        if field['uiControl'] == 'picklist':
             data = fetch(field['lookupUrl'])
             field['options'] = data['list']
 
 
-def add_dependent_options(fields):
-    """Augment fields with dependency-contingent options."""
+def add_combo_options(fields):
+    """Augment combo fields with dependency-contingent options. Adds a dict
+    mapping contingent values to lists of options to each field of type
+    "combo".
+    """
     for name, field in fields.items():
-        if 'dependsOn' in field and 'lookupUrl' in field:
+        if field['uiControl'] == 'combo':
             field['options'] = {}
             for option in fields[field['dependsOn']]['options']:
                 data = fetch(field['lookupUrl'] + option['value'])
