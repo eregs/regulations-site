@@ -201,7 +201,7 @@ var CommentView = Backbone.View.extend({
     var keys = _.flatten([].concat(saved, pending));
     this.attachmentCount = keys.length;
     var plural = this.attachmentCount > 1 ? 's' : '';
-    this.$commentCount.text("You've uploaded " + this.attachmentCount + " total attachment" + plural + ".");
+    this.$commentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
 
