@@ -27,11 +27,9 @@ describe('SxS Model:', function() {
     it('getAJAXUrl returns the correct URL endpoint with /sxs supplemental path', function() {
         expect(SxSModel.getAJAXUrl('1005-2')).to.equal('/eregulations/partial/sxs/1005-2/2014-20681');
 
-
-        window.APP_PREFIX = ''; // Test without a urlPrefix
+        window.APP_PREFIX = '/'; // Test without a urlPrefix
         expect(SxSModel.getAJAXUrl('1005-2')).to.equal('/partial/sxs/1005-2/2014-20681');
 
         window.APP_PREFIX = '/eregulations/'; //Return to normal
-
     });
 });

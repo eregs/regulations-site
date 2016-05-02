@@ -70,18 +70,10 @@
         {% include 'regulations/comment-additional-info.html' %}
 
         <div class="statement">
-          <p>You are filing a document into an official docket.
-          Any personal information entered on this form may be publicly viewable on the web.
-          </p>
-
-          <input type="checkbox" class="agree">
-          <label for="agree">
-            I read and understand the statement above.
-            <span class="required">(Required to submit.)</span>
-          </label>
+          {% include 'regulations/comment-disclaimer.html' %}
         </div>
 
-        <button class="submit-button" disabled>Submit your comment</button>
+        <button class="submit-button">Submit your comment</button>
 
       </form>
 

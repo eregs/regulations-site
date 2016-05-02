@@ -2,7 +2,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var SidebarModuleView = require('./sidebar-module-view');
 var RegModel = ('../../models/reg-model.js');
 var Helpers = require('../../helpers');
 var Router = require('../../router');
@@ -18,7 +17,7 @@ Backbone.$ = $;
 // * **$anchor** jQobj, the reg-view link that opened the def
 //
 // this.options turns into this.model
-var DefinitionView = SidebarModuleView.extend({
+var DefinitionView = Backbone.View.extend({
     el: '#definition',
 
     events: {

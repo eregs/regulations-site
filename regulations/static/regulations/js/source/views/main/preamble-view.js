@@ -16,8 +16,6 @@ var starsHelpers = require('./stars-helpers');
 var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
-  el: '#content-wrapper',
-
   events: {
     'click .activate-write': 'handleWriteLink'
   },
@@ -28,15 +26,11 @@ var PreambleView = ChildView.extend({
     var parsed = helpers.parsePreambleId(this.options.id);
     var type = parsed.type;
 
-    this.id = [].concat(parsed.docId, parsed.type, parsed.section).join('-');
     this.options.scrollToId = parsed.hash;
     this.url = parsed.path.join('/');
 
-    if (!options.render) {
-      this.render();
-    }
-
     ChildView.prototype.initialize.apply(this, arguments);
+    this.renderComments();
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
     this.listenTo(CommentEvents, 'comment:write', this.handleWriteTab);
@@ -104,9 +98,7 @@ var PreambleView = ChildView.extend({
     this.$write.show();
   },
 
-  render: function() {
-    ChildView.prototype.render.apply(this, arguments);
-
+  renderComments: function() {
     this.mode = 'read';
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');

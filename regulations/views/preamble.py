@@ -8,12 +8,14 @@ from copy import deepcopy
 from datetime import date
 from collections import namedtuple
 
-from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.http import Http404
+from django.conf import settings
+from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
+from regulations import docket
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import (
@@ -256,10 +258,7 @@ def section_navigation(preamble_toc, cfr_toc, **ids):
     return nav
 
 
-def common_context(doc_number):
-    """All of the "preamble" views share common context, such as preamble
-    data, toc info, etc. This function retrieves that data and returns the
-    results as a dict. This may throw a 404"""
+def get_preamble(doc_number):
     preamble = ApiReader().preamble(doc_number)
     if preamble is None:
         raise Http404
@@ -275,6 +274,24 @@ def common_context(doc_number):
         intro['meta']['days_remaining'] = 1 + (
             intro['meta']['comments_close'].date() - date.today()).days
 
+    return preamble, intro
+
+
+def first_preamble_section(preamble):
+    return next(
+        (
+            node for node in preamble['children']
+            if not node['label'][-1].startswith('p')
+        ),
+        None,
+    )
+
+
+def common_context(doc_number):
+    """All of the "preamble" views share common context, such as preamble
+    data, toc info, etc. This function retrieves that data and returns the
+    results as a dict. This may throw a 404"""
+    preamble, intro = get_preamble(doc_number)
     preamble_toc = make_preamble_toc(preamble['children'])
 
     return {
@@ -295,6 +312,14 @@ class PreambleView(View):
         label_parts = kwargs.get('paragraphs', '').split('/')
         doc_number = label_parts[0]
         context = common_context(doc_number)
+
+        # Redirect to first section on top-level preamble
+        if len(label_parts) == 1:
+            section = first_preamble_section(context['preamble'])
+            if not section:
+                raise Http404
+            return redirect(
+                'chrome_preamble', paragraphs='/'.join(section['label']))
 
         subtree = find_subtree(context['preamble'], label_parts)
         if subtree is None:
@@ -354,6 +379,8 @@ class PrepareCommentView(View):
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
         context['comment_mode'] = 'write'
+        context['comment_fields'] = docket.get_document_fields(
+            settings.COMMENT_DOCUMENT_ID)
         template = 'regulations/comment-review-chrome.html'
 
         return TemplateResponse(request=request, template=template,

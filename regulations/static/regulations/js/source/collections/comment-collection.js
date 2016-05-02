@@ -26,6 +26,7 @@ var CommentCollection = Backbone.Collection.extend({
 });
 
 var comments = new CommentCollection();
+comments.comparator = 'label';
 comments.fetch();
 
 module.exports = comments;
