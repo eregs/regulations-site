@@ -254,5 +254,8 @@ VALID_ATTACHMENT_EXTENSIONS = set([
     "docx", "xlsx", "pptx"])
 MAX_ATTACHMENT_COUNT = 10
 
+REGS_GOV_API_URL = os.environ.get('REGS_GOV_API_URL')
+REGS_GOV_API_KEY = os.environ.get('REGS_GOV_API_KEY')
+
 COMMENT_DOCUMENT_ID = os.getenv('DOCUMENT_ID')
 WKHTMLTOPDF_PATH = os.getenv('WKHTMLTOPDF_PATH')

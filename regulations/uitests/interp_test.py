@@ -27,8 +27,8 @@ class InterpTest(BaseTest, unittest.TestCase):
                          '1005-18-a')
 
         # should have the appropriate header
-        self.assertTrue('OFFICIAL INTERPRETATION TO 2(h)'
-                        in interp_dropdown.text)
+        self.assertIn('OFFICIAL INTERPRETATION TO 2(h)',
+                      interp_dropdown.text)
 
         self.driver.execute_script(
             'p10052h = document.getElementById("1005-2-h").offsetTop')
@@ -44,11 +44,13 @@ class InterpTest(BaseTest, unittest.TestCase):
                 '.inline-interpretation.open'))
 
         # header should update
-        self.assertTrue('HIDE' in interp_dropdown.text)
+        self.assertIn('HIDE', interp_dropdown.text)
 
         # should contain the appropriate reg section
-        self.assertTrue('clicked. A finances centripetally curiousest '
-                        'stronghold cemeteries' in interp_text.text)
+        WebDriverWait(self.driver, 10).until(
+            lambda driver: interp_text.text)
+        self.assertIn('clicked. A finances centripetally curiousest '
+                      'stronghold cemeteries', interp_text.text)
 
         self.driver.find_element_by_xpath(
             '//*[@id="1005-2-h"]/section/header/a').click()
@@ -58,4 +60,4 @@ class InterpTest(BaseTest, unittest.TestCase):
                 '.inline-interpretation:not(.open)'))
 
         # header should reflect close
-        self.assertTrue('SHOW' in interp_dropdown.text)
+        self.assertIn('SHOW', interp_dropdown.text)
