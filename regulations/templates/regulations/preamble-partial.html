@@ -1,45 +1,47 @@
 {% load macros render_nested %}
 
-<section id="{{full_id}}" class="reg-section" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
-  <div id="preamble-read">
-    {% if type == "preamble" %}
-    <ul>
-      {% render_nested template=sub_template context=sub_context %}
-    </ul>
-    {% else %}
-      {% render_nested template=sub_template context=sub_context %}
-    {% endif %}
+<section id="content-wrapper">
+  <section id="{{full_id}}" class="reg-section" data-page-type="preamble-section" data-doc-id="{{doc_number}}">
+    <div id="preamble-read">
+      {% if type == "preamble" %}
+      <ul>
+        {% render_nested template=sub_template context=sub_context %}
+      </ul>
+      {% else %}
+        {% render_nested template=sub_template context=sub_context %}
+      {% endif %}
 
-    {% include "regulations/footnotes.html" %}
-    {% include "regulations/navigation.html" %}
-  </div>
+      {% include "regulations/footnotes.html" %}
+      {% include "regulations/navigation.html" %}
+    </div>
 
-  <div id="preamble-write">
-    <div class="comment-wrapper">
-      <div class="comment">
-        <h2>Write your comment.</h2>
-        <h3 class="comment-header"></h3>
-        <div class="comment-context"></div>
-        <form>
-          <div class="editor-container"></div>
-          <div class="comment-controls">
-            <div class="comment-attachments"></div>
-            <button class="comment-upload-button file-upload">
-              Upload Attachment<input type="file" multiple/>
-            </span>
-          </div>
-          <div class="comment-submission">
-            <button class="comment-button" type="submit">Save Response</button>
-            <div class="status"></div>
-          </div>
-        </form>
+    <div id="preamble-write">
+      <div class="comment-wrapper">
+        <div class="comment">
+          <h2>Write your comment.</h2>
+          <h3 class="comment-header"></h3>
+          <div class="comment-context"></div>
+          <form>
+            <div class="editor-container"></div>
+            <div class="comment-controls">
+              <div class="comment-attachments"></div>
+              <button class="comment-upload-button file-upload">
+                Upload Attachment<input type="file" multiple/>
+              </span>
+            </div>
+            <div class="comment-submission">
+              <button class="comment-button" type="submit">Save Response</button>
+              <div class="status"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="comment-index">
+        <ul class="comment-index-items"></ul>
+        <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review and Submit</a>
       </div>
     </div>
-    <div class="comment-index">
-      <ul class="comment-index-items"></ul>
-      <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review and Submit</a>
-    </div>
-  </div>
+  </section>
 </section>
 
 <script id="comment-attachment-template" type="text/template">

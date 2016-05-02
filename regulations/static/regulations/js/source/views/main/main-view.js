@@ -33,74 +33,54 @@ var MainView = Backbone.View.extend({
     el: '#content-body',
 
     initialize: function() {
-        this.dataTables = null;
-        this.render = _.bind(this.render, this);
+      this.dataTables = null;
 
-        if (Router.hasPushState) {
-            this.listenTo(MainEvents, 'search-results:open', this.createView);
-            this.listenTo(MainEvents, 'section:open', this.createView);
-            this.listenTo(MainEvents, 'diff:open', this.createView);
-            this.listenTo(MainEvents, 'breakaway:open', this.breakawayOpen);
-            this.listenTo(MainEvents, 'section:error', this.displayError);
-        }
-        this.listenTo(MainEvents, 'section:resize', this.applyTablePlugin);
-        this.listenTo(MainEvents, 'section:setHandlers', this.setHandlers);
+      if (Router.hasPushState) {
+        this.listenTo(MainEvents, 'search-results:open', this.openSection);
+        this.listenTo(MainEvents, 'section:open', this.openSection);
+        this.listenTo(MainEvents, 'diff:open', this.openSection);
+        this.listenTo(MainEvents, 'breakaway:open', this.breakawayOpen);
+        this.listenTo(MainEvents, 'section:error', this.displayError);
+      }
+      this.listenTo(MainEvents, 'section:resize', this.applyTablePlugin);
+      this.listenTo(MainEvents, 'section:setHandlers', this.setHandlers);
 
-        var childViewOptions = {},
-            appendixOrSupplement;
+      this.$topSection = this.$el.find('section[data-page-type]');
 
-        this.$topSection = this.$el.find('section[data-page-type]');
+      // which page are we starting on?
+      this.contentType = this.$topSection.data('page-type');
+      // what version of the reg?
+      this.regVersion = Helpers.findVersion(Resources.versionElements);
+      // what section do we have open?
+      this.sectionId = this.$topSection.attr('id') ||
+        this.$topSection.find('section[id]').attr('id');
+      this.docId = $('#menu').data('doc-id');
+      this.cfrTitle = $('#menu').data('cfr-title-number');
 
-        // which page are we starting on?
-        this.contentType = this.$topSection.data('page-type');
-        // what version of the reg?
-        this.regVersion = Helpers.findVersion(Resources.versionElements);
-        // what section do we have open?
-        this.sectionId = this.$topSection.attr('id');
-        if (typeof this.sectionId === 'undefined') {
-            //  Find the first child which *does* have a label
-            this.sectionId = this.$topSection.find('section[id]').attr('id');
-        }
-        this.docId = $('#menu').data('doc-id');
-        this.cfrTitle = $('#menu').data('cfr-title-number');
+      this.childModel = this.modelmap[this.contentType];
+      if (this.sectionId && this.childModel) {
+        // store the contents of our $el in the model so that we
+        // can re-render it later
+        this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
+      }
 
-        // build options object to pass into child view constructor
-        childViewOptions.id = this.sectionId;
-        childViewOptions.regVersion = this.regVersion;
-        childViewOptions.cfrTitle = this.cfrTitle;
+      var options = {
+        subContentType: this.isAppendixOrSupplement(),
+        render: false
+      };
 
-        appendixOrSupplement = this.isAppendixOrSupplement();
-        if (appendixOrSupplement) {
-            // so that we will know what the doc title format should be
-            childViewOptions.subContentType = appendixOrSupplement;
-        }
+      if (this.contentType === 'search-results') {
+        options.params = URI.parseQuery(window.location.search);
+        options.query = options.params.q;
+      }
 
-        // find search query
-        if (this.contentType === 'search-results') {
-            childViewOptions.params = URI.parseQuery(window.location.search);
-            childViewOptions.query = childViewOptions.params.q;
-        }
+      this.setChildOptions(options);
 
-        if (this.contentType === 'landing-page') {
-            DrawerEvents.trigger('pane:change', 'table-of-contents');
-        }
+      if (this.contentType === 'landing-page') {
+        DrawerEvents.trigger('pane:change', 'table-of-contents');
+      }
 
-        // we don't want to ajax in data that the page loaded with
-        childViewOptions.render = false;
-
-        if (this.sectionId && this.modelmap[this.contentType]) {
-            // store the contents of our $el in the model so that we
-            // can re-render it later
-            this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
-            childViewOptions.model = this.modelmap[this.contentType];
-        }
-
-        if (this.contentType && typeof this.viewmap[this.contentType] !== 'undefined') {
-            // create new child view
-            this.childView = new this.viewmap[this.contentType](childViewOptions);
-        }
-
-        this.sectionFooter = new SectionFooter({el: this.$el.find('.section-nav')});
+      this.renderSection(null);
     },
 
     modelmap: {
@@ -125,62 +105,88 @@ var MainView = Backbone.View.extend({
         'preamble-section': PreambleView
     },
 
-    createView: function(id, options, type) {
-        // close breakaway if open
-        if (typeof this.breakawayCallback !== 'undefined') {
-            this.breakawayCallback();
-            delete(this.breakawayCallback);
+    openSection: function(id, options, type) {
+      // Close breakaway if open
+      if (typeof this.breakawayCallback !== 'undefined') {
+        this.breakawayCallback();
+        delete(this.breakawayCallback);
+      }
+
+      this.contentType = type;
+
+      // id is null on search results as there is no section id
+      if (id !== null) {
+        this.sectionId = id;
+      }
+
+      if (this.childView) {
+        this.childView.remove();
+        delete(this.childView);
+      }
+
+      this.loading();
+      SidebarEvents.trigger('section:loading');
+
+      this.childModel = this.modelmap[this.contentType];
+      this.setChildOptions(_.extend({render: true}, options));
+
+      this.childModel.get(id, this.childOptions)
+        .then(this.renderSection.bind(this))
+        .fail(this.renderError.bind(this));
+    },
+
+    setChildOptions: function(options) {
+      this.childOptions = _.extend({
+        id: this.sectionId,
+        type: this.contentType,
+        regVersion: this.regVersion,
+        docId: this.docId,
+        model: this.childModel,
+        cfrTitle: this.cfrTitle
+      }, options);
+
+      // Diffs need some more version context
+      if (this.contentType === 'diff') {
+        this.childOptions.baseVersion = this.regVersion || Helpers.findVersion(Resources.versionElements);
+        this.childOptions.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
+        if (typeof options.fromVersion === 'undefined') {
+          this.childOptions.fromVersion = $('#table-of-contents').data('from-version');
         }
+      }
 
-        this.contentType = type;
+      // Search needs to know which version to search and switch to that version
+      if (this.contentType === 'search-results' && typeof options.searchVersion !== 'undefined') {
+        this.childOptions.regVersion = options.searchVersion;
+      }
+    },
 
-        // id is null on search results as there is no section id
-        if (id !== null) {
-            this.sectionId = id;
-        }
+    renderSection: function(html) {
+      if (html) {
+        this.$el.html(html);
+      }
 
-        // this is a triage measure. I don't know how this could
-        // ever be null, but apparently somewhere along the line it is
-        if (this.regVersion === null) {
-            this.regVersion = this.$el.find('section[data-page-type]').data('base-section');
-        }
+      this.childOptions.el = this.$el.children().get(0);
+      this.childView = new this.viewmap[this.contentType](this.childOptions);
 
-        if (typeof options.render === 'undefined') {
-            // tell the child view it should render
-            options.render = true;
-        }
+      // Destroy and recreate footer
+      if (this.sectionFooter) {
+        this.sectionFooter.remove();
+      }
+      var $footer = this.$el.find('.section-nav');
+      if ($footer) {
+        this.sectionFooter = new SectionFooter({el: $footer});
+      }
 
-        options.id = id;
-        options.type = this.contentType;
-        options.regVersion = this.regVersion;
-        options.docId = this.docId;
-        options.model = this.modelmap[this.contentType];
-        options.cb = this.render;
-        options.cfrTitle = this.cfrTitle;
+      SidebarEvents.trigger('update', {
+        type: this.contentType,
+        id: this.sectionId
+      });
 
-        // diffs need some more version context
-        if (this.contentType === 'diff') {
-            options.baseVersion = this.regVersion || Helpers.findVersion(Resources.versionElements);
-            options.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
-            if (typeof options.fromVersion === 'undefined') {
-                options.fromVersion = $('#table-of-contents').data('from-version');
-            }
-        }
+      this.loaded();
+    },
 
-        //search needs to know which version to search and switch to that version
-        if (this.contentType === 'search-results' && typeof options.searchVersion !== 'undefined') {
-            options.regVersion = options.searchVersion;
-        }
-
-        this.loading();
-        SidebarEvents.trigger('section:loading');
-
-        if (typeof this.childView !== 'undefined') {
-            this.childView.remove();
-            delete(this.childView);
-        }
-
-        this.childView = new this.viewmap[this.contentType](options);
+    renderError: function() {
+      MainEvents.trigger('section:error');
     },
 
     isAppendixOrSupplement: function() {
@@ -199,10 +205,10 @@ var MainView = Backbone.View.extend({
     },
 
     displayError: function() {
-        // prevent error warning stacking
+        // Prevent error warning stacking
         $('.error-network').remove();
 
-        // get ID of still rendered last section
+        // Get ID of still rendered last section
         var oldId = this.$el.find('section[data-page-type]').attr('id'),
             $error = this.$el.prepend('<div class="error error-network"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>').hide().fadeIn('slow');
 
@@ -213,37 +219,6 @@ var MainView = Backbone.View.extend({
         SidebarEvents.trigger('section:error');
 
         window.scrollTo($error.offset().top, 0);
-    },
-
-    render: function(html, options) {
-        var offsetTop, $scrollToId;
-
-        this.$el.html(html);
-
-        // Destroy and recreate footer
-        this.sectionFooter.remove();
-        var $footer = this.$el.find('.section-nav');
-        if ($footer) {
-            this.sectionFooter = new SectionFooter({el: $footer});
-        }
-
-        MainEvents.trigger('section:rendered');
-
-        SidebarEvents.trigger('update', {
-            type: this.contentType,
-            id: this.sectionId
-        });
-
-        if (options && typeof options.scrollToId !== 'undefined') {
-            $scrollToId = $('#' + options.scrollToId);
-            if ($scrollToId.length > 0) {
-                offsetTop = $scrollToId.offset().top;
-            }
-        }
-
-        window.scrollTo(0, offsetTop || 0);
-
-        this.loaded();
     },
 
     loading: function() {
@@ -301,6 +276,5 @@ var MainView = Backbone.View.extend({
             });
         }
     }
-
 });
 module.exports = MainView;

@@ -51,73 +51,27 @@ var MetaModel = Backbone.Model.extend({
         return section;
     },
 
-    // **Param**
-    // id, string, dash-delimited reg entity id
-    //
-    // **Returns** boolean
     has: function(id) {
-        return (this.content[id]) ? true : false;
+      return !!this.content[id];
     },
 
-    // **Params**
-    //
-    // * ```id```: string, dash-delimited reg entity id
-    // * ```callback```: function to be called once content is loaded
-    get: function(id, callback) {
-        var $promise, resolve;
-
-        // if we have the requested content cached, retrieve it
-        // otherwise, we need to ask the server for it
-        $promise = (this.has(id)) ? this.retrieve(id) : this.request(id);
-
-        // callback once the promise resolves
-        resolve = function(response) {
-            if (typeof callback !== 'undefined') {
-                callback(true, response);
-            }
-        };
-
-        $promise.done(resolve);
-
-        $promise.fail(function() {
-            callback(false);
-        });
-
-        return this;
+    get: function(id, options) {
+      return this.has(id) ?
+        $.when(this.content[id]) :
+        this.request(id, options);
     },
 
-    // basically returns ```this.content[id]``` immediately,
-    // but is consistent with the interface that ```this.request``` provides
-    retrieve: function(id) {
-        var $deferred = $.Deferred();
-
-        $deferred.resolve(this.content[id]);
-
-        return $deferred.promise();
+    request: function(id, options) {
+      return $.ajax({
+        url: this.getAJAXUrl(id, options),
+        success: function(data) {
+          this.set(id, data);
+        }.bind(this)
+      });
     },
 
-    request: function(id) {
-        var url = this.getAJAXUrl(id),
-            $promise;
-
-        $promise = $.ajax({
-            url: url,
-            success: function(data) { this.set(id, data); }.bind(this)
-        });
-
-        return $promise;
-    },
-
-    getAJAXUrl: function(id) {
-        var url,
-            urlPrefix = window.APP_PREFIX;
-
-        if (urlPrefix) {
-            url = urlPrefix + 'partial/';
-        }
-        else {
-            url = '/partial/';
-        }
+    getAJAXUrl: function(id, options) {
+        var url = window.APP_PREFIX + 'partial/';
 
         if (typeof this.supplementalPath !== 'undefined') {
             url += this.supplementalPath + '/';

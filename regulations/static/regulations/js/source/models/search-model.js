@@ -1,4 +1,5 @@
 'use strict';
+var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var MetaModel = require('./meta-model');
@@ -8,24 +9,27 @@ Backbone.SearchModel = MetaModel.extend({});
 var searchModel = new Backbone.SearchModel({
     supplementalPath: 'search',
 
-    getAJAXUrl: function(id) {
-        var url,
-            urlPrefix = window.APP_PREFIX;
+    getAJAXUrl: function(id, options) {
+      var url = window.APP_PREFIX + 'partial/';
 
-        if (urlPrefix) {
-            url = urlPrefix + 'partial/';
-        }
-        else {
-            url = '/partial/';
-        }
+      if (typeof this.supplementalPath !== 'undefined') {
+        url += this.supplementalPath + '/';
+      }
 
-        if (typeof this.supplementalPath !== 'undefined') {
-            url += this.supplementalPath + '/';
-        }
+      return url + this.assembleSearchURL(options);
+    },
 
-        url += id;
-
-        return url;
+    assembleSearchURL: function(options) {
+      var docType = options.docType || 'cfr';
+      var path = [docType, options.docId].join('/');
+      var query = {q: options.query};
+      if (options.regVersion) {
+        query.version = options.regVersion;
+      }
+      if (typeof options.page !== 'undefined') {
+        query.page = options.page;
+      }
+      return URI(path).query(query).toString();
     }
 });
 

@@ -36,31 +36,15 @@ var SearchResultsView = ChildView.extend({
 
         // if the site wasn't loaded on the search results page
         if (this.options.render) {
-            this.options.id = this.assembleSearchURL(this.options);
-            this.url = 'search/' + this.options.id;
-
+            this.url = 'search/' + this.model.assembleSearchURL(this.options);
             ChildView.prototype.initialize.apply(this, arguments);
         } else {
             this.options.docType = this.$el.data('doc-type');
         }
-
     },
 
     setElement: function() {
         Backbone.View.prototype.setElement.call(this, '#content-wrapper.search-results');
-    },
-
-    assembleSearchURL: function(options) {
-        var docType = options.docType || 'cfr';
-        var path = [docType, options.docId].join('/');
-        var query = {q: options.query};
-        if (options.regVersion) {
-          query.version = options.regVersion;
-        }
-        if (typeof options.page !== 'undefined') {
-          query.page = options.page;
-        }
-        return URI(path).query(query).toString();
     },
 
     render: function() {
@@ -74,7 +58,7 @@ var SearchResultsView = ChildView.extend({
 
         if (Router.hasPushState) {
             if (typeof this.options.id !== 'undefined') {
-                Router.navigate('search/' + this.options.id);
+                Router.navigate(this.url);
             }
         }
     },
