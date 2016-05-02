@@ -6,7 +6,6 @@ var jsdom = require('mocha-jsdom');
 
 chai.use(sinonChai);
 
-
 describe('MetaModel:', function() {
     'use strict';
 
@@ -55,17 +54,10 @@ describe('MetaModel:', function() {
     it('getAJAXUrl returns the correct URL endpoint', function() {
         expect(this.metamodel.getAJAXUrl('1005-2')).to.equal('/eregulations/partial/1005-2/2014-20681');
 
-
-        window.APP_PREFIX = ''; // Test without a urlPrefix
+        window.APP_PREFIX = '/'; // Test without a urlPrefix
         expect(this.metamodel.getAJAXUrl('1005-2')).to.equal('/partial/1005-2/2014-20681');
 
         window.APP_PREFIX = '/eregulations/'; //Return to normal
-
-    });
-
-    it('retrieve returns true with a promise', function() {
-        expect(this.metamodel.retrieve('1005-2-a')).to.be.ok;
-        expect(this.metamodel.retrieve('1005-2-a')).to.have.property('promise');
     });
 
     it('request returns promise', function() {
@@ -73,15 +65,8 @@ describe('MetaModel:', function() {
         expect(this.metamodel.request('1005-2-a')).to.have.property('promise');
     });
 
-    it('get calls the callback correctly', function() {
-        var cb = sinon.spy();
-        var cbfail = sinon.spy();
-
-        expect(this.metamodel.get('1005-2-a', cb)).to.be.ok; // Test a cached regulation
-        expect(cb).to.have.been.called;
-
-        expect(this.metamodel.get('1005-5-a', cb)).to.be.ok; // Test a reg that doesn't exist
-        expect(cb).to.have.been.calledWith(false);
+    it('get returns promise', function() {
+        expect(this.metamodel.get('1005-2-a')).to.be.ok;
+        expect(this.metamodel.get('1005-2-a')).to.have.property('promise');
     });
 });
-

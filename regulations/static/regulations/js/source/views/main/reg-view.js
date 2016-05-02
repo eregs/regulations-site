@@ -18,8 +18,6 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var RegView = ChildView.extend({
-    el: '#content-wrapper',
-
     events: {
         'click .definition': 'termLinkHandler',
         'click .inline-interp-header': 'expandInterp'
@@ -42,10 +40,6 @@ var RegView = ChildView.extend({
         this.url = this.id + '/' + this.options.regVersion;
         this.docId = this.options.docId;
         this.cfrTitle = this.options.cfrTitle;
-
-        if (typeof this.options.subContentType !== 'undefined') {
-            this.subContentType = this.options.subContentType;
-        }
 
         HeaderEvents.trigger('section:open', this.activeSection);
 
@@ -72,44 +66,36 @@ var RegView = ChildView.extend({
     },
 
     openSection: function(e) {
-        var $e = $(e.target),
-            id = $e.attr('data-section-id') || $e.attr('data-linked-section'),
-            href = $e.attr('href'),
-            config = {},
-            hashIndex;
+      var $target = $(e.currentTarget);
+      var id = $target.attr('data-section-id') || $target.attr('data-linked-section');
+      var href = $target.attr('href');
+      var config = {};
+      var hashIndex;
 
-        if (typeof href !== 'undefined') {
-            hashIndex = href.indexOf('#');
+      if (typeof href !== 'undefined') {
+        hashIndex = href.indexOf('#');
+      }
+
+      if (id) {
+        e.preventDefault();
+        config.id = id;
+
+        if (hashIndex !== -1) {
+          config.scrollToId = href.substr(hashIndex + 1);
         }
 
-        if (id.length > 0) {
-            e.preventDefault();
-            config.id = id;
-
-            if (hashIndex !== -1) {
-                config.scrollToId = href.substr(hashIndex + 1);
-            }
-
-            MainEvents.trigger('section:open', Helpers.findBaseSection(id), config, 'reg-section');
-        }
+        MainEvents.trigger('section:open', Helpers.findBaseSection(id), config, 'reg-section');
+      }
     },
 
     assembleTitle: function() {
-        var newTitle;
-        if (typeof this.subContentType !== 'undefined') {
-            if (this.subContentType === 'supplement') {
-                newTitle = 'Supplement I to Part ' + this.docId + ' | eRegulations';
-            }
-            else if (this.subContentType === 'appendix') {
-                newTitle = 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
-
-            }
-        }
-        else {
-            newTitle = this.cfrTitle + ' CFR ' + Helpers.idToRef(this.id) + ' | eRegulations';
-        }
-
-        return newTitle;
+      if (this.options.subContentType === 'supplement') {
+        return 'Supplement I to Part ' + this.docId + ' | eRegulations';
+      } else if (this.options.subContentType === 'appendix') {
+        return 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
+      } else {
+        return this.cfrTitle + ' CFR ' + Helpers.idToRef(this.id) + ' | eRegulations';
+      }
     },
 
     // if an inline definition is open, check the links here to see

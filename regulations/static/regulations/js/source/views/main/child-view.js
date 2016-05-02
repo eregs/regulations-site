@@ -12,58 +12,30 @@ var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
 var ChildView = Backbone.View.extend({
+    el: '#content-wrapper',
+
     initialize: function(options) {
         this.options = options;
-        var cb;
 
-        this.model = this.options.model;
-        this.listenTo(MainEvents, 'section:rendered', this.setElement);
+        this.attachWayfinding();
 
-        // callback to be sent to model's get method
-        // called after ajax resolves sucessfully
-        cb = function(success, returned) {
-            if (success) {
-                if (typeof this.options.cb !== 'undefined') {
-                    this.options.cb(returned, this.options);
-                }
-
-                if (typeof this.title === 'undefined') {
-                    this.title = this.assembleTitle();
-                }
-
-                this.route(this.options);
-
-                GAEvents.trigger('section:open', this.options);
-
-                this.attachWayfinding();
-                this.render();
-            } else {
-                MainEvents.trigger('section:error');
-            }
-        }.bind(this);
-
-        // if the site wasn't loaded on this content
         if (this.options.render) {
-            this.model.get(this.options.id, cb);
-        }
-        else if (this.options.id) {
-            this.attachWayfinding();
-            MainEvents.trigger('section:sethandlers');
-            DrawerEvents.trigger('section:open', this.id);
+          if (!this.title) {
+            this.title = this.assembleTitle();
+          }
+          this.route(this.options);
+          GAEvents.trigger('section:open', this.options);
+          this.render();
+        } else if (this.options.id) {
+          MainEvents.trigger('section:sethandlers');
+          DrawerEvents.trigger('section:open', this.options.id);
         }
 
         this.$sections = this.$sections || {};
-        this.activeSection = this.id;
+        this.activeSection = this.options.id;
         this.$activeSection = $('#' + this.activeSection);
 
         this.loadImages();
-        return this;
-    },
-
-    setElement: function() {
-        if (this.id) {
-            Backbone.View.prototype.setElement.call(this, '#' + this.id);
-        }
     },
 
     attachWayfinding: function() {
@@ -77,9 +49,20 @@ var ChildView = Backbone.View.extend({
     render: function() {
         this.updateWayfinding();
         this.loadImages();
-        // TODO: What is this for?
+        this.scroll();
         HeaderEvents.trigger('section:open', this.id);
         DrawerEvents.trigger('section:open', this.id);
+    },
+
+    scroll: function() {
+      var offsetTop, $scrollToId;
+      if (this.options.scrollToId) {
+        $scrollToId = $('#' + this.options.scrollToId);
+        if ($scrollToId.length) {
+          offsetTop = $scrollToId.offset().top;
+        }
+        window.scrollTo(0, offsetTop || 0);
+      }
     },
 
     changeFocus: function(id) {
@@ -123,7 +106,6 @@ var ChildView = Backbone.View.extend({
                 }
             }
         }
-
 
         return this;
     },
