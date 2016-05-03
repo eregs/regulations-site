@@ -47,13 +47,13 @@ class TOCTest(BaseTest, unittest.TestCase):
 
         toc_link_1005_3.click()
         # toc link should be highlighted
-        self.assertTrue('current' in toc_link_1005_3.get_attribute('class'))
+        self.assertIn('current', toc_link_1005_3.get_attribute('class'))
 
-        self.assertTrue(
-            'clicked'
-            in self.driver.find_element_by_class_name('section-title').text)
-        self.assertTrue('current' in toc_link_1005_3.get_attribute('class'))
+        WebDriverWait(self.driver, 10).until(
+            lambda driver: 'clicked' in self.driver.find_element_by_class_name(
+                'section-title').text)
+        self.assertIn('current', toc_link_1005_3.get_attribute('class'))
 
         # make sure that the current class has been removed from the prev
         # section
-        self.assertFalse('current' in toc_link_1005_1.get_attribute('class'))
+        self.assertNotIn('current', toc_link_1005_1.get_attribute('class'))

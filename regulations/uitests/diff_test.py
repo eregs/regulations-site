@@ -58,7 +58,10 @@ class DiffTest(BaseTest, unittest.TestCase):
                 'class'))
 
         # navigate to 1005.3
-        self.driver.find_element_by_id('menu-link').click()
+        menu_link = self.driver.find_element_by_id('menu-link')
+        WebDriverWait(self.driver, 10).until(
+            lambda driver: menu_link.is_enabled() and menu_link.is_displayed())
+        menu_link.click()
         WebDriverWait(self.driver, 10).until(
             lambda driver: 'current' in driver.find_element_by_id(
                 'table-of-contents').get_attribute('class'))

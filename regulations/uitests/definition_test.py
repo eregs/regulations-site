@@ -19,23 +19,23 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         definition_link = self.driver.find_element_by_xpath(
             '//*[@id="1005-1-a"]//a')
         # term link should have correct data attr
-        self.assertTrue(
-            '1005-2-a-1' in definition_link.get_attribute('data-definition'))
+        self.assertIn(
+            '1005-2-a-1', definition_link.get_attribute('data-definition'))
 
         definition_link.click()
 
         # term link should get active class
-        self.assertTrue('active' in definition_link.get_attribute('class'))
+        self.assertIn('active', definition_link.get_attribute('class'))
 
         definition = self.driver.find_element_by_xpath('//*[@id="1005-2-a-1"]')
         definition_close_button = self.driver.find_element_by_xpath(
             '//*[@id="1005-2-a-1"]/div[1]/h4/a')
 
         # definition should appear in sidebar
-        self.assertTrue(len(definition.text) > 20)
+        self.assertGreater(len(definition.text), 20)
         definition_term = self.driver.find_element_by_xpath(
             '//*[@id="1005-2-a-1"]/div[3]/p/dfn')
-        self.assertTrue(u'\u201cvoided tosser\u201d' in definition_term.text)
+        self.assertIn(u'\u201cvoided tosser\u201d', definition_term.text)
 
         definition_close_button.click()
         # definition should close
@@ -64,6 +64,7 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         # load 1005.3, open definition
         new_definition_link = self.driver.find_element_by_xpath(
             '//*[@id="1005-3-a"]//a[1]')
+        self.driver.execute_script('window.scrollTo(0, 0);')
         new_definition_link.click()
         self.driver.find_element_by_xpath('//*[@id="1005-2-b-1"]')
 
@@ -76,21 +77,15 @@ class DefinitionTest(BaseTest, unittest.TestCase):
 
         # go to 1005-1-a
         toc_toggle.click()
-        WebDriverWait(self.driver, 10)
-        self.driver.execute_script(
-            "window.scrollTo(0, document.body.scrollHeight);")
-        wayfinding_header = self.driver.find_element_by_xpath(
-            '//*[@id="active-title"]/em')
-        self.assertTrue(
-            wayfinding_header.text in (u'\xa71005.1', u'\xa71005.1(a)'))
+        self.driver.execute_script('window.scrollTo(0, 5);')
 
-        definition_update_link = self.driver.find_element_by_xpath(
-            '//*[@id="1005-2-b-1"]/div[2]/div/a')
-        definition_text = self.driver.find_element_by_xpath(
-            '//*[@id="1005-2-b-1"]/div[3]')
+        definition_update_link = self.driver.find_element_by_css_selector(
+            '.update-definition')
+        definition_text = self.driver.find_element_by_css_selector(
+            '.definition-text')
 
         # make sure text is grayed out
-        self.assertTrue('inactive' in definition_text.get_attribute('class'))
+        self.assertIn('inactive', definition_text.get_attribute('class'))
 
         # load in scope definition
         definition_update_link.click()

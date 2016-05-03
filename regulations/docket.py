@@ -25,6 +25,8 @@ def get_document_fields(document_id):
         Use a cache as the data hardly ever changes.
         We ignore the 'general_comment' field as it has special treatment.
     """
+    if getattr(settings, 'REGS_GOV_API_MOCK', None):
+        return {}
     fields = cache.get(document_id)
     if fields is not None:
         return fields
