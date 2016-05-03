@@ -186,20 +186,16 @@ var CommentView = Backbone.View.extend({
   },
 
   setAttachmentCount: function() {
-    // Sum saved attachments on other comments and pending attachments on the
+    // Count saved attachments on other comments and pending attachments on the
     // current comment
-    var saved = comments.filter(this.options.docId).map(function(comment) {
-      return comment.id !== this.model.id ?
-        comment.get('files').map(function(file) {
-          return file.key;
-        }) :
-        [];
-    }.bind(this));
-    var pending = this.attachmentViews.map(function(view) {
-      return view.options.key;
-    });
-    var keys = _.flatten([].concat(saved, pending));
-    this.attachmentCount = keys.length;
+    var count = comments.filter(this.options.docId).reduce(function(total, comment) {
+      var incr = comment.id !== this.model.id ?
+        comment.get('files').length :
+        0;
+      return total + incr;
+    }.bind(this), 0);
+    count += this.attachmentViews.length;
+    this.attachmentCount = count;
     var plural = this.attachmentCount > 1 ? 's' : '';
     this.$commentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
