@@ -18,6 +18,8 @@ var AttachmentView = require('../../views/comment/attachment-view');
 var comments = require('../../collections/comment-collection');
 var helpers = require('../../helpers');
 
+var MAX_ATTACHMENTS = 9;
+
 /**
  * Get a presigned upload URL.
  * The file extension (from the name) and size are validated
@@ -50,6 +52,8 @@ var CommentView = Backbone.View.extend({
     this.$header = this.$el.find('.comment-header');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
+    this.$commentCount = this.$el.find('.comment-count');
+    this.$commentLimit = this.$el.find('.comment-limit');
     this.$attachments = this.$el.find('.comment-attachments');
     this.$status = this.$el.find('.status');
 
@@ -119,6 +123,8 @@ var CommentView = Backbone.View.extend({
     this.attachmentViews = this.model.get('files').map(function(file) {
       return new AttachmentView(_.extend({$parent: this.$attachments}, file));
     }.bind(this));
+    this.setAttachmentCount();
+    this.$commentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
   },
 
   highlightDropzone: function() {
@@ -130,6 +136,10 @@ var CommentView = Backbone.View.extend({
   },
 
   addAttachments: function(e) {
+    if (this.attachmentCount + e.target.files.length > MAX_ATTACHMENTS) {
+      this.$status.text('Too many attachments');
+      return;
+    }
     _.each(e.target.files, function(file) {
       this.addAttachment(file);
     }.bind(this));
@@ -156,6 +166,7 @@ var CommentView = Backbone.View.extend({
           xhr: xhr
         })
       );
+      this.setAttachmentCount();
       xhr.open('PUT', resp.urls.put);
       xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
       // Metadata that was bound to the presigned URL has to be honored by passing
@@ -171,6 +182,23 @@ var CommentView = Backbone.View.extend({
     });
     this.attachmentViews[index].remove();
     this.attachmentViews.splice(index, 1);
+    this.setAttachmentCount();
+  },
+
+  setAttachmentCount: function() {
+    // Count saved attachments on other comments and pending attachments on the
+    // current comment
+    var count = comments.filter(this.options.docId).reduce(function(total, comment) {
+      var incr = comment.id !== this.model.id ?
+        comment.get('files').length :
+        0;
+      return total + incr;
+    }.bind(this), 0);
+    count += this.attachmentViews.length;
+    this.attachmentCount = count;
+    var plural = this.attachmentCount > 1 ? 's' : '';
+    this.$commentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
+    this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
 
   save: function(e) {
