@@ -77,12 +77,7 @@ class DefinitionTest(BaseTest, unittest.TestCase):
 
         # go to 1005-1-a
         toc_toggle.click()
-        WebDriverWait(self.driver, 10)
         self.driver.execute_script('window.scrollTo(0, 5);')
-        wayfinding_header = self.driver.find_element_by_xpath(
-            '//*[@id="active-title"]/em')
-        self.assertIn(
-            wayfinding_header.text, (u'\xa71005.1', u'\xa71005.1(a)'))
 
         definition_update_link = self.driver.find_element_by_css_selector(
             '.update-definition')
