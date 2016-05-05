@@ -158,8 +158,9 @@ class CFRChangeToC(object):
         """While processing an amendment, we will encounter sections we
         haven't seen before -- these will ultimately be ToC entries"""
         change_section = label_parts[1]
-        if (self.current_section is None or
-                self.current_section.section != change_section):
+        is_subpart = 'Subpart' in label_parts or 'Subjgrp' in label_parts
+        if not is_subpart and (self.current_section is None or
+                               self.current_section.section != change_section):
 
             section = '-'.join(label_parts[:2])
             self.current_section = ToCSect(

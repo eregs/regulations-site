@@ -215,7 +215,8 @@ class CFRChangeToCTests(TestCase):
     @patch('regulations.views.preamble.utils.regulation_meta')
     def test_add_amendment(self, fetch_meta, fetch_toc):
         """Add amendments for two different CFR parts. Verify that the table
-        of contents contains only the changed data"""
+        of contents contains only the changed data. Also validate that changes
+        to subparts do not include a ToC entry"""
         version_info = {'111': {'left': 'v1', 'right': 'v2'},
                         '222': {'left': 'vold', 'right': 'vnew'}}
         builder = preamble.CFRChangeToC('docdoc', version_info)
@@ -228,6 +229,9 @@ class CFRChangeToCTests(TestCase):
                                        statutory_name='Some title for reg 111')
         builder.add_amendment(dict(cfr_part='111', instruction='1. inst1',
                                    authority='auth1'))
+        # subpart change -- doesn't affect ToC
+        builder.add_amendment(dict(cfr_part='111', instruction='2. inst2',
+                                   changes=[['111-Subpart-A', []]]))
         builder.add_amendment(dict(cfr_part='111', instruction='2. inst2',
                                    # The second element of each pair would be
                                    # non-empty in realistic scenarios
