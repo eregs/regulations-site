@@ -7,6 +7,7 @@ from nose.tools import *  # noqa
 from django.http import Http404
 from django.test import RequestFactory
 
+from regulations.generator.layers import diff_applier, layers_applier
 from regulations.views import preamble
 
 
@@ -179,6 +180,34 @@ class PreambleToCTests(TestCase):
             toc, [], full_id='abc-preamble-abc-123-II')
         assert_equal(nav['previous'].section_id, 'abc-preamble-abc-123-I')
         assert_is_none(nav['next'])
+
+
+class CFRChangesViewTests(TestCase):
+    @patch('regulations.views.preamble.ApiReader')
+    @patch('regulations.views.preamble.get_appliers')
+    def test_new_regtext_changes(self, get_appliers, ApiReader):
+        """We can add a whole new section without explosions"""
+        amendments = [{'instruction': '3. Add section 44',
+                       'changes': {'111-44': {'some': 'thing'}}},
+                      {'instruction': '4. Unrelated'}]
+        version_info = {'111': {'left': '234-567', 'right': '8675-309'}}
+
+        # Section did not exist before
+        ApiReader.return_value.regulation.return_value = None
+        diff = {'111-44': {'op': 'added', 'node': {
+            'text': 'New node text', 'node_type': 'regtext',
+            'label': ['111', '44']}}}
+        get_appliers.return_value = (
+            layers_applier.InlineLayersApplier(),
+            layers_applier.ParagraphLayersApplier(),
+            layers_applier.SearchReplaceLayersApplier(),
+            diff_applier.DiffApplier(diff, '111-44'))
+
+        result = preamble.CFRChangesView.regtext_changes_context(
+            amendments, version_info, '111-44', '8675-309')
+        self.assertEqual(result['instructions'], ['3. Add section 44'])
+        self.assertEqual(result['tree']['marked_up'],
+                         '<ins>New node text</ins>')
 
 
 class CFRChangeToCTests(TestCase):

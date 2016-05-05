@@ -455,12 +455,12 @@ class CFRChangesView(View):
 
         versions = Versions(version_info[cfr_part]['left'],
                             version_info[cfr_part]['right'])
-        tree = ApiReader().regulation(label_id, versions.older)
+        left_tree = ApiReader().regulation(label_id, versions.older)
         appliers = get_appliers(label_id, versions)
 
         builder = CFRChangeHTMLBuilder(
             *appliers, id_prefix=[str(doc_number), 'cfr'])
-        builder.tree = tree
+        builder.tree = left_tree or {}
         builder.generate_html()
 
         return {
