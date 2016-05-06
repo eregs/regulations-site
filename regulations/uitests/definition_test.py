@@ -4,6 +4,7 @@ import unittest
 from selenium.webdriver.support.ui import WebDriverWait
 
 from regulations.uitests.base_test import BaseTest
+from regulations.uitests import utils
 
 
 class DefinitionTest(BaseTest, unittest.TestCase):
@@ -51,7 +52,7 @@ class DefinitionTest(BaseTest, unittest.TestCase):
             lambda driver: driver.find_element_by_xpath('//*[@id="1005-2"]'))
 
         # test definition scope notifications
-        toc_toggle = self.driver.find_element_by_xpath('//*[@id="panel-link"]')
+        toc_toggle = self.driver.find_element_by_css_selector('#panel-link')
         toc_toggle.click()
 
         toc_1005_3 = self.driver.find_element_by_xpath(
@@ -77,7 +78,7 @@ class DefinitionTest(BaseTest, unittest.TestCase):
 
         # go to 1005-1-a
         toc_toggle.click()
-        self.driver.execute_script('window.scrollTo(0, 5);')
+        utils.scroll_to(self.driver, '#1005-1-a')
 
         definition_update_link = self.driver.find_element_by_css_selector(
             '.update-definition')

@@ -21,8 +21,8 @@ class NavigationTest(BaseTest, unittest.TestCase):
         # wayfinding header should update
         WebDriverWait(self.driver, 30).until(
             lambda driver: driver.find_element_by_xpath(
-                '//*[@id="active-title"]').text in (u'\u00A71005.5(b)(1)',
-                                                    u'\u00A71005.5(b)'))
+                '//*[@id="active-title"]').text in (u'\u00A7 1005.5(b)(1)',
+                                                    u'\u00A7 1005.5(b)'))
 
         fwd_link = self.driver.find_element_by_css_selector('li.next a')
         fwd_link.click()
