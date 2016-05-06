@@ -41,8 +41,6 @@ var RegView = ChildView.extend({
         this.docId = this.options.docId;
         this.cfrTitle = this.options.cfrTitle;
 
-        HeaderEvents.trigger('section:open', this.activeSection);
-
         if (Router.hasPushState) {
             this.events['click .inline-interpretation .section-link'] = 'openInterp';
             this.events['click .citation.internal'] = 'openSection';
@@ -51,6 +49,7 @@ var RegView = ChildView.extend({
         }
 
         ChildView.prototype.initialize.apply(this, arguments);
+        HeaderEvents.trigger('section:open', this.sectionLabel);
     },
 
     // only concerned with resetting DOM, no matter

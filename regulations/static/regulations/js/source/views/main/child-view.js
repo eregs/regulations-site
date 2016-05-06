@@ -32,7 +32,6 @@ var ChildView = Backbone.View.extend({
           DrawerEvents.trigger('section:open', this.options.id);
         }
 
-        this.$sections = this.$sections || {};
         this.activeSection = this.options.id;
         this.$activeSection = $('#' + this.activeSection);
 
@@ -82,54 +81,42 @@ var ChildView = Backbone.View.extend({
     // the first one whose offset is greater than the window scroll position, accounting
     // for the fixed position header, is deemed the active section
     checkActiveSection: function() {
-        var len = this.$contentContainer.length - 1;
+      $.each(this.$sections, function(idx, $section) {
+        if ($section.offset().top + this.$contentHeader.height() >= $(window).scrollTop()) {
+          if (_.isEmpty(this.activeSection) || (this.activeSection !== $section.id)) {
+            this.activeSection = $section[0].id;
+            this.$activeSection = $($section[0]);
+            // **Event** trigger active section change
+            HeaderEvents.trigger('section:open', this.$activeSection.data('label'));
+            DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
+            MainEvents.trigger('paragraph:active', this.activeSection);
 
-        for (var i = 0; i <= len; i++) {
-            if (this.$sections[i].offset().top + this.$contentHeader.height() >= $(window).scrollTop()) {
-                if (_.isEmpty(this.activeSection) || (this.activeSection !== this.$sections[i].id)) {
-                    this.activeSection = this.$sections[i][0].id;
-                    this.$activeSection = $(this.$sections[i][0]);
-                    // **Event** trigger active section change
-                    HeaderEvents.trigger('section:open', this.$activeSection.data('label'));
-                    DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
-                    MainEvents.trigger('paragraph:active', this.activeSection);
-
-                    if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
-                        // update hash in url
-                        window.history.replaceState(
-                            null,
-                            null,
-                            window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
-                        );
-                    }
-
-                    return;
-                }
+            if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
+              // update hash in url
+              window.history.replaceState(
+                null,
+                null,
+                window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
+              );
             }
-        }
 
-        return this;
+            return false;
+          }
+        }
+      }.bind(this));
     },
 
     updateWayfinding: function() {
-        var i, len;
+      // cache all sections in the DOM eligible to be the active section
+      // also cache some jQobjs that we will refer to frequently
+      this.$contentHeader = this.$contentHeader || $('header.reg-header');
 
-        // cache all sections in the DOM eligible to be the active section
-        // also cache some jQobjs that we will refer to frequently
-        this.$contentHeader = this.$contentHeader || $('header.reg-header');
-
-        // sections that are eligible for being the active section
-        this.$contentContainer = $('#' + this.id).find('li[id], .reg-section, .appendix-section, .supplement-section');
-
-        // cache jQobjs of each reg section
-        len = this.$contentContainer.length;
-
-        // short term solution: sometimes, back buttoning on diffs, this.$sections undefined. why?
-        this.$sections = this.$sections || {};
-
-        for (i = 0; i < len; i++) {
-            this.$sections[i] = $(this.$contentContainer[i]);
-        }
+      // sections that are eligible for being the active section
+      this.$sections = this.$el
+        .find('li[id], .reg-section, .appendix-section, .supplement-section')
+        .map(function(idx, elm) {
+          return $(elm);
+        });
     },
 
     route: function(options) {
