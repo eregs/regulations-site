@@ -11,8 +11,8 @@ class SanitizeFieldsTest(TestCase):
             'regulations.docket.get_document_fields')
         mock_object = self.patch_document_fields.start()
         mock_object.return_value = {
-            'required_field': {'max_length': 10, 'required': True},
-            'optional_field': {'max_length': 10, 'required': False},
+            'required_field': {'maxLength': 10, 'required': True},
+            'optional_field': {'maxLength': 10, 'required': False},
         }
 
     def tearDown(self):

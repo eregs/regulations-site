@@ -2,6 +2,8 @@
 
 API_BASE = "http://127.0.0.1:8282/"
 
+REGS_GOV_API_MOCK = True
+
 CFR_CHANGES = {
     "2016_02749": {
         "versions": {

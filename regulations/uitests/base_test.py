@@ -28,6 +28,7 @@ class BaseTest():
             if 'remote' in config
             else self.make_local()
         )
+        self.driver.set_window_size(800, 600)
         self.driver.implicitly_wait(30)
 
     def make_local(self):

@@ -45,6 +45,7 @@ class CommentTest(BaseTest, unittest.TestCase):
         assert_in(comment_label, index_items[0].text)
 
         # Browse to review page
+        self.driver.execute_script('window.scrollTo(0, 0);')
         self.driver.find_element_by_css_selector(
             '.comment-index-review').click()
 
