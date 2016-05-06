@@ -158,8 +158,9 @@ class CFRChangeToC(object):
         """While processing an amendment, we will encounter sections we
         haven't seen before -- these will ultimately be ToC entries"""
         change_section = label_parts[1]
-        if (self.current_section is None or
-                self.current_section.section != change_section):
+        is_subpart = 'Subpart' in label_parts or 'Subjgrp' in label_parts
+        if not is_subpart and (self.current_section is None or
+                               self.current_section.section != change_section):
 
             section = '-'.join(label_parts[:2])
             self.current_section = ToCSect(
@@ -455,12 +456,12 @@ class CFRChangesView(View):
 
         versions = Versions(version_info[cfr_part]['left'],
                             version_info[cfr_part]['right'])
-        tree = ApiReader().regulation(label_id, versions.older)
+        left_tree = ApiReader().regulation(label_id, versions.older)
         appliers = get_appliers(label_id, versions)
 
         builder = CFRChangeHTMLBuilder(
             *appliers, id_prefix=[str(doc_number), 'cfr'])
-        builder.tree = tree
+        builder.tree = left_tree or {}
         builder.generate_html()
 
         return {
