@@ -130,25 +130,6 @@ class HTMLBuilderTest(TestCase):
 
 
 class CFRHTMLBuilderTest(TestCase):
-    def test_header_parsing(self):
-        builder = CFRHTMLBuilder(None, None, None)
-
-        node = {
-            "label": ["234", "a", "1"],
-            "title": "Title (Regulation R)",
-            'node_type': APPENDIX
-        }
-        titleless_node = {
-            "title": "Title",
-            'node_type': REGTEXT
-        }
-
-        parsed_title = builder.parse_doc_title(node['title'])
-        no_title = builder.parse_doc_title(titleless_node['title'])
-
-        self.assertEqual("(Regulation R)", parsed_title)
-        self.assertEqual(no_title, None)
-
     def test_list_level_interpretations(self):
         builder = CFRHTMLBuilder(None, None, None)
 

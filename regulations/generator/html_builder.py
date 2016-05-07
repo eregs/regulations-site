@@ -115,27 +115,11 @@ class HTMLBuilder(object):
 
 class CFRHTMLBuilder(HTMLBuilder):
     SECTION_NUMBER_REGEX = re.compile(r'(§+)\s+')
-    DOC_TITLE_REGEX = re.compile(r'\(.+\)$')
 
     @classmethod
     def section_space(cls, text):
         """ After a section sign, insert a non-breaking space. """
         return cls.SECTION_NUMBER_REGEX.sub(r'\1&nbsp;', text)
-
-    def get_title(self):
-        titles = {
-            'part': self.tree['label'][0],
-            'reg_name': ''
-        }
-        reg_title = self.parse_doc_title(self.tree['title'])
-        if reg_title:
-            titles['reg_name'] = reg_title
-        return titles
-
-    def parse_doc_title(self, reg_title):
-        match = self.DOC_TITLE_REGEX.search(reg_title)
-        if match:
-            return match.group(0)
 
     def list_level(self, parts, node_type):
         """ Return the list level and the list type. Overrides"""

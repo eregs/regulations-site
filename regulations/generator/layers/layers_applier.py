@@ -82,11 +82,6 @@ class LayersBase(object):
 
 
 class SearchReplaceLayersApplier(LayersBase):
-    def __init__(self):
-        LayersBase.__init__(self)
-        self.original_text = None
-        self.modified_text = None
-
     def get_layer_pairs(self, text_index):
         elements = []
         for layer in self.layers.values():
@@ -97,12 +92,6 @@ class SearchReplaceLayersApplier(LayersBase):
 class InlineLayersApplier(LayersBase):
     """ Apply multiple inline layers to given text (e.g. links,
     highlighting, etc.) """
-    def __init__(self):
-        LayersBase.__init__(self)
-        self.original_text = None
-        self.original_text_index = None
-        self.modified_text = None
-
     def get_layer_pairs(self, text_index, original_text):
         layer_pairs = []
         for layer in self.layers.values():
