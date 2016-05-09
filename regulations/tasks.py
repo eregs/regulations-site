@@ -110,10 +110,10 @@ def html_to_pdf(html):
             fp.write(html)
         subprocess.check_output([
             settings.WKHTMLTOPDF_PATH,
-            "--user-style-sheet", finders.find(
-                'regulations/css/regulations.min.css'),
+            '--user-style-sheet',
+            finders.find('regulations/css/style.css'),
             html_path,
-            pdf_path
+            pdf_path,
         ])
         with open(pdf_path, 'rb') as pdf_file:
             yield pdf_file
