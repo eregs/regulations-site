@@ -23,35 +23,31 @@ else {
             'diff/:section/:baseVersion/:newerVersion': 'loadDiffSection',
             ':section/:version': 'loadSection',
             ':section': 'loadSection',
-            'preamble/:docId': 'loadPreamble',
-            'preamble/:docId/:section': 'loadPreamble'
+            'preamble/:docId/:section': 'loadPreamble',
+            'preamble/:docId/cfr_changes/:section': 'loadCfrChanges'
         },
 
         loadSection: function(section) {
-            var options = {id: section};
-
-            // to scroll to paragraph if there is a hadh
-            options.scrollToId = Backbone.history.getHash();
-
-            // ask the view not to route, its not needed
-            options.noRoute = true;
-
-            MainEvents.trigger('section:open', section, options, 'reg-section');
+          this.openSection(section, 'reg-section');
         },
 
         loadPreamble: function(docId, section) {
-            var parts = [docId];
-            if (section) {
-              parts.concat(section);
-            }
+          var parts = [docId, 'preamble', docId, section];
+          this.openSection(parts.join('-'), 'preamble-section');
+        },
 
-            var options = {
-              id: parts.join('-'),
-              scrollToId: Backbone.history.getHash(),
-              noRoute: true
-            };
+        loadCfrChanges: function(docId, section) {
+          var parts = [docId, 'cfr', section];
+          this.openSection(parts.join('-'), 'preamble-section');
+        },
 
-            MainEvents.trigger('section:open', section, options, 'preamble-section');
+        openSection: function(id, type) {
+          var options = {
+            id: id,
+            scrollToId: Backbone.history.getHash(),
+            noRoute: true
+          };
+          MainEvents.trigger('section:open', id, options, type);
         },
 
         loadDiffSection: function(section, baseVersion, newerVersion, params) {

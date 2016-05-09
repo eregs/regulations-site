@@ -105,7 +105,7 @@ class SubmitCommentView(View):
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
         context['comment_mode'] = 'write'
-        context.update({'message': None, 'metadata_url': None})
+        context.update({'message': '', 'metadata_url': ''})
 
         valid, context['message'] = self.validate(comments, form_data)
         context['regs_gov_url'] = regs_gov_fmt.format(
