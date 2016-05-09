@@ -3,7 +3,15 @@
 {% endcomment %}
 
 {%if c.node_type == 'regtext' %}
-<section id="{{c.markup_id}}" class="reg-section section-focus" tabindex="0" data-permalink-section data-base-version="{{version}}" data-page-type="{{markup_page_type}}" {% if newer_version %}data-newer-version="{{newer_version}}"{% endif %}>
+<section
+        id="{{c.markup_id}}"
+        class="reg-section section-focus"
+        tabindex="0"
+        data-permalink-section
+        data-base-version="{{version}}"
+        data-page-type="{{markup_page_type}}"
+        data-label="{{c.human_label}}"
+        {% if newer_version %}data-newer-version="{{newer_version}}"{% endif %}>
     <h3 class="section-title" tabindex="0"> {{c.header|safe}} </h3>
         {% if c.marked_up %}
         <p>

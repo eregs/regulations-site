@@ -2,7 +2,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var RegsHelpers = require('../../helpers');
 var HeaderEvents = require('../../events/header-events');
 Backbone.$ = $;
 
@@ -27,8 +26,8 @@ var SubHeadView = Backbone.View.extend({
 
     // populates subhead (.header-label) with new title depending on viewport location
     // ex: §478.1(a) to §478.1(b)
-    changeTitle: function(id) {
-        this.$activeTitle.html(RegsHelpers.idToRef(id));
+    changeTitle: function(label) {
+      this.$activeTitle.html(label);
     },
 
     displayCount: function(resultCount) {
