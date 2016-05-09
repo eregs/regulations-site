@@ -4,15 +4,30 @@
 
 <li
     {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
-    id="{{node.markup_id}}" data-permalink-section
->
+    {% if node.toc_id %}data-toc-id="{{node.toc_id}}"{% endif %}
+    id="{{node.markup_id}}"
+    data-permalink-section>
+  <div class="node">
+    {% if node.accepts_comments %}
+      <div
+          class="activate-write"
+          data-section="{{ node.full_id }}"
+          data-label="{{ node.human_label }}">
+        <a href="#">
+          <div class="paragraph-comment-icon">
+            <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+          </div>
+          <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+        </a>
+      </div>
+    {% endif %}
     <h4>{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
     <div>
       <div>{{ meta.days_remaining }} Days</div>
       <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
         EST.</h5>
-      Rule published {{ meta.publication|date:"F j, Y"}} 
+      Rule published {{ meta.publication|date:"F j, Y"}}
     </div>
     {% comment %}Jump links will go here{% endcomment %}
     <hr />
@@ -23,10 +38,10 @@
       {{meta.dockets|join:"; "}}<br />
       {{meta.rins|join:"; "}}
     </p>
+  </div>
 </li>
 {% for c in node.children %}
   {% with node=c %}
     {% include node.template_name %}
   {% endwith %}
 {% endfor %}
-
