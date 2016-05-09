@@ -269,7 +269,6 @@ a.comment-index-review {
   font-weight: 500;
   letter-spacing: 0.03em;
   height: auto;
-  float: left;
   padding: 8px 20px;
 
   &:hover {
@@ -364,14 +363,21 @@ a.comment-index-review {
 }
 
 
+.comment-limit,
+.comment-count,
+.comment-attachments,
+.comment-upload-button {
+  float: left;
+  clear: both;
+}
+
 .comment-attachments {
-  margin-bottom: 5px;
   display: inline-block;
+  margin-bottom: 5px;
 }
 
 .comment-attachment {
-  display: inherit;
-  min-width: 300px;
+  display: inline-block;
   background: @grey;
   padding: 3px 10px;
   margin-bottom: 3px;
@@ -810,7 +816,7 @@ a.comment-index-review {
       font-size: 12px;
     }
   }
-  .section-nav .previous {		
+  .section-nav .previous {
     margin-left: -10px;
   }
 }
