@@ -45,7 +45,6 @@ var DrawerTabsView = Backbone.View.extend({
     },
 
     setStartingTab: function(tab) {
-        this.$tocLinks.removeClass('current');
         $(this.idMap[tab]).addClass('current');
     },
 
