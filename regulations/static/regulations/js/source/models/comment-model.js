@@ -6,18 +6,19 @@ var Backbone = require('backbone');
 var comment_model = Backbone.Model.extend({
   defaults: {
     docId: '',
+    tocId: '',
     label: '',
     comment: '',
     commentHtml: '',
     files: [],
-    indexes: []
+    preorder: []
   }
 });
 
-var index_comparator = function(first, second) {
-    var l = Math.max(first.length, second.length)
+var int_array_comparator = function(first, second) {
+    var max_length = Math.max(first.length, second.length)
 
-    for (var i = 0; i < l; i++) {
+    for (var i = 0; i < max_length; i++) {
         if (first[i] === undefined) {
             return -1;
         } else if (second[i] === undefined) {
@@ -32,12 +33,17 @@ var index_comparator = function(first, second) {
 };
 
 var comment_comparator = function(first, second) {
-    if (first.get('tocId') < second.get('tocId')) {
+    /* The preamble comes before the CFR changes.
+     * Within the preamble or CFR part, sorting is by preorder.
+     */
+    var first_part = first.get('tocId').split('-')[1]
+    var second_part = second.get('tocId').split('-')[1]
+    if (first_part == second_part) {
+        return int_array_comparator(first.get('preorder'), second.get('preorder'));
+    } else if (first_part == 'preamble') {
         return -1;
-    } else if (first.get('tocId') > second.get('tocId')) {
-        return 1;
     } else {
-        return index_comparator(first.get('indexes'), second.get('indexes'));
+        return 1;
     }
 };
 

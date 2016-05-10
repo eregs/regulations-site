@@ -17,27 +17,33 @@ describe('CommentCollection', function() {
 
   });
 
-  it('sorts by tocId', function() {
-      var comment1 = new CommentModel({tocId: "TocId 1", indexes: []});
-      var comment2 = new CommentModel({tocId: "TocId 2", indexes: []});
+  it('sorts preamble before CFR', function() {
+      var comment1 = new CommentModel({tocId: "toc-preamble-foo", preorder: [2]});
+      var comment2 = new CommentModel({tocId: "toc-cfr-foo", preorder: [1]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 
-  it('sorts by indexes when tocIds are equal', function() {
-      var comment1 = new CommentModel({tocId: "TocId", indexes: [0, 1]});
-      var comment2 = new CommentModel({tocId: "TocId", indexes: [0, 2]});
+  it('sorts by preorder within preamble', function() {
+      var comment1 = new CommentModel({tocId: "toc-preamble-bfoo", preorder: [0, 1]});
+      var comment2 = new CommentModel({tocId: "toc-preamble-afoo", preorder: [0, 2]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 
-  it('handles indexes of different lengths when sorting by indexes', function() {
-      var comment1 = new CommentModel({tocId: "TocId", indexes: [0, 3, 2, 1]});
-      var comment2 = new CommentModel({tocId: "TocId", indexes: [0, 3, 3]});
+  it('sorts by preorder within CFR', function() {
+      var comment1 = new CommentModel({tocId: "toc-CFR-bfoo", preorder: [0, 1]});
+      var comment2 = new CommentModel({tocId: "toc-CFR-afoo", preorder: [0, 2]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 
-  it('sorts by index magnitude as opposed to lexical sorting when sorting by indexes ', function() {
-      var comment1 = new CommentModel({tocId: "TocId", indexes: [0, 3]});
-      var comment2 = new CommentModel({tocId: "TocId", indexes: [0, 20]});
+  it('handles preorder of different lengths when sorting by preorder', function() {
+      var comment1 = new CommentModel({tocId: "toc-preamble-foo", preorder: [0, 3, 2, 1]});
+      var comment2 = new CommentModel({tocId: "toc-preamble-foo", preorder: [0, 3, 3]});
+      assert.equal(-1, commentComparator(comment1, comment2));
+  });
+
+  it('sorts by index magnitude (not lexical) when sorting by preorder ', function() {
+      var comment1 = new CommentModel({tocId: "toc-preamble-foo", preorder: [0, 3]});
+      var comment2 = new CommentModel({tocId: "toc-preamble-foo", preorder: [0, 20]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 });
