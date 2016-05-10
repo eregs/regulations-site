@@ -125,7 +125,7 @@ def cache_pdf(pdf, metadata_url):
     """Update submission metadata and cache comment PDF."""
     url = SignedUrl.generate()
     s3_client.put_object(
-        Body=json.dumps({'pdf_url': metadata_url.url}),
+        Body=json.dumps({'pdfUrl': metadata_url.url}),
         Bucket=settings.ATTACHMENT_BUCKET,
         Key=metadata_url.key,
     )
