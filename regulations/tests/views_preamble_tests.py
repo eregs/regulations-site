@@ -188,7 +188,7 @@ class CFRChangesViewTests(TestCase):
     def test_new_regtext_changes(self, get_appliers, ApiReader):
         """We can add a whole new section without explosions"""
         amendments = [{'instruction': '3. Add section 44',
-                       'changes': {'111-44': {'some': 'thing'}}},
+                       'changes': [['111-44', {'some': 'thing'}]]},
                       {'instruction': '4. Unrelated'}]
         version_info = {'111': {'left': '234-567', 'right': '8675-309'}}
 

@@ -452,8 +452,6 @@ class CFRChangesView(View):
         relevant = []
         for amd in amendments:
             changes = amd.get('changes', [])
-            if isinstance(changes, dict):
-                changes = list(changes.items())
             keys = {change[0] for change in changes}
             if any(is_contained_in(key, label_id) for key in keys):
                 relevant.append(amd)
