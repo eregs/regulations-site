@@ -32,8 +32,8 @@ describe('CommentView', function() {
           '<div class="comment-attachments"></div>' +
           '<input type="file">' +
           '<button type="submit">Save</button>' +
-          '<div class="comment-count"></div>' +
-          '<div class="comment-limit"></div>' +
+          '<div class="comment-attachment-count"></div>' +
+          '<div class="comment-attachment-limit"></div>' +
           '<div class="comment-clear">Clear</div>' +
           '<div class="status"></div>' +
         '</form>' +
@@ -99,7 +99,7 @@ describe('CommentView', function() {
     commentView.setSection('2016_02479');
     commentView.setAttachmentCount();
     expect(commentView.$input.prop('disabled')).to.be.false;
-    expect(commentView.$commentCount.text()).to.include('0 total attachments');
+    expect(commentView.$attachmentCount.text()).to.include('0 total attachments');
   });
 
   it('ignores comments for with different doc ids', function() {
@@ -116,7 +116,7 @@ describe('CommentView', function() {
     });
     commentView.setAttachmentCount();
     expect(commentView.$input.prop('disabled')).to.be.false;
-    expect(commentView.$commentCount.text()).to.include('3 total attachments');
+    expect(commentView.$attachmentCount.text()).to.include('3 total attachments');
   });
 
   it('forbids attachments when at max', function() {
@@ -133,6 +133,6 @@ describe('CommentView', function() {
     });
     commentView.setAttachmentCount();
     expect(commentView.$input.prop('disabled')).to.be.true;
-    expect(commentView.$commentCount.text()).to.include('9 total attachments');
+    expect(commentView.$attachmentCount.text()).to.include('9 total attachments');
   });
 });

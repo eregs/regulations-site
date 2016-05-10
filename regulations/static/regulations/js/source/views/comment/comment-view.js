@@ -52,8 +52,8 @@ var CommentView = Backbone.View.extend({
     this.$header = this.$el.find('.comment-header');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
-    this.$commentCount = this.$el.find('.comment-count');
-    this.$commentLimit = this.$el.find('.comment-limit');
+    this.$attachmentCount = this.$el.find('.comment-attachment-count');
+    this.$attachmentLimit = this.$el.find('.comment-attachment-limit');
     this.$attachments = this.$el.find('.comment-attachments');
     this.$status = this.$el.find('.status');
 
@@ -124,7 +124,7 @@ var CommentView = Backbone.View.extend({
       return new AttachmentView(_.extend({$parent: this.$attachments}, file));
     }.bind(this));
     this.setAttachmentCount();
-    this.$commentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
+    this.$attachmentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
   },
 
   highlightDropzone: function() {
@@ -197,7 +197,7 @@ var CommentView = Backbone.View.extend({
     count += this.attachmentViews.length;
     this.attachmentCount = count;
     var plural = this.attachmentCount !== 1 ? 's' : '';
-    this.$commentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
+    this.$attachmentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
 
