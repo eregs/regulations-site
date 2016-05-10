@@ -40,12 +40,33 @@ comment.less contains styles related to commenting on sections
     }
   }
 
-  li > .show-more-context {
+  li > .show-more-context,
+  .section-title,
+  .subpart-addition,
+  .subpart-info {
     width: 75%;
   }
 
-  .section-title {
-    width: 75%;
+  .subpart-info {
+    border-bottom: 1px solid @grey;
+
+    .subpart-wayfinding {
+      display: inline-block;
+      float: right;
+    }
+    a {
+      display: inline-block;
+      height: 20px;
+      width: 20px;
+      background-color: @grey;
+
+      &.current {
+        background-color: @pacific;
+      }
+      span {
+        display: none;
+      }
+    }
   }
 
   .cfr-instructions {

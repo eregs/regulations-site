@@ -187,8 +187,17 @@ class CFRChangesViewTests(TestCase):
     @patch('regulations.views.preamble.get_appliers')
     def test_new_regtext_changes(self, get_appliers, ApiReader):
         """We can add a whole new section without explosions"""
-        amendments = [{'instruction': '3. Add section 44',
-                       'changes': [['111-44', {'some': 'thing'}]]},
+        amendments = [{'instruction': '3. Add subpart M',
+                       'changes': [
+                           ['111-Subpart-M', [{'node': {
+                               'label': ['111', 'Subpart', 'M'],
+                               'title': 'A New Subpart',
+                               'child_labels': ['111-42', '111-43',
+                                                '111-44', '111-45']}}]],
+                           ['111-42', [{'some': 'thing'}]],
+                           ['111-43', [{'some': 'thing'}]],
+                           ['111-44', [{'some': 'thing'}]],
+                           ['111-45', [{'some': 'thing'}]]]},
                       {'instruction': '4. Unrelated'}]
         version_info = {'111': {'left': '234-567', 'right': '8675-309'}}
 
@@ -205,9 +214,19 @@ class CFRChangesViewTests(TestCase):
 
         result = preamble.CFRChangesView.regtext_changes_context(
             amendments, version_info, '111-44', '8675-309')
-        self.assertEqual(result['instructions'], ['3. Add section 44'])
+        self.assertEqual(result['instructions'], ['3. Add subpart M'])
         self.assertEqual(result['tree']['marked_up'],
                          '<ins>New node text</ins>')
+        self.assertEqual(1, len(result['subparts']))
+        subpart_info = result['subparts'][0]
+        self.assertEqual('M', subpart_info.letter)
+        self.assertEqual('A New Subpart', subpart_info.title)
+        self.assertEqual(2, subpart_info.idx)
+        self.assertEqual(4, len(subpart_info.urls))
+        self.assertIn('111-42', subpart_info.urls[0])
+        self.assertIn('111-43', subpart_info.urls[1])
+        self.assertIn('111-44', subpart_info.urls[2])
+        self.assertIn('111-45', subpart_info.urls[3])
 
 
 class CFRChangeToCTests(TestCase):

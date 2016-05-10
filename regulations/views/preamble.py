@@ -388,6 +388,9 @@ class PrepareCommentView(View):
                                 context=context)
 
 
+SubpartInfo = namedtuple('SubpartInfo', ['letter', 'title', 'urls', 'idx'])
+
+
 # @todo - this shares a lot of code w/ PreambleView. Can we merge them?
 class CFRChangesView(View):
     def get(self, request, doc_number, section):
@@ -444,8 +447,8 @@ class CFRChangesView(View):
         return {'instructions': [a['instruction'] for a in relevant],
                 'authorities': [a['authority'] for a in relevant]}
 
-    @staticmethod
-    def regtext_changes_context(amendments, version_info, label_id,
+    @classmethod
+    def regtext_changes_context(cls, amendments, version_info, label_id,
                                 doc_number):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
@@ -468,5 +471,26 @@ class CFRChangesView(View):
 
         return {
             'instructions': [a['instruction'] for a in relevant],
+            'subparts': list(cls.subpart_changes(doc_number, relevant,
+                                                 label_id)),
             'tree': builder.tree,
         }
+
+    @staticmethod
+    def subpart_changes(doc_number, amendments, label_id):
+        """Meta data about additional subparts; we'll pass this through to the
+        template"""
+        subpart_changes = [change['node']
+                           for amd in amendments
+                           for key, change_list in amd.get('changes', [])
+                           for change in change_list
+                           if 'Subpart' in key]
+        for change in subpart_changes:
+            urls = [
+                reverse('cfr_changes',
+                        kwargs={'doc_number': doc_number, 'section': section})
+                for section in change['child_labels']]
+            yield SubpartInfo(letter=change['label'][-1],
+                              title=change['title'],
+                              urls=urls,
+                              idx=change['child_labels'].index(label_id))
