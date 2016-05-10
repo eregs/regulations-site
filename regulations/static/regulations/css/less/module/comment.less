@@ -532,8 +532,8 @@ a.comment-index-review {
   }
 
   .additional-info {
-    padding: 0 0 10px 0;
     max-width: 535px;
+    border-bottom: 2px solid @light_field;
 
     h4 {
       margin-bottom: 0.75em;
@@ -567,13 +567,45 @@ a.comment-index-review {
   }
 
   .statement {
-    border-top: 1px solid @text_area_border;
     padding: 10px 0 0;
-    margin: 15px 0 25px 0;
-    max-width: 535px;
+    margin: 5px 0 30px 0;
+    max-width: 620px;
 
     .required {
       color: @red_orange;
+    }
+
+    .statement-list li {
+      margin-top: 0.5em;
+      list-style-type: disc;
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      margin: 0.5em 0;
+    }
+
+    h6 {
+      .font-regular;
+      font-size: 16px;
+      text-transform: none;
+      display: inline;
+    }
+
+    .show-more-toggle {
+      display: inline;
+      color: @blue;
+      font-size: 14px;
+
+      &:hover {
+        color: darken(@blue, 10%);
+      }
+
+      .text-expand {
+        font-size: 13px;
+        padding: 0 3px;
+      }
     }
   }
 
