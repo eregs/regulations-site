@@ -4,106 +4,124 @@ Table of Contents Drawer
 This contains all of the styles specific to the TOC
 */
 .regulation-nav {
+  padding-top: 40px;
 
-    padding-top: 40px;
+  &.preamble-nav {
+    padding: 62px 0 0 10px;
 
-    &.preamble-nav {
-      padding: 62px 0 0 10px;
-
-      .toc-item {
-        text-indent: -15px;
-        padding: 7px 15px 5px 5px;
-      }
-
-      a:hover,
-      a:active,
-      .current {
-        padding-left: 105px;
-      }
-
-      .toc-level-1 > a {
-        margin-left: -100px;
-        padding: 9px 0 9px 110px;
-        .font-bold;
-        border-top: 1px solid @light_field;
-      }
-
-      .toc-level-1 > ol {
-        margin-left: -100px;
-        padding: 4px 0 10px 105px;
-        border-top: 1px solid @light_field;
-      }
-    }
-
-    ol {
-        margin: 0;
-        padding: 0;
-    }
-
-    li {
-        .regulation-nav-item-font;
-        padding: 0 0 0 10px;
-        margin: 0;
-        text-indent: 0;
-    }
-
-    .toc-section-marker {
-        .regulation-nav-section-marker-font;
-        display: block;
-    }
-
-    /* Interpretation Subparts in the TOC are styled differently */
-    .toc-interp-heading {
-        .regulation-nav-interp-heading-font;
-    }
-
-    .toc-interp-title {
-        .regulation-nav-interp-title-font;
-    }
-
-    a {
-        display: block;
-        padding: 7px 15px 8px 5px;
-        line-height: 1.3;
-        outline: none;
-    }
-
-    a:link,
-    a:visited {
-        color: @black;
-        .border-bottom-light (@width: 1px);
+    .toc-item {
+      padding: 7px 15px 5px 5px;
+      text-indent: -15px;
     }
 
     a:hover,
     a:active,
     .current {
-      margin-left: -100px;
       padding-left: 105px;
-      color: @black;
-      background-color: @green_light;
     }
 
-    /*
-    TOC in Diff View
-    -----------------
-    */
-
-    .modified a,
-    .modified a:link,
-    .modified a:visited,
-    .added a,
-    .added a:link,
-    .added a:visited {
-        border-right: 8px solid @green_midtone;
+    .toc-level-1 > a {
+      border-top: 1px solid @light_field;
+      .font-bold;
+      margin-left: -100px;
+      padding: 9px 0 9px 110px;
     }
 
-    .deleted a,
-    .deleted a:link,
-    .deleted a:visited {
-        border-right: 8px solid @red_orange_80;
-        text-decoration: line-through;
-        color: @80_gray;
+    .toc-level-1 > ol {
+      border-top: 1px solid @light_field;
+      margin-left: -100px;
+      padding: 0 0 0 105px;
+
+      // to account for the last child padding
+      // when there's a nested list
+      li ol li:first-child {
+        a {
+          padding-top: 0;
+        }
+      }
+
+      li:first-child {
+        a {
+          padding-top: 11px;
+        }
+      }
+      li:last-child {
+        a {
+          padding-bottom: 15px;
+        }
+      }
     }
+  }
+
+  ol {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    .regulation-nav-item-font;
+    padding: 0 0 0 10px;
+    margin: 0;
+    text-indent: 0;
+  }
+
+  .toc-section-marker {
+    .regulation-nav-section-marker-font;
+    display: block;
+  }
+
+  /* Interpretation Subparts in the TOC are styled differently */
+  .toc-interp-heading {
+    .regulation-nav-interp-heading-font;
+  }
+
+  .toc-interp-title {
+    .regulation-nav-interp-title-font;
+  }
+
+  a {
+    display: block;
+    padding: 7px 15px 8px 5px;
+    line-height: 1.3;
+    outline: none;
+  }
+
+  a:link,
+  a:visited {
+    color: @black;
+    .border-bottom-light (@width: 1px);
+  }
+
+  a:hover,
+  a:active,
+  .current {
+    margin-left: -100px;
+    padding-left: 105px;
+    color: @black;
+    background-color: @green_light;
+  }
+
+  /*
+  TOC in Diff View
+  -----------------
+  */
+
+  .modified a,
+  .modified a:link,
+  .modified a:visited,
+  .added a,
+  .added a:link,
+  .added a:visited {
+      border-right: 8px solid @green_midtone;
+  }
+
+  .deleted a,
+  .deleted a:link,
+  .deleted a:visited {
+      border-right: 8px solid @red_orange_80;
+      text-decoration: line-through;
+      color: @80_gray;
+  }
 }
 
 /* Highlight the History tab in diff view */
