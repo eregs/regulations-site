@@ -50,6 +50,7 @@ describe('CommentView', function() {
       .append($template);
     sinon.stub(edit.ProseMirror.prototype, 'getContent');
     sinon.stub(edit.ProseMirror.prototype, 'setContent');
+    sinon.stub(edit.ProseMirror.prototype, 'ensureOperation');
     commentView = new CommentView({el: $el, docId: '2016_02749'});
     comments.reset();
   });
@@ -57,6 +58,7 @@ describe('CommentView', function() {
   afterEach(function() {
     edit.ProseMirror.prototype.getContent.restore();
     edit.ProseMirror.prototype.setContent.restore();
+    edit.ProseMirror.prototype.ensureOperation.restore();
   });
 
   it('removes an attachment', function() {
