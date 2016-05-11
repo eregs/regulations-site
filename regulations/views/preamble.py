@@ -106,6 +106,23 @@ class ToCSect(namedtuple('ToCSect',
         )
 
 
+def merge_cfr_changes(doc_number, notice):
+    """We started with a mock version of these changes which were stored as a
+    setting, CFR_CHANGES. Until we remove that completely, merge those values
+    with real data from the notice structure"""
+    mock_notice = getattr(settings, 'CFR_CHANGES', {}).get(doc_number) or {}
+
+    versions = dict(mock_notice.get('versions', {}))        # copy
+    versions.update(notice.get('versions', {}))
+
+    amendments = list(mock_notice.get('amendments', []))    # copy
+    amendments.extend(notice.get('amendments', []))
+
+    print len(amendments)
+
+    return versions, amendments
+
+
 class CFRChangeToC(object):
     """Builds the ToC specific to CFR changes from amendment data. As there is
     some valuable state shared between amendment processing, we store it all
@@ -174,15 +191,12 @@ class CFRChangeToC(object):
             self.current_part.sections.append(self.current_section)
 
     @classmethod
-    def for_doc_number(cls, doc_number):
+    def for_notice(cls, doc_number, notice):
         """Soup to nuts conversion from a document number to a table of
         contents list"""
-        cfr_changes = getattr(settings, 'CFR_CHANGES', {})  # mock
-        if doc_number not in cfr_changes:
-            raise Http404("Doc # {} not found".format(doc_number))
-        cfr_changes = cfr_changes[doc_number]
-        builder = cls(doc_number, cfr_changes['versions'])
-        for amendment in cfr_changes['amendments']:
+        versions, amendments = merge_cfr_changes(doc_number, notice)
+        builder = cls(doc_number, versions)
+        for amendment in amendments:
             builder.add_amendment(amendment)
         return builder.toc
 
@@ -259,23 +273,23 @@ def section_navigation(preamble_toc, cfr_toc, **ids):
     return nav
 
 
-def get_preamble(doc_number):
-    preamble = ApiReader().preamble(doc_number)
+def notice_data(doc_number):
+    preamble = ApiReader().preamble(doc_number.replace('-', '_'))
     if preamble is None:
         raise Http404
 
     # @todo - right now we're shimming in fake data; eventually this data
     # should come from the API
-    intro = getattr(settings, 'PREAMBLE_INTRO', {}).get(doc_number, {})
-    intro = deepcopy(intro)
-    if intro.get('tree'):
-        preamble['children'].insert(0, intro['tree'])
-    intro['meta'] = convert_to_python(intro.get('meta', {}))
-    if 'comments_close' in intro['meta']:
-        intro['meta']['days_remaining'] = 1 + (
-            intro['meta']['comments_close'].date() - date.today()).days
+    meta = getattr(settings, 'PREAMBLE_INTRO', {}).get(doc_number, {}).get(
+        'meta', {})
+    meta = convert_to_python(deepcopy(meta))
+    if 'comments_close' in meta:
+        meta['days_remaining'] = 1 + (
+            meta['comments_close'].date() - date.today()).days
 
-    return preamble, intro
+    notice = ApiReader().notice(doc_number.replace('_', '-')) or {}
+
+    return preamble, meta, notice
 
 
 def first_preamble_section(preamble):
@@ -292,13 +306,14 @@ def common_context(doc_number):
     """All of the "preamble" views share common context, such as preamble
     data, toc info, etc. This function retrieves that data and returns the
     results as a dict. This may throw a 404"""
-    preamble, intro = get_preamble(doc_number)
+    preamble, meta, notice = notice_data(doc_number)
     preamble_toc = make_preamble_toc(preamble['children'])
 
     return {
-        'cfr_change_toc': CFRChangeToC.for_doc_number(doc_number),
+        'cfr_change_toc': CFRChangeToC.for_notice(doc_number, notice),
         'doc_number': doc_number,
-        'meta': intro['meta'],
+        'meta': meta,
+        'notice': notice,
         'preamble': preamble,
         'preamble_toc': preamble_toc,
         'preamble_url': preamble_toc[0].url if preamble_toc else '#',
@@ -396,11 +411,7 @@ class CFRChangesView(View):
     def get(self, request, doc_number, section):
         context = common_context(doc_number)
 
-        cfr_changes = getattr(settings, 'CFR_CHANGES', {})  # mock
-        if doc_number not in cfr_changes:
-            raise Http404("Doc # {} not found".format(doc_number))
-        versions = cfr_changes[doc_number]["versions"]
-        amendments = cfr_changes[doc_number]["amendments"]
+        versions, amendments = merge_cfr_changes(doc_number, context['notice'])
         label_parts = section.split('-')
 
         if len(label_parts) == 1:

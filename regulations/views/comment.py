@@ -18,8 +18,7 @@ from django.views.generic.base import View
 from regulations import tasks
 from regulations import docket
 from regulations.views.preamble import (
-    common_context, generate_html_tree, get_preamble,
-    first_preamble_section)
+    common_context, generate_html_tree, first_preamble_section, notice_data)
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +86,7 @@ regs_gov_fmt = 'https://www.regulations.gov/#!documentDetail;D={document}'
 class SubmitCommentView(View):
 
     def get(self, request, doc_number):
-        preamble, _ = get_preamble(doc_number)
+        preamble, _, _ = notice_data(doc_number)
         section = first_preamble_section(preamble)
         if section is None:
             raise Http404

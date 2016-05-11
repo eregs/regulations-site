@@ -113,6 +113,23 @@ class PreambleViewTests(TestCase):
                           RequestFactory().get('/preamble/1/not/here'),
                           paragraphs='1/not/here')
 
+    @patch('regulations.views.preamble.ApiReader')
+    def test_notice_data(self, ApiReader):
+        """We should try to fetch data corresponding to both the Preamble and
+        the Notice"""
+        ApiReader.return_value.preamble.return_value = self._mock_preamble
+        ApiReader.return_value.notice.return_value = {'some': 'notice'}
+
+        for doc_id in ('123_456', '123-456'):
+            preamble_, meta, notice = preamble.notice_data(doc_id)
+            self.assertEqual(preamble_, self._mock_preamble)
+            self.assertEqual({}, meta)
+            self.assertEqual({'some': 'notice'}, notice)
+            self.assertEqual(ApiReader.return_value.preamble.call_args[0][0],
+                             '123_456')
+            self.assertEqual(ApiReader.return_value.notice.call_args[0][0],
+                             '123-456')
+
 
 class PreambleToCTests(TestCase):
 
