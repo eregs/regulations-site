@@ -18,8 +18,9 @@
   <div class="subpart-wayfinding">
     {% for url in subpart.urls %}
       <a href="{{url}}"
+         aria-label="{{forloop.counter}} of {{subpart.urls|length}} sections"
          {% if forloop.counter0 == subpart.idx %}class="current"{% endif %}
-       ><span>{{forloop.counter}}/{{subpart.urls|length}}</span></a>
+       >&nbsp;</a>
     {% endfor %}
   </div>
   <p>This is section
