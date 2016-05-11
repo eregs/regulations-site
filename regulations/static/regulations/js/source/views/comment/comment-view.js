@@ -7,7 +7,8 @@ var filesize = require('filesize');
 Backbone.$ = $;
 
 var edit = require('prosemirror/dist/edit');
-require('prosemirror/dist/menu/tooltipmenu');
+var menu = require('prosemirror/dist/menu/menu');
+require('prosemirror/dist/menu/menubar');
 require('prosemirror/dist/markdown');
 
 var MainEvents = require('../../events/main-events');
@@ -57,8 +58,18 @@ var CommentView = Backbone.View.extend({
     this.$attachments = this.$el.find('.comment-attachments');
     this.$status = this.$el.find('.status');
 
+    var hrGroup = new menu.MenuCommandGroup('insert');
+    var headingMenu = new menu.Dropdown({
+      label: 'Heading', displayActive: true
+    }, [new menu.MenuCommandGroup('textblock'), new menu.MenuCommandGroup('textblockHeading')]);
     this.editor = new edit.ProseMirror({
-      tooltipMenu: true,
+      menuBar: {content: [menu.inlineGroup, headingMenu, menu.blockGroup, hrGroup]},
+      commands: edit.CommandSet.default.update({
+        'code:toggle': {menu: null},
+        'code_block:make': {menu: null},
+        'image:insert': {menu: null},
+        selectParentNode: {menu: null}
+      }),
       place: this.$container.get(0),
       docFormat: 'markdown',
       doc: ''
