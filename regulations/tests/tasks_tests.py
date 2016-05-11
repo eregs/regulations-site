@@ -2,11 +2,14 @@ import json
 import mock
 import six
 
-from celery.exceptions import Retry, MaxRetriesExceededError
+from nose.tools import *  # noqa
 from requests.exceptions import RequestException
+from celery.exceptions import Retry, MaxRetriesExceededError
+
+from django.conf import settings
 from django.test import TestCase, override_settings
 
-from regulations.tasks import submit_comment, SignedUrl
+from regulations.tasks import submit_comment, cache_pdf, SignedUrl
 from regulations.models import FailedCommentSubmission
 
 
@@ -91,4 +94,26 @@ class TestSubmitComment(TestCase):
                 'form_data': self.form,
             }),
             saved_submission.body,
+        )
+
+
+class TestHelpers(TestCase):
+
+    @mock.patch('regulations.tasks.SignedUrl.generate')
+    @mock.patch('regulations.tasks.s3_client')
+    def test_cache_pdf(self, s3_client, url_generate):
+        meta = SignedUrl('meta', 'https://s3.amazonaws.com/bucket/meta')
+        url_generate.return_value = SignedUrl(
+            'pdf', 'https://s3.amazonaws.com/bucket/pdf')
+        url = cache_pdf('content', meta)
+        assert_equal(url, url_generate.return_value)
+        s3_client.put_object.assert_any_call(
+            Body=json.dumps({'pdfUrl': meta.url}),
+            Bucket=settings.ATTACHMENT_BUCKET,
+            Key=meta.key,
+        )
+        s3_client.put_object.assert_any_call(
+            Body='content',
+            Bucket=settings.ATTACHMENT_BUCKET,
+            Key=url.key,
         )
