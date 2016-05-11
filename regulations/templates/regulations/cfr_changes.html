@@ -10,6 +10,26 @@
   </div>
 {% endfor %}
 
+{% for subpart in subparts %}
+<h3 class="subpart-addition">
+  <ins>Subpart {{subpart.letter}} &mdash; {{subpart.title}}</ins>
+</h3>
+<div class="subpart-info">
+  <div class="subpart-wayfinding">
+    {% for url in subpart.urls %}
+      <a href="{{url}}"
+         aria-label="{{forloop.counter}} of {{subpart.urls|length}} sections"
+         {% if forloop.counter0 == subpart.idx %}class="current"{% endif %}
+       >&nbsp;</a>
+    {% endfor %}
+  </div>
+  <p>This is section
+    <strong>{{subpart.idx|add:"1"}} of {{subpart.urls|length}}</strong>
+    in subpart {{subpart.letter}}
+  </p>
+</div>
+{% endfor %}
+
 {% if tree %}
   {% with c=tree %}
   {% include "regulations/regulation_text.html" %}
