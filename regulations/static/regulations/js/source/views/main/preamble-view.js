@@ -88,12 +88,15 @@ var PreambleView = ChildView.extend({
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
 
-    CommentEvents.trigger('comment:target', {
-      section: section,
-      tocId: tocId,
-      label: label,
-      $parent: $parent
-    });
+    if (section) {
+      CommentEvents.trigger('comment:target', {
+        section: section,
+        tocId: tocId,
+        label: label,
+        $parent: $parent
+      });
+    }
+
     this.$read.hide();
     this.$write.show();
   },
