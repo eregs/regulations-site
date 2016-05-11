@@ -118,8 +118,6 @@ def merge_cfr_changes(doc_number, notice):
     amendments = list(mock_notice.get('amendments', []))    # copy
     amendments.extend(notice.get('amendments', []))
 
-    print len(amendments)
-
     return versions, amendments
 
 
