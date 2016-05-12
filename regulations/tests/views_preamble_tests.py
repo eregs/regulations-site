@@ -96,21 +96,21 @@ class PreambleViewTests(TestCase):
     )
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_open(self, ApiReader):
-        _, intro = preamble.get_preamble('1')
-        assert_true(intro['meta']['accepts_comments'])
+        _, meta, _ = preamble.notice_data('1')
+        assert_true(meta['accepts_comments'])
 
     @override_settings(
         PREAMBLE_INTRO=make_intro('1', date.today() - timedelta(days=1)),
     )
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_closed(self, ApiReader):
-        _, intro = preamble.get_preamble('1')
-        assert_false(intro['meta']['accepts_comments'])
+        _, meta, _ = preamble.notice_data('1')
+        assert_false(meta['accepts_comments'])
 
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_final(self, ApiReader):
-        _, intro = preamble.get_preamble('1')
-        assert_false(intro['meta']['accepts_comments'])
+        _, meta, _ = preamble.notice_data('1')
+        assert_false(meta['accepts_comments'])
 
     @patch('regulations.views.preamble.CFRChangeToC')
     @patch('regulations.generator.generator.api_reader')
@@ -155,7 +155,7 @@ class PreambleViewTests(TestCase):
         for doc_id in ('123_456', '123-456'):
             preamble_, meta, notice = preamble.notice_data(doc_id)
             self.assertEqual(preamble_, self._mock_preamble)
-            self.assertEqual({}, meta)
+            self.assertEqual({'accepts_comments': False}, meta)
             self.assertEqual({'some': 'notice'}, notice)
             self.assertEqual(ApiReader.return_value.preamble.call_args[0][0],
                              '123_456')
