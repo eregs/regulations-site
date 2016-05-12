@@ -262,7 +262,7 @@ class CFRChangesViewTests(TestCase):
             diff_applier.DiffApplier(diff, '111-44'))
 
         result = preamble.CFRChangesView.regtext_changes_context(
-            amendments, version_info, '111-44', '8675-309')
+            amendments, version_info, '111-44', '8675-309', 5)
         self.assertEqual(result['instructions'], ['3. Add subpart M'])
         self.assertEqual(result['tree']['marked_up'],
                          '<ins>New node text</ins>')

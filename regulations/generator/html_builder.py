@@ -18,13 +18,14 @@ from .link_flattener import flatten_links
 class HTMLBuilder(object):
     # @todo simplify this constructor
     def __init__(self, inline_applier, p_applier, search_applier,
-                 diff_applier=None, id_prefix=None):
+                 diff_applier=None, id_prefix=None, index_prefix=None):
         self.tree = None
         self.inline_applier = inline_applier
         self.p_applier = p_applier
         self.search_applier = search_applier
         self.diff_applier = diff_applier
         self.id_prefix = id_prefix or []
+        self.index_prefix = index_prefix or []
         self.preprocess()
 
     def preprocess(self):
@@ -207,6 +208,8 @@ class PreambleHTMLBuilder(HTMLBuilder):
 
     def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
+        if indexes is None:
+            indexes = self.index_prefix
         super(PreambleHTMLBuilder, self).process_node(node, indexes=indexes)
         node['accepts_comments'] = True
         node['comments_calledout'] = bool(node.get('title'))
@@ -220,6 +223,8 @@ class CFRChangeHTMLBuilder(CFRHTMLBuilder):
     in a notice. This assumes self.diff_applier is set"""
     def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
+        if indexes is None:
+            indexes = self.index_prefix
         super(CFRHTMLBuilder, self).process_node(node, indexes=indexes)
         label_id = '-'.join(node['label'])
         node['toc_id'] = '-'.join(self.id_prefix + node['label'][:2])

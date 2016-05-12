@@ -15,9 +15,9 @@ var comment_model = Backbone.Model.extend({
 });
 
 var index_comparator = function(first, second) {
-    var l = Math.max(first.length, second.length)
+    var max_length = Math.max(first.length, second.length);
 
-    for (var i = 0; i < l; i++) {
+    for (var i = 0; i < max_length; i++) {
         if (first[i] === undefined) {
             return -1;
         } else if (second[i] === undefined) {
@@ -32,13 +32,7 @@ var index_comparator = function(first, second) {
 };
 
 var comment_comparator = function(first, second) {
-    if (first.get('tocId') < second.get('tocId')) {
-        return -1;
-    } else if (first.get('tocId') > second.get('tocId')) {
-        return 1;
-    } else {
-        return index_comparator(first.get('indexes'), second.get('indexes'));
-    }
+    return index_comparator(first.get('indexes'), second.get('indexes'));
 };
 
 module.exports = {

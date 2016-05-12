@@ -17,27 +17,22 @@ describe('CommentCollection', function() {
 
   });
 
-  it('sorts by tocId', function() {
-      var comment1 = new CommentModel({tocId: "TocId 1", indexes: []});
-      var comment2 = new CommentModel({tocId: "TocId 2", indexes: []});
+
+  it('sorts by indexes', function() {
+      var comment1 = new CommentModel({indexes: [0, 1]});
+      var comment2 = new CommentModel({indexes: [0, 2]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 
-  it('sorts by indexes when tocIds are equal', function() {
-      var comment1 = new CommentModel({tocId: "TocId", indexes: [0, 1]});
-      var comment2 = new CommentModel({tocId: "TocId", indexes: [0, 2]});
+  it('handles indexes of different lengths', function() {
+      var comment1 = new CommentModel({indexes: [0, 3, 2, 1]});
+      var comment2 = new CommentModel({indexes: [0, 3, 3]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 
-  it('handles indexes of different lengths when sorting by indexes', function() {
-      var comment1 = new CommentModel({tocId: "TocId", indexes: [0, 3, 2, 1]});
-      var comment2 = new CommentModel({tocId: "TocId", indexes: [0, 3, 3]});
-      assert.equal(-1, commentComparator(comment1, comment2));
-  });
-
-  it('sorts by index magnitude as opposed to lexical sorting when sorting by indexes ', function() {
-      var comment1 = new CommentModel({tocId: "TocId", indexes: [0, 3]});
-      var comment2 = new CommentModel({tocId: "TocId", indexes: [0, 20]});
+  it('sorts by index magnitude as opposed to lexical sorting', function() {
+      var comment1 = new CommentModel({indexes: [0, 3]});
+      var comment2 = new CommentModel({indexes: [0, 20]});
       assert.equal(-1, commentComparator(comment1, comment2));
   });
 });
