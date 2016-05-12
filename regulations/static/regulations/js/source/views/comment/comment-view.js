@@ -104,12 +104,12 @@ var CommentView = Backbone.View.extend({
       var href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
       // Splice section label and context title, if present
       // TODO: Build this upstream
-      var $sectionHeader = options.$parent.find('.node:first :header, .section-title:header');
+      var $sectionHeader = options.$parent.find('.node:first :header');
       if ($sectionHeader.length) {
         label = [label, $sectionHeader.text().split('. ').slice(1)].join('. ');
         $sectionHeader.remove();
       }
-      this.$header.html('<a href="' + href + '">' + label + '</a>');
+      this.$header.append('<a href="' + href + '">' + label + '</a>');
       this.$context.append(options.$parent);
     }
   },
