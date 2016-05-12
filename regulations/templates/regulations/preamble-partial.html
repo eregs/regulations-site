@@ -8,13 +8,15 @@
       data-doc-id="{{doc_number}}"
       data-label="{{section_label}}">
     <div id="preamble-read">
-      {% if type == "preamble" %}
-      <ul>
-        {% render_nested template=sub_template context=sub_context %}
-      </ul>
-      {% else %}
-        {% render_nested template=sub_template context=sub_context %}
-      {% endif %}
+      <div class="preamble-content">
+        {% if type == "preamble" %}
+        <ul>
+          {% render_nested template=sub_template context=sub_context %}
+        </ul>
+        {% else %}
+          {% render_nested template=sub_template context=sub_context %}
+        {% endif %}
+      </div>
 
       {% include "regulations/footnotes.html" %}
       {% include "regulations/navigation.html" %}
