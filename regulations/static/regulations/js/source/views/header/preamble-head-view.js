@@ -13,6 +13,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.$ = $;
 
+var MainEvents = require('../../events/main-events');
 var CommentEvents = require('../../events/comment-events');
 
 var PreambleHeadView = Backbone.View.extend({
@@ -24,12 +25,16 @@ var PreambleHeadView = Backbone.View.extend({
   },
 
   initialize: function() {
-
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
     this.listenTo(CommentEvents, 'comment:readTabOpen', this.readTabOpen);
     this.listenTo(CommentEvents, 'comment:writeTabOpen', this.writeTabOpen);
+    this.listenTo(MainEvents, 'route', this.handleRoute);
+  },
+
+  handleRoute: function(href) {
+    this.$readTab.find('a').attr('href', '/' + href);
   },
 
   readTabOpen: function () {
@@ -37,8 +42,9 @@ var PreambleHeadView = Backbone.View.extend({
     this.$writeTab.removeClass('active-mode');
   },
 
-  readProposal: function() {
+  readProposal: function(e) {
     // yeah... need a better way to manage this. - xtine
+    e.preventDefault();
     if ($('#preamble-write').is(':visible') || $('#comment-review').length) {
       this.readTabOpen();
 

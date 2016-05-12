@@ -318,7 +318,6 @@ def common_context(doc_number):
         'notice': notice,
         'preamble': preamble,
         'preamble_toc': preamble_toc,
-        'preamble_url': preamble_toc[0].url if preamble_toc else '#',
     }
 
 

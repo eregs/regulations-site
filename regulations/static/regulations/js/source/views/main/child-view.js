@@ -139,6 +139,7 @@ var ChildView = Backbone.View.extend({
 
     navigate: function(url) {
         Router.navigate(url);
+        MainEvents.trigger('route', url);
         document.title = this.title;
     },
 
