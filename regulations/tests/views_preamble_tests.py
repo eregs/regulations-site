@@ -2,13 +2,24 @@
 
 from mock import patch
 from unittest import TestCase
+from datetime import date, timedelta
 
 from nose.tools import *  # noqa
 from django.http import Http404
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
 
 from regulations.generator.layers import diff_applier, layers_applier
 from regulations.views import preamble
+
+
+def make_intro(doc_number, comments_close):
+    return {
+        doc_number: {
+            'meta': {
+                'comments_close': comments_close.strftime('%Y-%m-%d'),
+            },
+        },
+    }
 
 
 class PreambleViewTests(TestCase):
@@ -79,6 +90,27 @@ class PreambleViewTests(TestCase):
             response.context_data['sub_context']['node']['text'],
             '4',
         )
+
+    @override_settings(
+        PREAMBLE_INTRO=make_intro('1', date.today() + timedelta(days=1)),
+    )
+    @patch('regulations.views.preamble.ApiReader')
+    def test_comments_open(self, ApiReader):
+        _, intro = preamble.get_preamble('1')
+        assert_true(intro['meta']['accepts_comments'])
+
+    @override_settings(
+        PREAMBLE_INTRO=make_intro('1', date.today() - timedelta(days=1)),
+    )
+    @patch('regulations.views.preamble.ApiReader')
+    def test_comments_closed(self, ApiReader):
+        _, intro = preamble.get_preamble('1')
+        assert_false(intro['meta']['accepts_comments'])
+
+    @patch('regulations.views.preamble.ApiReader')
+    def test_comments_final(self, ApiReader):
+        _, intro = preamble.get_preamble('1')
+        assert_false(intro['meta']['accepts_comments'])
 
     @patch('regulations.views.preamble.CFRChangeToC')
     @patch('regulations.generator.generator.api_reader')
