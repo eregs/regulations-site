@@ -101,6 +101,11 @@ class SubmitCommentView(View):
         comments = json.loads(request.POST.get('comments', '[]'))
 
         context = common_context(doc_number)
+
+        if not context['meta']['accepts_comments']:
+            raise Http404(
+                "Comment period for doc # {} closed".format(doc_number))
+
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
         context['comment_mode'] = 'write'

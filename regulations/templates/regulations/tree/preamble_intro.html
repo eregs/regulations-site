@@ -8,7 +8,7 @@
     id="{{node.markup_id}}"
     data-permalink-section>
   <div class="node">
-    {% if node.accepts_comments %}
+    {% if meta.accepts_comments and node.accepts_comments %}
       <div
           class="activate-write"
           data-section="{{ node.full_id }}"
@@ -24,8 +24,10 @@
     <h4>{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
     <div>
-      <div>{{ meta.days_remaining }} Days</div>
-      <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
+      {% if meta.accepts_comments %}
+        <div>{{ meta.days_remaining }} Days</div>
+      {% endif %}
+    <h5>Comment period {% if meta.accepts_comments %}closes{% else %}closed{% endif %} on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
         EST.</h5>
       Rule published {{ meta.publication|date:"F j, Y"}}
     </div>

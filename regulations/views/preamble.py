@@ -282,8 +282,12 @@ def notice_data(doc_number):
         'meta', {})
     meta = convert_to_python(deepcopy(meta))
     if 'comments_close' in meta:
-        meta['days_remaining'] = 1 + (
-            meta['comments_close'].date() - date.today()).days
+        today = date.today()
+        close_date = meta['comments_close'].date()
+        meta['days_remaining'] = 1 + (close_date - today).days
+        meta['accepts_comments'] = close_date >= today
+    else:
+        meta['accepts_comments'] = False
 
     notice = ApiReader().notice(doc_number.replace('_', '-')) or {}
 
@@ -389,6 +393,10 @@ class ChromePreambleSearchView(chrome.ChromeSearchView):
 class PrepareCommentView(View):
     def get(self, request, doc_number):
         context = common_context(doc_number)
+
+        if not context['meta']['accepts_comments']:
+            raise Http404(
+                "Comment period for doc # {} closed".format(doc_number))
 
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
