@@ -4,6 +4,10 @@ comment.less
 comment.less contains styles related to commenting on sections
 */
 
+/*
+Preamble Read Mode
+================
+*/
 #preamble-read {
   margin: 0;
   padding: 0 0 0 15px;
@@ -23,6 +27,43 @@ comment.less contains styles related to commenting on sections
         display: block;
       }
     }
+  }
+
+  // Write a comment about XXX link
+  .activate-write {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    right: -100px;
+    top: -5px;
+    width: 250px;
+
+    a {
+      color: @pacific_light;
+      display: block;
+    }
+
+    &:hover a,
+    a:focus {
+      color: @pacific_hover;
+    }
+
+    // write a comment pencil icon font
+    .fa-pencil-square-o {
+      clear: both;
+      float: left;
+      line-height: 24px;
+      margin-right: 8px;
+    }
+
+    .paragraph-comment {
+      overflow: hidden;
+    }
+  }
+
+  p + .activate-write {
+    top: 15px;
   }
 
   // hidden content (with stars) on CFR
@@ -71,8 +112,16 @@ comment.less contains styles related to commenting on sections
     padding-top: 15px;
     width: 75%;
   }
+
+  .node {
+    padding-right: 200px;
+  }
 }
 
+/*
+N&C Header - including Read/Write tab
+================
+*/
 .preamble-header {
   position: absolute;
   right: 0;
@@ -121,183 +170,142 @@ comment.less contains styles related to commenting on sections
   }
 }
 
-#preamble-write {
-  padding-left: 25px;
-  width: 70%;
-}
-
+/*
+Write Mode
+================
+*/
 #preamble-write,
 #preamble-read .node {
   position: relative;
 }
 
-#preamble-read .node {
-  padding-right: 200px;
-}
+#preamble-write {
+  padding-left: 25px;
+  width: 70%;
 
-.activate-write {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  position: absolute;
-  right: -100px;
-  top: -5px;
-  width: 250px;
+  // Write your comment - style wrapper
+  .comment-wrapper {
+    .font-regular;
 
-  a {
-    color: @pacific_light;
-    display: block;
-  }
+    .comment {
+      font-size: 14px;
+      padding-bottom: 10px;
 
-  &:hover a, a:focus {
-    color: @pacific_hover;
-  }
-}
+      textarea, .ProseMirror {
+        border: 1px solid transparent;
+        box-shadow: 0 0 1px 1px @text_area_border;
+        border-radius: 2px;
+        margin: 10px 0;
+        width: 100%;
 
-p + .activate-write {
-  top: 15px;
-}
+        p {
+          .font-regular;
+          font-size: 16px;
+          line-height: 20px;
+        }
+      }
 
-.paragraph-comment-icon {
-  float: left;
-  margin-right: 8px;
-  line-height: 24px;
-  clear: both;
-}
+      .ProseMirror-content {
+        height: 200px;
+        resize: vertical;
+        overflow-y: auto;
+        padding: 12px 15px;
+      }
 
-.paragraph-comment {
-  overflow: hidden;
-}
+      .comment-content,
+      .ProseMirror-content {
+        li {
+          list-style-type: inherit;
+        }
+        ol {
+          list-style-type: decimal;
+        }
+      }
 
-.activate-read {
-  background: @pacific;
-  color: #FFFFFF;
-  .font-regular;
-  cursor: pointer;
-  padding: 7px 0;
-  margin: 10px 0 0 0;
-  text-align: center;
-  width: 100%;
-
-  -webkit-transition: .1s;
-  -moz-transition: .1s;
-  transition: .1s;
-
-  &:hover {
-    background-color: @pacific_hover;
-  }
-}
-
-.comment-wrapper {
-  .font-regular;
-
-  .comment {
-    font-size: 14px;
-    padding-bottom: 10px;
-
-    textarea, .ProseMirror {
-      border: 1px solid transparent;
-      box-shadow: 0 0 1px 1px @text_area_border;
-      border-radius: 2px;
-      margin: 10px 0;
-      width: 100%;
-
-      p {
-        .font-regular;
-        font-size: 16px;
-        line-height: 20px;
+      .show-more-context {
+        display: none;
       }
     }
 
-    .ProseMirror-content {
-      height: 200px;
-      resize: vertical;
-      overflow-y: auto;
-      padding: 12px 15px;
+    .comment-clear {
+      clear: both;
+      cursor: pointer;
+      display: inline-block;
+      margin: 8px 13px 0 0;
+      float: right;
+      text-align: right;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
-    .show-more-context {
-      display: none;
+    .status {
+      clear: both;
+      font-weight: bold;
+      padding: 5px 0 0 0;
+      text-align: right;
+      width: 100%;
     }
   }
 
-  .comment-clear {
-    clear: both;
-    cursor: pointer;
-    display: inline-block;
-    margin: 8px 13px 0 0;
+
+  .comment-controls {
+    width: 70%;
+    float: left;
+
+    button {
+      float: left;
+    }
+  }
+
+  .comment-submission {
+    width: 30%;
     float: right;
-    text-align: right;
+  }
+
+  .comment-button,
+  a.comment-index-review {
+    background-color: @pacific;
+    border-radius: 2px;
+    color: #FFFFFF;
+    .font-regular;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    height: auto;
+    padding: 8px 20px;
+    float: right;
+
+    -webkit-transition: .1s;
+    -moz-transition: .1s;
+    transition: .1s;
 
     &:hover {
-      text-decoration: underline;
+      background-color: @pacific_hover;
     }
   }
 
-  .status {
-    clear: both;
-    font-weight: bold;
-    padding: 5px 0 0 0;
-    text-align: right;
-    width: 100%;
-  }
-}
+  .comment-upload-button {
+    background-color: @grey;
+    color: @black;
+    border-radius: 2px;
+    .font-regular;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    height: auto;
+    padding: 8px 20px;
 
-.comment-controls {
-  width: 70%;
-  float: left;
-
-  button {
-    float: left;
-  }
-}
-
-.comment-submission {
-  width: 30%;
-  float: right;
-}
-
-.comment-button,
-a.comment-index-review {
-  background-color: @pacific;
-  border-radius: 2px;
-  color: #FFFFFF;
-  .font-regular;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  height: auto;
-  padding: 8px 20px;
-  float: right;
-
-  -webkit-transition: .1s;
-  -moz-transition: .1s;
-  transition: .1s;
-
-  &:hover {
-    background-color: @pacific_hover;
+    &:hover {
+      background-color: darken(@grey, 10%);
+    }
   }
 
-}
-
-.comment-upload-button {
-  background-color: @grey;
-  color: @black;
-  border-radius: 2px;
-  .font-regular;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  height: auto;
-  padding: 8px 20px;
-
-  &:hover {
-    background-color: darken(@grey, 10%);
+  .comment-context {
+    margin: 0 0 25px 0;
+    max-height: 250px;
+    overflow: auto;
   }
-}
 
-.comment-context {
-  margin: 0 0 25px 0;
-  max-height: 250px;
-  overflow: auto;
 }
 
 .comment-index {
@@ -415,437 +423,5 @@ a.comment-index-review {
       color: @black;
       cursor: pointer;
     }
-  }
-}
-
-#comment-review {
-  .font-regular;
-  margin-bottom: 50px;
-  padding-left: 25px;
-
-  h2, h3 {
-    margin: 0.5em 0 0;
-  }
-
-  p {
-    .font-regular;
-  }
-
-  .comments {
-    border: 1px solid @text_area_border;
-    border-radius: 2px;
-    margin: 25px 0;
-
-    h4 {
-      margin-top: 0;
-      text-transform: none;
-    }
-
-    input.highlight[type="file"] {
-      background: blue;
-    }
-
-    ul {
-      margin: 25px 15px;
-    }
-
-    ul li {
-      position: relative;
-
-      &:after {
-        content: "------";
-        display: block;
-        padding-top: 10px;
-      }
-      &:last-child:after {
-        content: "";
-      }
-    }
-  }
-
-  .comment-content {
-    max-width: 95%;
-  }
-
-  .edit-comment {
-    color: @pacific;
-    cursor: pointer;
-    position: absolute;
-    right: 2%;
-    top: 0;
-
-    .write-icon {
-      fill: @pacific;
-    }
-
-    span:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .comment-attachments {
-    display: block;
-    float: none;
-    margin-top: 5px;
-    max-width: 100%;
-
-    ul {
-      background: @grey;
-      padding: 0;
-      margin: 5px 0 0 0;
-    }
-
-    li {
-      padding: 10px 15px;
-      margin: 0;
-
-      &:after {
-        content: "";
-        padding: 0;
-      }
-    }
-
-    .filename {
-      float: left;
-      max-width: 370px;
-    }
-
-    .attachment-preview {
-      float: right;
-      text-align: right;
-      width: 80px;
-    }
-  }
-
-  .download-comment {
-    background: @pacific_light;
-    border-top: 1px solid @text_area_border;
-    padding: 10px 15px;
-
-    h4 {
-      color: @pacific;
-      float: left;
-      font-size: 18px;
-      line-height: 18px;
-      text-transform: inherit;
-      max-width: 425px;
-
-      &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-      }
-    }
-
-    .details {
-      color: @80_gray;
-      float: right;
-      font-size: 14px;
-      text-align: right;
-      max-width: 250px;
-    }
-  }
-
-  input[type=checkbox] {
-    height: auto;
-    margin-right: 5px;
-  }
-
-  .additional-info {
-    padding: 0 0 10px 0;
-    max-width: 535px;
-
-    h4 {
-      margin-bottom: 0.75em;
-    }
-
-    span {
-      color: @80_gray;
-    }
-
-    fieldset {
-      border: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    legend {
-      font-size: 17px;
-      font-weight: bold;
-      line-height: 17px;
-    }
-
-    input[type=text] {
-      border: 1px solid @text_area_border;
-      border-radius: 3px;
-      height: auto;
-      padding: 5px 10px;
-      margin: 5px 0;
-      text-align: left;
-      width: 100%;
-    }
-  }
-
-  .statement {
-    border-top: 1px solid @text_area_border;
-    padding: 10px 0 0;
-    margin: 15px 0 25px 0;
-    max-width: 535px;
-
-    .required {
-      color: @red_orange;
-    }
-  }
-
-  .submit-button {
-    background: @pacific;
-    border-radius: 3px;
-    color: #FFF;
-    font-size: 17px;
-    font-weight: bold;
-    height: auto;
-    padding: 12px 30px;
-
-    &:disabled, &:disabled:hover {
-      background: @grey;
-      color: #000;
-    }
-    &:hover {
-      background-color: @pacific_hover;
-    }
-  }
-}
-
-.comment-content,
-.ProseMirror-content {
-  li {
-    list-style-type: inherit;
-  }
-  ol {
-    list-style-type: decimal;
-  }
-}
-
-
-// margins in .preamble-wrapper are overrides for things defined in .main-content
-// because the preamble doesn't use the right sidebar
-
-@media only screen and ( min-width: 780px ) {
-  .preamble-wrapper {
-    margin-right: 5%;
-    margin-left: 40px; /*40px; - offsets collapsed .panel */
-    padding-left: 15px;
-  }
-
-  #comment-review {
-    .comment-content {
-      max-width: 75%;
-    }
-    .edit-comment {
-      right: 2%;
-      top: 35px;
-    }
-  }
-}
-
-@media only screen and ( min-width: 1100px ) {
-  .preamble-wrapper {
-    margin-right: 5%;
-    margin-left: 240px; /*240px; - offsets .panel */
-    padding-left: 15px;
-
-    // don't need max-width to account for a right sidebar
-    // so preamble text will fill the space when nav is minimized
-    &.close {
-      max-width: 100%;
-    }
-  }
-
-  #preamble-write {
-    width: 75%;
-  }
-
-  .section-nav .previous {
-    margin-left: -10px;
-  }
-}
-
-
-// tablet + mobile
-@media only screen and ( max-width: 780px ) {
-  .hide-mobile {
-    display: none;
-    padding: 0;
-  }
-
-  #preamble-read {
-    padding-left: 0;
-  }
-
-  .activate-write {
-    right: -60px;
-    width: 220px;
-  }
-
-  #preamble-write {
-    padding-left: 0;
-    padding-bottom: 35px;
-    width: 73%;
-
-    .comment-index {
-      right: -220px;
-      width: 210px;
-
-
-      li {
-        .comment-index-section {
-          width: 120px;
-        }
-
-        .comment-index-modify .fa {
-          display: inline-block;
-        }
-      }
-    }
-  }
-}
-
-@media only screen and ( max-width: 480px ) {
-
-  .preamble-sub-head {
-    height: 35px;
-
-    .toc-head {
-      z-index: 100;
-    }
-  }
-
-  .preamble-header {
-    left: 40px;
-    z-index: 10;
-
-    > span {
-      display: none;
-    }
-
-    .read-proposal {
-      border-left: none;
-    }
-
-    .read-proposal,
-    .write-comment {
-      font-size: 13px;
-      width: 50% !important;
-    }
-  }
-
-  h3.section-title {
-    font-size: 30px;
-  }
-
-  .activate-write {
-    padding: 5px 0;
-    position: relative;
-    right: 0;
-    top: 0;
-    width: 100%;
-
-    &:hover {
-      color: #4A90E2;
-    }
-  }
-
-  p + .activate-write {
-    top: 0;
-  }
-
-  #preamble-read {
-    padding-left: 0;
-
-    ol, ul {
-      padding-left: 0;
-    }
-
-    li {
-      h2, h3, h4, h5, h6, p {
-        width: 100%;
-      }
-      h4 {
-        margin-top: 0;
-      }
-    }
-    p + .activate-write {
-      display: block;
-    }
-
-    .node {
-      padding-right: 0;
-    }
-
-    .show-more-context {
-      font-size: 9px;
-
-      span {
-        font-size: 12px;
-        padding: 0 5px;
-      }
-    }
-
-    li > .show-more-context,
-    .section-title {
-      width: 100%;
-    }
-
-    .cfr-instructions {
-      width: 100%;
-    }
-  }
-
-  #preamble-write {
-    padding-left: 0;
-    width: 100%;
-
-    .comment h2 {
-      font-size: 30px;
-      margin-top: 0;
-    }
-
-    .comment-index {
-      position: relative;
-      right: 0;
-      top: 0;
-      width: 100%;
-
-      ul {
-        padding-left: 0;
-      }
-    }
-
-    .comment-controls {
-      margin-bottom: 5px;
-    }
-
-    .comment-button {
-      float: none;
-    }
-  }
-  .comment-submission {
-    width: 100%;
-    float: none;
-  }
-
-  #comment-review {
-    padding-left: 0;
-
-    .edit-comment {
-      position: relative;
-      right: 0;
-      top: 5px;
-    }
-    .download-comment .details {
-      font-size: 12px;
-    }
-  }
-  .section-nav .previous {
-    margin-left: -10px;
   }
 }
