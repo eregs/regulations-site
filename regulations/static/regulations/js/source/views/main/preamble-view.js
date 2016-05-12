@@ -65,6 +65,7 @@ var PreambleView = ChildView.extend({
     this.write(
       $dataTarget.data('section'),
       $section.data('toc-id'),
+      $dataTarget.data('preorder'),
       $dataTarget.data('label'),
       $section
     );
@@ -78,12 +79,13 @@ var PreambleView = ChildView.extend({
     this.write(
       $section.find('.activate-write').data('section'),
       $section.data('toc-id'),
+      $section.data('preorder'),
       $section.find('.activate-write').data('label'),
       $section
     );
   },
 
-  write: function(section, tocId, label, $parent) {
+  write: function(section, tocId, preorder, label, $parent) {
     this.mode = 'write';
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
@@ -91,6 +93,7 @@ var PreambleView = ChildView.extend({
     CommentEvents.trigger('comment:target', {
       section: section,
       tocId: tocId,
+      preorder: preorder,
       label: label,
       $parent: $parent
     });

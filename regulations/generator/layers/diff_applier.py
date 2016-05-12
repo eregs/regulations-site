@@ -83,10 +83,13 @@ class DiffApplier(object):
         return [lo for lo in label_ops if not self.has_moved(lo, seen_count)]
 
     def add_nodes_to_tree(self, original, adds):
-        """ Add all the nodes from new_nodes into the original tree. """
+        """ Add all the nodes from adds into the original tree. """
         tree_hash = tree_builder.build_tree_hash(original)
         for node in tree_hash.values():
             self.set_child_labels(node)
+
+        # We need this copy as we are mutating the queue below
+        adds_queue_copy = adds.queue[:]
 
         for label, node in adds.queue:
             p_label = '-'.join(tree_builder.parent_label(node))
@@ -99,6 +102,8 @@ class DiffApplier(object):
                     tree_builder.add_child(parent[1], node)
                 else:
                     original.update(node)
+
+        assign_preorder(original, adds_queue_copy)
 
     def is_child_of_requested(self, label):
         """ Return true if the label is a child of the requested label.  """
@@ -182,3 +187,22 @@ class DiffApplier(object):
                 text_diffs = self.diff[label][component]
                 return self.apply_diff_changes(original, text_diffs)
         return original
+
+
+def assign_preorder(original, adds_queue):
+    """
+        Entire nodes that were added in the diff will not have their
+        preorder attribute set. This function sets the preorder for these nodes
+        by appending the relative position of these nodes (among their
+        siblings) to the parent's preorder. E.g., if node n was added as the
+        5th child of node p (whose preorder is 263), n will be assigned a
+        preorder of [263, 5].
+    """
+    tree_hash = tree_builder.build_tree_hash(original)
+    modified_parents_labels = ['-'.join(tree_builder.parent_label(node))
+                               for _, node in adds_queue]
+    for parent_label in modified_parents_labels:
+        parent_node = tree_hash[parent_label]
+        for index, child in enumerate(parent_node['children'], 1):
+            if 'preorder' not in child:
+                child['preorder'] = parent_node['preorder'] + [index]

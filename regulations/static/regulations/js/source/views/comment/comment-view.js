@@ -13,7 +13,7 @@ require('prosemirror/dist/markdown');
 
 var MainEvents = require('../../events/main-events');
 var DrawerEvents = require('../../events/drawer-events');
-var CommentModel = require('../../models/comment-model');
+var CommentModel = require('../../models/comment-model').CommentModel;
 var CommentEvents = require('../../events/comment-events');
 var AttachmentView = require('../../views/comment/attachment-view');
 var comments = require('../../collections/comment-collection');
@@ -80,14 +80,14 @@ var CommentView = Backbone.View.extend({
     this.listenTo(CommentEvents, 'comment:target', this.target);
     this.listenTo(CommentEvents, 'attachment:remove', this.clearAttachment);
 
-    this.setSection(options.section, options.tocId, options.label);
+    this.setSection(options.section, options.tocId, options.preorder, options.label);
   },
 
-  setSection: function(section, tocId, label, blank) {
+  setSection: function(section, tocId, preorder, label, blank) {
     if (this.model) {
       this.stopListening(this.model);
     }
-    var options = {id: section, tocId: tocId, label: label, docId: this.options.docId};
+    var options = {id: section, tocId: tocId, preorder: preorder, label: label, docId: this.options.docId};
     this.model = blank ?
       new CommentModel(options) :
       comments.get(section) || new CommentModel(options);
@@ -96,7 +96,7 @@ var CommentView = Backbone.View.extend({
   },
 
   target: function(options) {
-    this.setSection(options.section, options.tocId, options.label);
+    this.setSection(options.section, options.tocId, options.preorder, options.label);
     this.$context.empty();
     if (options.$parent) {
       var label = options.label;
