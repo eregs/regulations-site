@@ -83,7 +83,7 @@ class DiffApplier(object):
         return [lo for lo in label_ops if not self.has_moved(lo, seen_count)]
 
     def add_nodes_to_tree(self, original, adds):
-        """ Add all the nodes from new_nodes into the original tree. """
+        """ Add all the nodes from adds into the original tree. """
         tree_hash = tree_builder.build_tree_hash(original)
         for node in tree_hash.values():
             self.set_child_labels(node)
