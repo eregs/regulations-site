@@ -1,0 +1,293 @@
+/*
+comment-review.less
+==========================================================================
+comment-review.less contains styles for Review Your Comment page
+*/
+
+#comment-review {
+  .font-regular;
+  margin-bottom: 50px;
+  padding-left: 25px;
+
+  h2, h3 {
+    margin: 0.5em 0 0;
+  }
+
+  p {
+    .font-regular;
+  }
+
+  .comments {
+    border: 1px solid @text_area_border;
+    border-radius: 2px;
+    margin: 25px 0;
+
+    h4 {
+      margin-top: 0;
+      text-transform: none;
+    }
+
+    input.highlight[type="file"] {
+      background: blue;
+    }
+
+    ul {
+      margin: 25px 15px;
+    }
+
+    ul li {
+      position: relative;
+
+      &:after {
+        content: "------";
+        display: block;
+        padding-top: 10px;
+      }
+      &:last-child:after {
+        content: "";
+      }
+    }
+  }
+
+  .comment-content {
+    max-width: 95%;
+  }
+
+  .edit-comment {
+    color: @pacific;
+    cursor: pointer;
+    position: absolute;
+    right: 2%;
+    top: 0;
+
+    .write-icon {
+      fill: @pacific;
+    }
+
+    span:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .comment-attachments {
+    display: block;
+    float: none;
+    margin-top: 5px;
+    max-width: 100%;
+
+    ul {
+      background: @grey;
+      padding: 0;
+      margin: 5px 0 0 0;
+    }
+
+    li {
+      padding: 10px 15px;
+      margin: 0;
+
+      &:after {
+        content: "";
+        padding: 0;
+      }
+    }
+
+    .filename {
+      float: left;
+      max-width: 370px;
+    }
+
+    .attachment-preview {
+      float: right;
+      text-align: right;
+      width: 80px;
+    }
+  }
+
+  .download-comment {
+    background: @pacific_light;
+    border-top: 1px solid @text_area_border;
+    padding: 10px 15px;
+
+    h4 {
+      color: @pacific;
+      margin: 0;
+      float: left;
+      font-size: 18px;
+      line-height: 22px;
+      text-transform: inherit;
+      max-width: 425px;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
+    .details {
+      color: @80_gray;
+      float: right;
+      font-size: 14px;
+      text-align: right;
+      max-width: 250px;
+    }
+  }
+
+  input[type=checkbox] {
+    height: auto;
+    margin-right: 5px;
+  }
+
+  .additional-info {
+    padding: 0 0 10px 0;
+    max-width: 535px;
+    border-bottom: 2px solid @light_field;
+
+    .tabs {
+      margin: 10px 0;
+    }
+
+    .btn-group {
+      display: inline-block;
+      list-style: none;
+    }
+
+    .btn-group-item {
+      display: inline-block;
+      background: @grey;
+      font-size: 14px;
+      line-height: 18px;
+      padding: 8px 15px;
+      box-shadow: inset 0 0 1px fade(@dark_gray, 90%);
+      border-radius: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background: darken(@grey, 10%);
+      }
+      &:active {
+        background: darken(@grey, 20%);
+      }
+    }
+
+    .comment-form-subtext {
+      display: block;
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .comment-form-fieldlabel {
+      font-size: 16px;
+      .font-bold;
+    }
+
+    .labeled-field {
+      margin: 5px 0;
+    }
+
+    select {
+      width: 100%;
+      background: @white;
+      font-size: 14px;
+      line-height: 18px;
+      padding: 12px 10px;
+      margin: 5px 0;
+      height: auto;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25);
+      box-shadow: inset 0 0 1px fade(@dark_gray, 90%);
+      color: @black;
+    }
+
+    h4 {
+      margin-bottom: 0.75em;
+    }
+
+    span {
+      color: @80_gray;
+    }
+
+    fieldset {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    legend {
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 17px;
+    }
+
+    input[type=text] {
+      border: 1px solid @text_area_border;
+      border-radius: 3px;
+      height: auto;
+      padding: 5px 10px;
+      margin: 5px 0;
+      text-align: left;
+      width: 100%;
+    }
+  }
+
+  .statement {
+    padding: 10px 0 0;
+    margin: 5px 0 30px 0;
+    max-width: 620px;
+
+    .required {
+      color: @red_orange;
+      margin-left: 5px;
+    }
+
+    .statement-list li {
+      margin-top: 0.5em;
+      list-style-type: disc;
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      margin: 0.5em 0;
+    }
+
+    h6 {
+      .font-regular;
+      font-size: 16px;
+      text-transform: none;
+      display: inline;
+    }
+
+    .show-more-toggle {
+      display: inline;
+      color: @blue;
+      font-size: 14px;
+
+      &:hover {
+        color: darken(@blue, 10%);
+      }
+
+      .text-expand {
+        font-size: 13px;
+        padding: 0 3px;
+      }
+    }
+  }
+
+  .submit-button {
+    background: @pacific;
+    border-radius: 3px;
+    color: #FFF;
+    font-size: 17px;
+    font-weight: bold;
+    height: auto;
+    padding: 12px 30px;
+
+    &:disabled, &:disabled:hover {
+      background: @grey;
+      color: #000;
+    }
+    &:hover {
+      background-color: @pacific_hover;
+    }
+  }
+}

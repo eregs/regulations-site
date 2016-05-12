@@ -1,0 +1,231 @@
+/*
+comment-media-queries.less
+==========================================================================
+comment-media-queries.less contains media query styles for Notice and Comment
+*/
+
+// margins in .preamble-wrapper are overrides for things defined in .main-content
+// because the preamble doesn't use the right sidebar
+@media only screen and ( min-width: 780px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    margin-left: 40px; /*40px; - offsets collapsed .panel */
+    padding-left: 15px;
+  }
+
+  #comment-review {
+    .comment-content {
+      max-width: 75%;
+    }
+    .edit-comment {
+      right: 2%;
+      top: 35px;
+    }
+  }
+}
+
+// laptop and desktop screen sizes
+@media only screen and ( min-width: 1100px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    margin-left: 240px; /*240px; - offsets .panel */
+    padding-left: 15px;
+
+    // don't need max-width to account for a right sidebar
+    // so preamble text will fill the space when nav is minimized
+    &.close {
+      max-width: 100%;
+    }
+  }
+
+  #preamble-write {
+    width: 75%;
+  }
+
+  .section-nav .previous {
+    margin-left: -10px;
+  }
+}
+
+
+// tablet + mobile screen sizes
+@media only screen and ( max-width: 780px ) {
+
+  .hide-mobile {
+    display: none;
+    padding: 0;
+  }
+
+  #preamble-read {
+    padding-left: 0;
+  }
+
+  .activate-write {
+    right: -60px;
+    width: 220px;
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    padding-bottom: 35px;
+    width: 73%;
+
+    .comment-index {
+      right: -220px;
+      width: 210px;
+
+
+      li {
+        .comment-index-section {
+          width: 120px;
+        }
+
+        .comment-index-modify .fa {
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
+
+// mobile screen size
+@media only screen and ( max-width: 480px ) {
+
+  .preamble-sub-head {
+    height: 35px;
+
+    .toc-head {
+      z-index: 100;
+    }
+  }
+
+  .preamble-header {
+    left: 40px;
+    z-index: 10;
+
+    > span {
+      display: none;
+    }
+
+    .read-proposal {
+      border-left: none;
+    }
+
+    .read-proposal,
+    .write-comment {
+      font-size: 13px;
+      width: 50% !important;
+    }
+  }
+
+  h3.section-title {
+    font-size: 30px;
+  }
+
+  .activate-write {
+    padding: 5px 0;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: 100%;
+
+    &:hover {
+      color: #4A90E2;
+    }
+  }
+
+  p + .activate-write {
+    top: 0;
+  }
+
+  #preamble-read {
+    padding-left: 0;
+
+    ol, ul {
+      padding-left: 0;
+    }
+
+    li {
+      h2, h3, h4, h5, h6, p {
+        width: 100%;
+      }
+      h4 {
+        margin-top: 0;
+      }
+    }
+    p + .activate-write {
+      display: block;
+    }
+
+    .node {
+      padding-right: 0;
+    }
+
+    .show-more-context {
+      font-size: 9px;
+
+      span {
+        font-size: 12px;
+        padding: 0 5px;
+      }
+    }
+
+    li > .show-more-context,
+    .section-title {
+      width: 100%;
+    }
+
+    .cfr-instructions {
+      width: 100%;
+    }
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    width: 100%;
+
+    .comment h2 {
+      font-size: 30px;
+      margin-top: 0;
+    }
+
+    .comment-index {
+      position: relative;
+      right: 0;
+      top: 0;
+      width: 100%;
+
+      ul {
+        padding-left: 0;
+      }
+    }
+
+    .comment-controls {
+      margin-bottom: 5px;
+    }
+
+    .comment-button {
+      float: none;
+    }
+  }
+  .comment-submission {
+    width: 100%;
+    float: none;
+  }
+
+  #comment-review {
+    padding-left: 0;
+
+    .edit-comment {
+      position: relative;
+      right: 0;
+      top: 5px;
+    }
+    .download-comment .details {
+      font-size: 12px;
+    }
+  }
+  .section-nav .previous {
+    margin-left: -10px;
+  }
+}
