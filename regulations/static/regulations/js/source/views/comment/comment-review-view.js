@@ -10,6 +10,11 @@ var MainEvents = require('../../events/main-events');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
 
+function toggleInput($input, enabled) {
+  $input.toggle(enabled);
+  $input.prop('disabled', !enabled);
+}
+
 var CommentReviewView = Backbone.View.extend({
   events: {
     'click .edit-comment': 'editComment',
@@ -94,16 +99,21 @@ var CommentReviewView = Backbone.View.extend({
 
   initDependencies: function() {
     var self = this;
-    self.$el.find('select[data-depends-on]').each(function(idx, elm) {
+    self.$el.find('[data-depends-on]').each(function(idx, elm) {
       var $elm = $(elm);
+      var $text = $elm.find('input');
+      var $select = $elm.find('select');
       var $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
-      var $options = $elm.find('option[value]').detach().clone();
+      var $options = $select.find('option[value]').detach().clone();
       function updateOptions(value) {
-        $elm.find('option[value]').remove();
-        $options.filter(function(idx, elm) {
+        $select.find('option[value]').remove();
+        var $valid = $options.filter(function(idx, elm) {
           return $(elm).data('dependency') === value;
-        }).appendTo($elm);
-        $elm.val(null);
+        }).get();
+        toggleInput($text, $valid.length === 0);
+        toggleInput($select, $valid.length > 0);
+        $select.append($valid);
+        $select.val(null);
       }
       updateOptions($dependsOn.val());
       $dependsOn.on('change', function() {
