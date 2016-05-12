@@ -117,10 +117,10 @@ var CommentReviewView = Backbone.View.extend({
       var $target = $('#' + $elm.data('toggle'));
       if ($target.is(':visible')) {
         $target.hide();
-        $elm.text($target.data('more-text') || 'Show more');
+        $elm.html($target.data('more-text') || '<span class="fa fa-plus-circle text-expand" aria-hidden="true"></span>Show more');
       } else {
         $target.show();
-        $elm.text($target.data('less-text') || 'Show less');
+        $elm.html($target.data('less-text') || '<span class="fa fa-minus-circle text-expand" aria-hidden="true"></span>Show less');
       }
     }
     var $toggles = this.$el.find('[data-toggle]');
