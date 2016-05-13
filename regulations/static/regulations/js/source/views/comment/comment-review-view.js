@@ -103,7 +103,7 @@ var CommentReviewView = Backbone.View.extend({
       var $elm = $(elm);
       var $text = $elm.find('input');
       var $select = $elm.find('select');
-      var $selectDropdown = $elm.find('.select-dropdown')
+      var $selectDropdown = $elm.find('.select-dropdown');
       var $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
       var $options = $select.find('option[value]').detach().clone();
       function updateOptions(value) {
