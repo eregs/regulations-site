@@ -2,7 +2,7 @@
   <span class="tab-descriptions">Actions:</span>
   <div class="read-proposal{% if comment_mode != 'write' %} active-mode{% endif %}">
     <span class="read-icon fa fa-book" aria-hidden="true"></span>
-    <a href="{{preamble_url}}">Read <span class="hide-mobile">the proposal</span></a>
+    <a href="{{request.path}}">Read <span class="hide-mobile">the proposal</span></a>
   </div>
   <div class="write-comment{% if comment_mode == 'write' %} active-mode{% endif %}">
     <span class="write-icon fa fa-pencil-square-o" aria-hidden="true"></span>
