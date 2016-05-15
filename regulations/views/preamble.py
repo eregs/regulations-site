@@ -61,10 +61,14 @@ def generate_html_tree(subtree, request, id_prefix=None):
             'markup_page_type': 'reg-section'}
 
 
-def get_toc_position(toc, ids):
-    return next((index for index, value in enumerate(toc[0].sections)
-                if value.part == ids['part']
-                and value.section == ids['section']), None)
+def get_toc_position(toc, part, section):
+    """ A toc comprises a list of parts, each part referencing a list of sections
+        in its sections attribute
+    """
+    sections = (section for part in toc for section in part.sections)
+    for index, value in enumerate(sections):
+        if value.part == part and value.section == section:
+            return index
 
 
 NavItem = namedtuple(
@@ -434,7 +438,7 @@ class CFRChangesView(View):
             section_label = None
         else:
             ids = {'part': label_parts[0], 'section': label_parts[1]}
-            toc_position = get_toc_position(context['cfr_change_toc'], ids)
+            toc_position = get_toc_position(context['cfr_change_toc'], **ids)
             sub_context = self.regtext_changes_context(
                 amendments,
                 versions,

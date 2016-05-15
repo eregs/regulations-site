@@ -262,7 +262,7 @@ class CFRChangesViewTests(TestCase):
             diff_applier.DiffApplier(diff, '111-44'))
 
         result = preamble.CFRChangesView.regtext_changes_context(
-            amendments, version_info, '111-44', '8675-309', 5)
+            amendments, version_info, '111-44', '8675-309', 0)
         self.assertEqual(result['instructions'], ['3. Add subpart M'])
         self.assertEqual(result['tree']['marked_up'],
                          '<ins>New node text</ins>')
@@ -360,3 +360,49 @@ class CFRChangeToCTests(TestCase):
         nav = preamble.section_navigation([], toc, part='478', section='120')
         assert_equal(nav['previous'].section_id, '2016_02749-cfr-478-99')
         assert_is_none(nav['next'])
+
+    def test_get_toc_position(self):
+        toc = [
+            preamble.ToCPart(
+                part='478',
+                title='27',
+                name='Commerce',
+                authority_url='',
+                sections=[
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-478-99',
+                        url='/preamble/2016_02749/cfr_changes/478-99',
+                        title=u'§ 478.99 Certain prohibited',
+                        part='478', section='99',
+                    ),
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-478-120',
+                        url='/preamble/2016_02749/cfr_changes/478-120',
+                        title=u'§ 478.120 Firearms',
+                        part='478', section='120',
+                    ),
+                ],
+            ),
+            preamble.ToCPart(
+                part='521',
+                title='27',
+                name='Commerce',
+                authority_url='',
+                sections=[
+                    preamble.ToCSect(
+                        full_id='2016_02749-cfr-521-18',
+                        url='/preamble/2016_02749/cfr_changes/521-18',
+                        title=u'§ 521.18 Something else',
+                        part='521', section='18',
+                    )
+                ],
+            )]
+
+        self.assertEqual(0, preamble.get_toc_position(toc,
+                         **{'part': '478', 'section': '99'}))
+        self.assertEqual(1, preamble.get_toc_position(toc,
+                         **{'part': '478', 'section': '120'}))
+        self.assertEqual(2, preamble.get_toc_position(toc,
+                         **{'part': '521', 'section': '18'}))
+        self.assertIsNone(preamble.get_toc_position(toc,
+                          **{'part': 'non-existent', 'section': '18'}))
