@@ -38,7 +38,7 @@ class HTMLBuilder(object):
         for layer in self.p_applier.layers.values():
             if hasattr(layer, 'preprocess_root'):   # @todo - remove
                 layer.preprocess_root(self.tree)
-        self.process_node(self.tree)
+        self.process_node(self.tree, indexes=self.index_prefix)
 
     def list_level(self, parts, node_type):
         return len(parts) - 2
@@ -208,8 +208,6 @@ class PreambleHTMLBuilder(HTMLBuilder):
 
     def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
-        if indexes is None:
-            indexes = self.index_prefix
         super(PreambleHTMLBuilder, self).process_node(node, indexes=indexes)
         node['accepts_comments'] = True
         node['comments_calledout'] = bool(node.get('title'))
@@ -223,8 +221,6 @@ class CFRChangeHTMLBuilder(CFRHTMLBuilder):
     in a notice. This assumes self.diff_applier is set"""
     def process_node(self, node, indexes=None):
         """Overrides with custom, additional processing"""
-        if indexes is None:
-            indexes = self.index_prefix
         super(CFRHTMLBuilder, self).process_node(node, indexes=indexes)
         label_id = '-'.join(node['label'])
         node['toc_id'] = '-'.join(self.id_prefix + node['label'][:2])
