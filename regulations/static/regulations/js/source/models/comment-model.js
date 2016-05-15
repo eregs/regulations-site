@@ -3,7 +3,7 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 
-var comment_model = Backbone.Model.extend({
+var commentModel = Backbone.Model.extend({
   defaults: {
     docId: '',
     label: '',
@@ -14,10 +14,10 @@ var comment_model = Backbone.Model.extend({
   }
 });
 
-var index_comparator = function(first, second) {
-    var max_length = Math.max(first.length, second.length);
+var indexComparator = function(first, second) {
+    var maxLength = Math.max(first.length, second.length);
 
-    for (var i = 0; i < max_length; i++) {
+    for (var i = 0; i < maxLength; i++) {
         if (first[i] === undefined) {
             return -1;
         } else if (second[i] === undefined) {
@@ -31,11 +31,11 @@ var index_comparator = function(first, second) {
     return 0;
 };
 
-var comment_comparator = function(first, second) {
-    return index_comparator(first.get('indexes'), second.get('indexes'));
+var commentComparator = function(first, second) {
+    return indexComparator(first.get('indexes'), second.get('indexes'));
 };
 
 module.exports = {
-    CommentModel: comment_model,
-    commentComparator: comment_comparator
+    CommentModel: commentModel,
+    commentComparator: commentComparator
 };

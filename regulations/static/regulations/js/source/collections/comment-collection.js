@@ -5,10 +5,10 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 Backbone.LocalStorage = require('backbone.localstorage');
 
-var comment_model = require('../models/comment-model');
+var commentModel = require('../models/comment-model');
 
 var CommentCollection = Backbone.Collection.extend({
-  model: comment_model.CommentModel,
+  model: commentModel.CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
 
   filter: function(docId) {
@@ -24,7 +24,7 @@ var CommentCollection = Backbone.Collection.extend({
     });
   },
 
-  comparator: comment_model.commentComparator
+  comparator: commentModel.commentComparator
 });
 
 var comments = new CommentCollection();

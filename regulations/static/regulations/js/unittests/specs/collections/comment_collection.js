@@ -11,9 +11,9 @@ describe('CommentCollection', function() {
     Backbone = require('backbone');
     $ = require('jquery');
     Backbone.$ = $;
-    var comment_model = require('../../../source/models/comment-model');
-    CommentModel = comment_model.CommentModel;
-    commentComparator = comment_model.commentComparator;
+    var commentModel = require('../../../source/models/comment-model');
+    CommentModel = commentModel.CommentModel;
+    commentComparator = commentModel.commentComparator;
 
   });
 
