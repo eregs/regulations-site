@@ -113,7 +113,6 @@ var CommentReviewView = Backbone.View.extend({
         }).get();
         toggleInput($text, $valid.length === 0);
         toggleInput($select, $valid.length > 0);
-        toggleInput($selectDropdown, $valid.length > 0);
         $select.append($valid);
         $select.val(null);
       }
