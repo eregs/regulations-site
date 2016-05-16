@@ -16,7 +16,7 @@ describe('CommentConfirmView', function() {
     Backbone.$ = $;
     global.localStorage = window.localStorage = storage;
     comments = require('../../../source/collections/comment-collection');
-    CommentModel = require('../../../source/models/comment-model');
+    CommentModel = require('../../../source/models/comment-model').CommentModel;
     CommentConfirmView = require('../../../source/views/comment/comment-confirm-view');
   });
 

@@ -51,13 +51,24 @@ def generate_html_tree(subtree, request, id_prefix=None):
                              doc_id, sectional=True)
     builder = PreambleHTMLBuilder(
         *layer_creator.get_appliers(),
-        id_prefix=id_prefix
+        id_prefix=id_prefix,
+        index_prefix=[0, subtree.get('lft')]
     )
     builder.tree = subtree
     builder.generate_html()
 
     return {'node': builder.tree,
             'markup_page_type': 'reg-section'}
+
+
+def get_toc_position(toc, part, section):
+    """ A toc comprises a list of parts, each part referencing a list of sections
+        in its sections attribute
+    """
+    sections = (section for part in toc for section in part.sections)
+    for index, value in enumerate(sections):
+        if value.part == part and value.section == section:
+            return index
 
 
 NavItem = namedtuple(
@@ -426,11 +437,13 @@ class CFRChangesView(View):
             section_label = None
         else:
             ids = {'part': label_parts[0], 'section': label_parts[1]}
+            toc_position = get_toc_position(context['cfr_change_toc'], **ids)
             sub_context = self.regtext_changes_context(
                 amendments,
                 versions,
                 doc_number=doc_number,
                 label_id=section,
+                toc_position=toc_position,
             )
             section_label = sub_context['tree']['human_label']
         sub_context['meta'] = context['meta']
@@ -465,7 +478,7 @@ class CFRChangesView(View):
 
     @classmethod
     def regtext_changes_context(cls, amendments, version_info, label_id,
-                                doc_number):
+                                doc_number, toc_position):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
         relevant = []
@@ -481,7 +494,9 @@ class CFRChangesView(View):
         appliers = get_appliers(label_id, versions)
 
         builder = CFRChangeHTMLBuilder(
-            *appliers, id_prefix=[str(doc_number), 'cfr'])
+            *appliers, id_prefix=[str(doc_number), 'cfr'],
+            index_prefix=[1, toc_position]
+        )
         builder.tree = left_tree or {}
         builder.generate_html()
 
