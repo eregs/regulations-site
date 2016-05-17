@@ -47,6 +47,11 @@ comment-media-queries.less contains media query styles for Notice and Comment
   }
 }
 
+@media only screen and ( max-width: 1100px ) {
+  #preamble-read .activate-write {
+    right: -275px;
+  }
+}
 
 // tablet + mobile screen sizes
 @media only screen and ( max-width: 780px ) {
@@ -58,11 +63,30 @@ comment-media-queries.less contains media query styles for Notice and Comment
 
   #preamble-read {
     padding-left: 0;
-  }
+    width: 100%;
 
-  .activate-write {
-    right: -60px;
-    width: 220px;
+    .not-called-out {
+      .activate-write {
+        display: block;
+      }
+    }
+
+    .activate-write {
+      padding: 5px 0;
+      position: relative;
+      right: 0;
+      top: 0;
+      width: 100%;
+
+      &:hover {
+        color: #4A90E2;
+      }
+    }
+
+    p + .activate-write {
+      display: block;
+      top: 0;
+    }
   }
 
   #preamble-write {
@@ -122,22 +146,6 @@ comment-media-queries.less contains media query styles for Notice and Comment
     font-size: 30px;
   }
 
-  .activate-write {
-    padding: 5px 0;
-    position: relative;
-    right: 0;
-    top: 0;
-    width: 100%;
-
-    &:hover {
-      color: #4A90E2;
-    }
-  }
-
-  p + .activate-write {
-    top: 0;
-  }
-
   #preamble-read {
     padding-left: 0;
 
@@ -152,9 +160,6 @@ comment-media-queries.less contains media query styles for Notice and Comment
       h4 {
         margin-top: 0;
       }
-    }
-    p + .activate-write {
-      display: block;
     }
 
     .node {
