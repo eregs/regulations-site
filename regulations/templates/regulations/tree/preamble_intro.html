@@ -31,7 +31,11 @@
         EST.</h5>
       Rule published {{ meta.publication|date:"F j, Y"}}
     </div>
-    {% comment %}Jump links will go here{% endcomment %}
+    {% if meta.supporting_documents %}
+    <div>
+      <a href="#supporting-docs">View supporting documents from the docket</a>
+    </div>
+    {% endif %}
     <hr />
     <p>
       {% for title_info in meta.cfr_parts %}
@@ -47,3 +51,14 @@
     {% include node.template_name %}
   {% endwith %}
 {% endfor %}
+{% if meta.supporting_documents %}
+  <li>
+    <h4 id="supporting-docs">Supporting documents from the docket:</h4>
+    <ol>
+      {% for doc in meta.supporting_documents|slice:":3" %}
+        <li><a href="https://www.regulations.gov/#!documentDetail;D={{doc.regs_id}}">{{doc.title}}</a></li>
+      {% endfor %}
+      <li><a href="https://www.regulations.gov/#!docketBrowser;rpp=25;po=0;dct=SR%252BO;D={{meta.primary_docket}}">View all</a></li>
+    </ol>
+  </li>
+{% endif %}
