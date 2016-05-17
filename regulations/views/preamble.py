@@ -447,11 +447,6 @@ class CFRChangesView(View):
             )
             section_label = sub_context['tree']['human_label']
         sub_context['meta'] = context['meta']
-        sub_context['navigation'] = section_navigation(
-            context['preamble_toc'],
-            context['cfr_change_toc'],
-            **ids
-        )
 
         context.update({
             'sub_context': sub_context,
@@ -459,6 +454,11 @@ class CFRChangesView(View):
             'full_id': '{}-cfr-{}'.format(doc_number, section),
             'section_label': section_label,
             'type': 'cfr',
+            'navigation': section_navigation(
+                context['preamble_toc'],
+                context['cfr_change_toc'],
+                **ids
+            ),
         })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
