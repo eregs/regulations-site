@@ -135,9 +135,9 @@ var MainView = Backbone.View.extend({
 
       this.renderSection(null);
 
-      // hide any toggle elements
-      $('.toggle .collapsible').hide();
-      $('.toggle .toggle-button-close').hide();
+      // hide toggle elements
+      $('.toggle .collapsible').attr('aria-hidden', 'true').hide();
+      $('.toggle .toggle-button-close').attr('aria-hidden', 'true').hide();
     },
 
     modelmap: {
