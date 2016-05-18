@@ -244,6 +244,10 @@ comment-review.less contains styles for Review Your Comment page
       list-style-type: disc;
     }
 
+    .disclaimer-text {
+      display: none;
+    }
+
     p {
       font-size: 12px;
       line-height: 18px;
@@ -260,6 +264,7 @@ comment-review.less contains styles for Review Your Comment page
     .show-more-toggle {
       display: inline;
       color: @blue;
+      cursor: pointer;
       font-size: 14px;
 
       &:hover {
@@ -269,6 +274,10 @@ comment-review.less contains styles for Review Your Comment page
       .text-expand {
         font-size: 13px;
         padding: 0 3px;
+      }
+
+      .show-more-toggle-close {
+        display: none;
       }
     }
   }
