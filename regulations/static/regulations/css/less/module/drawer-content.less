@@ -34,20 +34,36 @@ This contains all of the styles specific to the TOC
 
       // to account for the last child padding
       // when there's a nested list
-      li ol li:first-child {
+      li ol li {
         a {
-          padding-top: 0;
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+        &:first-child {
+          a {
+            padding-top: 5px;
+          }
+        }
+        &:last-child {
+          a {
+            padding-bottom: 10px;
+          }
         }
       }
 
-      li:first-child {
+      li {
         a {
-          padding-top: 11px;
+          padding-top: 5px;
         }
-      }
-      li:last-child {
-        a {
-          padding-bottom: 15px;
+        &:first-child {
+          a {
+            padding-top: 10px;
+          }
+        }
+        &:last-child {
+          a {
+            padding-bottom: 10px;
+          }
         }
       }
     }
