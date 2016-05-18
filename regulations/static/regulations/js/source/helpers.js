@@ -38,6 +38,17 @@ if (!Array.prototype.indexOf) {
   };
 }
 
+$(window).load(function () {
+
+  // notice and comment homepage expandable section
+  $('.nc-homepage .expandable .button').click(function (){
+    $(this).next().fadeToggle();
+    $(this).find('.button-close').toggle();
+    $(this).find('.button-open').toggle();
+  });
+
+});
+
 module.exports = {
     // Finds parent-most reg paragraph
     findBaseSection: function(id) {
