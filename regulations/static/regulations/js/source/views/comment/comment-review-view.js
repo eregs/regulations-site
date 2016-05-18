@@ -65,7 +65,6 @@ var CommentReviewView = Backbone.View.extend({
 
     this.initTabs();
     this.initDependencies();
-    this.initToggles();
 
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
@@ -120,16 +119,6 @@ var CommentReviewView = Backbone.View.extend({
         updateOptions($(this).val());
       });
     });
-  },
-
-  initToggles: function() {
-
-    this.$el.find('.show-more-toggle').click(function () {
-      $(this).find('.show-more-toggle-open').toggle();
-      $(this).find('.show-more-toggle-close').toggle();
-      $(this).prev().toggle();
-    });
-
   },
 
   preview: function() {
