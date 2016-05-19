@@ -223,7 +223,10 @@ var MainView = Backbone.View.extend({
       }
 
       this.childOptions.el = this.$el.children().get(0);
-      this.childView = new this.viewmap[this.contentType](this.childOptions);
+
+      if (this.contentType) {
+        this.childView = new this.viewmap[this.contentType](this.childOptions);
+      }
 
       // Destroy and recreate footer
       if (this.sectionFooter) {
