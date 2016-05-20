@@ -297,10 +297,8 @@ var MainView = Backbone.View.extend({
     },
 
     loaded: function() {
-        $('.main-content').removeClass('loading');
-
         // change focus to main content area when new sections are loaded
-        $('.section-focus').focus();
+        $('.main-content').removeClass('loading').focus();
         this.setHandlers();
     },
 
