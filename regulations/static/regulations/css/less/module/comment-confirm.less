@@ -1,8 +1,18 @@
+/*
+comment-confirm.less
+==========================================================================
+Contains styles for Comment confirmation success/fail/invalid pages.
+*/
 
 .comment-confirm-success {
   .font-regular;
   padding: 30px 20px;
   width: 80%;
+
+  p {
+    .font-regular;
+    margin: 0;
+  }
 
   .success-alert {
     background-color: @green_light;
@@ -11,7 +21,13 @@
     padding: 10px;
 
     .fa-check-circle {
+      display: inline-block;
       padding: 5px 15px 0;
+      vertical-align: top;
+    }
+
+    .success-alert-text {
+      display: inline-block;
     }
 
     h2 {
@@ -19,15 +35,30 @@
     }
     p {
       .font-regular;
-      margin: 0;
     }
   }
 
-  .save-pdf-copy {
+  .save-pdf {
     padding: 25px;
 
-    h3 {
-      font-size: 20px;
+    .fa-file-pdf-o {
+      color: @blue;
+      font-size: 2.5em;
+      display: inline-block;
+      margin: 10px 10px 10px 0;
+      vertical-align: top;
+    }
+
+    .save-pdf-text {
+      display: inline-block;
+
+      h3 {
+        font-size: 20px;
+        margin: 0;
+      }
+      a {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -38,5 +69,39 @@
   section {
     border-top: 1px solid @medium_gray;
     padding: 30px 0;
+
+    h3 {
+      margin-bottom: 0.5em;
+    }
+    p {
+      .font-regular;
+    }
+  }
+
+  ul {
+    margin: 0 0 25px 0;
+    padding-left: 35px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  li {
+    margin-top: -15px;
+
+    &:before {
+      border-color: transparent @orange;
+      border-radius: 3px;
+      border-style: solid;
+      border-width: 8px 0 8px 13px;
+      content: "";
+      display: block;
+      height: 0;
+      left: -25px;
+      position: relative;
+      top: 20px;
+      width: 0;
+    }
   }
 }
