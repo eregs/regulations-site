@@ -2,11 +2,12 @@
 
 from __future__ import unicode_literals
 
-import re
-import itertools
 from copy import deepcopy
 from datetime import date
 from collections import namedtuple
+import itertools
+import logging
+import re
 
 from django.http import Http404
 from django.conf import settings
@@ -26,6 +27,9 @@ from regulations.generator.toc import fetch_toc
 from regulations.views import utils
 from regulations.views import chrome
 from regulations.views.diff import Versions, get_appliers
+
+
+logger = logging.getLogger(__name__)
 
 
 def find_subtree(root, label_parts):
@@ -167,18 +171,23 @@ class CFRChangeToC(object):
         hasn't been seen before, we need to perform some accounting, fetching
         related meta data, etc."""
         part = amendment['cfr_part']
-        meta = utils.regulation_meta(part, self.version_info[part]['right'])
-        flat_toc = fetch_toc(part, self.version_info[part]['right'],
-                             flatten=True)
-        self.section_titles = {elt['index'][1]: elt['title']
-                               for elt in flat_toc if len(elt['index']) == 2}
-        self.current_part = ToCPart(
-            title=meta.get('cfr_title_number'), part=part,
-            name=meta.get('statutory_name'), sections=[],
-            authority_url=reverse('cfr_changes', kwargs={
-                'doc_number': self.doc_number, 'section': part}))
-        self.current_section = None
-        self.toc.append(self.current_part)
+        if part not in self.version_info:
+            logger.warning("No version info for %s", part)
+        else:
+            meta = utils.regulation_meta(part,
+                                         self.version_info[part]['right'])
+            flat_toc = fetch_toc(part, self.version_info[part]['right'],
+                                 flatten=True)
+            self.section_titles = {
+                elt['index'][1]: elt['title']
+                for elt in flat_toc if len(elt['index']) == 2}
+            self.current_part = ToCPart(
+                title=meta.get('cfr_title_number'), part=part,
+                name=meta.get('statutory_name'), sections=[],
+                authority_url=reverse('cfr_changes', kwargs={
+                    'doc_number': self.doc_number, 'section': part}))
+            self.current_section = None
+            self.toc.append(self.current_part)
 
     def add_change(self, label_parts):
         """While processing an amendment, we will encounter sections we
