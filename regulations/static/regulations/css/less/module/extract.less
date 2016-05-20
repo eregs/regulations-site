@@ -1,6 +1,12 @@
-.extract {
+// Targets the inner paragraph because the node div has right padding that stretches out the bg color
+
+.extract > div {
+  margin-bottom: 1em;
+}
+
+.extract > div > p {
     background-color: @bg_gray;
-    padding: 0.125em .625em;
-    margin-bottom: 1em;
+    padding: 0.5em 1em;
+    margin-bottom: 0em;
     border-bottom: 0px;
 }
