@@ -64,6 +64,39 @@ describe('Non-DOM Helper functions:', function() {
     });
 });
 
+describe('parsePreambleId', function() {
+    'use strict';
+
+    var Helpers;
+    before(function (){ Helpers = require('../../source/helpers'); });
+
+    it('parses relevant fields from the id string', function() {
+        expect(Helpers.parsePreambleId('2016_02749-preamble-2016_02749-I-A')).to.eql(
+            {
+                path: ['preamble', '2016_02749', 'I'],
+                type: 'preamble',
+                docId: '2016_02749',
+                section: ['2016_02749', 'I'],
+                hash: '2016_02749-I-A'
+            });
+
+        expect(Helpers.parsePreambleId('2016_02749-cfr-478-32-a-1')).to.eql(
+            {
+                path: ['preamble', '2016_02749', 'cfr_changes', '478-32'],
+                type: 'cfr',
+                docId: '2016_02749',
+                section: ['478', '32'],
+                hash: '478-32-a-1'
+            });
+    });
+
+    it('does not add a hash for top-level sections', function() {
+        expect(Helpers.parsePreambleId('2016_02749-preamble-2016_02749-I').hash).to.be.undefined;
+        expect(Helpers.parsePreambleId('2016_02749-cfr-478-32').hash).to.be.undefined;
+    });
+
+});
+
 describe('Version Finder Helper Functions:', function() {
     'use strict';
 
