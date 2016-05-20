@@ -32,6 +32,59 @@ Backbone.$ = $;
 var MainView = Backbone.View.extend({
     el: '#content-body',
 
+    events: {
+      'click .toggle .button': 'toggleElement'
+    },
+
+  /**
+   * Toggle an element
+   *
+   * An element that contains class 'toggle'
+   * will toggle class 'collapsible' via 'button' class
+   * as well as toggle button open/close elements for labeling purposes.
+   * Also toggles aria-hidden/expanded attributes for accessibility.
+   *
+   * <div class="toggle">
+   *  <div class="collapsible" aria-hidden="true"></div>
+   *  <div class="button" aria-expanded="false">
+   *   <div class="toggle-button-open" aria-hidden="false">Open</div>
+   *   <div class="toggle-button-close" aria-hidden="true">Close</div>
+   *  </div>
+   * </div>
+   *
+   */
+    toggleElement: function(e) {
+      var $target = $(e.target);
+      var $toggleEl = $target.closest('.toggle');
+      var $collapsibleEl = $toggleEl.find('.collapsible');
+      var $toggleButton = $toggleEl.find('.button');
+      var $toggleButtonOpen = $toggleButton.find('.toggle-button-open');
+      var $toggleButtonClose = $toggleButton.find('.toggle-button-close');
+
+      if ($collapsibleEl.is(':visible')) {
+        $collapsibleEl.hide();
+        $collapsibleEl.attr('aria-hidden', true);
+
+        $toggleButton.attr('aria-expanded', false);
+
+        $toggleButtonOpen.show();
+        $toggleButtonOpen.attr('aria-hidden', false);
+        $toggleButtonClose.hide();
+        $toggleButtonClose.attr('aria-hidden', true);
+      }
+      else {
+        $collapsibleEl.show();
+        $collapsibleEl.attr('aria-hidden', false);
+
+        $toggleButton.attr('aria-expanded', true);
+
+        $toggleButtonClose.show();
+        $toggleButtonClose.attr('aria-hidden', false);
+        $toggleButtonOpen.hide();
+        $toggleButtonOpen.attr('aria-hidden', true);
+      }
+    },
+
     initialize: function() {
       this.dataTables = null;
 
@@ -81,6 +134,10 @@ var MainView = Backbone.View.extend({
       }
 
       this.renderSection(null);
+
+      // hide toggle elements
+      $('.toggle .collapsible').attr('aria-hidden', 'true').hide();
+      $('.toggle .toggle-button-close').attr('aria-hidden', 'true').hide();
     },
 
     modelmap: {
@@ -166,7 +223,10 @@ var MainView = Backbone.View.extend({
       }
 
       this.childOptions.el = this.$el.children().get(0);
-      this.childView = new this.viewmap[this.contentType](this.childOptions);
+
+      if (this.contentType) {
+        this.childView = new this.viewmap[this.contentType](this.childOptions);
+      }
 
       // Destroy and recreate footer
       if (this.sectionFooter) {
