@@ -250,7 +250,8 @@ def make_preamble_toc(nodes, depth=1, max_depth=3):
     for node in have_titles:
         url = reverse('chrome_preamble',
                       kwargs={'paragraphs': '/'.join(node['label'][:2])})
-        # "Top" level ToC entries link to the top of the page
+        # Add a hash to a specific section if we're not linking to the
+        # top-level entry
         if len(node['label']) > 2:
             url += '#' + '-'.join(node['label'])
 
