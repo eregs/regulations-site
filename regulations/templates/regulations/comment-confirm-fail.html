@@ -1,20 +1,47 @@
-<div>
-  Comment submission failed.
-  We're sorry, something went wrong with our system, and submitting your comment did not work.
-</div>
 
-<div>
-  <a href="{% url 'comment_review' doc_number %}">Return to your draft comment</a> to try submitting again.
-</div>
+<div class="comment-confirm">
 
-<div>
-  <h3>If this problem keeps happening</h3>
-  If you've already tried submitting your comment more than once, please save a copy of your draft comment for safekeeping.
-</div>
+  <div class="comment-confirm-alert fail-alert">
+    <div class="fa fa-2x fa-exclamation-circle"></div>
+    <div class="alert-text">
+      <h2>Comment submission failed.</h2>
+      <p>We're sorry, something went wrong with our system, and submitting your comment did not work.</p>
+    </div>
+  </div>
 
-You can:
-<ul>
-  <li>Come back here later and try submitting your comment again</li>
-  <li>Use a different way to submit your comment. You can <a href="{{regs_gov_url}}" target="_blank">go to this proposed rule on Regulations.gov and submit your comment there</a>.</li>
-  <li>Let us know about the problem. You can email <a href="mailto:changeme@changeme.gov">changeme.gov</a> to tell the team that built this tool about the problem — we'll look into this and try to fix it.</li>
-</ul>
+  <div class="return-to-draft">
+
+    <h3>
+      <a href="{% url 'comment_review' doc_number %}">
+        <span class="fa fa-chevron-left"></span>
+        Return to your draft comment</a> to try submitting again.
+    </h3>
+
+  </div>
+
+  <section class="problem-persist">
+    <h3>If this problem keeps happening</h3>
+    <p>
+      If you've already tried submitting your comment more than once, please save a copy of your draft comment for safekeeping.
+    </p>
+
+    <p>
+      <a href=""><span class="fa fa-file-pdf-o"></span> Download draft comment (PDF)</a>
+    </p>
+
+    <p>You can:</p>
+    <ul>
+      <li>
+        <strong>Come back here later and try submitting your comment again.</strong>
+      </li>
+      <li>
+        <strong>Use a different way to submit your comment.</strong>
+        You can <a href="{{regs_gov_url}}" target="_blank">go to this proposed rule on Regulations.gov and submit your comment there <span class="cf-icon cf-icon-external-link"></span></a>.
+      </li>
+      <li>
+        <strong>Let us know about the problem.</strong>
+        You can email <a href="mailto:changeme@changeme.gov">something@changeme.gov <span class="cf-icon cf-icon-external-link"></span></a> to tell the team that built this tool about the problem — we'll look into this and try to fix it.</li>
+    </ul>
+  </section>
+
+</div>
