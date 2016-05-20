@@ -21,6 +21,8 @@
 {% endif %}
 
 <div class="node{% if not node.comments_calledout %} not-called-out{% endif %}">
+{% if not node.comments_calledout %}<div class="not-called-out-extend"></div>{% endif %}
+
 
   {%if node.marked_up %}
     <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
