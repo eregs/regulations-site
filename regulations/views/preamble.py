@@ -241,33 +241,30 @@ class PreambleSect(namedtuple('PreambleSect',
 
 
 def make_preamble_toc(nodes, depth=1, max_depth=3):
+    toc = []
     intro_subheader = depth == 2 and any('intro' in n['label'] for n in nodes)
     if depth > max_depth or intro_subheader:
-        return []
-    return [
-        PreambleSect(
-            depth=depth,
-            title=node['title'],
-            url='{}#{}'.format(
-                reverse(
-                    'chrome_preamble',
-                    kwargs={'paragraphs': '/'.join(node['label'][:2])},
-                ),
-                '-'.join(node['label']),
-            ),
-            full_id='{}-preamble-{}'.format(
-                node['label'][0],
-                '-'.join(node['label']),
-            ),
+        return toc
+
+    have_titles = [n for n in nodes if n.get('title')]
+    for node in have_titles:
+        url = reverse('chrome_preamble',
+                      kwargs={'paragraphs': '/'.join(node['label'][:2])})
+        # "Top" level ToC entries link to the top of the page
+        if len(node['label']) > 2:
+            url += '#' + '-'.join(node['label'])
+
+        toc.append(PreambleSect(
+            depth=depth, title=node['title'], url=url,
+            full_id='{}-preamble-{}'.format(node['label'][0],
+                                            '-'.join(node['label'])),
             children=make_preamble_toc(
                 node.get('children', []),
                 depth=depth + 1,
                 max_depth=max_depth,
             )
-        )
-        for node in nodes
-        if node.get('title')
-    ]
+        ))
+    return toc
 
 
 def section_navigation(preamble_toc, cfr_toc, **ids):
