@@ -140,7 +140,7 @@ comment-review.less contains styles for Review Your Comment page
   }
 
   .additional-info {
-    padding: 0 0 10px 0;
+    padding: 0 0 25px 0;
     max-width: 535px;
     border-bottom: 2px solid @light_field;
 
@@ -184,6 +184,21 @@ comment-review.less contains styles for Review Your Comment page
 
     .labeled-field {
       margin: 5px 0;
+    }
+
+    .select-dropdown {
+      position: relative;
+
+      &:after {
+        .fa; // font awesome icon
+        content: "\f107"; //down arrow
+        font-family: FontAwesome;
+        position: absolute;
+        right: 20px;
+        top: 18px;
+        font-size: 20px;
+        pointer-events: none;
+      }
     }
 
     select {
