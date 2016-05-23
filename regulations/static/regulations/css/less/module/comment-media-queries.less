@@ -48,6 +48,11 @@ comment-media-queries.less contains media query styles for Notice and Comment
 }
 
 @media only screen and ( max-width: 1100px ) {
+
+  .header-main {
+    margin-right: 0;
+  }
+
   #preamble-read .activate-write {
     right: -275px;
   }
@@ -69,6 +74,10 @@ comment-media-queries.less contains media query styles for Notice and Comment
       .activate-write {
         display: block;
       }
+    }
+
+    .not-called-out-extend {
+      display: none;
     }
 
     .activate-write {
@@ -115,6 +124,18 @@ comment-media-queries.less contains media query styles for Notice and Comment
 // mobile screen size
 @media only screen and ( max-width: 480px ) {
 
+  .sub-head {
+    line-height: 33px;
+
+    .wayfinding {
+      height: 33px;
+
+      .header-label {
+        margin-left: 0;
+      }
+    }
+  }
+
   .preamble-sub-head {
     height: 35px;
 
@@ -124,6 +145,7 @@ comment-media-queries.less contains media query styles for Notice and Comment
   }
 
   .preamble-header {
+    background: @bg_gray;
     left: 40px;
     z-index: 10;
 
@@ -137,9 +159,19 @@ comment-media-queries.less contains media query styles for Notice and Comment
 
     .read-proposal,
     .write-comment {
+      border-bottom: 1px solid @medium_gray;
+      border-top: 1px solid @medium_gray;
       font-size: 13px;
       width: 50% !important;
     }
+
+    .active-mode {
+      border-bottom: none;
+    }
+  }
+
+  .preamble-wrapper {
+    padding-top: 85px;
   }
 
   h3.section-title {
