@@ -238,16 +238,31 @@ comment-media-queries.less contains media query styles for Notice and Comment
     }
 
     .comment-controls {
-      margin-bottom: 5px;
+      float: none;
+      margin-bottom: 10px;
+      width: 100%;
+
+      button, div {
+        float: none;
+      }
+    }
+
+    .comment-submission {
+      width: 100%;
+      float: none;
     }
 
     .comment-button {
       float: none;
     }
-  }
-  .comment-submission {
-    width: 100%;
-    float: none;
+
+    .comment-wrapper .status {
+      text-align: left;
+    }
+
+    a.comment-index-review {
+      float: left;
+    }
   }
 
   #comment-review {
