@@ -14,8 +14,8 @@ Main Content
 */
 
 .main-content {
-    margin-top: 50px;
-    padding: 50px 60px;
+    margin-top: @mainhead_height + @subhead_height;
+    padding: 10px 60px 40px;
 }
 
 @media only screen and ( max-width: 600px ) {
@@ -88,7 +88,7 @@ Secondary Content
         position: fixed;
         overflow-y: auto;
         border-left: 1px solid @light_field;
-        top: 90px;
+        top: @mainhead_height + @subhead_height;
         right: 0px;
         bottom: 0;
         height: 100%;
@@ -154,7 +154,7 @@ Secondary Content
 /*TODO: convert TOC drawer width to em*/
 .panel {
     position: fixed;
-    top: 94px;
+    top: @mainhead_height + @subhead_height;
     bottom: 0px;
     width: 240px;
     padding-bottom: 60px;
