@@ -49,6 +49,10 @@ def submit_comment(self, comments, form_data, metadata_url):
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
                 pdf_url = cache_pdf(comment_pdf, metadata_url)
+
+                # Restore file position changed by cache_pdf
+                comment_pdf.seek(0)
+
                 data = build_multipart_encoded(
                     form_data, comment_pdf, attachments)
                 response = post_submission(data)
