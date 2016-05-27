@@ -98,7 +98,15 @@ Preamble Read Mode
   }
 
   .subpart-info {
-    border-bottom: 1px solid @grey;
+    border-bottom: 1px solid @medium_gray;
+    margin-bottom: 15px;
+
+    .subpart-sections {
+      font-size: 14px;
+      .font-regular;
+      color: @dark_text;
+      margin: 20px 0 0 0;
+    }
 
     .subpart-wayfinding {
       display: inline-block;
@@ -106,8 +114,9 @@ Preamble Read Mode
     }
     a {
       display: inline-block;
-      height: 20px;
-      width: 20px;
+      height: 10px;
+      width: 10px;
+      vertical-align: middle;
       background-color: @grey;
 
       &.current {
