@@ -115,12 +115,20 @@ var CommentReviewView = Backbone.View.extend({
       var $writeIn = self.$el.find('[data-writein-for="' + $select.prop('id') + '"]');
       function updateOptions(value) {
         $select.find('option[value]').remove();
-        var $valid = $options.filter(function(idx, elm) {
-          return $(elm).data('dependency') === value;
-        }).get();
-        toggleInput($writeIn, $valid.length === 0);
-        toggleInput($elm, $valid.length > 0);
-        $select.append($valid);
+        var optionsCount = 0;
+        var optionsToShow = [];
+        $options.each(function(idx, elm) {
+          var depVal = elm.getAttribute('data-dependency');
+          if (depVal === value) {
+            optionsCount++;
+          }
+          if (depVal === value || depVal === '_all') {
+            optionsToShow.push(elm);
+          }
+        });
+        toggleInput($writeIn, optionsCount === 0);
+        toggleInput($elm, optionsCount > 0);
+        $select.append(optionsToShow);
         $select.val(null);
       }
       updateOptions($dependsOn.val());
