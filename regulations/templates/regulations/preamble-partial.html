@@ -8,13 +8,15 @@
       data-doc-id="{{doc_number}}"
       data-label="{{section_label}}">
     <div id="preamble-read">
-      {% if type == "preamble" %}
-      <ul>
-        {% render_nested template=sub_template context=sub_context %}
-      </ul>
-      {% else %}
-        {% render_nested template=sub_template context=sub_context %}
-      {% endif %}
+      <div class="preamble-content">
+        {% if type == "preamble" %}
+        <ul>
+          {% render_nested template=sub_template context=sub_context %}
+        </ul>
+        {% else %}
+          {% render_nested template=sub_template context=sub_context %}
+        {% endif %}
+      </div>
 
       {% include "regulations/footnotes.html" %}
       {% include "regulations/navigation.html" %}
@@ -24,9 +26,9 @@
       <div class="comment-wrapper">
         {% if meta.accepts_comments %}
           <div class="comment">
-            <h3 class="comment-header">You are writing a comment about </h3>
+            <h4 class="comment-header">You are writing a comment about </h4>
             <div class="comment-context"></div>
-            <h3 class="comment-header">Write your response to </h3>
+            <h4 class="comment-header">Write your response to </h4>
             <form>
               <div class="editor-container"></div>
               <div class="comment-controls">
@@ -65,7 +67,7 @@
 </script>
 
 <script id="comment-index-template" type="text/template">
-  <h3>Your Comment</h3>
+  <h4>Your Comment</h4>
   <p class="comment-index-description">
     You have <span class="comment-count"><%= comments.length == 1 ? comments.length + ' response' : comments.length + ' responses' %></span> pending.
   </p>

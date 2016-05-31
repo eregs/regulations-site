@@ -2,11 +2,12 @@
 
 from __future__ import unicode_literals
 
-import re
-import itertools
 from copy import deepcopy
 from datetime import date
 from collections import namedtuple
+import itertools
+import logging
+import re
 
 from django.http import Http404
 from django.conf import settings
@@ -26,6 +27,9 @@ from regulations.generator.toc import fetch_toc
 from regulations.views import utils
 from regulations.views import chrome
 from regulations.views.diff import Versions, get_appliers
+
+
+logger = logging.getLogger(__name__)
 
 
 def find_subtree(root, label_parts):
@@ -51,13 +55,24 @@ def generate_html_tree(subtree, request, id_prefix=None):
                              doc_id, sectional=True)
     builder = PreambleHTMLBuilder(
         *layer_creator.get_appliers(),
-        id_prefix=id_prefix
+        id_prefix=id_prefix,
+        index_prefix=[0, subtree.get('lft')]
     )
     builder.tree = subtree
     builder.generate_html()
 
     return {'node': builder.tree,
             'markup_page_type': 'reg-section'}
+
+
+def get_toc_position(toc, part, section):
+    """ A toc comprises a list of parts, each part referencing a list of sections
+        in its sections attribute
+    """
+    sections = (section for part in toc for section in part.sections)
+    for index, value in enumerate(sections):
+        if value.part == part and value.section == section:
+            return index
 
 
 NavItem = namedtuple(
@@ -156,18 +171,23 @@ class CFRChangeToC(object):
         hasn't been seen before, we need to perform some accounting, fetching
         related meta data, etc."""
         part = amendment['cfr_part']
-        meta = utils.regulation_meta(part, self.version_info[part]['right'])
-        flat_toc = fetch_toc(part, self.version_info[part]['right'],
-                             flatten=True)
-        self.section_titles = {elt['index'][1]: elt['title']
-                               for elt in flat_toc if len(elt['index']) == 2}
-        self.current_part = ToCPart(
-            title=meta.get('cfr_title_number'), part=part,
-            name=meta.get('statutory_name'), sections=[],
-            authority_url=reverse('cfr_changes', kwargs={
-                'doc_number': self.doc_number, 'section': part}))
-        self.current_section = None
-        self.toc.append(self.current_part)
+        if part not in self.version_info:
+            logger.warning("No version info for %s", part)
+        else:
+            meta = utils.regulation_meta(part,
+                                         self.version_info[part]['right'])
+            flat_toc = fetch_toc(part, self.version_info[part]['right'],
+                                 flatten=True)
+            self.section_titles = {
+                elt['index'][1]: elt['title']
+                for elt in flat_toc if len(elt['index']) == 2}
+            self.current_part = ToCPart(
+                title=meta.get('cfr_title_number'), part=part,
+                name=meta.get('statutory_name'), sections=[],
+                authority_url=reverse('cfr_changes', kwargs={
+                    'doc_number': self.doc_number, 'section': part}))
+            self.current_section = None
+            self.toc.append(self.current_part)
 
     def add_change(self, label_parts):
         """While processing an amendment, we will encounter sections we
@@ -426,19 +446,16 @@ class CFRChangesView(View):
             section_label = None
         else:
             ids = {'part': label_parts[0], 'section': label_parts[1]}
+            toc_position = get_toc_position(context['cfr_change_toc'], **ids)
             sub_context = self.regtext_changes_context(
                 amendments,
                 versions,
                 doc_number=doc_number,
                 label_id=section,
+                toc_position=toc_position,
             )
             section_label = sub_context['tree']['human_label']
         sub_context['meta'] = context['meta']
-        sub_context['navigation'] = section_navigation(
-            context['preamble_toc'],
-            context['cfr_change_toc'],
-            **ids
-        )
 
         context.update({
             'sub_context': sub_context,
@@ -446,6 +463,11 @@ class CFRChangesView(View):
             'full_id': '{}-cfr-{}'.format(doc_number, section),
             'section_label': section_label,
             'type': 'cfr',
+            'navigation': section_navigation(
+                context['preamble_toc'],
+                context['cfr_change_toc'],
+                **ids
+            ),
         })
 
         if not request.is_ajax() and request.GET.get('partial') != 'true':
@@ -465,7 +487,7 @@ class CFRChangesView(View):
 
     @classmethod
     def regtext_changes_context(cls, amendments, version_info, label_id,
-                                doc_number):
+                                doc_number, toc_position):
         """Generate diffs for the changed section"""
         cfr_part = label_id.split('-')[0]
         relevant = []
@@ -481,7 +503,9 @@ class CFRChangesView(View):
         appliers = get_appliers(label_id, versions)
 
         builder = CFRChangeHTMLBuilder(
-            *appliers, id_prefix=[str(doc_number), 'cfr'])
+            *appliers, id_prefix=[str(doc_number), 'cfr'],
+            index_prefix=[1, toc_position]
+        )
         builder.tree = left_tree or {}
         builder.generate_html()
 

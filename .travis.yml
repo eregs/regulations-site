@@ -1,5 +1,6 @@
 language: python
-sudo: false
+dist: trusty      # per https://github.com/travis-ci/travis-ci/issues/5448
+sudo: required    # required for docker
 cache:
   directories:
     - $HOME/.cache/pip
@@ -10,7 +11,7 @@ matrix:
     - python: '3.3'
     - python: '3.4'
     - python: '3.5'
-    - python: '2.7'
+    - python: '3.5'
       addons:
         sauce_connect: true
       env:

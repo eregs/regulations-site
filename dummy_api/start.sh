@@ -1,25 +1,18 @@
 #!/bin/bash
-git clone https://github.com/eregs/regulations-core.git
-cd regulations-core
-pip install -r requirements.txt
+docker run -p 8282:8080 --name core -d eregs/core
+# Sleep for 5 to give Django enough time to start up
+sleep 5
 
-python manage.py syncdb
-python manage.py migrate
-python manage.py runserver 8282 &
-sleep 5 # give django enough time to startup
-
-# Load the data
-cd ../dummy_api
+# Load dummy data (@todo - replace with real data)
 for TAIL in $(find */* -type f | sort -r)
 do
     curl -X PUT http://localhost:8282/$TAIL -d @$TAIL
 done
 
-# Load a proposal
-cd ..
-git clone https://github.com/eregs/regulations-parser
-cd regulations-parser
-pip install -r requirements.txt
-python eregs.py notice_preamble 2016-02749
-python eregs.py layers
-python eregs.py write_to http://localhost:8282
+# Load a real notice
+mkdir cache
+docker run --rm -it -v $PWD/cache:/app/cache eregs/parser notice_preamble 2016-02749
+docker run --rm -it -v $PWD/cache:/app/cache eregs/parser layers
+docker run --rm -it -v $PWD/cache:/app/cache --link core:core eregs/parser write_to http://core:8080
+
+docker logs core

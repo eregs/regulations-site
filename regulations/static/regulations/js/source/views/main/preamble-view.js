@@ -65,6 +65,7 @@ var PreambleView = ChildView.extend({
     this.write(
       $dataTarget.data('section'),
       $section.data('toc-id'),
+      $dataTarget.data('indexes'),
       $dataTarget.data('label'),
       $section
     );
@@ -78,13 +79,21 @@ var PreambleView = ChildView.extend({
     this.write(
       $section.find('.activate-write').data('section'),
       $section.data('toc-id'),
+      $section.data('indexes'),
       $section.find('.activate-write').data('label'),
       $section
     );
   },
 
-  write: function(section, tocId, label, $parent) {
+  write: function(section, tocId, indexes, label, $parent) {
     this.mode = 'write';
+
+    // Top-level sections and permalink sections use different markup;
+    // find appropriate element on top-level sections. TODO: unify markup
+    // and/or fetch excerpts asynchronously
+    $parent = $parent.is('[data-page-type]') ?
+      this.$read.find('.preamble-content') :
+      $parent;
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
 
@@ -92,6 +101,7 @@ var PreambleView = ChildView.extend({
       CommentEvents.trigger('comment:target', {
         section: section,
         tocId: tocId,
+        indexes: indexes,
         label: label,
         $parent: $parent
       });

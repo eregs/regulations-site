@@ -9,6 +9,7 @@
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
+        data-indexes="{{ node.indexes }}"
         data-label="{{ node.human_label }}">
       <a href="#">
         <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
@@ -20,13 +21,16 @@
 {% endif %}
 
 <div class="node{% if not node.comments_calledout %} not-called-out{% endif %}">
+{% if not node.comments_calledout %}<div class="not-called-out-extend"></div>{% endif %}
 
   {%if node.marked_up %}
     <p {% if node.is_collapsed %}class="collapsed"{% endif %}>
 
+      {% block paragraph_marker %}
       {% if node.paragraph_marker %}
         <span class="stripped-marker">{{node.paragraph_marker}}.</span>
       {% endif %}
+      {% endblock %}
 
       <span class="paragraph-text">
       {% if node.node_type == "appendix" %}
@@ -42,6 +46,7 @@
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
+        data-indexes="{{ node.indexes }}"
         data-label="{{ node.human_label }}">
 
       <a href="#">

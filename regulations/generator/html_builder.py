@@ -18,13 +18,14 @@ from .link_flattener import flatten_links
 class HTMLBuilder(object):
     # @todo simplify this constructor
     def __init__(self, inline_applier, p_applier, search_applier,
-                 diff_applier=None, id_prefix=None):
+                 diff_applier=None, id_prefix=None, index_prefix=None):
         self.tree = None
         self.inline_applier = inline_applier
         self.p_applier = p_applier
         self.search_applier = search_applier
         self.diff_applier = diff_applier
         self.id_prefix = id_prefix or []
+        self.index_prefix = index_prefix or []
         self.preprocess()
 
     def preprocess(self):
@@ -37,7 +38,7 @@ class HTMLBuilder(object):
         for layer in self.p_applier.layers.values():
             if hasattr(layer, 'preprocess_root'):   # @todo - remove
                 layer.preprocess_root(self.tree)
-        self.process_node(self.tree)
+        self.process_node(self.tree, indexes=self.index_prefix)
 
     def list_level(self, parts, node_type):
         return len(parts) - 2

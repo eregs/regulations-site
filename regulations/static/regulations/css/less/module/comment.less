@@ -11,6 +11,7 @@ Preamble Read Mode
 #preamble-read {
   margin: 0;
   padding: 0 0 0 15px;
+  width: 75%;
   word-wrap: break-word;
 
   // for hiding write comment links on paragraphs
@@ -28,6 +29,13 @@ Preamble Read Mode
       }
     }
   }
+  .not-called-out-extend {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: -275px;
+    top: 0;
+  }
 
   // Write a comment about XXX link
   .activate-write {
@@ -35,7 +43,7 @@ Preamble Read Mode
     font-size: 14px;
     font-weight: bold;
     position: absolute;
-    right: -100px;
+    right: -320px;
     top: -5px;
     width: 250px;
 
@@ -63,20 +71,21 @@ Preamble Read Mode
   }
 
   p + .activate-write {
-    top: 15px;
+    top: 0;
   }
 
   // hidden content (with stars) on CFR
   .show-more-context {
     background-color: @grey;
+    border-radius: 2px;
     color: @pacific;
     font-size: 10px;
-    margin: 5px 0;
+    margin: 10px 0;
     text-align: center;
     width: 100%;
 
     span {
-      font-size: 13px;
+      font-size: 12px;
       padding: 0 30px;
     }
   }
@@ -109,12 +118,10 @@ Preamble Read Mode
 
   .cfr-instructions {
     .font-regular;
+    font-size: 16px;
+    line-height: 24px;
     padding-top: 15px;
     width: 75%;
-  }
-
-  .node {
-    padding-right: 200px;
   }
 }
 
@@ -330,8 +337,9 @@ Write Mode
   .comment-index-items {
     margin: 0 0 15px 0;
 
-    & > h3 {
+    & > h4 {
       margin: 0.6em 0 0 0;
+      text-transform: none;
     }
 
     p {
