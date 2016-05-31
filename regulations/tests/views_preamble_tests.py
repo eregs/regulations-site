@@ -169,17 +169,17 @@ class PreambleToCTests(TestCase):
         self.nodes = [
             {
                 'title': 'l1',
-                'label': ['abc', '123', 'I'],
+                'label': ['doc_id', 'I'],
                 'children': [
                     {
                         'title': 'l2',
-                        'label': ['abc', '123', 'I', 'A'],
+                        'label': ['doc_id', 'I', 'A'],
                     }
                 ]
             },
             {
                 'title': 'l2',
-                'label': ['abc', '123', 'II'],
+                'label': ['doc_id', 'II'],
             },
         ]
 
@@ -191,14 +191,14 @@ class PreambleToCTests(TestCase):
                 preamble.PreambleSect(
                     depth=1,
                     title='l1',
-                    url='/preamble/abc/123#abc-123-I',
-                    full_id='abc-preamble-abc-123-I',
+                    url='/preamble/doc_id/I',
+                    full_id='doc_id-preamble-doc_id-I',
                     children=[
                         preamble.PreambleSect(
                             depth=2,
                             title='l2',
-                            url='/preamble/abc/123#abc-123-I-A',
-                            full_id='abc-preamble-abc-123-I-A',
+                            url='/preamble/doc_id/I#doc_id-I-A',
+                            full_id='doc_id-preamble-doc_id-I-A',
                             children=[],
                         )
                     ]
@@ -206,8 +206,8 @@ class PreambleToCTests(TestCase):
                 preamble.PreambleSect(
                     depth=1,
                     title='l2',
-                    url='/preamble/abc/123#abc-123-II',
-                    full_id='abc-preamble-abc-123-II',
+                    url='/preamble/doc_id/II',
+                    full_id='doc_id-preamble-doc_id-II',
                     children=[]
                 ),
             ],
@@ -221,13 +221,13 @@ class PreambleToCTests(TestCase):
         toc = preamble.make_preamble_toc(self.nodes)
 
         nav = preamble.section_navigation(
-            toc, [], full_id='abc-preamble-abc-123-I')
-        assert_equal(nav['next'].section_id, 'abc-preamble-abc-123-II')
+            toc, [], full_id='doc_id-preamble-doc_id-I')
+        assert_equal(nav['next'].section_id, 'doc_id-preamble-doc_id-II')
         assert_is_none(nav['previous'])
 
         nav = preamble.section_navigation(
-            toc, [], full_id='abc-preamble-abc-123-II')
-        assert_equal(nav['previous'].section_id, 'abc-preamble-abc-123-I')
+            toc, [], full_id='doc_id-preamble-doc_id-II')
+        assert_equal(nav['previous'].section_id, 'doc_id-preamble-doc_id-I')
         assert_is_none(nav['next'])
 
 
