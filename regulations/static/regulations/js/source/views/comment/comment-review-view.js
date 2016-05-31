@@ -10,9 +10,13 @@ var MainEvents = require('../../events/main-events');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
 
-function toggleInput($input, enabled) {
-  $input.toggle(enabled);
-  $input.prop('disabled', !enabled);
+function selfOrChild($root, selector) {
+  return $root.is(selector) ? $root : $root.find(selector);
+}
+
+function toggleInput($container, enabled) {
+  $container.toggle(enabled);
+  selfOrChild($container, 'input, select').prop('disabled', !enabled);
 }
 
 var CommentReviewView = Backbone.View.extend({
@@ -96,21 +100,26 @@ var CommentReviewView = Backbone.View.extend({
     });
   },
 
+  /**
+   * The regs.gov field definitions include compound fields in the sense that
+   * one select filters the options of another. When the first select leads to
+   * _no_ options available in the second, we need to display a "write-in".
+   **/
   initDependencies: function() {
     var self = this;
     self.$el.find('[data-depends-on]').each(function(idx, elm) {
       var $elm = $(elm);
-      var $text = $elm.find('input');
-      var $select = $elm.find('select');
+      var $select = selfOrChild($elm, 'select');
       var $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
       var $options = $select.find('option[value]').detach().clone();
+      var $writeIn = self.$el.find('[data-writein-for="' + $select.prop('id') + '"]');
       function updateOptions(value) {
         $select.find('option[value]').remove();
         var $valid = $options.filter(function(idx, elm) {
           return $(elm).data('dependency') === value;
         }).get();
-        toggleInput($text, $valid.length === 0);
-        toggleInput($select, $valid.length > 0);
+        toggleInput($writeIn, $valid.length === 0);
+        toggleInput($elm, $valid.length > 0);
         $select.append($valid);
         $select.val(null);
       }
