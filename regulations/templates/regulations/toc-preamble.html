@@ -1,21 +1,23 @@
 {% comment %} 
 Check for preamble_toc first so empty <ol>s aren't drawn when it loops back through.
 {% endcomment %}
+{% with toc_depth=toc_depth|default:1 %}
 {% if preamble_toc %}
-  <ol>
+  <ol class="toc-depth-{{toc_depth}}">
     {% for item in preamble_toc %}
-      <li {% if item.depth == 1 %} class="toc-level-1" {% endif %}>
+      <li>
           <a
               href="{{item.url}}"
               data-section-id="{{item.full_id}}"
-              class="toc-item">
+              class="toc-item toc-entry-at-{{toc_depth}}">
             {{item.title}}
           </a>
 
-        {% with preamble_toc=item.children %}
+        {% with preamble_toc=item.children toc_depth=toc_depth|add:1 %}
           {% include "regulations/toc-preamble.html" %}
         {% endwith %}
       </li>
       {% endfor %}
   </ol>
 {% endif %}
+{% endwith %}
