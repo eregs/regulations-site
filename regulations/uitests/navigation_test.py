@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,11 +19,12 @@ class NavigationTest(BaseTest, unittest.TestCase):
         self.driver.execute_script(
             'poffset = document.getElementById("1005-5-b-2").offsetTop')
         self.driver.execute_script('window.scrollTo(0, poffset)')
+
         # wayfinding header should update
-        WebDriverWait(self.driver, 30).until(
-            lambda driver: driver.find_element_by_xpath(
-                '//*[@id="active-title"]').text in (u'\u00A7 1005.5(b)(1)',
-                                                    u'\u00A7 1005.5(b)'))
+        self.driver.implicitly_wait(5)
+        header = self.driver.find_element_by_css_selector('#active-title')
+        self.assertIn(header.text,
+                      (u'§ 1005.5(b)', u'§ 1005.5(b)(1)', u'§ 1005.5(b)(2)'))
 
         fwd_link = self.driver.find_element_by_css_selector('li.next a')
         fwd_link.click()
