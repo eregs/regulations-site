@@ -175,20 +175,7 @@ module.exports = {
     /**
      * Parse a preamble section ID.
      * @param {string} id Preamble section ID
-     * @example
-     * parsePreambleId('2016_02749-preamble-2016_02749-I-A')
-     * {
-     *   docId: '2016_02749',
-     *   path: ['preamble', '2016_02749', 'I'],
-     *   hash: '2016_02749-I-A'
-     * }
-     * @example
-     * parsePreambleId('2016_02749-cfr-478-32-a-1')
-     * {
-     *    docId: '2016_02749',
-     *    path: ['preamble', '2016_02749', 'cfr_changes', '478-32-a-1'],
-     *    hash: '478-32-a-1'
-     * }
+     * @see unittests for example usage
      */
     parsePreambleId: function(id) {
       var parts = id.split('-');
@@ -207,12 +194,19 @@ module.exports = {
         path = path.concat(['cfr_changes', parts.slice(0, 2).join('-')]);
         section = parts.slice(0, 2);
       }
-      return {
+      var parsed = {
         path: path,
         type: type,
-        hash: parts.join('-'),
         docId: docId,
         section: section
       };
+      /**
+       * If linking to the top-level, we don't need a hash. Otherwise, link to
+       * the beginning of the associated subsection
+       **/
+      if (parts.length > 2) {
+        parsed.hash = parts.join('-');
+      }
+      return parsed;
     }
 };
