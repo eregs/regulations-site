@@ -113,15 +113,16 @@ class PreambleViewTests(TestCase):
         ApiReader.return_value.notice.return_value = {
             "action": "Proposed rule",
             "agencies": ["Environmental Protection Agency"],
-            "cfr_parts": [{"title": "40", "parts": ["300"]}],
+            "cfr_title": 40,
+            "cfr_parts": ["300"],
             "comments_close": future.isoformat(),
             "dockets": ["EPA-HQ-SFUND-2010-1086",
                         "FRL-9925-69-OLEM"],
             "primary_agency": "Environmental Protection Agency",
             "title": ("Addition of a Subsurface Intrusion Component to the "
                       "Hazard Ranking System"),
-            "publication": "2016-02-29",
-            "rins": ["2050-AG67"],
+            "publication_date": "2016-02-29",
+            "regulatory_id_numbers": ["2050-AG67"],
         }
         my_preamble, meta, _ = preamble.notice_data('1')
         assert_true(meta['accepts_comments'])
@@ -177,13 +178,15 @@ class PreambleViewTests(TestCase):
         """We should try to fetch data corresponding to both the Preamble and
         the Notice"""
         ApiReader.return_value.preamble.return_value = self._mock_preamble
-        ApiReader.return_value.notice.return_value = {'some': 'notice'}
+        ApiReader.return_value.notice.return_value = {
+            'cfr_title': 21, 'cfr_parts': ['123']}
 
         for doc_id in ('123_456', '123-456'):
             preamble_, meta, notice = preamble.notice_data(doc_id)
             self.assertEqual(preamble_, self._mock_preamble)
-            self.assertEqual({'accepts_comments': False}, meta)
-            self.assertEqual({'some': 'notice'}, notice)
+            self.assertFalse(meta['accepts_comments'])
+            self.assertEqual(meta['cfr_refs'],
+                             [{'title': 21, 'parts': ['123']}])
             self.assertEqual(ApiReader.return_value.preamble.call_args[0][0],
                              '123_456')
             self.assertEqual(ApiReader.return_value.notice.call_args[0][0],

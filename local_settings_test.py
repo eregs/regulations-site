@@ -70,11 +70,12 @@ PREAMBLE_INTRO = {
             "title": ("Addition of a Subsurface Intrusion Component to the "
                       "Hazard Ranking System"),
             "comments_close": future.isoformat(),
-            "publication": "2016-02-29",
-            "cfr_parts": [{"title": "40", "parts": ["300"]}],
+            "publication_date": "2016-02-29",
+            "cfr_title": 40,
+            "cfr_parts": ["300"],
             "dockets": ["EPA-HQ-SFUND-2010-1086",
                         "FRL-9925-69-OLEM"],
-            "rins": ["2050-AG67"],
+            "regulation_id_numbers": ["2050-AG67"],
         }
     }
 }

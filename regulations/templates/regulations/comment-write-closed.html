@@ -8,7 +8,7 @@
   <div>
     <a href="#">Visit the docket ({{meta.dockets|join:"; "}})</a> to view all the public comments on this rule:
     <div>
-      {% for title_info in meta.cfr_parts %}
+      {% for title_info in meta.cfr_refs %}
         {{title_info.title}} CFR Parts {{title_info.parts|join:", "}}<br />
       {% endfor %}
     </div>
