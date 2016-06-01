@@ -14,8 +14,6 @@ var CommentConfirmView = Backbone.View.extend({
   initialize: function(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
 
-    this.findElms();
-
     this.docId = this.$el.data('doc-id');
     this.metadataUrl = this.$el.data('metadata-url');
 
@@ -25,11 +23,6 @@ var CommentConfirmView = Backbone.View.extend({
         comment.destroy();
       });
     }
-  },
-
-  findElms: function() {
-    this.$pdf = this.$el.find('.pdf');
-    this.$status = this.$el.find('.status');
   },
 
   poll: function(url) {
@@ -47,12 +40,27 @@ var CommentConfirmView = Backbone.View.extend({
     );
   },
 
+  /**
+   * Fill in an element's (indicated by the selector) template with the ctx
+   * provided
+   **/
+  replaceTemplate: function(selector, ctx) {
+    this.$el.find(selector).each(function(idx, elt) {
+      var $elt = $(elt);
+      var $tplElt = $elt.find('.js-template');
+      var result = _.template($tplElt.prop('innerHTML'))(ctx);
+      $elt.empty();
+      $elt.append($tplElt);
+      $elt.append(result);
+    });
+  },
+
   setPdfUrl: function(url) {
-    this.$pdf.html('<a href="' + url + '">Download PDF</a>');
+    this.replaceTemplate('.save-pdf', {url: url});
   },
 
   setTrackingNumber: function(number) {
-    this.$status.html('<div>Comment tracking number: ' + number + '</div>');
+    this.replaceTemplate('.tracking-number .status', {number: number});
   }
 });
 
