@@ -51,9 +51,10 @@ var PreambleView = ChildView.extend({
     var $target = $(e.currentTarget);
     var hash = $target.attr('href');
     var options = {};
-    var id = helpers.parsePreambleCitationId(hash, this.options.type);
+    var type = this.options.type;
+    var section = helpers.parsePreambleCitationId(hash, type);
 
-    MainEvents.trigger('section:open', id, options, this.options.type);
+    MainEvents.trigger('section:open', section, options, type);
   },
 
   handleRead: function() {
