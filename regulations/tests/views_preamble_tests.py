@@ -95,8 +95,35 @@ class PreambleViewTests(TestCase):
         PREAMBLE_INTRO=make_intro('1', date.today() + timedelta(days=1)),
     )
     @patch('regulations.views.preamble.ApiReader')
-    def test_comments_open(self, ApiReader):
+    def test_comments_open_from_settings(self, ApiReader):
+        """
+        Mock the PREAMBLE_INTRO data from settings for this test of the
+        comments being open.
+        """
         _, meta, _ = preamble.notice_data('1')
+        assert_true(meta['accepts_comments'])
+
+    @patch('regulations.views.preamble.ApiReader')
+    def test_comments_open_from_notice(self, ApiReader):
+        """
+        Mock the ApiReader response for this test of the comments being open.
+        """
+        future = date.today() + timedelta(days=10)
+        ApiReader.return_value.preamble.return_value = self._mock_preamble
+        ApiReader.return_value.notice.return_value = {
+            "action": "Proposed rule",
+            "agencies": ["Environmental Protection Agency"],
+            "cfr_parts": [{"title": "40", "parts": ["300"]}],
+            "comments_close": future.isoformat(),
+            "dockets": ["EPA-HQ-SFUND-2010-1086",
+                        "FRL-9925-69-OLEM"],
+            "primary_agency": "Environmental Protection Agency",
+            "title": ("Addition of a Subsurface Intrusion Component to the "
+                      "Hazard Ranking System"),
+            "publication": "2016-02-29",
+            "rins": ["2050-AG67"],
+        }
+        my_preamble, meta, _ = preamble.notice_data('1')
         assert_true(meta['accepts_comments'])
 
     @override_settings(
