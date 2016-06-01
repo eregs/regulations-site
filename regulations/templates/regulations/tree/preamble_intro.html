@@ -29,7 +29,7 @@
       {% endif %}
     <h5>Comment period {% if meta.accepts_comments %}closes{% else %}closed{% endif %} on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
         EST.</h5>
-      Rule published {{ meta.publication|date:"F j, Y"}}
+      Rule published {{ meta.publication_date|date:"F j, Y"}}
     </div>
     {% if meta.supporting_documents %}
     <div class="view-supporting-docs">
@@ -38,11 +38,11 @@
     {% endif %}
     <hr />
     <p>
-      {% for title_info in meta.cfr_parts %}
+      {% for title_info in meta.cfr_refs %}
         {{title_info.title}} CFR Parts {{ title_info.parts|join:", " }}<br />
       {% endfor %}
       {{meta.dockets|join:"; "}}<br />
-      {{meta.rins|join:"; "}}
+      {{meta.regulation_id_numbers|join:"; "}}
     </p>
   </div>
 </li>
