@@ -1,66 +1,91 @@
-Success!
-Thank you for submitting your coment to EPA. You're done!
 
-<div class="pdf">Waiting to receive PDF.</div>
+<div class="comment-confirm">
 
-<h3>Your comment tracking number</h3>
-<div>
-  The first step EPA takes is to assign your comment a tracking number.
-  This page automatically displays that number when received:
-</div>
-<div class="status">
-  Waiting to receive comment tracking number. This may take a few seconds
-  or minutes.
-</div>
-<div>
-  Your comment tracking number can help you find and view your public
-  comment later if you want to.
-</div>
-
-<h3>What will happen to your comment</h3>
-<h4>EPA will process it and in most cases will post it publicly</h4>
-<ul>
-  <li>
-    EPA will process your comment, which may take a few days or weeks depending
-    on the number of comments received. In a few cases EPA may decline to evaluate
-    or post your comment, as listed in its
-    <a href="https://www.epa.gov/dockets/commenting-epa-dockets#rules" target="_blank">
-      rules and restrictions for comments
-    </a>.
-  </li>
-  <li>
-    In most cases, EPA will post your comment to
-    <a href="#" target="_blank">the docket folder for this proposed rule</a>.
-    Then you will be able to find your comment there or by searching
-    <a href="https://www.regulations.gov" target="_blank">Regulations.gov</a>
-    for your comment tracking number or keywords from your comment.
-  </li>
-</ul>
-
-<h4>EPA will review eligible comments and will usually publish a final rule</h4>
-<ul>
-  <li>
-    After this comment period ends, EPA will review the comments, and usually
-    EPA’s next step is to prepare a final rule that includes responses to major
-    comments. EPA may decide to not go through with preparing a final rule,
-    although this is unusual.
-  </li>
-  <li>
-    If you'd like to hear about the potential final rule, you can
-    <a href="https://www.federalregister.gov/agencies/environmental-protection-agency" target="_blank">
-      subscribe to EPA rulemaking updates
-    </a>.
-  </li>
-</ul>
-
-<div>
-  <h3>You can give feedback on this tool</h3>
-  <div>
-    This eRegulations commenting tool was developed by <a href="https://18f.gsa.gov/" target="_blank">18F</a>
-    (part of the <a href="http://www.gsa.gov/" target="_blank">>General Services Administration</a>)
-    in partnership with EPA. The designers and developers would like to hear
-    your thoughts about this tool, including suggestions for improving it. To
-    give feedback <a href="https://github.com/eregs/notice-and-comment/issues" target="_blank">open a new issue in this repository</a>
-    (requires a free login).
+  <div class="comment-confirm-alert success-alert">
+    <div class="fa fa-2x fa-check-circle"></div>
+    <div class="alert-text">
+      <h2>Success!</h2>
+      <p>Thank you for submitting your comment to EPA. You're done!</p>
+    </div>
   </div>
+  <div class="save-pdf">
+    <script class="js-template" type="text/template">
+      <div class="fa fa-file-pdf-o"></div>
+      <div class="save-pdf-text">
+        <h3>Want to save a copy for yourself?</h3>
+        <a href="<%= url %>">Download your submitted comment (PDF)</a>
+      </div>
+    </script>
+  </div>
+  <section class="tracking-number">
+    <h3>Your comment tracking number</h3>
+    <p>
+      The first step EPA takes is to assign your comment a tracking number.
+      This page automatically displays that number when received:
+    </p>
+    <p class="status">
+      Waiting to receive comment tracking number. This may take a few seconds
+      or minutes.
+      <script class="js-template" type="text/template">
+        <div>Comment tracking number: <%= number %></div>
+      </script>
+    </p>
+    <p>
+      Your comment tracking number can help you find and view your public comment later if you want to.
+    </p>
+  </section>
+  <section class="what-will-happen">
+
+    <h3>What will happen to your comment</h3>
+    <h4>EPA will process it and in most cases will post it publicly</h4>
+    <ul>
+      <li>
+        EPA will process your comment, which may take a few days or weeks depending
+        on the number of comments received. In a few cases EPA may decline to evaluate
+        or post your comment, as listed in
+        <a href="https://www.epa.gov/dockets/commenting-epa-dockets#rules" target="_blank">
+          its rules and restrictions for comments <span class="cf-icon cf-icon-external-link"></span>
+        </a>.
+      </li>
+      <li>
+        In most cases, EPA will post your comment to
+        <a href="#" target="_blank">the docket folder for this proposed rule <span class="cf-icon cf-icon-external-link"></span></a>.
+        Then you will be able to find your comment there or by searching
+        <a href="https://www.regulations.gov" target="_blank">Regulations.gov <span class="cf-icon cf-icon-external-link"></span></a>
+        for your comment tracking number or keywords from your comment.
+      </li>
+    </ul>
+
+    <h4>EPA will review eligible comments and will usually publish a final rule</h4>
+    <ul>
+      <li>
+        After this comment period ends, EPA will review the comments, and usually
+        EPA’s next step is to prepare a final rule that includes responses to major
+        comments. EPA may decide to not go through with preparing a final rule,
+        although this is unusual.
+      </li>
+      <li>
+        If you'd like to hear about the potential final rule, you can
+        <a href="https://www.federalregister.gov/agencies/environmental-protection-agency" target="_blank">
+          subscribe to EPA rulemaking updates <span class="cf-icon cf-icon-external-link"></span>
+        </a>.
+      </li>
+    </ul>
+
+  </section>
+
+  <section class="feedback">
+
+    <h3>You can give feedback on this tool</h3>
+    <div>
+      This eRegulations commenting tool was developed by <a href="https://18f.gsa.gov/" target="_blank">18F <span class="cf-icon cf-icon-external-link"></span></a>
+      (part of the <a href="http://www.gsa.gov/" target="_blank">General Services Administration <span class="cf-icon cf-icon-external-link"></span></a>)
+      in partnership with EPA. The designers and developers would like to hear
+      your thoughts about this tool, including suggestions for improving it. To
+      give feedback <a href="https://github.com/eregs/notice-and-comment/issues" target="_blank">open a new issue in this repository <span class="cf-icon cf-icon-external-link"></span></a>
+      (requires a free login).
+    </div>
+
+  </section>
+
 </div>
