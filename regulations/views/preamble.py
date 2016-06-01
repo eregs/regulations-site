@@ -2,9 +2,10 @@
 
 from __future__ import unicode_literals
 
+from collections import namedtuple
 from copy import deepcopy
 from datetime import date
-from collections import namedtuple
+
 import itertools
 import logging
 import re
@@ -294,11 +295,43 @@ def notice_data(doc_number):
     if preamble is None:
         raise Http404
 
-    # @todo - right now we're shimming in fake data; eventually this data
-    # should come from the API
-    meta = getattr(settings, 'PREAMBLE_INTRO', {}).get(doc_number, {}).get(
-        'meta', {})
-    meta = convert_to_python(deepcopy(meta))
+    notice = ApiReader().notice(doc_number.replace('_', '-')) or {}
+
+    fields = (
+        "amendments",
+        "cfr_parts",
+        "cfr_title",
+        "comment_doc_id",
+        "comments_close",
+        "dockets",
+        "document_number",
+        "effective_on",
+        "footnotes",
+        "fr_citation",
+        "fr_url",
+        "fr_volume",
+        "meta",
+        "primary_agency",
+        "primary_docket",
+        "publication_date",
+        "regulation_id_numbers",
+        "section_by_section",
+        "supporting_documents",
+        "title",
+        "versions"
+    )
+
+    meta = {}
+    for field in fields:
+        if field in notice:
+            meta[field] = convert_to_python(deepcopy(notice[field]))
+
+    # If there's no metadata, fall back to getting it from settings:
+    if not meta:
+        meta = getattr(settings, 'PREAMBLE_INTRO', {}).get(doc_number, {}).get(
+            'meta', {})
+        meta = convert_to_python(deepcopy(meta))
+
     if 'comments_close' in meta:
         today = date.today()
         close_date = meta['comments_close'].date()
@@ -306,8 +339,6 @@ def notice_data(doc_number):
         meta['accepts_comments'] = close_date >= today
     else:
         meta['accepts_comments'] = False
-
-    notice = ApiReader().notice(doc_number.replace('_', '-')) or {}
 
     return preamble, meta, notice
 
