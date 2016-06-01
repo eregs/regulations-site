@@ -340,6 +340,12 @@ def notice_data(doc_number):
     else:
         meta['accepts_comments'] = False
 
+    # We don't pass along cfr_ref information in a super useful format, yet.
+    # Construct one here:
+    if 'cfr_refs' not in meta and 'cfr_title' in meta and 'cfr_parts' in meta:
+        meta['cfr_refs'] = [{"title": meta['cfr_title'],
+                             "parts": meta['cfr_parts']}]
+
     return preamble, meta, notice
 
 
