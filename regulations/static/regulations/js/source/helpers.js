@@ -208,5 +208,29 @@ module.exports = {
         parsed.hash = parts.join('-');
       }
       return parsed;
+    },
+
+    /**
+     * Parse the citation link hash to open the correct section.
+     * @param {string} hash - the href link target section
+     * @param {string} type - section either preamble or cfr
+     *
+     * Example: <a href="#0000_0000-III-D-4" class="citation internal" data-section-id="0000_0000-III">III.D.4</a>
+     * take href link has and turn into "0000_0000-preamble-0000_0000-III-D-4"
+     * to pass to 'section:open' event
+     */
+    parsePreambleCitationId: function(hash, type) {
+      var section = hash.replace('#', '');
+      var parts = section.split('-');
+      var docId = parts.shift();
+
+      if (type === 'preamble-section') {
+        type = 'preamble';
+      }
+      else {
+        type = 'cfr';
+      }
+
+      return [docId, type, section].join('-');
     }
 };
