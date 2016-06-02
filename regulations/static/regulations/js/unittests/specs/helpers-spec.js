@@ -97,6 +97,27 @@ describe('parsePreambleId', function() {
 
 });
 
+describe('parsePreambleCitationId', function() {
+    'use strict';
+
+    var Helpers;
+    before(function (){ Helpers = require('../../source/helpers'); });
+
+    it('parses citation link correctly to section', function() {
+        // link with only a hash
+        expect(Helpers.parsePreambleCitationId('#0000_0000-III-D-4', 'preamble-section')).to.eql('0000_0000-preamble-0000_0000-III-D-4');
+
+        expect(Helpers.parsePreambleCitationId('#2016_02749-I', 'preamble-section')).to.eql('2016_02749-preamble-2016_02749-I');
+
+        expect(Helpers.parsePreambleCitationId('#0000_0000-III-F-6', 'preamble-section')).to.eql('0000_0000-preamble-0000_0000-III-F-6');
+
+        // link with section before hash
+        expect(Helpers.parsePreambleCitationId('III#0000_0000-III-D-4', 'preamble-section')).to.eql('0000_0000-preamble-0000_0000-III-D-4');
+
+        expect(Helpers.parsePreambleCitationId('II#0000_0000-II-B', 'preamble-section')).to.eql('0000_0000-preamble-0000_0000-II-B');
+    });
+});
+
 describe('Version Finder Helper Functions:', function() {
     'use strict';
 

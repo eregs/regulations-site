@@ -17,7 +17,8 @@ var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
   events: {
-    'click .activate-write': 'handleWriteLink'
+    'click .activate-write': 'handleWriteLink',
+    'click .citation.internal': 'openCitation'
   },
 
   initialize: function(options) {
@@ -44,6 +45,21 @@ var PreambleView = ChildView.extend({
         'table-of-contents' :
         'table-of-contents-secondary'
     );
+  },
+
+  openCitation: function(e) {
+    var $target = $(e.currentTarget);
+    var hash = $target.attr('href');
+    var id = $target.attr('data-section-id');
+    var options = {};
+    var type = this.options.type;
+    var section = helpers.parsePreambleCitationId(hash, type);
+
+    if (id) {
+      e.preventDefault();
+
+      MainEvents.trigger('section:open', section, options, type);
+    }
   },
 
   handleRead: function() {
