@@ -51,6 +51,7 @@ var CommentView = Backbone.View.extend({
     this.options = options;
 
     this.$context = this.$el.find('.comment-context');
+    this.$contextSectionLabel = this.$el.find('.comment-context-section');
     this.$header = this.$el.find('.comment-header');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
@@ -111,6 +112,9 @@ var CommentView = Backbone.View.extend({
         $sectionHeader.remove();
       }
       this.$header.append('<a href="' + href + '">' + label + '</a>');
+
+      this.$contextSectionLabel.empty().html(options.label);
+
       this.$context.append(options.$parent);
     }
   },
