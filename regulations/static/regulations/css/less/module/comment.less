@@ -265,7 +265,6 @@ Write Mode
     }
   }
 
-
   .comment-controls {
     float: left;
     padding-bottom: 35px;
@@ -317,16 +316,53 @@ Write Mode
     }
   }
 
-  .comment-context {
-    margin: 0 0 25px 0;
-    padding: 0 20px;
-    max-height: 400px;
-    overflow: auto;
-    border: 1px solid transparent;
+  .comment-context-wrapper {
+    border-radius: 2px;
     box-shadow: 0 0 1px 1px @text_area_border;
-    border-radius: 2px
+    margin: 30px 0;
   }
 
+  .comment-context-toggle {
+    background-color: @grey;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+
+    .comment-context-text {
+      color: @blue;
+    }
+
+    .fa-minus-circle,
+    .comment-context-text-less {
+      display: none;
+    }
+
+    .fa {
+      margin-right: 3px;
+    }
+
+    .comment-context-label {
+      font-weight: bold;
+    }
+
+    .comment-context-type {
+      text-transform: capitalize;
+    }
+  }
+
+  .comment-context {
+    border-top: 1px solid @text_area_border;
+    display: none;
+    margin: 0 0 25px 0;
+    max-height: 400px;
+    overflow: auto;
+    padding-right: 25px;
+
+    ul {
+      padding-left: 0;
+    }
+  }
 }
 
 .comment-index {

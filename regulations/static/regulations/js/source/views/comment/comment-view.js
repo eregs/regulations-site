@@ -43,6 +43,7 @@ var CommentView = Backbone.View.extend({
     'dragenter input[type="file"]': 'highlightDropzone',
     'dragleave input[type="file"]': 'unhighlightDropzone',
     'click .comment-header': 'openComment',
+    'click .comment-context-toggle': 'toggleCommentExcerpt',
     'submit form': 'save'
   },
 
@@ -126,6 +127,14 @@ var CommentView = Backbone.View.extend({
     DrawerEvents.trigger('section:open', options.tocId);
     DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
+  },
+
+  toggleCommentExcerpt: function() {
+    $('.comment-context-text-more').toggle();
+    $('.comment-context-text-less').toggle();
+    $('.fa-plus-circle').toggle();
+    $('.fa-minus-circle').toggle();
+    $('.comment-context').toggle();
   },
 
   render: function() {

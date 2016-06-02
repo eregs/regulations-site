@@ -27,8 +27,29 @@
         {% if meta.accepts_comments %}
           <div class="comment">
             <h4 class="comment-header">You are writing a comment about </h4>
-            <div class="comment-context"></div>
+
+            <div class="comment-context-wrapper">
+
+              <div class="comment-context-toggle">
+                <span class="comment-context-text">
+                  <span class="fa fa-plus-circle" aria-hidden="true"></span>
+                  <span class="fa fa-minus-circle" aria-hidden="true"></span>
+                  Show
+                  <span class="comment-context-text-more">more</span>
+                  <span class="comment-context-text-less">less</span>
+                  context for:
+                </span>
+                <span class="comment-context-label">
+                  <span class="comment-context-type">{{ type }}</span> &nbsp;|&nbsp; {{ section_label }}
+                </span>
+              </div>
+
+              <div class="comment-context"></div>
+
+            </div>
+
             <h4 class="comment-header">Write your response to </h4>
+
             <form>
               <div class="editor-container"></div>
               <div class="comment-controls">
