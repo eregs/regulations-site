@@ -4,7 +4,6 @@ import time
 import logging
 
 import celery
-import requests
 from django.conf import settings
 from django.core.cache import caches
 from django.shortcuts import redirect
@@ -14,11 +13,13 @@ from django.views.decorators.http import require_http_methods
 from django.template.response import TemplateResponse
 from django.utils.crypto import get_random_string
 from django.views.generic.base import View
+import requests
 
 from regulations import tasks
 from regulations import docket
 from regulations.views.preamble import (
-    common_context, generate_html_tree, first_preamble_section, notice_data)
+    common_context, CommentState, generate_html_tree, first_preamble_section,
+    notice_data)
 
 logger = logging.getLogger(__name__)
 
@@ -102,9 +103,8 @@ class SubmitCommentView(View):
 
         context = common_context(doc_number)
 
-        if not context['meta']['accepts_comments']:
-            raise Http404(
-                "Comment period for doc # {} closed".format(doc_number))
+        if context['meta']['comment_state'] != CommentState.OPEN:
+            raise Http404("Cannot comment on {}".format(doc_number))
 
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))

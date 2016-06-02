@@ -8,7 +8,7 @@
     id="{{node.markup_id}}"
     data-permalink-section>
   <div class="node">
-    {% if meta.accepts_comments and node.accepts_comments %}
+    {% if meta.comment_state.name == 'OPEN' and node.accepts_comments %}
       <div
           class="activate-write"
           data-section="{{ node.full_id }}"
@@ -24,12 +24,25 @@
     <h4>{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
     <div>
-      {% if meta.accepts_comments %}
-        <div>{{ meta.days_remaining }} Days</div>
+      {% if meta.comment_state.name == 'OPEN' %}
+        <div class="countdown open">{{ meta.days_remaining }} Days</div>
+      {% elif meta.comment_state.name == 'CLOSED' %}
+        <div class="countdown closed">0 Days</div>
       {% endif %}
-    <h5>Comment period {% if meta.accepts_comments %}closes{% else %}closed{% endif %} on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
-        EST.</h5>
-      Rule published {{ meta.publication|date:"F j, Y"}}
+
+      {% if meta.comment_state.name == 'PREPUB' %}
+        <h5>This comment period is not open.</h5>
+      {% elif meta.comment_state.name == 'OPEN' %}
+        <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
+      {% elif meta.comment_state.name == 'CLOSED' %}
+        <h5>Comment period closed on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
+      {% endif %}{% comment %}No text in the NO_COMMENT state {% endcomment %}
+
+      {% if meta.comment_state.name == 'PREPUB' %}
+        The rule is not yet published in the Federal Register.
+      {% else %}
+        Rule published {{ meta.publication|date:"F j, Y"}}
+      {% endif %}
     </div>
     {% if meta.supporting_documents %}
     <div class="view-supporting-docs">

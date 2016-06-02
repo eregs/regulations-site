@@ -23,8 +23,32 @@
     </div>
 
     <div id="preamble-write">
-      <div class="comment-wrapper">
-        {% if meta.accepts_comments %}
+      {% if meta.comment_state.name == 'NO_COMMENT' %}
+        {% block no-comment-warning %}
+          <div class="comment-wrapper">
+            <div>
+              <h1>This notice does not accept comments</h1>
+            </div>
+            <div>
+              <a href="{{request.path}}">Back to read the proposal</a>
+            </div>
+          </div>
+        {% endblock %}
+      {% elif meta.comment_state.name == 'PREPUB' %}
+        {% block prepub-warning %}
+          <div class="comment-wrapper">
+            <div>
+              <h1>Comment period is not open</h1>
+              <p>The comment period will open once the rule is officially
+              published in the Federal Register</p>
+            </div>
+            <div>
+              <a href="{{request.path}}">Back to read the proposal</a>
+            </div>
+          </div>
+        {% endblock %}
+      {% elif meta.comment_state.name == 'OPEN' %}
+        <div class="comment-wrapper">
           <div class="comment">
             <h4 class="comment-header">You are writing a comment about </h4>
             <div class="comment-context"></div>
@@ -49,10 +73,23 @@
         <div class="comment-index">
           <ul class="comment-index-items"></ul>
           <a href="{% url 'comment_review' doc_number=doc_number %}" class="comment-index-review">Review and Submit</a>
-        {% else %}
-          {% include "regulations/comment-write-closed.html" %}
-        {% endif %}
-      </div>
+        </div>
+      {% elif meta.comment_state.name == 'CLOSED' %}
+        {% block closed-warning %}
+          <div class="comment-wrapper">
+            <div>
+              <h1>Comment period closed</h1>
+              <p>As of <strong>{{meta.comments_close|date:"F j, Y"}} at
+              11:59pm EST</strong>, we are no longer accepting comments on
+              this rule.</p>
+            </div>
+            {% comment %}Todo: visit docket links {% endcomment %}
+            <div>
+              <a href="{{request.path}}">Back to read the proposal</a>
+            </div>
+          </div>
+        {% endblock %}
+      {% endif %}
     </div>
   </section>
 </section>
