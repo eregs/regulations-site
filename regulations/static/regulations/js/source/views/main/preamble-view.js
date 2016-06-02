@@ -28,6 +28,7 @@ var PreambleView = ChildView.extend({
     var type = parsed.type;
 
     this.options.scrollToId = parsed.hash;
+
     this.url = parsed.path.join('/');
 
     ChildView.prototype.initialize.apply(this, arguments);
@@ -110,6 +111,7 @@ var PreambleView = ChildView.extend({
     $parent = $parent.is('[data-page-type]') ?
       this.$read.find('.preamble-content') :
       $parent;
+
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
 
@@ -150,7 +152,9 @@ var PreambleView = ChildView.extend({
 
     if (this.options.mode === 'write') {
       var $parent = $('#' + this.options.scrollToId);
-      this.write(this.options.section, this.options.tocId, this.options.label, $parent);
+      var indexes = $parent.data('indexes');
+
+      this.write(this.options.section, this.options.tocId, indexes, this.options.label, $parent);
     } else {
       this.handleRead();
     }
