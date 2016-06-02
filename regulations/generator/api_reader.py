@@ -98,7 +98,7 @@ class ApiReader(object):
         else:
             return self._get(
                 ['notices'],
-                'notices')
+                'notice')
 
     def notice(self, fr_document_number):
         """ End point for retrieving a single notice. """
