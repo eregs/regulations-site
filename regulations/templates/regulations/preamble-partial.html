@@ -83,7 +83,13 @@
               11:59pm EST</strong>, we are no longer accepting comments on
               this rule.</p>
             </div>
-            {% comment %}Todo: visit docket links {% endcomment %}
+            <div>
+              {% with url="https://www.regulations.gov/#!documentDetail;D="|add:meta.primary_docket %}
+              {% with text="Visit the docket ("|add:meta.primary_docket|add:")" %}
+                {% external_link url=url text=text %}
+              {% endwith %}{% endwith %}
+              to view all the public comments on this rule: {{meta.title}}.
+            </div>
             <div>
               <a href="{{request.path}}">Back to read the proposal</a>
             </div>
