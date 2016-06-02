@@ -1,6 +1,7 @@
 {% comment %}
     Preamble intro has lots of extra fields
 {% endcomment %}
+{% load macros %}
 
 <li
     {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
@@ -21,19 +22,24 @@
         </a>
       </div>
     {% endif %}
-    <h4>{{ meta.primary_agency }}</h4>
+    <h4 class="small-header">{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
-    <div>
+    <div class="comment-period-dates">
       {% if meta.accepts_comments %}
-        <div>{{ meta.days_remaining }} Days</div>
+        <div class="days-remaining"><strong>{{ meta.days_remaining }}</strong> Days</div>
       {% endif %}
-    <h5>Comment period {% if meta.accepts_comments %}closes{% else %}closed{% endif %} on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm
-        EST.</h5>
-      Rule published {{ meta.publication_date|date:"F j, Y"}}
+      <div class="explanation">
+        Comment period
+        {% if meta.accepts_comments %}closes{% else %}closed{% endif %}
+        on
+        <strong>{{ meta.comments_close|date:"F j, Y" }}</strong> at 11:59pm EST.
+      </div>
+      <p class="publish-date">Rule published {{ meta.publication_date|date:"F j, Y"}}</p>
     </div>
     {% if meta.supporting_documents %}
     <div class="view-supporting-docs">
-      <a href="#supporting-docs">View supporting documents from the docket</a>
+      <span class="fa fa-file-text-o"></span>
+      <a class="citation internal" href="#supporting-docs">View supporting documents from the docket</a>
     </div>
     {% endif %}
     <hr />
@@ -54,11 +60,17 @@
 {% if meta.supporting_documents %}
   <li>
     <h4 id="supporting-docs">Supporting documents from the docket:</h4>
-    <ol>
+    <ol class="supporting-docs-list">
       {% for doc in meta.supporting_documents|slice:":3" %}
-        <li><a href="https://www.regulations.gov/#!documentDetail;D={{doc.regs_id}}">{{doc.title}}</a></li>
+        <li>
+          {% external_link text=doc.title url="https://www.regulations.gov/#!documentDetail;D="|add:doc.regs_id %}
+        </li>
       {% endfor %}
-      <li><a href="https://www.regulations.gov/#!docketBrowser;rpp=25;po=0;dct=SR%252BO;D={{meta.primary_docket}}">View all</a></li>
+      <li>
+        {% with url="https://www.regulations.gov/#!docketBrowser;rpp=25;po=0;dct=SR%252BO;D="|add:meta.primary_docket %}
+          {% external_link text="View all" classes="view-all" url=url %}
+        {% endwith %}
+      </li>
     </ol>
   </li>
 {% endif %}
