@@ -57,9 +57,9 @@ var PreambleView = ChildView.extend({
 
     if (id) {
       e.preventDefault();
-    }
 
-    MainEvents.trigger('section:open', section, options, type);
+      MainEvents.trigger('section:open', section, options, type);
+    }
   },
 
   handleRead: function() {
