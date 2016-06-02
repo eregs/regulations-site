@@ -219,9 +219,12 @@ module.exports = {
      * <a href="#0000_0000-III-D-4" class="citation internal" data-section-id="0000_0000-III">III.D.4</a>
      * take href link and create a string "0000_0000-preamble-0000_0000-III-D-4"
      * to pass to 'section:open' event to load the linked section
+     *
+     * @see unittests
      */
     parsePreambleCitationId: function(hash, type) {
-      var section = hash.replace('#', '');
+      // only grab the section info after #
+      var section = hash.substring(hash.indexOf('#') + 1);
       var parts = section.split('-');
       var docId = parts.shift();
 
