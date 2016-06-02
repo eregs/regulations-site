@@ -338,9 +338,9 @@ def notice_data(doc_number):
         meta = convert_to_python(deepcopy(meta))
 
     today = date.today()
-    publish_date = meta['publication_date'].date()
-    if 'comments_close' in meta:
+    if 'comments_close' in meta and 'publication_date' in meta:
         close_date = meta['comments_close'].date()
+        publish_date = meta['publication_date'].date()
         if today < publish_date:
             meta['comment_state'] = CommentState.PREPUB
         elif today <= close_date:
