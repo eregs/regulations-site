@@ -50,9 +50,14 @@ var PreambleView = ChildView.extend({
   openCitation: function(e) {
     var $target = $(e.currentTarget);
     var hash = $target.attr('href');
+    var id = $target.attr('data-section-id');
     var options = {};
     var type = this.options.type;
     var section = helpers.parsePreambleCitationId(hash, type);
+
+    if (id) {
+      e.preventDefault();
+    }
 
     MainEvents.trigger('section:open', section, options, type);
   },
