@@ -40,7 +40,13 @@
                   context for:
                 </span>
                 <span class="comment-context-label">
-                  <span class="comment-context-type">{{ type }}</span>
+                  <span class="comment-context-type">
+                  {% if type == "cfr" %}
+                    {{ type|upper }}
+                  {% else %}
+                    {{ type|capfirst }}
+                  {% endif %}
+                  </span>
                   &nbsp;|&nbsp;
                   <span class="comment-context-section"></span>
                 </span>
