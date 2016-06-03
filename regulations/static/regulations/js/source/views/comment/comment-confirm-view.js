@@ -29,8 +29,8 @@ var CommentConfirmView = Backbone.View.extend({
     this.interval = window.setInterval(
       function() {
         $.getJSON(url).then(function(resp) {
-          this.setPdfUrl(resp.pdfUrl);
           if (resp.trackingNumber) {
+            this.setPdfUrl(resp.pdfUrl);
             this.setTrackingNumber(resp.trackingNumber);
             window.clearInterval(this.interval);
           }
