@@ -1,6 +1,6 @@
 from collections import defaultdict
 from unittest import TestCase
-from xml.etree import ElementTree as etree
+from xml.etree import ElementTree as etree  # nosec - see usage below
 
 from django.template import Context
 from django.template.loader import get_template
@@ -61,7 +61,8 @@ class FormattingLayerTest(TestCase):
                 'rows': [['cell 11', 'cell 12'], ['cell 21', 'cell 22']]}
         self.assert_context_contains('table', 'table_data', data)
         output = self.render_html('table', data)
-        tree = etree.fromstring(output)
+        # Safe because: output comes from our own markup
+        tree = etree.fromstring(output)     # nosec
         self.assertEqual(1, len(tree.findall(".//table/thead")))
         self.assertEqual(0, len(tree.findall(".//table/caption")))
         self.assertEqual('Title', tree.findall(".//table/thead/tr/th")[0].text)
@@ -72,7 +73,8 @@ class FormattingLayerTest(TestCase):
                 'caption': 'Caption'}
         self.assert_context_contains('table', 'table_data', data)
         output = self.render_html('table', data)
-        tree = etree.fromstring(output)
+        # Safe because: output comes from our own markup
+        tree = etree.fromstring(output)     # nosec
         self.assertEqual(1, len(tree.findall(".//table/caption")))
         self.assertEqual('Caption', tree.findall(".//table/caption")[0].text)
 
