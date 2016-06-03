@@ -119,14 +119,15 @@ Preamble Read Mode
     padding-top: 15px;
   }
 
-  @remaining_days_size: 80px;
+  @remaining_days_size: 65px;
   .comment-period-dates {
     .font-regular;
     min-height: @remaining_days_size;
+    margin: 35px 0 15px;
 
     .explanation {
       font-size: 1.25em;
-      padding: 10px 0;
+      padding: 4px 0 0;
     }
 
     .publish-date {
@@ -140,24 +141,28 @@ Preamble Read Mode
     height: @remaining_days_size;
     width: @remaining_days_size;
     margin-right: 10px;
+    border-radius: 3px;
+    font-weight: 300;
     text-align: center;
+    text-transform: uppercase;
     color: @white;
-    background-color: green;
+    background-color: @uswds_green;
 
     strong {
       display: block;
-      font-size: @remaining_days_size/2;
-      line-height: @remaining_days_size/2;
-      padding-top: 10px;
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 28px;
+      padding-top: 8px;
     }
   }
 
   .view-supporting-docs {
     .font-regular;
-    text-align: center;
+    margin: 30px 0 35px;
 
     .fa {
-      margin: 20px 10px;
+      margin: 0 6px;
     }
   }
 
