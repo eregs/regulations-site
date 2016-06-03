@@ -7,8 +7,6 @@ ALLOWED_HOSTS = ['locahost', '127.0.0.1']
 # should end up:
 # STATIC_ROOT = ''
 
-OFFLINE_OUTPUT_DIR = '/tmp/'
-
 # In production, set this to what makes sense for you.
 CACHE_MIDDLEWARE_SECONDS = 600
 
