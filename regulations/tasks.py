@@ -157,7 +157,7 @@ def get_document_number(comments):
     """ Get the FR document number for the notice against which the comments
     are being submitted
     """
-    return next(comment['docId'] for comment in comments)
+    return comments[0]['docId']
 
 
 @contextlib.contextmanager
