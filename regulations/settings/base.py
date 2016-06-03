@@ -1,5 +1,6 @@
 import os
 from os.path import join, abspath, dirname
+import tempfile
 
 from django.utils.crypto import get_random_string
 
@@ -63,7 +64,10 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = os.environ.get('TMPDIR', '/tmp') + '/static/'
+if 'TMPDIR' in os.environ:
+    STATIC_ROOT = os.environ['TMPDIR'] + '/static/'
+else:
+    STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -158,11 +162,11 @@ TEST_RUNNER = 'regulations.tests.runner.DatabaselessTestRunner'
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/tmp/eregs_cache',
+        'LOCATION': tempfile.mkdtemp('eregs_cache'),
     },
     'eregs_longterm_cache': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/tmp/eregs_longterm_cache',
+        'LOCATION': tempfile.mkdtemp('eregs_longterm_cache'),
         'TIMEOUT': 60*60*24*15,     # 15 days
         'OPTIONS': {
             'MAX_ENTRIES': 10000,
