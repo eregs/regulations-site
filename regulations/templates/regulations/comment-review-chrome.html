@@ -16,7 +16,7 @@
         <ul>
           <% _.each(comments, function(comment, index) { %>
             <li data-section="<%= comment.id %>">
-              <h4><%= comment.label %></h4>
+              <h4 class="comment-section-label" data-section-label="<%= comment.label %>"><%= comment.label %></h4>
               <div class="comment-content">
                 <%= comment.commentHtml %>
               </div>
