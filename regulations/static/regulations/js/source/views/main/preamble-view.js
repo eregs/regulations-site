@@ -127,6 +127,9 @@ var PreambleView = ChildView.extend({
 
     this.$read.hide();
     this.$write.show();
+
+    // set anchor to top of page
+    $('body').scrollTop(0);
   },
 
   renderComments: function() {
