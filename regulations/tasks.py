@@ -48,7 +48,8 @@ def submit_comment(self, comments, form_data, metadata_url):
         try:
             with html_to_pdf(html) as comment_pdf, \
                     build_attachments(files) as attachments:
-                pdf_url = cache_pdf(comment_pdf, metadata_url)
+                document_number = get_document_number(comments)
+                pdf_url = cache_pdf(comment_pdf, document_number, metadata_url)
 
                 # Restore file position changed by cache_pdf
                 comment_pdf.seek(0)
@@ -125,9 +126,11 @@ def html_to_pdf(html):
         shutil.rmtree(path)
 
 
-def cache_pdf(pdf, metadata_url):
+def cache_pdf(pdf, document_number, metadata_url):
     """Update submission metadata and cache comment PDF."""
     url = SignedUrl.generate()
+    content_disposition = generate_content_disposition(document_number,
+                                                       draft=False)
     s3_client.put_object(
         Body=json.dumps({'pdfUrl': metadata_url.url}),
         Bucket=settings.ATTACHMENT_BUCKET,
@@ -135,10 +138,26 @@ def cache_pdf(pdf, metadata_url):
     )
     s3_client.put_object(
         Body=pdf,
+        ContentType='application/pdf',
+        ContentDisposition=content_disposition,
         Bucket=settings.ATTACHMENT_BUCKET,
         Key=url.key,
     )
     return url
+
+
+def generate_content_disposition(document_number, draft=False):
+    return 'attachment; filename="{}comment_{}.pdf"'.format(
+        "DRAFT_" if draft else "",
+        document_number
+    )
+
+
+def get_document_number(comments):
+    """ Get the FR document number for the notice against which the comments
+    are being submitted
+    """
+    return comments[0]['docId']
 
 
 @contextlib.contextmanager

@@ -1,6 +1,7 @@
 {% comment %}
     Preamble intro has lots of extra fields
 {% endcomment %}
+{% load macros %}
 
 <li
     {% if node.marker %}marker-type="{{node.marker}}"{% endif %}
@@ -21,32 +22,37 @@
         </a>
       </div>
     {% endif %}
-    <h4>{{ meta.primary_agency }}</h4>
+    <h4 class="small-header">{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
-    <div>
+    <div class="comment-period-dates">
       {% if meta.comment_state.name == 'OPEN' %}
-        <div class="countdown open">{{ meta.days_remaining }} Days</div>
+        <div class="days-remaining open"><strong>{{ meta.days_remaining }}</strong> Days</div>
       {% elif meta.comment_state.name == 'CLOSED' %}
-        <div class="countdown closed">0 Days</div>
+        <div class="days-remaining closed"><strong>0</strong> Days</div>
       {% endif %}
 
-      {% if meta.comment_state.name == 'PREPUB' %}
-        <h5>This comment period is not open.</h5>
-      {% elif meta.comment_state.name == 'OPEN' %}
-        <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
-      {% elif meta.comment_state.name == 'CLOSED' %}
-        <h5>Comment period closed on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
-      {% endif %}{% comment %}No text in the NO_COMMENT state {% endcomment %}
+      <div class="explanation">
+        {% if meta.comment_state.name == 'PREPUB' %}
+          <h5>This comment period is not open.</h5>
+        {% elif meta.comment_state.name == 'OPEN' %}
+          <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
+        {% elif meta.comment_state.name == 'CLOSED' %}
+          <h5>Comment period closed on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
+        {% endif %}{% comment %}No text in the NO_COMMENT state {% endcomment %}
+      </div>
 
+      <p class="publish-date">
       {% if meta.comment_state.name == 'PREPUB' %}
         The rule is not yet published in the Federal Register.
       {% else %}
         Rule published {{ meta.publication_date|date:"F j, Y"}}
       {% endif %}
+      </P>
     </div>
     {% if meta.supporting_documents %}
     <div class="view-supporting-docs">
-      <a href="#supporting-docs">View supporting documents from the docket</a>
+      <span class="fa fa-file-text-o"></span>
+      <a class="citation internal" href="#supporting-docs">View supporting documents from the docket</a>
     </div>
     {% endif %}
     <hr />
@@ -67,11 +73,17 @@
 {% if meta.supporting_documents %}
   <li>
     <h4 id="supporting-docs">Supporting documents from the docket:</h4>
-    <ol>
+    <ol class="supporting-docs-list">
       {% for doc in meta.supporting_documents|slice:":3" %}
-        <li><a href="https://www.regulations.gov/#!documentDetail;D={{doc.regs_id}}">{{doc.title}}</a></li>
+        <li>
+          {% external_link text=doc.title url="https://www.regulations.gov/#!documentDetail;D="|add:doc.regs_id %}
+        </li>
       {% endfor %}
-      <li><a href="https://www.regulations.gov/#!docketBrowser;rpp=25;po=0;dct=SR%252BO;D={{meta.primary_docket}}">View all</a></li>
+      <li>
+        {% with url="https://www.regulations.gov/#!docketBrowser;rpp=25;po=0;dct=SR%252BO;D="|add:meta.primary_docket %}
+          {% external_link text="View all" classes="view-all" url=url %}
+        {% endwith %}
+      </li>
     </ol>
   </li>
 {% endif %}

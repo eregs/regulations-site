@@ -5,128 +5,6 @@ comment.less contains styles related to commenting on sections
 */
 
 /*
-Preamble Read Mode
-================
-*/
-#preamble-read {
-  margin: 0;
-  padding: 0 0 0 15px;
-  width: 75%;
-  word-wrap: break-word;
-
-  // for hiding write comment links on paragraphs
-  // when section is not called out for comment
-  .not-called-out {
-    .activate-write {
-      display: none;
-    }
-
-    // then show write comment links when paragraph
-    // section is hovered
-    &:hover {
-      .activate-write {
-        display: block;
-      }
-    }
-  }
-  .not-called-out-extend {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: -275px;
-    top: 0;
-  }
-
-  // Write a comment about XXX link
-  .activate-write {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    position: absolute;
-    right: -320px;
-    top: -5px;
-    width: 250px;
-
-    a {
-      color: @pacific_light;
-      display: block;
-    }
-
-    &:hover a,
-    a:focus {
-      color: @pacific_hover;
-    }
-
-    // write a comment pencil icon font
-    .fa-pencil-square-o {
-      clear: both;
-      float: left;
-      line-height: 24px;
-      margin-right: 8px;
-    }
-
-    .paragraph-comment {
-      overflow: hidden;
-    }
-  }
-
-  p + .activate-write {
-    top: 0;
-  }
-
-  // hidden content (with stars) on CFR
-  .show-more-context {
-    background-color: @grey;
-    border-radius: 2px;
-    color: @pacific;
-    font-size: 10px;
-    margin: 10px 0;
-    text-align: center;
-    width: 100%;
-
-    span {
-      font-size: 12px;
-      padding: 0 30px;
-    }
-  }
-
-  .subpart-info {
-    border-bottom: 1px solid @medium_gray;
-    margin-bottom: 15px;
-
-    .subpart-sections {
-      font-size: 14px;
-      .font-regular;
-      color: @dark_text;
-      margin: 20px 0 0 0;
-    }
-
-    .subpart-wayfinding {
-      display: inline-block;
-      float: right;
-    }
-    a {
-      display: inline-block;
-      height: 10px;
-      width: 10px;
-      vertical-align: middle;
-      background-color: @grey;
-
-      &.current {
-        background-color: @pacific;
-      }
-    }
-  }
-
-  .cfr-instructions {
-    .font-regular;
-    font-size: 16px;
-    line-height: 24px;
-    padding-top: 15px;
-  }
-}
-
-/*
 N&C Header - including Read/Write tab
 ================
 */
@@ -265,10 +143,10 @@ Write Mode
     }
   }
 
-
   .comment-controls {
-    width: 70%;
     float: left;
+    padding-bottom: 35px;
+    width: 70%;
 
     button {
       float: left;
@@ -316,14 +194,49 @@ Write Mode
     }
   }
 
+  .comment-context-wrapper {
+    border-radius: 2px;
+    box-shadow: 0 0 1px 1px @text_area_border;
+    margin: 30px 0;
+    position: relative;
+  }
+
+  .comment-context-toggle {
+    background-color: @grey;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 15px;
+
+    .comment-context-text {
+      color: @blue;
+    }
+
+    .fa-minus-circle,
+    .comment-context-text-less {
+      display: none;
+    }
+
+    .fa {
+      margin-right: 3px;
+    }
+
+    .comment-context-label {
+      font-weight: bold;
+    }
+  }
+
   .comment-context {
+    border-top: 1px solid @text_area_border;
+    display: none;
     margin: 0 0 25px 0;
-    padding: 0 20px;
     max-height: 400px;
     overflow: auto;
-    border: 1px solid transparent;
-    box-shadow: 0 0 1px 1px @text_area_border;
-    border-radius: 2px
+    padding: 0 20px;
+
+    ul {
+      padding-left: 0;
+    }
   }
 
   @icon_width: 48px;
@@ -486,7 +399,7 @@ Write Mode
 .comment-header {
   margin: 0.6em 0;
 
-  & > a {
+  .comment-header-link a {
     color: @black;
     border-bottom: 2px solid fade(@blue, 80%);
   }

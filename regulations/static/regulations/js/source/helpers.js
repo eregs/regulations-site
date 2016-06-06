@@ -208,5 +208,33 @@ module.exports = {
         parsed.hash = parts.join('-');
       }
       return parsed;
+    },
+
+    /**
+     * Parse the citation link hash to open the correct section.
+     * @param {string} hash - the href link target section
+     * @param {string} type - expecting 'preamble-section' from preamble-view.js options.type
+     *
+     * Example internal citation link:
+     * <a href="#0000_0000-III-D-4" class="citation internal" data-section-id="0000_0000-III">III.D.4</a>
+     * take href link and create a string "0000_0000-preamble-0000_0000-III-D-4"
+     * to pass to 'section:open' event to load the linked section
+     *
+     * @see unittests
+     */
+    parsePreambleCitationId: function(hash, type) {
+      // only grab the section info after #
+      var section = hash.substring(hash.indexOf('#') + 1);
+      var parts = section.split('-');
+      var docId = parts.shift();
+
+      if (type === 'preamble-section') {
+        type = 'preamble';
+      }
+      else {
+        type = 'cfr';
+      }
+
+      return [docId, type, section].join('-');
     }
 };

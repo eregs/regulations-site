@@ -17,7 +17,8 @@ var helpers = require('../../helpers');
 
 var PreambleView = ChildView.extend({
   events: {
-    'click .activate-write': 'handleWriteLink'
+    'click .activate-write': 'handleWriteLink',
+    'click .citation.internal': 'openCitation'
   },
 
   initialize: function(options) {
@@ -27,6 +28,7 @@ var PreambleView = ChildView.extend({
     var type = parsed.type;
 
     this.options.scrollToId = parsed.hash;
+
     this.url = parsed.path.join('/');
 
     ChildView.prototype.initialize.apply(this, arguments);
@@ -44,6 +46,21 @@ var PreambleView = ChildView.extend({
         'table-of-contents' :
         'table-of-contents-secondary'
     );
+  },
+
+  openCitation: function(e) {
+    var $target = $(e.currentTarget);
+    var hash = $target.attr('href');
+    var id = $target.attr('data-section-id');
+    var options = {};
+    var type = this.options.type;
+    var section = helpers.parsePreambleCitationId(hash, type);
+
+    if (id) {
+      e.preventDefault();
+
+      MainEvents.trigger('section:open', section, options, type);
+    }
   },
 
   handleRead: function() {
@@ -94,6 +111,7 @@ var PreambleView = ChildView.extend({
     $parent = $parent.is('[data-page-type]') ?
       this.$read.find('.preamble-content') :
       $parent;
+
     $parent = $parent.clone();
     $parent.find('.activate-write').remove();
 
@@ -134,7 +152,9 @@ var PreambleView = ChildView.extend({
 
     if (this.options.mode === 'write') {
       var $parent = $('#' + this.options.scrollToId);
-      this.write(this.options.section, this.options.tocId, this.options.label, $parent);
+      var indexes = $parent.data('indexes');
+
+      this.write(this.options.section, this.options.tocId, indexes, this.options.label, $parent);
     } else {
       this.handleRead();
     }

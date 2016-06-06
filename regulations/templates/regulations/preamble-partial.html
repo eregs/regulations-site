@@ -58,9 +58,44 @@
       {% elif meta.comment_state.name == 'OPEN' %}
         <div class="comment-wrapper">
           <div class="comment">
-            <h4 class="comment-header">You are writing a comment about </h4>
-            <div class="comment-context"></div>
-            <h4 class="comment-header">Write your response to </h4>
+            <h4 class="comment-header">
+              You are writing a comment about
+              <span class="comment-header-link"></span>
+            </h4>
+
+            <div class="comment-context-wrapper">
+
+              <div class="comment-context-toggle">
+                <span class="comment-context-text">
+                  <span class="fa fa-plus-circle" aria-hidden="true"></span>
+                  <span class="fa fa-minus-circle" aria-hidden="true"></span>
+                  Show
+                  <span class="comment-context-text-more">more</span>
+                  <span class="comment-context-text-less">less</span>
+                  context for:
+                </span>
+                <span class="comment-context-label">
+                  <span class="comment-context-type">
+                  {% if type == "cfr" %}
+                    {{ type|upper }}
+                  {% else %}
+                    {{ type|capfirst }}
+                  {% endif %}
+                  </span>
+                  &nbsp;|&nbsp;
+                  <span class="comment-context-section"></span>
+                </span>
+              </div>
+
+              <div class="comment-context"></div>
+
+            </div>
+
+            <h4 class="comment-header">
+              Write your response to
+              <span class="comment-header-link"></span>
+            </h4>
+
             <form>
               <div class="editor-container"></div>
               <div class="comment-controls">
