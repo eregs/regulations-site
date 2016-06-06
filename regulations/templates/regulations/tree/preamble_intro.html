@@ -33,11 +33,11 @@
 
       <div class="explanation">
         {% if meta.comment_state.name == 'PREPUB' %}
-          <h5>This comment period is not open.</h5>
+          This comment period is not open.
         {% elif meta.comment_state.name == 'OPEN' %}
-          <h5>Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
+          Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.
         {% elif meta.comment_state.name == 'CLOSED' %}
-          <h5>Comment period closed on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.</h5>
+          Comment period closed on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.
         {% endif %}{% comment %}No text in the NO_COMMENT state {% endcomment %}
       </div>
 
