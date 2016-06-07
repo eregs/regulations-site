@@ -4,21 +4,21 @@
   <div class="comment-confirm-alert fail-alert">
     <div class="fa fa-2x fa-exclamation-circle"></div>
     <div class="alert-text">
-      <h2>Comment submission invalid.</h2>
+      <h3>Comment submission invalid.</h3>
       <p>Your submission was invalid: {{ message }}</p>
     </div>
   </div>
 
   <div class="return-to-draft">
-    <h3>
+    <h4>
       <a href="{% url 'comment_review' doc_number %}">
         <span class="fa fa-chevron-left"></span>
         Return to your draft comment</a> to try submitting again.
-    </h3>
+    </h4>
   </div>
 
   <section class="problem-persist">
-    <h3>If this problem keeps happening</h3>
+    <h4>If this problem keeps happening</h4>
     <p>
       If you've already tried submitting your comment more than once, please save a copy of your draft comment for safekeeping.
     </p>

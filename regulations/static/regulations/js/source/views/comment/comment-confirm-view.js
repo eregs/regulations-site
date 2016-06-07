@@ -59,8 +59,11 @@ var CommentConfirmView = Backbone.View.extend({
     this.replaceTemplate('.save-pdf', {url: url});
   },
 
+// Changes text and color of background when tracking number is received, hides wait message
   setTrackingNumber: function(number) {
     this.replaceTemplate('.tracking-number .status', {number: number});
+    this.$el.find('.status').addClass('tracking-number-retrieved');
+    this.$el.find('.status-waiting').hide();
   }
 });
 
