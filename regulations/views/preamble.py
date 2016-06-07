@@ -478,7 +478,7 @@ class CFRChangesView(View):
             ids = {'part': label_parts[0]}
             sub_context = self.authorities_context(
                 amendments, cfr_part=section)
-            section_label = None
+            section_label = ''
         else:
             ids = {'part': label_parts[0], 'section': label_parts[1]}
             toc_position = get_toc_position(context['cfr_change_toc'], **ids)
