@@ -81,6 +81,7 @@ var CommentView = Backbone.View.extend({
     this.attachmentViews = [];
 
     this.listenTo(CommentEvents, 'comment:target', this.target);
+    this.listenTo(CommentEvents, 'comment:submit', this.submitComments);
     this.listenTo(CommentEvents, 'attachment:remove', this.clearAttachment);
 
     this.setSection(options.section, options.tocId, options.indexes, options.label);
@@ -227,7 +228,12 @@ var CommentView = Backbone.View.extend({
   },
 
   save: function(e) {
-    e.preventDefault();
+    // check for click event
+    // because event is not passed from submitComments function
+    if (e) {
+      e.preventDefault();
+    }
+
     this.model.set({
       comment: this.editor.getContent('markdown'),
       commentHtml: this.editor.getContent('html'),
@@ -243,6 +249,14 @@ var CommentView = Backbone.View.extend({
     comments.add(this.model);
     this.model.save();
     this.$status.hide().html('Your comment was saved.').fadeIn();
+  },
+
+  // when "Review and Submit" is clicked, save any unsaved content
+  // then open link on button
+  submitComments: function(e) {
+    this.save();
+
+    document.location.href = window.location.origin + $(e.target).attr('href');
   }
 });
 
