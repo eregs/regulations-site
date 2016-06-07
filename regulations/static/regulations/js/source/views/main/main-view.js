@@ -61,6 +61,8 @@ var MainView = Backbone.View.extend({
       var $toggleButtonOpen = $toggleButton.find('.toggle-button-open');
       var $toggleButtonClose = $toggleButton.find('.toggle-button-close');
 
+      e.preventDefault();
+
       if ($collapsibleEl.is(':visible')) {
         $collapsibleEl.hide();
         $collapsibleEl.attr('aria-hidden', true);

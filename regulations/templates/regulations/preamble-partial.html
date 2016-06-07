@@ -65,7 +65,7 @@
 
             <div class="comment-context-wrapper">
 
-              <div class="comment-context-toggle">
+              <a class="comment-context-toggle" href="#">
                 <span class="comment-context-text">
                   <span class="fa fa-plus-circle" aria-hidden="true"></span>
                   <span class="fa fa-minus-circle" aria-hidden="true"></span>
@@ -85,7 +85,7 @@
                   &nbsp;|&nbsp;
                   <span class="comment-context-section"></span>
                 </span>
-              </div>
+              </a>
 
               <div class="comment-context"></div>
 
@@ -169,8 +169,8 @@
         data-comment-label="<%= comment.label %>">
       <div class="comment-index-section"><%= comment.label %></div>
       <div class="comment-index-modify">
-        <a class="comment-index-edit" title="Edit Comment"><span class="fa fa-pencil-square-o"></span></a>
-        <a class="comment-index-clear" title="Remove Comment"><span class="fa fa-times"></span></a>
+        <a class="comment-index-edit" title="Edit Comment" href="#"><span class="fa fa-pencil-square-o"></span></a>
+        <a class="comment-index-clear" title="Remove Comment" href="#"><span class="fa fa-times"></span></a>
       </div>
     </li>
   <% }); %>
