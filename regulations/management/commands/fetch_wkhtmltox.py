@@ -1,6 +1,6 @@
 import platform
 import os.path
-import subprocess
+import subprocess   # nosec - see usage below
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
@@ -33,6 +33,7 @@ class Command(BaseCommand):
                 "WKHTMLTOPDF already exists: {}\nUse --force?".format(
                     settings.WKHTMLTOPDF_PATH)))
         else:
-            subprocess.check_call([
+            # Safe because: we're not passing user input into these processes
+            subprocess.check_call([     # nosec
                 'wget', '-O', BIN_PATH[-1], '/'.join(BIN_PATH)])
-            subprocess.check_call(['tar', 'xvf', BIN_PATH[-1]])
+            subprocess.check_call(['tar', 'xvf', BIN_PATH[-1]])     # nosec

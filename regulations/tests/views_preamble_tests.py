@@ -10,16 +10,7 @@ from django.test import RequestFactory, override_settings
 
 from regulations.generator.layers import diff_applier, layers_applier
 from regulations.views import preamble
-
-
-def make_intro(doc_number, comments_close):
-    return {
-        doc_number: {
-            'meta': {
-                'comments_close': comments_close.strftime('%Y-%m-%d'),
-            },
-        },
-    }
+from regulations.views.preamble import CommentState
 
 
 class PreambleViewTests(TestCase):
@@ -92,8 +83,10 @@ class PreambleViewTests(TestCase):
         )
 
     @override_settings(
-        PREAMBLE_INTRO=make_intro('1', date.today() + timedelta(days=1)),
-    )
+        PREAMBLE_INTRO={'1': {'meta': {
+            'publication_date': '2001-01-01',
+            'comments_close': (date.today() + timedelta(days=1)).isoformat()
+        }}})
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_open_from_settings(self, ApiReader):
         """
@@ -101,44 +94,50 @@ class PreambleViewTests(TestCase):
         comments being open.
         """
         _, meta, _ = preamble.notice_data('1')
-        assert_true(meta['accepts_comments'])
 
-    @patch('regulations.views.preamble.ApiReader')
-    def test_comments_open_from_notice(self, ApiReader):
-        """
-        Mock the ApiReader response for this test of the comments being open.
-        """
-        future = date.today() + timedelta(days=10)
+        assert_equal(meta['comment_state'], CommentState.OPEN)
+
+    def _setup_mock_response(self, ApiReader, **kwargs):
+        """Mock the ApiReader response, replacing meta data fields with
+        kwargs"""
         ApiReader.return_value.preamble.return_value = self._mock_preamble
-        ApiReader.return_value.notice.return_value = {
+        notice = {
             "action": "Proposed rule",
             "agencies": ["Environmental Protection Agency"],
             "cfr_title": 40,
             "cfr_parts": ["300"],
-            "comments_close": future.isoformat(),
+            "comments_close": "2011-09-09",
             "dockets": ["EPA-HQ-SFUND-2010-1086",
                         "FRL-9925-69-OLEM"],
             "primary_agency": "Environmental Protection Agency",
             "title": ("Addition of a Subsurface Intrusion Component to the "
                       "Hazard Ranking System"),
-            "publication_date": "2016-02-29",
+            "publication_date": "2011-02-02",
             "regulatory_id_numbers": ["2050-AG67"],
         }
-        my_preamble, meta, _ = preamble.notice_data('1')
-        assert_true(meta['accepts_comments'])
+        notice.update(kwargs)
+        ApiReader.return_value.notice.return_value = notice
 
-    @override_settings(
-        PREAMBLE_INTRO=make_intro('1', date.today() - timedelta(days=1)),
-    )
+    @patch('regulations.views.preamble.ApiReader')
+    def test_comments_open(self, ApiReader):
+        future = date.today() + timedelta(days=10)
+        self._setup_mock_response(ApiReader, comments_close=future.isoformat())
+        _, meta, _ = preamble.notice_data('1')
+        assert_equal(meta['comment_state'], CommentState.OPEN)
+
+    @patch('regulations.views.preamble.ApiReader')
+    def test_comments_prepub(self, ApiReader):
+        future = date.today() + timedelta(days=10)
+        self._setup_mock_response(ApiReader,
+                                  publication_date=future.isoformat())
+        _, meta, _ = preamble.notice_data('1')
+        assert_equal(meta['comment_state'], CommentState.PREPUB)
+
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_closed(self, ApiReader):
+        self._setup_mock_response(ApiReader)
         _, meta, _ = preamble.notice_data('1')
-        assert_false(meta['accepts_comments'])
-
-    @patch('regulations.views.preamble.ApiReader')
-    def test_comments_final(self, ApiReader):
-        _, meta, _ = preamble.notice_data('1')
-        assert_false(meta['accepts_comments'])
+        assert_equal(meta['comment_state'], CommentState.CLOSED)
 
     @patch('regulations.views.preamble.CFRChangeToC')
     @patch('regulations.generator.generator.api_reader')
@@ -179,12 +178,14 @@ class PreambleViewTests(TestCase):
         the Notice"""
         ApiReader.return_value.preamble.return_value = self._mock_preamble
         ApiReader.return_value.notice.return_value = {
+            'publication_date': '2002-02-02',
+            'comments_close': '2003-03-03',
             'cfr_title': 21, 'cfr_parts': ['123']}
 
         for doc_id in ('123_456', '123-456'):
             preamble_, meta, notice = preamble.notice_data(doc_id)
             self.assertEqual(preamble_, self._mock_preamble)
-            self.assertFalse(meta['accepts_comments'])
+            assert_equal(meta['comment_state'], CommentState.CLOSED)
             self.assertEqual(meta['cfr_refs'],
                              [{'title': 21, 'parts': ['123']}])
             self.assertEqual(ApiReader.return_value.preamble.call_args[0][0],

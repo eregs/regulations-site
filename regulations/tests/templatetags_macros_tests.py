@@ -1,7 +1,7 @@
 from unittest import TestCase
+from xml.etree import ElementTree as etree  # nosec - see usage below
 
 from django.template import Context, Template
-from lxml import etree
 
 
 class MacrosTests(TestCase):
@@ -9,8 +9,9 @@ class MacrosTests(TestCase):
         """Shorthand for passing the content into a template and rendering"""
         text = "{% load macros %}" + content
         as_str = Template(text).render(Context({}))
-        as_xml = etree.fromstring("<ROOT>{}</ROOT>".format(as_str))
-        anchors = as_xml.xpath('//a')
+        # Safe because: we've constructed the XML
+        as_xml = etree.fromstring("<ROOT>{}</ROOT>".format(as_str))  # nosec
+        anchors = as_xml.findall('.//a')
         self.assertTrue(len(anchors) > 0)
         return anchors[0]
 

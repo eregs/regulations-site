@@ -1,9 +1,8 @@
-from setuptools import setup, find_packages
-
 import os
-from subprocess import call
-from setuptools import Command
+from subprocess import call     # nosec  - see usage below
+
 from distutils.command.build_ext import build_ext as _build_ext
+from setuptools import Command, find_packages, setup
 from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 
 
@@ -19,8 +18,8 @@ class build_frontend(Command):
         pass
 
     def run(self):
-        print(__file__)
-        call(['./frontendbuild.sh'],
+        # Safe because: calling our own script
+        call(['./frontendbuild.sh'],    # nosec
              cwd=os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -47,6 +46,7 @@ setup(
         'cached-property',
         'celery',
         'django>=1.8,<1.9',
+        'enum34',
         'requests',
         'six',
         'requests-toolbelt',

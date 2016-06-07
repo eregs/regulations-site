@@ -30,8 +30,10 @@ class TestSubmitComment(TestCase):
     def setUp(self):
         self.file_handle = six.BytesIO(b"some-byte-content")
         self.comments = [
-            {"id": "A1", "comment": "A simple comment", "files": []},
-            {"id": "A5", "comment": "Another comment", "files": []}
+            {"id": "A1", "comment": "A simple comment", "docId": "1234_56",
+             "files": []},
+            {"id": "A5", "comment": "Another comment", "docId": "1234_56",
+             "files": []}
         ]
         self.form = {}
         self.meta = SignedUrl('meta', 'https://s3.amazonaws.com/bucket/meta')
@@ -105,7 +107,7 @@ class TestHelpers(TestCase):
         meta = SignedUrl('meta', 'https://s3.amazonaws.com/bucket/meta')
         url_generate.return_value = SignedUrl(
             'pdf', 'https://s3.amazonaws.com/bucket/pdf')
-        url = cache_pdf('content', meta)
+        url = cache_pdf('content', "1234_56", meta)
         assert_equal(url, url_generate.return_value)
         s3_client.put_object.assert_any_call(
             Body=json.dumps({'pdfUrl': meta.url}),
@@ -115,5 +117,7 @@ class TestHelpers(TestCase):
         s3_client.put_object.assert_any_call(
             Body='content',
             Bucket=settings.ATTACHMENT_BUCKET,
+            ContentType='application/pdf',
+            ContentDisposition='attachment; filename="comment_1234_56.pdf"',
             Key=url.key,
         )

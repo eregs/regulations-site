@@ -43,6 +43,7 @@ var CommentView = Backbone.View.extend({
     'dragenter input[type="file"]': 'highlightDropzone',
     'dragleave input[type="file"]': 'unhighlightDropzone',
     'click .comment-header': 'openComment',
+    'click .comment-context-toggle': 'toggleCommentExcerpt',
     'submit form': 'save'
   },
 
@@ -50,7 +51,9 @@ var CommentView = Backbone.View.extend({
     this.options = options;
 
     this.$context = this.$el.find('.comment-context');
+    this.$contextSectionLabel = this.$el.find('.comment-context-section');
     this.$header = this.$el.find('.comment-header');
+    this.$headerLink = this.$el.find('.comment-header-link');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
     this.$attachmentCount = this.$el.find('.comment-attachment-count');
@@ -109,7 +112,10 @@ var CommentView = Backbone.View.extend({
         label = [label, $sectionHeader.text().split('. ').slice(1)].join('. ');
         $sectionHeader.remove();
       }
-      this.$header.append('<a href="' + href + '">' + label + '</a>');
+      this.$headerLink.html('<a href="' + href + '">' + label + '</a>');
+
+      this.$contextSectionLabel.html(options.label);
+
       this.$context.append(options.$parent);
     }
   },
@@ -126,6 +132,14 @@ var CommentView = Backbone.View.extend({
     DrawerEvents.trigger('section:open', options.tocId);
     DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
+  },
+
+  toggleCommentExcerpt: function() {
+    $('.comment-context-text-more').toggle();
+    $('.comment-context-text-less').toggle();
+    $('.fa-plus-circle').toggle();
+    $('.fa-minus-circle').toggle();
+    $('.comment-context').toggle();
   },
 
   render: function() {
