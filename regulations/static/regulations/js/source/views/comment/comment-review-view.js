@@ -73,6 +73,10 @@ var CommentReviewView = Backbone.View.extend({
 
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
+    // hide toggle elements
+    this.$el.find('.toggle .collapsible').attr('aria-hidden', 'true').hide();
+    this.$el.find('.toggle .toggle-button-close').attr('aria-hidden', 'true').hide();
+
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
@@ -93,10 +97,15 @@ var CommentReviewView = Backbone.View.extend({
         }
       });
     }
+
     var $tabs = self.$el.find('[data-tab]');
     updateTabs($tabs.data('tab'), $tabs.data('tab-set'));
-    $tabs.on('click', function() {
+
+    $tabs.on('click', function(e) {
       var $tab = $(this);
+
+      e.preventDefault();
+
       updateTabs($tab.data('tab'), $tab.data('tab-set'));
     });
   },
@@ -139,7 +148,10 @@ var CommentReviewView = Backbone.View.extend({
     });
   },
 
-  preview: function() {
+  preview: function(e) {
+
+    e.preventDefault();
+
     var $xhr = $.ajax({
       type: 'POST',
       url: window.APP_PREFIX + 'comments/preview',

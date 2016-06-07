@@ -35,7 +35,7 @@
                   </ul>
                 </div>
               <% } %>
-              <div class="edit-comment">
+              <a class="edit-comment" href="#">
                 <svg width="14px" height="11px" viewBox="0 0 14 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g class="write-icon">
@@ -44,14 +44,14 @@
                     </g>
                 </svg>
                 <span>Edit this comment</span>
-              </div>
+              </a>
             </li>
           <% }) %>
         </ul>
 
         <div class="download-comment group">
           <% if (!previewLoading) { %>
-            <h4 class="preview-button">Download the text of your full comment as a PDF</h4>
+            <h4><a class="preview-button" href="#">Download the text of your full comment as a PDF</a></h4>
           <% } else { %>
             <h4 class="preview-button" disabled>Building your PDF...</h4>
           <% } %>

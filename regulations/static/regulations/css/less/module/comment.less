@@ -16,13 +16,14 @@ N&C Header - including Read/Write tab
   position: absolute;
   right: 0;
 
-  span {
+  .tab-descriptions {
+    font-size: 14px;
+    color: @dark_field;
     padding: 0 5px;
+  }
 
-    &.tab-descriptions {
-      font-size: 14px;
-      color: @dark_field;
-    }
+  a {
+    padding: 0 5px;
 
     &.hide-mobile {
       padding: 0;
@@ -187,6 +188,7 @@ Write Mode
   .comment-upload-button {
     background-color: @grey;
     color: @black;
+    cursor: pointer;
     border-radius: 2px;
     .font-regular;
     font-weight: 500;
@@ -210,6 +212,7 @@ Write Mode
     background-color: @grey;
     border-radius: 2px;
     cursor: pointer;
+    display: block;
     font-size: 16px;
     padding: 10px 15px;
 
@@ -318,6 +321,11 @@ Write Mode
       font-size: 15px;
       float: right;
       width: 40px;
+
+      a:focus .fa {
+        color: darken(@black, 10%);
+        display: inline-block;
+      }
 
       .fa {
         vertical-align: middle;
