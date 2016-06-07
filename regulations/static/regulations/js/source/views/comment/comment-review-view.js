@@ -74,8 +74,8 @@ var CommentReviewView = Backbone.View.extend({
     this.$form.find('[name="comments"]').val(JSON.stringify(commentData));
 
     // hide toggle elements
-    $('.toggle .collapsible').attr('aria-hidden', 'true').hide();
-    $('.toggle .toggle-button-close').attr('aria-hidden', 'true').hide();
+    this.$el.find('.toggle .collapsible').attr('aria-hidden', 'true').hide();
+    this.$el.find('.toggle .toggle-button-close').attr('aria-hidden', 'true').hide();
 
     CommentEvents.trigger('comment:writeTabOpen');
   },
