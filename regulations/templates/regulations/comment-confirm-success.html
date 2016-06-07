@@ -4,7 +4,7 @@
   <div class="comment-confirm-alert success-alert">
     <div class="fa fa-2x fa-check-circle"></div>
     <div class="alert-text">
-      <h2>Success!</h2>
+      <h3>Success!</h3>
       <p>Thank you for submitting your comment to EPA. You're done!</p>
     </div>
   </div>
@@ -18,26 +18,31 @@
     </script>
   </div>
   <section class="tracking-number">
-    <h3>Your comment tracking number</h3>
+    <h4>Your comment tracking number</h4>
     <p>
       The first step EPA takes is to assign your comment a tracking number.
       This page automatically displays that number when received:
     </p>
-    <p class="status">
-      Waiting to receive comment tracking number. This may take a few seconds
-      or minutes.
-      <script class="js-template" type="text/template">
-        <div>Comment tracking number: <%= number %></div>
-      </script>
-    </p>
+    <div class="status">
+      <div class="fa fa-spinner fa-pulse fa-1x fa-fw"></div>
+      <span class="sr-only">Loading...</span>
+      <div class="status-message">
+        <strong>Waiting to receive comment tracking number. This may take a few seconds or minutes.</strong>
+        <script class="js-template" type="text/template">
+          <div class="tracking-number-retrieved">
+            <span class="fa fa-check-circle" aria-hidden="true"></span>
+            Comment tracking number: <strong><%= number %></strong></div>
+        </script>
+      </div>
+    </div>
     <p>
       Your comment tracking number can help you find and view your public comment later if you want to.
     </p>
   </section>
   <section class="what-will-happen">
 
-    <h3>What will happen to your comment</h3>
-    <h4>EPA will process it and in most cases will post it publicly</h4>
+    <h4>What will happen to your comment</h4>
+    <h5>EPA will process it and in most cases will post it publicly</h5>
     <ul>
       <li>
         EPA will process your comment, which may take a few days or weeks depending
@@ -56,7 +61,7 @@
       </li>
     </ul>
 
-    <h4>EPA will review eligible comments and will usually publish a final rule</h4>
+    <h5>EPA will review eligible comments and will usually publish a final rule</h5>
     <ul>
       <li>
         After this comment period ends, EPA will review the comments, and usually
@@ -76,7 +81,7 @@
 
   <section class="feedback">
 
-    <h3>You can give feedback on this tool</h3>
+    <h4>You can give feedback on this tool</h4>
     <div>
       This eRegulations commenting tool was developed by <a href="https://18f.gsa.gov/" target="_blank">18F <span class="cf-icon cf-icon-external-link"></span></a>
       (part of the <a href="http://www.gsa.gov/" target="_blank">General Services Administration <span class="cf-icon cf-icon-external-link"></span></a>)
