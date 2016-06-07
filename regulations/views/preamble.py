@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from collections import namedtuple
 from copy import deepcopy
 from datetime import date
+from enum import Enum
 
 import itertools
 import logging
@@ -31,6 +32,10 @@ from regulations.views.diff import Versions, get_appliers
 
 
 logger = logging.getLogger(__name__)
+
+
+class CommentState(Enum):
+    NO_COMMENT, PREPUB, OPEN, CLOSED = range(4)
 
 
 def find_subtree(root, label_parts):
@@ -332,13 +337,19 @@ def notice_data(doc_number):
             'meta', {})
         meta = convert_to_python(deepcopy(meta))
 
-    if 'comments_close' in meta:
-        today = date.today()
+    today = date.today()
+    if 'comments_close' in meta and 'publication_date' in meta:
         close_date = meta['comments_close'].date()
-        meta['days_remaining'] = 1 + (close_date - today).days
-        meta['accepts_comments'] = close_date >= today
+        publish_date = meta['publication_date'].date()
+        if today < publish_date:
+            meta['comment_state'] = CommentState.PREPUB
+        elif today <= close_date:
+            meta['comment_state'] = CommentState.OPEN
+            meta['days_remaining'] = 1 + (close_date - today).days
+        else:
+            meta['comment_state'] = CommentState.CLOSED
     else:
-        meta['accepts_comments'] = False
+        meta['comment_state'] = CommentState.NO_COMMENT
 
     # We don't pass along cfr_ref information in a super useful format, yet.
     # Construct one here:
@@ -448,9 +459,8 @@ class PrepareCommentView(View):
     def get(self, request, doc_number):
         context = common_context(doc_number)
 
-        if not context['meta']['accepts_comments']:
-            raise Http404(
-                "Comment period for doc # {} closed".format(doc_number))
+        if context['meta']['comment_state'] != CommentState.OPEN:
+            raise Http404("Cannot comment on {}".format(doc_number))
 
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))

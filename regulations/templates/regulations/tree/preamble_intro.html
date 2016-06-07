@@ -9,7 +9,7 @@
     id="{{node.markup_id}}"
     data-permalink-section>
   <div class="node">
-    {% if meta.accepts_comments and node.accepts_comments %}
+    {% if meta.comment_state.name == 'OPEN' and node.accepts_comments %}
       <div
           class="activate-write"
           data-section="{{ node.full_id }}"
@@ -25,16 +25,29 @@
     <h4 class="small-header">{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
     <div class="comment-period-dates">
-      {% if meta.accepts_comments %}
-        <div class="days-remaining"><strong>{{ meta.days_remaining }}</strong> Days</div>
+      {% if meta.comment_state.name == 'OPEN' %}
+        <div class="days-remaining open"><strong>{{ meta.days_remaining }}</strong> Days</div>
+      {% elif meta.comment_state.name == 'CLOSED' %}
+        <div class="days-remaining closed"><strong>0</strong> Days</div>
       {% endif %}
+
       <div class="explanation">
-        Comment period
-        {% if meta.accepts_comments %}closes{% else %}closed{% endif %}
-        on
-        <strong>{{ meta.comments_close|date:"F j, Y" }}</strong> at 11:59pm EST.
+        {% if meta.comment_state.name == 'PREPUB' %}
+          This comment period is not open.
+        {% elif meta.comment_state.name == 'OPEN' %}
+          Comment period closes on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.
+        {% elif meta.comment_state.name == 'CLOSED' %}
+          Comment period closed on {{ meta.comments_close|date:"F j, Y" }} at 11:59pm EST.
+        {% endif %}{% comment %}No text in the NO_COMMENT state {% endcomment %}
       </div>
-      <p class="publish-date">Rule published {{ meta.publication_date|date:"F j, Y"}}</p>
+
+      <p class="publish-date">
+      {% if meta.comment_state.name == 'PREPUB' %}
+        The rule is not yet published in the Federal Register.
+      {% else %}
+        Rule published {{ meta.publication_date|date:"F j, Y"}}
+      {% endif %}
+      </P>
     </div>
     {% if meta.supporting_documents %}
     <div class="view-supporting-docs">

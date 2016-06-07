@@ -243,6 +243,35 @@ Write Mode
       padding-left: 0;
     }
   }
+
+  @icon_width: 48px;
+  .write-warning {
+    background-color: @toc_highlight;
+    padding: @icon_width/2 @icon_width/4 @icon_width/4 2*@icon_width;
+    margin: @icon_width/2 0;
+
+    .fa-info-circle {
+      position: absolute;
+      left: @icon_width;    // aligns to the middle of the icon
+      top: @icon_width/2;   // aligns to the top of the icon
+      width: @icon_width;
+      text-align: center;
+    }
+
+    p {
+      .font-regular;
+    }
+    h3 {
+      margin: 0;
+    }
+  }
+  .warning-explanation {
+    margin: @icon_width/2 0;
+  }
+  .back-to-proposal {
+    .font-bold;
+    padding-left: 5px;
+  }
 }
 
 .comment-index {

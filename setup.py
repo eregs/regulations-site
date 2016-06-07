@@ -47,6 +47,7 @@ setup(
         'cached-property',
         'celery',
         'django>=1.8,<1.9',
+        'enum34',
         'requests',
         'six',
         'requests-toolbelt',

@@ -5,7 +5,7 @@
 {% if node.header %}
 <div class="node">
   <h{{ node.list_level|add:"+3" }} class="section-header">{{ node.header | safe }}</h{{ node.list_level|add:"+3" }}>
-  {% if meta.accepts_comments and node.accepts_comments %}
+  {% if meta.comment_state.name == 'OPEN' and node.accepts_comments %}
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"
@@ -42,7 +42,7 @@
 
     </p>
 
-    {% if meta.accepts_comments and node.accepts_comments and not node.title %}
+    {% if meta.comment_state.name == 'OPEN' and node.accepts_comments and not node.title %}
     <div
         class="activate-write"
         data-section="{{ node.full_id }}"

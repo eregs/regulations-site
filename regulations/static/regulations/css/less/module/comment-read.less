@@ -150,7 +150,13 @@ Preamble Read Mode
     text-align: center;
     text-transform: uppercase;
     color: @white;
-    background-color: @uswds_green;
+
+    &.open {
+      background-color: @uswds_green;
+    }
+    &.closed {
+      background-color: @uswds_dark_red;
+    }
 
     strong {
       display: block;
