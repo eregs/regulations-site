@@ -23,15 +23,23 @@
       The first step EPA takes is to assign your comment a tracking number.
       This page automatically displays that number when received:
     </p>
-    <div class="status">
-      <div class="fa fa-spinner fa-pulse fa-1x fa-fw"></div>
-      <span class="sr-only">Loading...</span>
-      <div class="status-message">
-        <strong>Waiting to receive comment tracking number. This may take a few seconds or minutes.</strong>
-        <script class="js-template" type="text/template">
-          <span class="fa fa-check-circle" aria-hidden="true"></span>
-          Comment tracking number: <strong><%= number %></strong>
-        </script>
+    <div class="status-container">
+      <div class="status">
+        <div class="fa fa-spinner fa-pulse fa-1x fa-fw"></div>
+        <span class="sr-only">Loading...</span>
+        <div class="status-message">
+          <strong>Waiting to receive comment tracking number. This may take a few seconds or minutes.</strong>
+          <script class="js-template" type="text/template">
+            <span class="fa fa-check-circle" aria-hidden="true"></span>
+            Comment tracking number: <strong><%= number %></strong>
+          </script>
+        </div>
+      </div>
+      <div class="status-waiting">
+        <div class="fa fa-info-circle fa-fw"></div>
+        <div class="waiting-message">
+          If this is taking a long time, you don't have to wait for this, because you can also look up your comment later with keyword searches.
+        </div>
       </div>
     </div>
     <p>

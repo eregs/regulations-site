@@ -125,15 +125,32 @@ Contains styles for Comment confirmation success/fail/invalid pages.
       margin: 4px 6px 0 0;
       vertical-align: top;
     }
+
     .status {
       background-color: @blue_light;
       padding: 8px 16px;
-      margin: 16px 0;
+      margin: 0;
 
       .status-message {
         display: inline-block;
       }
     }
+
+    .status-container {
+      margin: 16px 0;
+    }
+
+    .status-waiting {
+      background-color: @blue_light;
+      padding: 8px 16px;
+      margin: 1px 0;
+
+      .waiting-message {
+        display: inline-block;
+        width: 90%;
+      }
+    }
+
     .tracking-number-retrieved {
       background-color: @green_light;
     }
