@@ -6,7 +6,7 @@ import codecs
 import shutil
 import tempfile
 import contextlib
-import subprocess
+import subprocess   # nosec - see usage below
 import collections
 
 import boto3
@@ -113,7 +113,8 @@ def html_to_pdf(html):
         pdf_path = os.path.join(path, 'document.pdf')
         with codecs.open(html_path, 'w', 'utf-8') as fp:
             fp.write(html)
-        subprocess.check_output([
+        # Safe because: user provides no input
+        subprocess.check_output([   # nosec
             settings.WKHTMLTOPDF_PATH,
             '--user-style-sheet',
             finders.find('regulations/css/style.css'),

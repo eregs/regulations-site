@@ -1,7 +1,7 @@
 import codecs
 import os
 import shutil
-import subprocess
+import subprocess   # nosec - see usage below
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -110,9 +110,11 @@ class Command(BaseCommand):
     def build_frontend(self, install=True, dev=False):
         """Shell out to npm for building the frontend files"""
         cmd = 'build-dev' if dev else 'build-dist'
+        # Safe because: we're not passing user input into these processes
         if install:
-            subprocess.check_call(['npm', 'install'], cwd=self.BUILD_DIR)
-        subprocess.check_call(['grunt', cmd], cwd=self.BUILD_DIR)
+            subprocess.check_call(  # nosec
+                ['npm', 'install'], cwd=self.BUILD_DIR)
+        subprocess.check_call(['grunt', cmd], cwd=self.BUILD_DIR)   # nosec
 
     def cleanup(self):
         shutil.copytree("%s/static/regulations" % self.BUILD_DIR,
