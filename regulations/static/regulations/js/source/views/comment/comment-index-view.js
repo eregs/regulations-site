@@ -22,7 +22,8 @@ function getOptions(elm) {
 module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   events: {
     'click .comment-index-edit': 'editComment',
-    'click .comment-index-clear': 'clearComment'
+    'click .comment-index-clear': 'clearComment',
+    'click .comment-index-review': 'submitComments'
   },
 
   initialize: function(options) {
@@ -64,5 +65,13 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     if (comment) {
       comment.destroy();
     }
+  },
+
+  submitComments: function(e) {
+    // in order to save comment content, disable link
+    e.preventDefault();
+
+    // then trigger event to save before going to review page
+    CommentEvents.trigger('comment:submit', e);
   }
 });
