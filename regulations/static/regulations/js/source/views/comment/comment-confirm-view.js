@@ -61,7 +61,7 @@ var CommentConfirmView = Backbone.View.extend({
 
   setTrackingNumber: function(number) {
     this.replaceTemplate('.tracking-number .status', {number: number});
-    this.addClass ('tracking-number-retrieved');
+    $('.status').addClass('tracking-number-retrieved');
   }
 });
 
