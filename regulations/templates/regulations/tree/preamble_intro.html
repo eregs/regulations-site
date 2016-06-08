@@ -9,19 +9,6 @@
     id="{{node.markup_id}}"
     data-permalink-section>
   <div class="node">
-    {% if meta.comment_state.name == 'OPEN' and node.accepts_comments %}
-      <div
-          class="activate-write"
-          data-section="{{ node.full_id }}"
-          data-label="{{ node.human_label }}">
-        <a href="#">
-          <div class="paragraph-comment-icon">
-            <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
-          </div>
-          <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
-        </a>
-      </div>
-    {% endif %}
     <h4 class="small-header">{{ meta.primary_agency }}</h4>
     <h3>{{ meta.title }}</h3>
     <div class="comment-period-dates">
@@ -63,6 +50,19 @@
       {{meta.dockets|join:"; "}}<br />
       {{meta.regulation_id_numbers|join:"; "}}
     </p>
+    {% if meta.comment_state.name == 'OPEN' and node.accepts_comments %}
+      <div
+          class="activate-write"
+          data-section="{{ node.full_id }}"
+          data-label="{{ node.human_label }}">
+        <a href="#">
+          <div class="paragraph-comment-icon">
+            <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+          </div>
+          <div class="paragraph-comment">Write a comment about {{ node.human_label }}</div>
+        </a>
+      </div>
+    {% endif %}
   </div>
 </li>
 {% for c in node.children %}
