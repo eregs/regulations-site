@@ -205,11 +205,11 @@ Write Mode
     }
 
     .status {
-      clear: both;
+      float: right;
       font-weight: bold;
       padding: 5px 0 0 0;
       text-align: right;
-      width: 100%;
+      width: 200px;
     }
   }
 
@@ -240,7 +240,7 @@ Write Mode
 
   .comment-attachments-wrapper {
     float: left;
-    width: 70%;
+    width: 50%;
   }
 
   .comment-upload-button {
@@ -285,7 +285,6 @@ Write Mode
     background: @grey;
     padding: 3px 10px;
     margin: 5px 5px 0 0;
-    width: 85%;
     word-break: break-all;
 
     span {
@@ -309,6 +308,14 @@ Write Mode
     &:last-child {
       margin-right: 0;
     }
+  }
+
+  .comment-delete-response {
+    color: @uswds_dark_red;
+    display: block;
+    .font-bold;
+    float: right;
+    padding: 12px 15px 0 0;
   }
 
   .comment-submission {

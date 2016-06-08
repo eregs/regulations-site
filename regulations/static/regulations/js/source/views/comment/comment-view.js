@@ -44,6 +44,7 @@ var CommentView = Backbone.View.extend({
     'dragleave input[type="file"]': 'unhighlightDropzone',
     'click .comment-header': 'openComment',
     'click .comment-context-toggle': 'toggleCommentExcerpt',
+    'click .comment-delete-response': 'deleteComment',
     'submit form': 'save'
   },
 
@@ -54,6 +55,7 @@ var CommentView = Backbone.View.extend({
     this.$contextSectionLabel = this.$el.find('.comment-context-section');
     this.$header = this.$el.find('.comment-header');
     this.$headerLink = this.$el.find('.comment-header-link');
+    this.$deleteResponseDiv = this.$el.find('.comment-delete-response');
     this.$container = this.$el.find('.editor-container');
     this.$input = this.$el.find('input[type="file"]');
     this.$attachmentCount = this.$el.find('.comment-attachment-count');
@@ -115,6 +117,8 @@ var CommentView = Backbone.View.extend({
       this.$headerLink.html('<a href="' + href + '">' + label + '</a>');
 
       this.$contextSectionLabel.html(options.label);
+
+      this.$deleteResponseDiv.attr('data-section', options.section);
 
       this.$context.append(options.$parent);
     }
@@ -222,6 +226,15 @@ var CommentView = Backbone.View.extend({
     var plural = this.attachmentCount !== 1 ? 's' : '';
     this.$attachmentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
+  },
+
+  deleteComment: function(e) {
+    e.preventDefault();
+
+    var comment = comments.get($(e.target).data('section'));
+    if (comment) {
+      comment.destroy();
+    }
   },
 
   save: function(e) {
