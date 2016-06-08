@@ -234,6 +234,8 @@ var CommentView = Backbone.View.extend({
     var comment = comments.get($(e.target).data('section'));
     if (comment) {
       comment.destroy();
+
+      this.$status.hide().html('Your comment was deleted.').fadeIn();
     }
   },
 
