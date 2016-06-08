@@ -29,11 +29,13 @@ var CommentConfirmView = Backbone.View.extend({
     this.interval = window.setInterval(
       function() {
         $.getJSON(url).then(function(resp) {
-          if (resp.trackingNumber) {
+          if (resp.error) {
+            this.setRegsGovError();
+          } else {
             this.setPdfUrl(resp.pdfUrl);
             this.setTrackingNumber(resp.trackingNumber);
-            window.clearInterval(this.interval);
           }
+          window.clearInterval(this.interval);
         }.bind(this));
       }.bind(this),
       5000
@@ -44,10 +46,13 @@ var CommentConfirmView = Backbone.View.extend({
    * Fill in an element's (indicated by the selector) template with the ctx
    * provided
    **/
-  replaceTemplate: function(selector, ctx) {
+  replaceTemplate: function(selector, ctx, tplSelector) {
+    if (!tplSelector) {
+      tplSelector = '.js-template';
+    }
     this.$el.find(selector).each(function(idx, elt) {
       var $elt = $(elt);
-      var $tplElt = $elt.find('.js-template');
+      var $tplElt = $elt.find(tplSelector);
       var result = _.template($tplElt.prop('innerHTML'))(ctx);
       $elt.empty();
       $elt.append($tplElt);
@@ -59,12 +64,16 @@ var CommentConfirmView = Backbone.View.extend({
     this.replaceTemplate('.save-pdf', {url: url});
   },
 
-// Changes text and color of background when tracking number is received, hides wait message
+  // Changes text and color of background when tracking number is received, hides wait message
   setTrackingNumber: function(number) {
     this.replaceTemplate('.tracking-number .status', {number: number});
     this.$el.find('.status').addClass('tracking-number-retrieved');
     this.$el.find('.status-waiting').hide();
-  }
+  },
+
+  setRegsGovError: function() {
+    this.replaceTemplate('.status-container', {}, '.js-regsgov-error');
+  },
 });
 
 module.exports = CommentConfirmView;
