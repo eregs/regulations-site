@@ -73,7 +73,7 @@ var CommentConfirmView = Backbone.View.extend({
 
   setRegsGovError: function() {
     this.replaceTemplate('.status-container', {}, '.js-regsgov-error');
-  },
+  }
 });
 
 module.exports = CommentConfirmView;
