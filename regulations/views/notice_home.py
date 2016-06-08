@@ -45,7 +45,6 @@ class NoticeHomeView(View):
         context["comment_state"] = {state.name: state.value for state in
                                     CommentState}
 
-        assert self.template_name
         template = self.template_name
         return TemplateResponse(request=request, template=template,
                                 context=context)
