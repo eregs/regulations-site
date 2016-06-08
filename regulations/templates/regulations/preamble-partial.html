@@ -59,7 +59,7 @@
         <div class="comment-wrapper">
           <div class="comment">
             <h4 class="comment-header">
-              You are writing a comment about
+              You are writing about
               <span class="comment-header-link"></span>
             </h4>
 
@@ -69,10 +69,8 @@
                 <span class="comment-context-text">
                   <span class="fa fa-plus-circle" aria-hidden="true"></span>
                   <span class="fa fa-minus-circle" aria-hidden="true"></span>
-                  Show
-                  <span class="comment-context-text-more">more</span>
-                  <span class="comment-context-text-less">less</span>
-                  context for:
+                  <span class="comment-context-text-show">Show:</span>
+                  <span class="comment-context-text-hide">Hide:</span>
                 </span>
                 <span class="comment-context-label">
                   <span class="comment-context-type">
@@ -98,16 +96,20 @@
 
             <form>
               <div class="editor-container"></div>
-              <div class="comment-controls">
-                <div class="comment-attachments"></div>
-                <label class="comment-upload-button file-upload">
-                  Upload Attachment<input type="file" multiple/>
-                </label>
-                <div class="comment-attachment-count"></div>
-                <div class="comment-attachment-limit"></div>
-              </div>
-              <div class="comment-submission">
-                <button class="comment-button" type="submit">Save Response</button>
+              <div class="comment-controls group">
+                <div class="comment-attachments-wrapper">
+                  <div class="comment-attachments"></div>
+                  <label class="comment-upload-button file-upload">
+                    Upload Attachment<input type="file" multiple/>
+                  </label>
+                  <div class="comment-attachment-count"></div>
+                  <div class="comment-attachment-limit"></div>
+                </div>
+                <button class="comment-button comment-submission" type="submit">Save Response</button>
+                <a class="comment-delete-response" data-section="" href="#">
+                  <span class="fa fa-trash" aria-hidden="true"></span>
+                  Delete response
+                </a>
                 <div class="status"></div>
               </div>
             </form>

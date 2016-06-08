@@ -79,6 +79,66 @@ Write Mode
     .font-regular;
     padding-left: 15px;
 
+    // You are writing about
+    .comment-header {
+      margin: 0.6em 0;
+
+      .comment-header-link a {
+        color: @black;
+        border-bottom: 2px solid fade(@blue, 80%);
+      }
+    }
+
+    // Show more toggle wrapper
+    .comment-context-wrapper {
+      border-radius: 2px;
+      box-shadow: 0 0 1px 1px @text_area_border;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    // Show toggle box
+    a.comment-context-toggle {
+      background-color: @grey;
+      border-radius: 2px;
+      color: @dark_text;
+      cursor: pointer;
+      display: block;
+      font-size: 16px;
+      padding: 10px 15px;
+
+      .comment-context-text {
+        color: @blue;
+      }
+
+      .fa-minus-circle,
+      .comment-context-text-hide {
+        display: none;
+      }
+
+      .fa {
+        margin-right: 3px;
+      }
+
+      .comment-context-label {
+        font-weight: bold;
+      }
+    }
+
+    // Show toggle comment context
+    .comment-context {
+      border-top: 1px solid @text_area_border;
+      display: none;
+      margin: 0 0 25px 0;
+      max-height: 400px;
+      overflow: auto;
+      padding: 0 20px;
+
+      ul {
+        padding-left: 0;
+      }
+    }
+
     .comment {
       font-size: 14px;
       padding-bottom: 10px;
@@ -145,27 +205,12 @@ Write Mode
     }
 
     .status {
-      clear: both;
+      float: right;
       font-weight: bold;
       padding: 5px 0 0 0;
       text-align: right;
-      width: 100%;
+      width: 200px;
     }
-  }
-
-  .comment-controls {
-    float: left;
-    padding-bottom: 35px;
-    width: 70%;
-
-    button {
-      float: left;
-    }
-  }
-
-  .comment-submission {
-    width: 30%;
-    float: right;
   }
 
   .comment-button,
@@ -189,6 +234,15 @@ Write Mode
     }
   }
 
+  .comment-controls {
+    padding-bottom: 35px;
+  }
+
+  .comment-attachments-wrapper {
+    float: left;
+    width: 50%;
+  }
+
   .comment-upload-button {
     background-color: @grey;
     color: @black;
@@ -205,50 +259,69 @@ Write Mode
     }
   }
 
-  .comment-context-wrapper {
-    border-radius: 2px;
-    box-shadow: 0 0 1px 1px @text_area_border;
-    margin: 30px 0;
-    position: relative;
+  .comment-attachments,
+  .comment-upload-button,
+  .comment-attachment-count,
+  .comment-attachment-limit {
+    float: left;
+    clear: both;
   }
 
-  .comment-context-toggle {
-    background-color: @grey;
-    border-radius: 2px;
-    cursor: pointer;
+  .comment-upload-button {
+    text-align: center;
+    width: 165px;
+  }
+
+  .comment-attachment-count {
+    margin-top: 10px;
+  }
+
+  .comment-attachments {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .comment-attachment {
+    background: @grey;
+    padding: 3px 10px;
+    margin: 5px 5px 0 0;
+    word-break: break-all;
+
+    span {
+      padding: 0 1px;
+    }
+
+    .attachment-filename {
+      .font-bold;
+    }
+
+    .attachment-remove {
+      padding-left: 9px;
+      color: @80_gray;
+
+      &:hover {
+        color: @black;
+        cursor: pointer;
+      }
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .comment-delete-response {
+    color: @uswds_dark_red;
     display: block;
-    font-size: 16px;
-    padding: 10px 15px;
-
-    .comment-context-text {
-      color: @blue;
-    }
-
-    .fa-minus-circle,
-    .comment-context-text-less {
-      display: none;
-    }
-
-    .fa {
-      margin-right: 3px;
-    }
-
-    .comment-context-label {
-      font-weight: bold;
-    }
+    .font-bold;
+    float: right;
+    padding: 12px 15px 0 0;
   }
 
-  .comment-context {
-    border-top: 1px solid @text_area_border;
-    display: none;
-    margin: 0 0 25px 0;
-    max-height: 400px;
-    overflow: auto;
-    padding: 0 20px;
-
-    ul {
-      padding-left: 0;
-    }
+  .comment-submission {
+    float: right;
+    margin-top: 5px;
+    width: 165px;
   }
 
   @icon_width: 48px;
@@ -369,55 +442,4 @@ Write Mode
 .watermark {
   // for adding a draft watermark to PDFs of unsubmitted comments
   background-image: url("../img/draft_watermark.png");
-}
-
-.comment-attachment-limit,
-.comment-attachment-count,
-.comment-attachments,
-.comment-upload-button {
-  float: left;
-  clear: both;
-}
-
-.comment-attachment-count {
-  margin-top: 10px;
-}
-
-.comment-attachments {
-  display: inline-block;
-  margin-bottom: 5px;
-}
-
-.comment-attachment {
-  display: inline-block;
-  background: @grey;
-  padding: 3px 10px;
-  margin-bottom: 3px;
-
-  span {
-    padding: 0 1px;
-  }
-
-  .attachment-filename {
-    .font-bold;
-  }
-
-  .attachment-remove {
-    padding-left: 9px;
-    color: @80_gray;
-
-    &:hover {
-      color: @black;
-      cursor: pointer;
-    }
-  }
-}
-
-.comment-header {
-  margin: 0.6em 0;
-
-  .comment-header-link a {
-    color: @black;
-    border-bottom: 2px solid fade(@blue, 80%);
-  }
 }
