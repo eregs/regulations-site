@@ -213,21 +213,6 @@ Write Mode
     }
   }
 
-  .comment-controls {
-    float: left;
-    padding-bottom: 35px;
-    width: 70%;
-
-    button {
-      float: left;
-    }
-  }
-
-  .comment-submission {
-    width: 30%;
-    float: right;
-  }
-
   .comment-button,
   a.comment-index-review {
     background-color: @pacific;
@@ -249,6 +234,15 @@ Write Mode
     }
   }
 
+  .comment-controls {
+    padding-bottom: 35px;
+  }
+
+  .comment-attachments-wrapper {
+    float: left;
+    width: 70%;
+  }
+
   .comment-upload-button {
     background-color: @grey;
     color: @black;
@@ -263,6 +257,63 @@ Write Mode
     &:hover {
       background-color: darken(@grey, 10%);
     }
+  }
+
+  .comment-attachment-limit,
+  .comment-attachment-count,
+  .comment-attachments,
+  .comment-upload-button {
+    float: left;
+    clear: both;
+  }
+
+  .comment-upload-button {
+    text-align: center;
+    width: 165px;
+  }
+
+  .comment-attachment-count {
+    margin-top: 10px;
+  }
+
+  .comment-attachments {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .comment-attachment {
+    display: inline-block;
+    background: @grey;
+    padding: 3px 10px;
+    margin: 0 5px 3px 0;
+
+    span {
+      padding: 0 1px;
+    }
+
+    .attachment-filename {
+      .font-bold;
+    }
+
+    .attachment-remove {
+      padding-left: 9px;
+      color: @80_gray;
+
+      &:hover {
+        color: @black;
+        cursor: pointer;
+      }
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .comment-submission {
+    float: right;
+    margin-top: 5px;
+    width: 165px;
   }
 
   @icon_width: 48px;
@@ -383,46 +434,4 @@ Write Mode
 .watermark {
   // for adding a draft watermark to PDFs of unsubmitted comments
   background-image: url("../img/draft_watermark.png");
-}
-
-.comment-attachment-limit,
-.comment-attachment-count,
-.comment-attachments,
-.comment-upload-button {
-  float: left;
-  clear: both;
-}
-
-.comment-attachment-count {
-  margin-top: 10px;
-}
-
-.comment-attachments {
-  display: inline-block;
-  margin-bottom: 5px;
-}
-
-.comment-attachment {
-  display: inline-block;
-  background: @grey;
-  padding: 3px 10px;
-  margin-bottom: 3px;
-
-  span {
-    padding: 0 1px;
-  }
-
-  .attachment-filename {
-    .font-bold;
-  }
-
-  .attachment-remove {
-    padding-left: 9px;
-    color: @80_gray;
-
-    &:hover {
-      color: @black;
-      cursor: pointer;
-    }
-  }
 }
