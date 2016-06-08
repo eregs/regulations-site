@@ -142,6 +142,10 @@ comment-media-queries.less contains media query styles for Notice and Comment
     .toc-head {
       z-index: 100;
     }
+
+    #content-header {
+      padding-left: 15px;
+    }
   }
 
   .preamble-header {
@@ -161,7 +165,6 @@ comment-media-queries.less contains media query styles for Notice and Comment
     .write-comment {
       border-bottom: 1px solid @medium_gray;
       border-top: 1px solid @medium_gray;
-      font-size: 13px;
       width: 50% !important;
     }
 
@@ -171,15 +174,34 @@ comment-media-queries.less contains media query styles for Notice and Comment
   }
 
   .preamble-wrapper {
-    padding-top: 85px;
-  }
+    padding-left: 55px;
+    padding-top: 35px;
 
-  h3.section-title {
-    font-size: 30px;
+    h3 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 24px;
+
+      &.small-header {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
   }
 
   #preamble-read {
     padding-left: 0;
+
+    .comment-period-dates {
+      margin-top: 20px;
+    }
+
+    .days-remaining {
+      display: none;
+    }
 
     ol, ul {
       padding-left: 0;
@@ -196,6 +218,12 @@ comment-media-queries.less contains media query styles for Notice and Comment
 
     .node {
       padding-right: 0;
+    }
+
+    .not-called-out {
+      .activate-write {
+        display: none;
+      }
     }
 
     .show-more-context {
