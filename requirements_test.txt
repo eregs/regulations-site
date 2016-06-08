@@ -3,6 +3,7 @@ coveralls
 django-nose
 pep8==1.5.7
 flake8
+httpretty
 mock
 nose-exclude
 nose-testconfig

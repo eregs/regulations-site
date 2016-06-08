@@ -465,7 +465,7 @@ class PrepareCommentView(View):
         context.update(generate_html_tree(context['preamble'], request,
                                           id_prefix=[doc_number, 'preamble']))
         context['comment_mode'] = 'write'
-        context['comment_fields'] = docket.get_document_fields(
+        context['comment_fields'] = docket.safe_get_document_fields(
             settings.COMMENT_DOCUMENT_ID)
         template = 'regulations/comment-review-chrome.html'
 
