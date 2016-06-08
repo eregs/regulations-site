@@ -96,7 +96,6 @@ var CommentView = Backbone.View.extend({
     this.model = blank ?
       new CommentModel(options) :
       comments.get(section) || new CommentModel(options);
-    this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, tocId, label, true));
     this.render();
   },
 
@@ -237,12 +236,14 @@ var CommentView = Backbone.View.extend({
     if (comment) {
       comment.destroy();
 
+      this.editor.setContent('', 'html');
       this.$status.hide().html('Your comment was deleted.').fadeIn();
     }
   },
 
   save: function(e) {
     e.preventDefault();
+
     this.model.set({
       comment: this.editor.getContent('markdown'),
       commentHtml: this.editor.getContent('html'),
@@ -255,6 +256,7 @@ var CommentView = Backbone.View.extend({
         };
       })
     });
+
     comments.add(this.model);
     this.model.save();
     this.$status.hide().html('Your comment was saved.').fadeIn();
