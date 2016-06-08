@@ -135,8 +135,6 @@ var CommentView = Backbone.View.extend({
   },
 
   toggleCommentExcerpt: function() {
-    $('.comment-context-text-more').toggle();
-    $('.comment-context-text-less').toggle();
     $('.fa-plus-circle').toggle();
     $('.fa-minus-circle').toggle();
     $('.comment-context').toggle();

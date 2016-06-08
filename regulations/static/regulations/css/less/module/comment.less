@@ -79,6 +79,66 @@ Write Mode
     .font-regular;
     padding-left: 15px;
 
+    // You are writing about
+    .comment-header {
+      margin: 0.6em 0;
+
+      .comment-header-link a {
+        color: @black;
+        border-bottom: 2px solid fade(@blue, 80%);
+      }
+    }
+
+    // Show more toggle wrapper
+    .comment-context-wrapper {
+      border-radius: 2px;
+      box-shadow: 0 0 1px 1px @text_area_border;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    // Show toggle box
+    a.comment-context-toggle {
+      background-color: @grey;
+      border-radius: 2px;
+      color: @dark_text;
+      cursor: pointer;
+      display: block;
+      font-size: 16px;
+      padding: 10px 15px;
+
+      .comment-context-text {
+        color: @blue;
+      }
+
+      .fa-minus-circle,
+      .comment-context-text-less {
+        display: none;
+      }
+
+      .fa {
+        margin-right: 3px;
+      }
+
+      .comment-context-label {
+        font-weight: bold;
+      }
+    }
+
+    // Show toggle comment context
+    .comment-context {
+      border-top: 1px solid @text_area_border;
+      display: none;
+      margin: 0 0 25px 0;
+      max-height: 400px;
+      overflow: auto;
+      padding: 0 20px;
+
+      ul {
+        padding-left: 0;
+      }
+    }
+
     .comment {
       font-size: 14px;
       padding-bottom: 10px;
@@ -202,52 +262,6 @@ Write Mode
 
     &:hover {
       background-color: darken(@grey, 10%);
-    }
-  }
-
-  .comment-context-wrapper {
-    border-radius: 2px;
-    box-shadow: 0 0 1px 1px @text_area_border;
-    margin: 30px 0;
-    position: relative;
-  }
-
-  .comment-context-toggle {
-    background-color: @grey;
-    border-radius: 2px;
-    cursor: pointer;
-    display: block;
-    font-size: 16px;
-    padding: 10px 15px;
-
-    .comment-context-text {
-      color: @blue;
-    }
-
-    .fa-minus-circle,
-    .comment-context-text-less {
-      display: none;
-    }
-
-    .fa {
-      margin-right: 3px;
-    }
-
-    .comment-context-label {
-      font-weight: bold;
-    }
-  }
-
-  .comment-context {
-    border-top: 1px solid @text_area_border;
-    display: none;
-    margin: 0 0 25px 0;
-    max-height: 400px;
-    overflow: auto;
-    padding: 0 20px;
-
-    ul {
-      padding-left: 0;
     }
   }
 
@@ -410,14 +424,5 @@ Write Mode
       color: @black;
       cursor: pointer;
     }
-  }
-}
-
-.comment-header {
-  margin: 0.6em 0;
-
-  .comment-header-link a {
-    color: @black;
-    border-bottom: 2px solid fade(@blue, 80%);
   }
 }
