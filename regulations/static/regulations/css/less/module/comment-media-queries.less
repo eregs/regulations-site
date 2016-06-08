@@ -61,9 +61,25 @@ comment-media-queries.less contains media query styles for Notice and Comment
 // tablet + mobile screen sizes
 @media only screen and ( max-width: 780px ) {
 
+  .preamble-sub-head {
+
+    #content-header {
+      padding-left: 35px;
+    }
+  }
+
   .hide-mobile {
     display: none;
     padding: 0;
+  }
+
+  .preamble-header {
+
+    .read-proposal,
+    .write-comment {
+      padding: 0 15px;
+      width: auto !important;
+    }
   }
 
   #preamble-read {
@@ -81,7 +97,7 @@ comment-media-queries.less contains media query styles for Notice and Comment
     }
 
     .activate-write {
-      padding: 5px 0;
+      padding: 0 0 5px;
       position: relative;
       right: 0;
       top: 0;
@@ -106,7 +122,6 @@ comment-media-queries.less contains media query styles for Notice and Comment
     .comment-index {
       right: -220px;
       width: 210px;
-
 
       li {
         .comment-index-section {
