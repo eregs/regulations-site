@@ -55,7 +55,6 @@
       <a class="citation internal" href="#supporting-docs">View supporting documents from the docket</a>
     </div>
     {% endif %}
-    <hr class="preamble-divider" />
     <p>
       {% for title_info in meta.cfr_refs %}
         {{title_info.title}} CFR Parts {{ title_info.parts|join:", " }}<br />
