@@ -71,10 +71,10 @@
       {% include node.template_name %}
     {% endwith %}
   {% endfor %}
-  {% if meta.supporting_documents %}
 </div>
+{% if meta.supporting_documents %}
   <li>
-    <h4 id="supporting-docs" class="supporting-docs-header">Supporting documents from the docket:</h4>
+    <h4 id="supporting-docs" class="supporting-docs-header">SUPPORTING DOCUMENTS FROM THE DOCKET:</h4>
     <ol class="supporting-docs-list">
       {% for doc in meta.supporting_documents|slice:":3" %}
         <li>
