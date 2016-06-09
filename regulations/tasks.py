@@ -41,6 +41,10 @@ def submit_comment(self, comments, form_data, metadata_url):
     :param comments: List of sectional comments
     :param form_data: Dict of fields accepted by regulations.gov
     :param metadata_url: SignedUrl for comment metadata
+
+    :return: On success: {"trackingNumber": "...", "pdfUrl": "..."}
+             On failure: raises "retry" exception
+             On multiple failures: {"error": "Message"}
     '''
     try:
         html = json_to_html(comments)
@@ -76,14 +80,14 @@ def submit_comment(self, comments, form_data, metadata_url):
         save_failed_submission(
             json.dumps({'comments': comments, 'form_data': form_data})
         )
-        return {
-            'pdfUrl': pdf_url.url,
-            'trackingNumber': None,
-        }
+        return {'error': message}
 
 
 @shared_task
 def publish_tracking_number(response, metadata_url):
+    """Write the tracking number to S3. Not ideal if this fails, but the
+    comment will have been taken care of already, so no need for additional
+    safety checks"""
     s3_client.put_object(
         Body=json.dumps(response).encode(),
         Bucket=settings.ATTACHMENT_BUCKET,
