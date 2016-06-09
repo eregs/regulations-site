@@ -55,7 +55,7 @@
       <a class="citation internal" href="#supporting-docs">View supporting documents from the docket</a>
     </div>
     {% endif %}
-    <hr />
+    <hr class="preamble-divider" />
     <p>
       {% for title_info in meta.cfr_refs %}
         {{title_info.title}} CFR Parts {{ title_info.parts|join:", " }}<br />
@@ -65,14 +65,16 @@
     </p>
   </div>
 </li>
-{% for c in node.children %}
-  {% with node=c %}
-    {% include node.template_name %}
-  {% endwith %}
-{% endfor %}
-{% if meta.supporting_documents %}
+<div class="intro-content">
+  {% for c in node.children %}
+    {% with node=c %}
+      {% include node.template_name %}
+    {% endwith %}
+  {% endfor %}
+  {% if meta.supporting_documents %}
+</div>
   <li>
-    <h4 id="supporting-docs">Supporting documents from the docket:</h4>
+    <h4 id="supporting-docs" class="supporting-docs-header">Supporting documents from the docket:</h4>
     <ol class="supporting-docs-list">
       {% for doc in meta.supporting_documents|slice:":3" %}
         <li>
