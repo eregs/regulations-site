@@ -276,9 +276,44 @@ comment-media-queries.less contains media query styles for Notice and Comment
     padding-left: 0;
     width: 100%;
 
-    .comment h2 {
-      font-size: 30px;
-      margin-top: 0;
+    .comment-wrapper {
+      padding-left: 0;
+
+      .comment {
+        padding-bottom: 0;
+      }
+
+      .status {
+        text-align: left;
+      }
+    }
+
+    .comment-header-write,
+    .comment-context-wrapper {
+      display: none;
+    }
+
+    .comment-controls {
+      float: none;
+      padding-bottom: 0;
+      width: 100%;
+    }
+
+    .comment-upload-button {
+      width: 100%;
+    }
+
+    .comment-attachments-wrapper {
+      width: 100%;
+    }
+
+    .comment-submission {
+      width: 100%;
+      float: none;
+    }
+
+    .comment-button {
+      float: none;
     }
 
     .comment-index {
@@ -292,31 +327,9 @@ comment-media-queries.less contains media query styles for Notice and Comment
       }
     }
 
-    .comment-controls {
-      float: none;
-      margin-bottom: 10px;
-      width: 100%;
-
-      button, div {
-        float: none;
-      }
-    }
-
-    .comment-submission {
-      width: 100%;
-      float: none;
-    }
-
-    .comment-button {
-      float: none;
-    }
-
-    .comment-wrapper .status {
-      text-align: left;
-    }
-
     a.comment-index-review {
-      float: left;
+      text-align: center;
+      width: 100%;
     }
   }
 
@@ -348,6 +361,7 @@ comment-media-queries.less contains media query styles for Notice and Comment
       }
     }
   }
+
   .section-nav .previous {
     margin-left: -10px;
   }
