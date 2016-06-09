@@ -65,13 +65,11 @@
     </p>
   </div>
 </li>
-<div class="intro-content">
-  {% for c in node.children %}
-    {% with node=c %}
-      {% include node.template_name %}
-    {% endwith %}
-  {% endfor %}
-</div>
+{% for c in node.children %}
+  {% with node=c %}
+    {% include node.template_name %}
+  {% endwith %}
+{% endfor %}
 {% if meta.supporting_documents %}
   <li>
     <h4 id="supporting-docs" class="supporting-docs-header">SUPPORTING DOCUMENTS FROM THE DOCKET:</h4>
