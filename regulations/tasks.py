@@ -74,6 +74,7 @@ def submit_comment(self, comments, form_data, metadata_url):
             raise self.retry()
         except MaxRetriesExceededError:
             message = "Exceeded retries, saving failed submission"
+            logger.error(message)
             save_failed_submission(
                 json.dumps({'comments': comments, 'form_data': form_data})
             )
