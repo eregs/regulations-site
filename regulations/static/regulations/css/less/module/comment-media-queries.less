@@ -134,6 +134,14 @@ comment-media-queries.less contains media query styles for Notice and Comment
       }
     }
   }
+
+  .next-prev {
+    .border-top-medium (@width: 2px);
+  }
+
+  .next-prev-label {
+    display: inline-block;
+  }
 }
 
 // mobile screen size
@@ -190,7 +198,7 @@ comment-media-queries.less contains media query styles for Notice and Comment
 
   .preamble-wrapper {
     padding-left: 55px;
-    padding-top: 35px;
+    padding-top: 40px;
 
     h3 {
       font-size: 24px;
@@ -239,6 +247,10 @@ comment-media-queries.less contains media query styles for Notice and Comment
       .activate-write {
         display: none;
       }
+    }
+
+    .activate-write a {
+      color: @pacific_hover;
     }
 
     .show-more-context {
