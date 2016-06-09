@@ -61,9 +61,25 @@ comment-media-queries.less contains media query styles for Notice and Comment
 // tablet + mobile screen sizes
 @media only screen and ( max-width: 780px ) {
 
+  .preamble-sub-head {
+
+    #content-header {
+      padding-left: 35px;
+    }
+  }
+
   .hide-mobile {
     display: none;
     padding: 0;
+  }
+
+  .preamble-header {
+
+    .read-proposal,
+    .write-comment {
+      padding: 0 15px;
+      width: auto !important;
+    }
   }
 
   #preamble-read {
@@ -81,11 +97,15 @@ comment-media-queries.less contains media query styles for Notice and Comment
     }
 
     .activate-write {
-      padding: 5px 0;
+      padding: 0 0 5px;
       position: relative;
       right: 0;
       top: 0;
       width: 100%;
+
+      a {
+        color: @pacific_hover;
+      }
 
       &:hover {
         color: #4A90E2;
@@ -107,7 +127,6 @@ comment-media-queries.less contains media query styles for Notice and Comment
       right: -220px;
       width: 210px;
 
-
       li {
         .comment-index-section {
           width: 120px;
@@ -118,6 +137,14 @@ comment-media-queries.less contains media query styles for Notice and Comment
         }
       }
     }
+  }
+
+  .next-prev {
+    .border-top-medium (@width: 2px);
+  }
+
+  .next-prev-label {
+    display: inline-block;
   }
 }
 
@@ -142,6 +169,10 @@ comment-media-queries.less contains media query styles for Notice and Comment
     .toc-head {
       z-index: 100;
     }
+
+    #content-header {
+      padding-left: 15px;
+    }
   }
 
   .preamble-header {
@@ -161,7 +192,6 @@ comment-media-queries.less contains media query styles for Notice and Comment
     .write-comment {
       border-bottom: 1px solid @medium_gray;
       border-top: 1px solid @medium_gray;
-      font-size: 13px;
       width: 50% !important;
     }
 
@@ -171,15 +201,34 @@ comment-media-queries.less contains media query styles for Notice and Comment
   }
 
   .preamble-wrapper {
-    padding-top: 85px;
-  }
+    padding-left: 55px;
+    padding-top: 40px;
 
-  h3.section-title {
-    font-size: 30px;
+    h3 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 24px;
+
+      &.small-header {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
   }
 
   #preamble-read {
     padding-left: 0;
+
+    .comment-period-dates {
+      margin-top: 20px;
+    }
+
+    .days-remaining {
+      display: none;
+    }
 
     ol, ul {
       padding-left: 0;
@@ -196,6 +245,12 @@ comment-media-queries.less contains media query styles for Notice and Comment
 
     .node {
       padding-right: 0;
+    }
+
+    .not-called-out {
+      .activate-write {
+        display: none;
+      }
     }
 
     .show-more-context {
@@ -221,9 +276,44 @@ comment-media-queries.less contains media query styles for Notice and Comment
     padding-left: 0;
     width: 100%;
 
-    .comment h2 {
-      font-size: 30px;
-      margin-top: 0;
+    .comment-wrapper {
+      padding-left: 0;
+
+      .comment {
+        padding-bottom: 0;
+      }
+
+      .status {
+        text-align: left;
+      }
+    }
+
+    .comment-header-write,
+    .comment-context-wrapper {
+      display: none;
+    }
+
+    .comment-controls {
+      float: none;
+      padding-bottom: 0;
+      width: 100%;
+    }
+
+    .comment-upload-button {
+      width: 100%;
+    }
+
+    .comment-attachments-wrapper {
+      width: 100%;
+    }
+
+    .comment-submission {
+      width: 100%;
+      float: none;
+    }
+
+    .comment-button {
+      float: none;
     }
 
     .comment-index {
@@ -237,31 +327,9 @@ comment-media-queries.less contains media query styles for Notice and Comment
       }
     }
 
-    .comment-controls {
-      float: none;
-      margin-bottom: 10px;
-      width: 100%;
-
-      button, div {
-        float: none;
-      }
-    }
-
-    .comment-submission {
-      width: 100%;
-      float: none;
-    }
-
-    .comment-button {
-      float: none;
-    }
-
-    .comment-wrapper .status {
-      text-align: left;
-    }
-
     a.comment-index-review {
-      float: left;
+      text-align: center;
+      width: 100%;
     }
   }
 
@@ -293,6 +361,7 @@ comment-media-queries.less contains media query styles for Notice and Comment
       }
     }
   }
+
   .section-nav .previous {
     margin-left: -10px;
   }
