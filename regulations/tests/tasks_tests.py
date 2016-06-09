@@ -2,12 +2,12 @@ import json
 import mock
 import six
 
-from nose.tools import *  # noqa
-from requests.exceptions import RequestException
+import botocore
 from celery.exceptions import Retry, MaxRetriesExceededError
-
 from django.conf import settings
 from django.test import TestCase, override_settings
+from nose.tools import *  # noqa
+from requests.exceptions import RequestException
 
 from regulations.tasks import submit_comment, cache_pdf, SignedUrl
 from regulations.models import FailedCommentSubmission
@@ -89,6 +89,24 @@ class TestSubmitComment(TestCase):
         retry.return_value = MaxRetriesExceededError()
 
         submit_comment(self.comments, self.form, self.meta)
+        saved_submission = FailedCommentSubmission.objects.all()[0]
+        self.assertEqual(
+            json.dumps({
+                'comments': self.comments,
+                'form_data': self.form,
+            }),
+            saved_submission.body,
+        )
+
+    def test_error_fetching_from_s3_saves(self, cached_pdf, html_to_pdf,
+                                          post_submission, retry):
+        self.comments[1]['files'].append(
+            {"name": "file_name.png", "key": "someKey"})
+        retry.return_value = MaxRetriesExceededError()
+        with mock.patch('regulations.tasks.boto3') as boto3:
+            client = boto3.Session.return_value.client.return_value
+            client.download_file.side_effect = botocore.exceptions.ClientError
+            submit_comment(self.comments, self.form, self.meta)
         saved_submission = FailedCommentSubmission.objects.all()[0]
         self.assertEqual(
             json.dumps({

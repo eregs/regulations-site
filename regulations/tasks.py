@@ -11,10 +11,8 @@ import collections
 
 import boto3
 from botocore.client import Config
-from botocore.exceptions import ClientError
 
 import requests
-from requests.exceptions import RequestException
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 from celery import shared_task
@@ -30,7 +28,7 @@ from regulations.models import FailedCommentSubmission
 logger = get_task_logger(__name__)
 
 
-@shared_task(bind=True)
+@shared_task(bind=True, acks_late=True)
 def submit_comment(self, comments, form_data, metadata_url):
     '''
     Submit the comment to regulations.gov. If unsuccessful, retry the task.
@@ -49,41 +47,40 @@ def submit_comment(self, comments, form_data, metadata_url):
     try:
         html = json_to_html(comments)
         files = extract_files(comments)
+        with html_to_pdf(html) as comment_pdf, \
+                build_attachments(files) as attachments:
+            document_number = get_document_number(comments)
+            pdf_url = cache_pdf(comment_pdf, document_number, metadata_url)
+
+            # Restore file position changed by cache_pdf
+            comment_pdf.seek(0)
+
+            data = build_multipart_encoded(
+                form_data, comment_pdf, attachments)
+            response = post_submission(data)
+            if response.status_code != requests.codes.created:
+                logger.warn("Post to regulations.gov failed: %s %s",
+                            response.status_code, response.text)
+                raise self.retry()
+            logger.info(response.text)
+            data = response.json()
+            return {
+                'trackingNumber': data['trackingNumber'],
+                'pdfUrl': pdf_url.url,
+            }
+    except Exception:   # We want to catch _any_ exception
+        logger.exception("Unable to submit comment")
         try:
-            with html_to_pdf(html) as comment_pdf, \
-                    build_attachments(files) as attachments:
-                document_number = get_document_number(comments)
-                pdf_url = cache_pdf(comment_pdf, document_number, metadata_url)
-
-                # Restore file position changed by cache_pdf
-                comment_pdf.seek(0)
-
-                data = build_multipart_encoded(
-                    form_data, comment_pdf, attachments)
-                response = post_submission(data)
-                if response.status_code != requests.codes.created:
-                    logger.warn("Post to regulations.gov failed: %s %s",
-                                response.status_code, response.text)
-                    raise self.retry()
-                logger.info(response.text)
-                data = response.json()
-                return {
-                    'trackingNumber': data['trackingNumber'],
-                    'pdfUrl': pdf_url.url,
-                }
-        except (RequestException, ClientError):
-            logger.exception("Unable to submit comment")
             raise self.retry()
-    except MaxRetriesExceededError:
-        message = "Exceeded retries, saving failed submission"
-        logger.error(message)
-        save_failed_submission(
-            json.dumps({'comments': comments, 'form_data': form_data})
-        )
-        return {'error': message}
+        except MaxRetriesExceededError:
+            message = "Exceeded retries, saving failed submission"
+            save_failed_submission(
+                json.dumps({'comments': comments, 'form_data': form_data})
+            )
+            return {'error': message}
 
 
-@shared_task
+@shared_task(acks_late=True)
 def publish_tracking_number(response, metadata_url):
     """Write the tracking number to S3. Not ideal if this fails, but the
     comment will have been taken care of already, so no need for additional
@@ -178,6 +175,7 @@ def build_attachments(files):
     On context exit, the file objects are closed and the locally
     downloaded files are deleted.
     '''
+    attachments = []
     try:
         path = tempfile.mkdtemp()
         attachments = [
