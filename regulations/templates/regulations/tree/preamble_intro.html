@@ -42,7 +42,6 @@
       <a class="citation internal" href="#supporting-docs">View supporting documents from the docket</a>
     </div>
     {% endif %}
-    <hr />
     <p>
       {% for title_info in meta.cfr_refs %}
         {{title_info.title}} CFR Parts {{ title_info.parts|join:", " }}<br />
@@ -72,7 +71,7 @@
 {% endfor %}
 {% if meta.supporting_documents %}
   <li>
-    <h4 id="supporting-docs">Supporting documents from the docket:</h4>
+    <h4 id="supporting-docs">SUPPORTING DOCUMENTS FROM THE DOCKET:</h4>
     <ol class="supporting-docs-list">
       {% for doc in meta.supporting_documents|slice:":3" %}
         <li>

@@ -132,10 +132,12 @@ Preamble Read Mode
     .explanation {
       font-size: 1.25em;
       padding: 4px 0 0;
+      white-space: nowrap;
     }
 
     .publish-date {
-      font-size: .8em;
+      .font-regular;
+      font-size: 16px;
       margin: 0;
     }
   }
@@ -146,7 +148,7 @@ Preamble Read Mode
     width: @remaining_days_size;
     margin-right: 10px;
     border-radius: 3px;
-    font-weight: 300;
+    font-weight: 400;
     text-align: center;
     text-transform: uppercase;
     color: @white;
@@ -161,7 +163,6 @@ Preamble Read Mode
     strong {
       display: block;
       font-size: 32px;
-      font-weight: 400;
       line-height: 28px;
       padding-top: 8px;
     }
@@ -170,6 +171,8 @@ Preamble Read Mode
   .view-supporting-docs {
     .font-regular;
     margin: 30px 0 35px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid @uswds_gray_lighter;
 
     .fa {
       margin: 0 6px;
