@@ -10,7 +10,7 @@
   {% for section in sections %}
     <h1>{{section.label}}</h1>
     <div class="comment-content">
-      {{section.commentHtml|safe}}
+      {{section.commentHtml}}
     </div>
     {% if section.files %}
       <h2>Attachments</h2>

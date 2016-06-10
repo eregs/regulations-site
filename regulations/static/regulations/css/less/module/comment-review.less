@@ -32,11 +32,11 @@ comment-review.less contains styles for Review Your Comment page
       background: blue;
     }
 
-    ul {
+    & > ul {
       margin: 25px 15px;
     }
 
-    ul li {
+    & > ul > li {
       position: relative;
 
       &:after {
@@ -52,6 +52,30 @@ comment-review.less contains styles for Review Your Comment page
 
   .comment-content {
     max-width: 95%;
+
+    blockquote {
+      padding-left: 1em;
+      border-left: 3px solid #eee;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    ol,
+    ul {
+      padding-left: 20px;
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    ul {
+      list-stye-type: disc;
+    }
+
+    li {
+      list-style-type: inherit;
+    }
   }
 
   .edit-comment {
