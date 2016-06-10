@@ -108,7 +108,7 @@
                     <li class="{% if version.version == active_version %}current {% endif %}status-list" data-base-version="{{version.version}}">
                     <a href="{% url version_switch_view label_id version.version %}" class="version-link" data-version="{{ version.version }}" id="link-{{ version.version }}">
                         {% if version.timeline == 'current' %}
-                            <h4>Current Law</h4>
+                            <h3>Current Law</h3>
                         {% endif %}
                         <span class="version-date">{{ version.by_date|date }}</span>
                     </a>
@@ -126,7 +126,7 @@
                             {% endfor %}
                             </ul>
                             <div class="diff-selector group">
-                                <h4 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date}} with</h4>
+                                <h3 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date}} with</h3>
                                 <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
                                   <div class="select-content">
                                     <select name="new_version" title="Compare version">
@@ -160,7 +160,7 @@
                     <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/><button type="submit"><span class="cf-icon cf-icon-search"></span><strong class="icon-text">Search</strong></button>
                 </div><!--/.search-box-->
                 <div class="version-search">
-                    <h4>Search in regulation effective:</h4>
+                    <h3>Search in regulation effective:</h3>
                     <div class="select-content">
                         <select name="version" id="version-select" title="Effective version">
                         {% for version in history %}
