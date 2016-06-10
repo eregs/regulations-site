@@ -6,11 +6,11 @@
 </head>
 
 <body {% if mark_as_draft %}class="watermark"{% endif %}>
-
+<div id="comment-pdf">
   {% for section in sections %}
     <h1>{{section.label}}</h1>
     <div class="comment-content">
-      {{section.commentHtml}}
+      {{section.commentHtml|safe}}
     </div>
     {% if section.files %}
       <h2>Attachments</h2>
@@ -24,7 +24,7 @@
       <hr />
     {% endif %}
   {% endfor %}
-
+</div>
 </body>
 
 </html>
