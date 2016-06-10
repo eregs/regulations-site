@@ -9,6 +9,7 @@ Backbone.$ = $;
 var MainEvents = require('../../events/main-events');
 var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
+var DrawerEvents = require('../../events/drawer-events');
 
 function selfOrChild($root, selector) {
   return $root.is(selector) ? $root : $root.find(selector);
@@ -35,6 +36,8 @@ var CommentReviewView = Backbone.View.extend({
     this.template = _.template($('#comment-template').html());
 
     this.previewLoading = false;
+
+    DrawerEvents.trigger('pane:init', 'table-of-contents');
 
     this.render();
   },
