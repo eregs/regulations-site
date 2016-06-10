@@ -29,9 +29,10 @@ class Command(BaseCommand):
 
         path = settings.WKHTMLTOPDF_PATH
         if path and os.path.exists(path) and not options['force']:
-            self.stderr.write(self.style.WARNING(
-                "WKHTMLTOPDF already exists: {}\nUse --force?".format(
-                    settings.WKHTMLTOPDF_PATH)))
+            message = ("WKHTMLTOPDF already exists: {}\n"
+                       "Skipping. Use the --force flag if necessary.")
+            self.stderr.write(self.style.INFO(
+                message.format(settings.WKHTMLTOPDF_PATH)))
         else:
             # Safe because: we're not passing user input into these processes
             subprocess.check_call([     # nosec
