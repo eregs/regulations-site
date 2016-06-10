@@ -45,6 +45,15 @@ def get_document_fields(document_id):
     return fields
 
 
+def safe_get_document_fields(document_id):
+    """Like get_document_fields, but returns None on error"""
+    try:
+        return get_document_fields(document_id)
+    except requests.exceptions.HTTPError as e:
+        logger.warning("Error getting data from regs.gov: %s", e)
+        return None
+
+
 def add_picklist_options(fields):
     """Augment list fields with options. Adds a list of options to each field
     of type "picklist".
@@ -74,7 +83,10 @@ def sanitize_fields(body):
         Special treatment for 'assembled_comment' - allow to pass through
         as it holds the text form of the entire submission
     """
-    document_fields = get_document_fields(settings.COMMENT_DOCUMENT_ID)
+    document_fields = safe_get_document_fields(settings.COMMENT_DOCUMENT_ID)
+    if document_fields is None:
+        return True, ""
+
     for name, field in six.iteritems(document_fields):
         if field['required'] and name not in body:
             return False, "Field {} is required".format(name)
