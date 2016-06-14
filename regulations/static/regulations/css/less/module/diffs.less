@@ -1,12 +1,12 @@
 /*
  Diffs
- ========================================================================== 
+ ==========================================================================
  diffs.less defines the visual appearance of regulations additions and deletions
  */
 
 
 del {
-    color: @medium_gray;
+    color: @diff_gray;
     text-decoration: line-through;
 
     img {
@@ -24,10 +24,10 @@ ins {
         background-color: @green_light;
         text-decoration: none;
         .font-italic;
-        
+
         .level-2 &,
         .supplement-section .level-1 & {
-          .font-italic; 
+          .font-italic;
         }
     }
 
