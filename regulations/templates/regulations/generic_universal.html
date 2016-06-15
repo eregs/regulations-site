@@ -87,7 +87,9 @@
         {% endblock %}
     </div> <!-- /.group -->
 
+
       <section class="about bump group">
+        {% block about-eregs %}
         <h2 class="light-header">About eRegulations</h2>
         <div class="content-primary column-l">
 
@@ -98,6 +100,7 @@
 
           <p><a href="{% url 'about' %}" class="go">Learn more about eRegulations&#8217; features</a></p>
         </div> <!-- /.primart -->
+        {% endblock %}
 
         {% block orgcontact %}
         {% endblock %}
