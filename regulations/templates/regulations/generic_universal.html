@@ -27,6 +27,7 @@
 
 <div class="landing-content">
 
+{% block hero %}
 <div class="hero">
     <div class="inner-wrap group">
       <div class="primary">
@@ -37,16 +38,20 @@
       </div>
     </div> <!-- /.inner-wrap -->
 </div> <!-- /.hero -->
+{% endblock %}
 
 <div class="landing-main" role="main">
   <div class="inner-wrap">
 
     <div class="group">
       <div class="content-primary column-l bump">
+        {% block regulations-title %}
         <h2 class="small-header light-header">
             {% block cfr_title %}Title {{cfr_title_number|upper}} {{cfr_title_text}}{% endblock %}
         </h2>
+        {% endblock %}
 
+        {% block reg-list %}
         <ul class="reg-list">
             {% for regulation in regulations %}
                 <li>
@@ -72,6 +77,7 @@
                 </li>
             {% endfor %}
         </ul>
+        {% endblock %}
 
         {% block moreregulations %}
         {% endblock %}
