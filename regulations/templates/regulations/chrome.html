@@ -33,7 +33,10 @@
 {% include "regulations/main-header.html" %}
 
 <div class="sub-head {% block sub-head-class %}{% endblock %}">
+    {% block sub-head-skip-nav %}
     <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
+    {% endblock %}
+    {% block sub-head-drawer-icons %}
     <div class="toc-head">
         {% block sidebar-drawer-icons %}
         <a href="#" id="panel-link" class="toc-toggle panel-slide">
@@ -58,6 +61,8 @@
           {% endblock %}
         </ul>
     </div> <!-- /toc-head-->
+    {% endblock %}
+    {% block sub-head-content %}
     <div id="content-header" class="header-main group">
         <div class="wayfinding">
           {% block wayfinding %}
@@ -69,6 +74,7 @@
         <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date }}</span>
         {% endblock %}
     </div>
+    {% endblock %}
 </div>
 </header>
 
