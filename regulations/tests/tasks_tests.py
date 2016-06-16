@@ -6,7 +6,7 @@ import botocore
 from celery.exceptions import Retry, MaxRetriesExceededError
 from django.conf import settings
 from django.test import TestCase, override_settings
-from nose.tools import *  # noqa
+from nose.tools import assert_equal
 from requests.exceptions import RequestException
 
 from regulations.tasks import submit_comment, cache_pdf, SignedUrl

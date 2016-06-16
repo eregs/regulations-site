@@ -63,9 +63,12 @@ def label_to_text(label, include_section=True, include_marker=False):
 MARKERLESS_REGEX = re.compile(r'^[hp]\d+')
 
 
+def _not_markerless(l):
+    return not MARKERLESS_REGEX.match(l)
+
+
 def take_until_markerless(label_parts):
-    not_markerless = lambda l: not MARKERLESS_REGEX.match(l)
-    return list(takewhile(not_markerless, label_parts))
+    return list(takewhile(_not_markerless, label_parts))
 
 
 def _join_paragraph_tail(label_parts, join_with, prefix='', suffix=''):

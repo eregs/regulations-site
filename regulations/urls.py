@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.decorators.cache import cache_page
 
 from regulations.views.about import about

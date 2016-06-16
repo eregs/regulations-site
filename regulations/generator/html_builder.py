@@ -163,7 +163,9 @@ class CFRHTMLBuilder(HTMLBuilder):
         #   ['105', '22', 'Interp'] => section header
         node['section_header'] = len(node['label']) == 3
 
-        is_header = lambda child: child['label'][-1] == 'Interp'
+        def is_header(child):
+            return child['label'][-1] == 'Interp'
+
         node['header_children'] = list(filter(is_header, node['children']))
         node['par_children'] = list(filterfalse(is_header, node['children']))
         if 'header' in node:
@@ -211,7 +213,10 @@ class PreambleHTMLBuilder(HTMLBuilder):
         super(PreambleHTMLBuilder, self).process_node(node, indexes=indexes)
         node['accepts_comments'] = True
         node['comments_calledout'] = bool(node.get('title'))
-        not_markerless = lambda l: not node_types.MARKERLESS_REGEX.match(l)
+
+        def not_markerless(l):
+            return not node_types.MARKERLESS_REGEX.match(l)
+
         markers = takewhile(not_markerless, node['label'][:4])
         node['toc_id'] = '-'.join(self.id_prefix + list(markers))
 
