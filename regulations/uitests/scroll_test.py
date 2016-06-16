@@ -1,7 +1,7 @@
 # vim: set encoding=utf-8
 import unittest
 
-from nose.tools import *  # noqa
+from nose.tools import assert_equal
 from selenium.webdriver.support.ui import WebDriverWait
 
 from regulations.uitests.base_test import BaseTest
