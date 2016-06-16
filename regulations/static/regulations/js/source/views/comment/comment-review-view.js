@@ -164,7 +164,7 @@ var CommentReviewView = Backbone.View.extend({
       contentType: 'application/json',
       dataType: 'json'
     });
-    $xhr.then(this.previewSuccess.bind(this));
+    $xhr.then(this.previewSuccess.bind(this), this.previewError.bind(this));
     this.previewLoading = true;
     this.render();
   },
@@ -173,6 +173,13 @@ var CommentReviewView = Backbone.View.extend({
     window.location = resp.url;
     this.previewLoading = false;
     this.render();
+  },
+
+  previewError: function(resp, status, error) {
+    this.previewLoading = false;
+    this.render();
+
+    this.$el.find('.download-comment').find('.details').after('<div class="error">There was an error in building the PDF.</div>');
   },
 
   toggleSubmit: function() {

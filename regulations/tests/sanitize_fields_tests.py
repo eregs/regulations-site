@@ -1,6 +1,7 @@
-# vim: set fileencoding=utf-8
+# -*- coding: utf-8 -*-
+from django.test import TestCase
 from mock import patch
-from unittest import TestCase
+import httpretty
 
 from regulations.docket import sanitize_fields
 
@@ -58,3 +59,24 @@ class SanitizeFieldsTest(TestCase):
         self.assertFalse(valid)
         self.assertEqual("Field required_field exceeds maximum length of 10",
                          message)
+
+
+class SanitizeFieldsHTTPErrorsTest(TestCase):
+    def setUp(self):
+        httpretty.enable()
+
+    def tearDown(self):
+        httpretty.disable()
+        httpretty.reset()
+
+    def test_404(self):
+        httpretty.register_uri(httpretty.GET, 'http://example.com', status=404)
+        with self.settings(REGS_GOV_API_URL='http://example.com'):
+            valid, message = sanitize_fields({'something': 'else'})
+        self.assertTrue(valid)
+
+    def test_503(self):
+        httpretty.register_uri(httpretty.GET, 'http://example.com', status=503)
+        with self.settings(REGS_GOV_API_URL='http://example.com'):
+            valid, message = sanitize_fields({'something': 'else'})
+        self.assertTrue(valid)

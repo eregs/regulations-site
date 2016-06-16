@@ -28,7 +28,7 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
 {% block drawer-toc %}
 <div class="toc-drawer toc-container current hidden diff-toc" id="table-of-contents" data-from-version="{{from_version}}">
     <div class="drawer-header">
-        <h3 class="toc-type">Table of Contents</h3>
+        <h2 class="toc-type">Table of Contents</h2>
     </div><!-- /.drawer-header -->
     <nav id="toc" class="regulation-nav" role="navigation">
         <ol class="drawer-content">
@@ -49,7 +49,7 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
 {% block drawer-history %}
     <div id="timeline" class="history-drawer toc-container hidden diff-history">
         <div class="drawer-header">
-            <h3 class="toc-type">Regulation versions</h3>
+            <h2 class="toc-type">Regulation versions</h2>
         </div><!-- /.drawer-header -->
         <div class="drawer-content">
             <p class="effective-label">Find the regulation effective on this date:</p>
@@ -72,7 +72,7 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
                     {% endif %}-->
                     <a href="{% url 'chrome_section_view' label_id version.version %}" class="version-link" data-version="{{ version.version }}">
                         {% if version.timeline == 'current' %}
-                            <h4>Current Law</h4>
+                            <h3>Current Law</h3>
                         {% endif %}
                         <span class="version-date">{{ version.by_date|date }}</span>
                     </a>

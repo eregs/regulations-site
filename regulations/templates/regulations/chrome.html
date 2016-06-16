@@ -33,7 +33,10 @@
 {% include "regulations/main-header.html" %}
 
 <div class="sub-head {% block sub-head-class %}{% endblock %}">
+    {% block sub-head-skip-nav %}
     <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
+    {% endblock %}
+    {% block sub-head-drawer-icons %}
     <div class="toc-head">
         {% block sidebar-drawer-icons %}
         <a href="#" id="panel-link" class="toc-toggle panel-slide">
@@ -58,6 +61,8 @@
           {% endblock %}
         </ul>
     </div> <!-- /toc-head-->
+    {% endblock %}
+    {% block sub-head-content %}
     <div id="content-header" class="header-main group">
         <div class="wayfinding">
           {% block wayfinding %}
@@ -69,6 +74,7 @@
         <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date }}</span>
         {% endblock %}
     </div>
+    {% endblock %}
 </div>
 </header>
 
@@ -89,7 +95,7 @@
     {% block drawer-history %}
         <div id="timeline" class="history-drawer toc-container hidden">
             <div class="drawer-header">
-                <h3 class="toc-type">Regulation Timeline</h3>
+                <h2 class="toc-type">Regulation Timeline</h2>
             </div><!-- /.drawer-header -->
             <div class="drawer-content">
                 <p class="effective-label">Find the regulation effective on this date:</p>
@@ -108,12 +114,12 @@
                     <li class="{% if version.version == active_version %}current {% endif %}status-list" data-base-version="{{version.version}}">
                     <a href="{% url version_switch_view label_id version.version %}" class="version-link" data-version="{{ version.version }}" id="link-{{ version.version }}">
                         {% if version.timeline == 'current' %}
-                            <h4>Current Law</h4>
+                            <h3>Current Law</h3>
                         {% endif %}
                         <span class="version-date">{{ version.by_date|date }}</span>
                     </a>
                         <div class="timeline-content-wrap">
-                            <h5 class="final-rule">Final Rule</h5>
+                            <h3 class="final-rule">Final Rule</h3>
                             <ul class="rule-list">
                             {% for notice in version.notices %}
                               {% with pub_date=notice.publication_date|date %}
@@ -126,7 +132,7 @@
                             {% endfor %}
                             </ul>
                             <div class="diff-selector group">
-                                <h4 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date}} with</h4>
+                                <h3 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date}} with</h3>
                                 <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
                                   <div class="select-content">
                                     <select name="new_version" title="Compare version">
@@ -152,7 +158,7 @@
     {% block drawer-search %}
     <div id="search" class="search-drawer toc-container hidden">
         <div class="drawer-header">
-            <h3 class="toc-type">Search</h3>
+            <h2 class="toc-type">Search</h2>
         </div><!-- /.drawer-header -->
         <div class="drawer-content">
             <form action="{% url 'chrome_search' reg_part %}" method="GET" role="search" data-doc-type="cfr">
@@ -160,7 +166,7 @@
                     <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/><button type="submit"><span class="cf-icon cf-icon-search"></span><strong class="icon-text">Search</strong></button>
                 </div><!--/.search-box-->
                 <div class="version-search">
-                    <h4>Search in regulation effective:</h4>
+                    <h3>Search in regulation effective:</h3>
                     <div class="select-content">
                         <select name="version" id="version-select" title="Effective version">
                         {% for version in history %}

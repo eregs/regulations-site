@@ -4,8 +4,7 @@ comment-review.less
 comment-review.less contains styles for Review Your Comment page and the PDF it generates
 */
 
-#comment-review,
-#comment-pdf {
+.comment-review {
   .font-regular;
   margin-bottom: 50px;
   padding-left: 25px;
@@ -130,7 +129,7 @@ comment-review.less contains styles for Review Your Comment page and the PDF it 
   }
 
   .download-comment {
-    background: @pacific_light;
+    background: @blue_light;
     border-top: 1px solid @text_area_border;
     padding: 10px 15px;
 
@@ -150,11 +149,18 @@ comment-review.less contains styles for Review Your Comment page and the PDF it 
     }
 
     .details {
-      color: @80_gray;
+      color: @dark_text;
       float: right;
       font-size: 14px;
       text-align: right;
       max-width: 250px;
+    }
+
+    .error {
+      border: none;
+      clear: left;
+      float: left;
+      padding: 0;
     }
   }
 
@@ -247,7 +253,7 @@ comment-review.less contains styles for Review Your Comment page and the PDF it 
     }
 
     span {
-      color: @80_gray;
+      color: @diff_gray;
     }
 
     fieldset {
@@ -257,9 +263,7 @@ comment-review.less contains styles for Review Your Comment page and the PDF it 
     }
 
     legend {
-      font-size: 17px;
-      font-weight: bold;
-      line-height: 17px;
+      display: none;
     }
 
     input[type=text] {
@@ -293,7 +297,7 @@ comment-review.less contains styles for Review Your Comment page and the PDF it 
       margin: 0.5em 0;
     }
 
-    h6 {
+    h5 {
       .font-regular;
       font-size: 16px;
       text-transform: none;
