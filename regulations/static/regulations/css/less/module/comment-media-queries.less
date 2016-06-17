@@ -341,7 +341,7 @@ comment-media-queries.less contains media query styles for Notice and Comment
     }
   }
 
-  #comment-review {
+  .comment-review {
     padding-left: 0;
 
     .comments ul {
@@ -355,12 +355,18 @@ comment-media-queries.less contains media query styles for Notice and Comment
     }
 
     .download-comment .details {
+      float: none;
       font-size: 12px;
+      text-align: left;
     }
 
     .additional-info {
 
       .tabs {
+        margin-bottom: 0;
+      }
+
+      .tabs a {
         margin-bottom: 5px;
       }
 
@@ -368,6 +374,26 @@ comment-media-queries.less contains media query styles for Notice and Comment
         margin-bottom: 5px;
       }
     }
+
+    .comment-disclaimer {
+      font-size: 16px;
+
+      input#agree {
+        float: left;
+      }
+
+      label {
+        float: left;
+        margin: -7px 0 25px 0;
+        width: 90%;
+      }
+
+      .required {
+        display: block;
+        margin: 0;
+      }
+    }
+
   }
 
   .section-nav .previous {
