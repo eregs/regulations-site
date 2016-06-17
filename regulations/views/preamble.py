@@ -18,6 +18,7 @@ from django.core.urlresolvers import reverse
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
+from fr_notices.navigation import NavItem
 from regulations import docket
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
@@ -81,20 +82,13 @@ def get_toc_position(toc, part, section):
             return index
 
 
-NavItem = namedtuple(
-    'NavItem',
-    ['url', 'section_id', 'markup_prefix', 'sub_label'],
-)
-
-
 class ToCPart(namedtuple('ToCPart',
               ['title', 'part', 'name', 'authority_url', 'sections'])):
     def to_nav_item(self):
         return NavItem(
             url=self.authority_url,
-            section_id='',
-            markup_prefix='{} CFR {}'.format(self.title, self.part),
-            sub_label='Authority',
+            title='{} CFR {}'.format(self.title, self.part),
+            sub_title='Authority',
         )
 
     def match_ids(self, ids):
@@ -115,9 +109,9 @@ class ToCSect(namedtuple('ToCSect',
             prefix, label = self.title, None
         return NavItem(
             url=self.url,
+            title=prefix,
+            sub_title=label,
             section_id=self.full_id,
-            markup_prefix=prefix,
-            sub_label=label,
         )
 
     def match_ids(self, ids):
@@ -237,9 +231,9 @@ class PreambleSect(namedtuple('PreambleSect',
             prefix, label = top, self.title
         return NavItem(
             url=self.url,
+            title=prefix,
+            sub_title=label,
             section_id=self.full_id,
-            markup_prefix=prefix,
-            sub_label=label,
         )
 
     def match_ids(self, ids):
