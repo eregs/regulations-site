@@ -18,7 +18,7 @@ from django.core.urlresolvers import reverse
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
-from fr_notices.navigation import NavItem
+from fr_notices import navigation
 from regulations import docket
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.generator import LayerCreator
@@ -85,10 +85,10 @@ def get_toc_position(toc, part, section):
 class ToCPart(namedtuple('ToCPart',
               ['title', 'part', 'name', 'authority_url', 'sections'])):
     def to_nav_item(self):
-        return NavItem(
+        title = '{} CFR {}'.format(self.title, self.part)
+        return navigation.NavItem(
             url=self.authority_url,
-            title='{} CFR {}'.format(self.title, self.part),
-            sub_title='Authority',
+            title=navigation.Title(title, title, 'Authority')
         )
 
     def match_ids(self, ids):
@@ -107,10 +107,9 @@ class ToCSect(namedtuple('ToCSect',
             prefix, label = match.groups()
         else:
             prefix, label = self.title, None
-        return NavItem(
+        return navigation.NavItem(
             url=self.url,
-            title=prefix,
-            sub_title=label,
+            title=navigation.Title(self.title, prefix, label),
             section_id=self.full_id,
         )
 
@@ -219,55 +218,6 @@ class CFRChangeToC(object):
         return builder.toc
 
 
-class PreambleSect(namedtuple('PreambleSect',
-                   ['depth', 'full_id', 'title', 'url', 'children'])):
-    def to_nav_item(self):
-        # Hack: Reconstitute node prefix and title
-        # TODO: Emit these fields in a ToC layer in -parser instead
-        top = self.full_id.split('-')[3]
-        if self.title.lower().startswith('{}. '.format(top.lower())):
-            prefix, label = self.title.split('. ', 1)
-        else:
-            prefix, label = top, self.title
-        return NavItem(
-            url=self.url,
-            title=prefix,
-            sub_title=label,
-            section_id=self.full_id,
-        )
-
-    def match_ids(self, ids):
-        return self.full_id == ids.get('full_id')
-
-
-def make_preamble_toc(nodes, depth=1, max_depth=3):
-    toc = []
-    intro_subheader = depth == 2 and any('intro' in n['label'] for n in nodes)
-    if depth > max_depth or intro_subheader:
-        return toc
-
-    have_titles = [n for n in nodes if n.get('title')]
-    for node in have_titles:
-        url = reverse('chrome_preamble',
-                      kwargs={'paragraphs': '/'.join(node['label'][:2])})
-        # Add a hash to a specific section if we're not linking to the
-        # top-level entry
-        if len(node['label']) > 2:
-            url += '#' + '-'.join(node['label'])
-
-        toc.append(PreambleSect(
-            depth=depth, title=node['title'], url=url,
-            full_id='{}-preamble-{}'.format(node['label'][0],
-                                            '-'.join(node['label'])),
-            children=make_preamble_toc(
-                node.get('children', []),
-                depth=depth + 1,
-                max_depth=max_depth,
-            )
-        ))
-    return toc
-
-
 def section_navigation(preamble_toc, cfr_toc, **ids):
     # Build flattened list of `PreambleSect`, `ToCPart`, and `ToCSect` items
     # in table of contents order
@@ -369,7 +319,7 @@ def common_context(doc_number):
     data, toc info, etc. This function retrieves that data and returns the
     results as a dict. This may throw a 404"""
     preamble, meta, notice = notice_data(doc_number)
-    preamble_toc = make_preamble_toc(preamble['children'])
+    preamble_toc = navigation.make_preamble_nav(preamble['children'])
 
     return {
         'cfr_change_toc': CFRChangeToC.for_notice(doc_number, notice),

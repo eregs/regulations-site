@@ -4,10 +4,11 @@ from mock import patch
 from unittest import TestCase
 from datetime import date, timedelta
 
-from nose.tools import *  # noqa
+from nose.tools import assert_equal, assert_is_none
 from django.http import Http404
 from django.test import RequestFactory, override_settings
 
+from fr_notices.navigation import make_preamble_nav
 from regulations.generator.layers import diff_applier, layers_applier
 from regulations.views import preamble
 from regulations.views.preamble import CommentState
@@ -61,7 +62,7 @@ class PreambleViewTests(TestCase):
             response.context_data['sub_context']['node']['meta'], 'something')
         self.assertEqual(
             response.context_data['preamble_toc'],
-            preamble.make_preamble_toc(self._mock_preamble['children']),
+            make_preamble_nav(self._mock_preamble['children']),
         )
         self.assertNotIn('node', response.context_data)
 
@@ -192,74 +193,6 @@ class PreambleViewTests(TestCase):
                              '123_456')
             self.assertEqual(ApiReader.return_value.notice.call_args[0][0],
                              '123-456')
-
-
-class PreambleToCTests(TestCase):
-
-    def setUp(self):
-        self.nodes = [
-            {
-                'title': 'l1',
-                'label': ['doc_id', 'I'],
-                'children': [
-                    {
-                        'title': 'l2',
-                        'label': ['doc_id', 'I', 'A'],
-                    }
-                ]
-            },
-            {
-                'title': 'l2',
-                'label': ['doc_id', 'II'],
-            },
-        ]
-
-    def test_preamble_toc(self):
-        toc = preamble.make_preamble_toc(self.nodes)
-        self.assertEqual(
-            toc,
-            [
-                preamble.PreambleSect(
-                    depth=1,
-                    title='l1',
-                    url='/preamble/doc_id/I',
-                    full_id='doc_id-preamble-doc_id-I',
-                    children=[
-                        preamble.PreambleSect(
-                            depth=2,
-                            title='l2',
-                            url='/preamble/doc_id/I#doc_id-I-A',
-                            full_id='doc_id-preamble-doc_id-I-A',
-                            children=[],
-                        )
-                    ]
-                ),
-                preamble.PreambleSect(
-                    depth=1,
-                    title='l2',
-                    url='/preamble/doc_id/II',
-                    full_id='doc_id-preamble-doc_id-II',
-                    children=[]
-                ),
-            ],
-        )
-
-    def test_max_depth(self):
-        toc = preamble.make_preamble_toc(self.nodes, max_depth=1)
-        self.assertEqual(toc[0].children, [])
-
-    def test_navigation(self):
-        toc = preamble.make_preamble_toc(self.nodes)
-
-        nav = preamble.section_navigation(
-            toc, [], full_id='doc_id-preamble-doc_id-I')
-        assert_equal(nav['next'].section_id, 'doc_id-preamble-doc_id-II')
-        assert_is_none(nav['previous'])
-
-        nav = preamble.section_navigation(
-            toc, [], full_id='doc_id-preamble-doc_id-II')
-        assert_equal(nav['previous'].section_id, 'doc_id-preamble-doc_id-I')
-        assert_is_none(nav['next'])
 
 
 class CFRChangesViewTests(TestCase):
