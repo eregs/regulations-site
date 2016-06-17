@@ -102,8 +102,31 @@ var PreambleView = ChildView.extend({
     );
   },
 
+  cantWriteMessage: [
+    'Your browser does not support localStorage, which is currently required',
+    'to <em>submit</em> comments through this system. To find alternative',
+    'comment submission methods, please read the agency instructions as',
+    'listed in the preamble. We apologize for the inconvenience, but hope to',
+    'remove this limitation soon.'
+  ].join(' '),
+  /**
+   * We rely on localStorage for commenting at the moment. If it's not
+   * available, let the user know. TODO: replace with Modernizr/similar
+   **/
+  checkCanWrite: function() {
+    try {
+      localStorage.setItem('_test', 'value');
+      if (localStorage.getItem('_test') !== 'value') {
+        MainEvents.trigger('section:error', this.cantWriteMessage);
+      }
+    } catch (e) {   // unfortunately, localStorage exception varies by browser
+      MainEvents.trigger('section:error', this.cantWriteMessage);
+    };
+  },
+
   write: function(section, tocId, indexes, label, $parent) {
     this.mode = 'write';
+    this.checkCanWrite();
 
     // Top-level sections and permalink sections use different markup;
     // find appropriate element on top-level sections. TODO: unify markup
