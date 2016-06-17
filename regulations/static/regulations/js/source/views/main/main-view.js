@@ -266,7 +266,10 @@ var MainView = Backbone.View.extend({
         this.loading();
     },
 
-    displayError: function() {
+    displayError: function(message) {
+        if (!message) {
+          message = 'Due to a network error, we were unable to retrieve the requested information.';
+        }
         // Prevent error warning stacking
         $('.error-network').remove();
 
@@ -278,7 +281,7 @@ var MainView = Backbone.View.extend({
           .prepend(
             '<div class="error error-network">' +
               '<span class="cf-icon cf-icon-error icon-warning"></span>' +
-              'Due to a network error, we were unable to retrieve the requested information.' +
+              message +
             '</div>'
           )
           .hide()
