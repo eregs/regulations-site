@@ -9,7 +9,6 @@ from enum import Enum
 
 import itertools
 import logging
-import re
 
 from django.http import Http404
 from django.conf import settings
@@ -26,7 +25,6 @@ from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.utils import (
     convert_to_python, is_contained_in)
-from regulations.generator.toc import fetch_toc
 from regulations.views import utils
 from regulations.views import chrome
 from regulations.views.diff import Versions, get_appliers
@@ -82,44 +80,6 @@ def get_toc_position(toc, part, section):
             return index
 
 
-class ToCPart(namedtuple('ToCPart',
-              ['title', 'part', 'name', 'authority_url', 'sections'])):
-    def to_nav_item(self):
-        title = '{} CFR {}'.format(self.title, self.part)
-        return navigation.NavItem(
-            url=self.authority_url,
-            title=navigation.Title(title, title, 'Authority')
-        )
-
-    def match_ids(self, ids):
-        return self.part == ids.get('part') and ids.get('section') is None
-
-
-class ToCSect(namedtuple('ToCSect',
-              ['part', 'section', 'url', 'title', 'full_id'])):
-    cfr_re = re.compile(r'(§ [\d.]+) (.*)')
-
-    def to_nav_item(self):
-        # Hack: Reconstitute node prefix and title
-        # TODO: Emit these fields in a ToC layer in -parser instead
-        match = self.cfr_re.search(self.title)
-        if match:
-            prefix, label = match.groups()
-        else:
-            prefix, label = self.title, None
-        return navigation.NavItem(
-            url=self.url,
-            title=navigation.Title(self.title, prefix, label),
-            section_id=self.full_id,
-        )
-
-    def match_ids(self, ids):
-        return (
-            self.part == ids.get('part') and
-            ids.get('section') == self.section
-        )
-
-
 def merge_cfr_changes(doc_number, notice):
     """We started with a mock version of these changes which were stored as a
     setting, CFR_CHANGES. Until we remove that completely, merge those values
@@ -135,91 +95,8 @@ def merge_cfr_changes(doc_number, notice):
     return versions, amendments
 
 
-class CFRChangeToC(object):
-    """Builds the ToC specific to CFR changes from amendment data. As there is
-    some valuable state shared between amendment processing, we store it all
-    in an object"""
-    def __init__(self, doc_number, version_info):
-        """version_info structure: {cfr_part -> {"left": str, "right": str}}
-        e.g.  {"111": {"left": "v1", "right": "v2"},
-               "222": {"left": "vold", "right": "vnew"}}"""
-        self.current_part = None
-        self.current_section = None
-        self.section_titles = {}
-        self.toc = []
-        self.doc_number = doc_number
-        self.version_info = version_info
-
-    def add_amendment(self, amendment):
-        """Process a single amendment, of the form
-        {'cfr_part': 111, 'instruction': 'text1', 'authority': 'text2'} or
-        {'cfr_part': 111, 'instruction': 'text3',
-         'changes': [['111-22-c', [data1]], ['other', [data2]]}"""
-        if (self.current_part is None or
-                self.current_part.part != amendment['cfr_part']):
-            self.new_cfr_part(amendment)
-
-        changes = amendment.get('changes', [])
-        if isinstance(changes, dict):
-            changes = changes.items()
-        for change_label, _ in changes:
-            self.add_change(change_label.split('-'))
-
-    def new_cfr_part(self, amendment):
-        """While processing an amendment, if it refers to a CFR part which
-        hasn't been seen before, we need to perform some accounting, fetching
-        related meta data, etc."""
-        part = amendment['cfr_part']
-        if part not in self.version_info:
-            logger.warning("No version info for %s", part)
-        else:
-            meta = utils.regulation_meta(part,
-                                         self.version_info[part]['right'])
-            flat_toc = fetch_toc(part, self.version_info[part]['right'],
-                                 flatten=True)
-            self.section_titles = {
-                elt['index'][1]: elt['title']
-                for elt in flat_toc if len(elt['index']) == 2}
-            self.current_part = ToCPart(
-                title=meta.get('cfr_title_number'), part=part,
-                name=meta.get('statutory_name'), sections=[],
-                authority_url=reverse('cfr_changes', kwargs={
-                    'doc_number': self.doc_number, 'section': part}))
-            self.current_section = None
-            self.toc.append(self.current_part)
-
-    def add_change(self, label_parts):
-        """While processing an amendment, we will encounter sections we
-        haven't seen before -- these will ultimately be ToC entries"""
-        change_section = label_parts[1]
-        is_subpart = 'Subpart' in label_parts or 'Subjgrp' in label_parts
-        if not is_subpart and (self.current_section is None or
-                               self.current_section.section != change_section):
-
-            section = '-'.join(label_parts[:2])
-            self.current_section = ToCSect(
-                part=self.current_part.part,
-                section=change_section,
-                title=self.section_titles.get(change_section),
-                full_id='{}-cfr-{}'.format(self.doc_number, section),
-                url=reverse('cfr_changes', kwargs={
-                    'doc_number': self.doc_number,
-                    'section': section}))
-            self.current_part.sections.append(self.current_section)
-
-    @classmethod
-    def for_notice(cls, doc_number, notice):
-        """Soup to nuts conversion from a document number to a table of
-        contents list"""
-        versions, amendments = merge_cfr_changes(doc_number, notice)
-        builder = cls(doc_number, versions)
-        for amendment in amendments:
-            builder.add_amendment(amendment)
-        return builder.toc
-
-
 def section_navigation(preamble_toc, cfr_toc, **ids):
-    # Build flattened list of `PreambleSect`, `ToCPart`, and `ToCSect` items
+    # Build flattened list of `NavItem`, `ToCPart`, and `ToCSect` items
     # in table of contents order
     items = itertools.chain(
         preamble_toc,
@@ -320,9 +197,12 @@ def common_context(doc_number):
     results as a dict. This may throw a 404"""
     preamble, meta, notice = notice_data(doc_number)
     preamble_toc = navigation.make_preamble_nav(preamble['children'])
+    versions, amendments = merge_cfr_changes(doc_number, notice)
+    cfr_toc = navigation.CFRChangeBuilder.for_notice(
+        doc_number, versions, amendments)
 
     return {
-        'cfr_change_toc': CFRChangeToC.for_notice(doc_number, notice),
+        'cfr_change_toc': cfr_toc,
         'doc_number': doc_number,
         'meta': meta,
         'notice': notice,
