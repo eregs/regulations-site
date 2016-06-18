@@ -82,7 +82,7 @@ var ChildView = Backbone.View.extend({
     // for the fixed position header, is deemed the active section
     checkActiveSection: function() {
       $.each(this.$sections, function(idx, $section) {
-        if ($section.offset().top + this.$contentHeader.height() >= $(window).scrollTop()) {
+        if ($section.offset().top >= $(window).scrollTop()) {
           if (_.isEmpty(this.activeSection) || (this.activeSection !== $section.id)) {
             this.activeSection = $section[0].id;
             this.$activeSection = $($section[0]);
@@ -108,10 +108,9 @@ var ChildView = Backbone.View.extend({
 
     updateWayfinding: function() {
       // cache all sections in the DOM eligible to be the active section
-      // also cache some jQobjs that we will refer to frequently
-      this.$contentHeader = this.$contentHeader || $('header.reg-header');
-
-      // sections that are eligible for being the active section
+      // also cache some jQobjs that we will refer to frequently.
+      //
+      // Sections that are eligible for being the active section.
       this.$sections = this.$el
         .find('li[id], .reg-section, .appendix-section, .supplement-section')
         .map(function(idx, elm) {

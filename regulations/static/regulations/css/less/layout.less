@@ -15,7 +15,7 @@ Main Content
 
 .main-content {
     margin-top: @mainhead_height + @subhead_height;
-    padding: 10px 60px 40px;
+    padding: 0 60px 40px;
 }
 
 @media only screen and ( max-width: 600px ) {
@@ -241,16 +241,16 @@ Section Offsets
     .footnotes li:before {
         display: block;
         content: "";
-        height: 100px;
-        margin: -100px 0 0;
+        height: @mainhead_height + @subhead_height;
+        margin: -1 * (@mainhead_height + @subhead_height) 0 0;
         visibility: hidden;
     }
 
     .reg-section .level-1 li,
     .appendix-section .level-1 li,
     .supplement-section .level-1 li {
-        border-top: 100px solid transparent;
-        margin-top: -100px;
+        border-top: @mainhead_height + @subhead_height solid transparent;
+        margin-top: -1 * (@mainhead_height + @subhead_height);
         -webkit-background-clip:padding-box;
         -moz-background-clip:padding;
         background-clip:padding-box;
