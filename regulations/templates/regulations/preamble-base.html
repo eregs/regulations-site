@@ -50,13 +50,16 @@
     </div>
     <nav id="cfr-toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
       <ol>
-        {% for cfr_part_toc in cfr_change_toc %}
+        {% regroup cfr_change_toc by category as cfr_toc %}
+        {% for cfr_part_toc in cfr_toc %}
           <li>
-            <h3 class="subpart-heading">{{cfr_part_toc.title}} CFR {{cfr_part_toc.part}}</h3>
+            <h3 class="subpart-heading">{{cfr_part_toc.category}}</h3>
           </li>
-          <li><a href="{{cfr_part_toc.authority_url}}">Authority</a></li>
-          {% for section_toc in cfr_part_toc.sections %}
-            <li><a href="{{section_toc.url}}" data-section-id="{{section_toc.full_id}}">{{section_toc.title}}</a></li>
+          {% for item in cfr_part_toc.list %}
+            <li><a href="{{item.url}}"
+                   {% if item.section_id %}
+                   data-section-id"{{item.section_id}}"
+                   >{{item.title.subtitle}}</a></li>
           {% endfor %}
         {% endfor %}
       </ol>

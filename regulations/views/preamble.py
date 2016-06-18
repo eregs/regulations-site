@@ -7,7 +7,6 @@ from copy import deepcopy
 from datetime import date
 from enum import Enum
 
-import itertools
 import logging
 
 from django.http import Http404
@@ -70,16 +69,6 @@ def generate_html_tree(subtree, request, id_prefix=None):
             'markup_page_type': 'reg-section'}
 
 
-def get_toc_position(toc, part, section):
-    """ A toc comprises a list of parts, each part referencing a list of sections
-        in its sections attribute
-    """
-    sections = (section for part in toc for section in part.sections)
-    for index, value in enumerate(sections):
-        if value.part == part and value.section == section:
-            return index
-
-
 def merge_cfr_changes(doc_number, notice):
     """We started with a mock version of these changes which were stored as a
     setting, CFR_CHANGES. Until we remove that completely, merge those values
@@ -93,27 +82,6 @@ def merge_cfr_changes(doc_number, notice):
     amendments.extend(notice.get('amendments', []))
 
     return versions, amendments
-
-
-def section_navigation(preamble_toc, cfr_toc, **ids):
-    # Build flattened list of `NavItem`, `ToCPart`, and `ToCSect` items
-    # in table of contents order
-    items = itertools.chain(
-        preamble_toc,
-        *(
-            [part] + part.sections
-            for part in cfr_toc
-        )
-    )
-    items = list(items)
-    nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
-    for idx, item in enumerate(items):
-        if item.match_ids(ids):
-            if idx > 0:
-                nav['previous'] = items[idx - 1].to_nav_item()
-            if idx < len(items) - 1:
-                nav['next'] = items[idx + 1].to_nav_item()
-    return nav
 
 
 def notice_data(doc_number):
@@ -198,8 +166,7 @@ def common_context(doc_number):
     preamble, meta, notice = notice_data(doc_number)
     preamble_toc = navigation.make_preamble_nav(preamble['children'])
     versions, amendments = merge_cfr_changes(doc_number, notice)
-    cfr_toc = navigation.CFRChangeBuilder.for_notice(
-        doc_number, versions, amendments)
+    cfr_toc = navigation.make_cfr_change_nav(doc_number, versions, amendments)
 
     return {
         'cfr_change_toc': cfr_toc,
@@ -235,7 +202,7 @@ class PreambleView(View):
         sub_context = generate_html_tree(subtree, request,
                                          id_prefix=[doc_number, 'preamble'])
         template = sub_context['node']['template_name']
-        nav = section_navigation(
+        nav = navigation.footer(
             context['preamble_toc'],
             context['cfr_change_toc'],
             full_id=sub_context['node']['full_id'],
@@ -304,18 +271,19 @@ SubpartInfo = namedtuple('SubpartInfo', ['letter', 'title', 'urls', 'idx'])
 class CFRChangesView(View):
     def get(self, request, doc_number, section):
         context = common_context(doc_number)
+        full_id = '{}-cfr-{}'.format(doc_number, section)
 
         versions, amendments = merge_cfr_changes(doc_number, context['notice'])
         label_parts = section.split('-')
 
         if len(label_parts) == 1:
-            ids = {'part': label_parts[0]}
             sub_context = self.authorities_context(
                 amendments, cfr_part=section)
             section_label = ''
         else:
-            ids = {'part': label_parts[0], 'section': label_parts[1]}
-            toc_position = get_toc_position(context['cfr_change_toc'], **ids)
+            toc_position = next(
+                idx for idx, nav in enumerate(context['cfr_change_toc'])
+                if nav.section_id == full_id)
             sub_context = self.regtext_changes_context(
                 amendments,
                 versions,
@@ -329,13 +297,13 @@ class CFRChangesView(View):
         context.update({
             'sub_context': sub_context,
             'sub_template': 'regulations/cfr_changes.html',
-            'full_id': '{}-cfr-{}'.format(doc_number, section),
+            'full_id': full_id,
             'section_label': section_label,
             'type': 'cfr',
-            'navigation': section_navigation(
+            'navigation': navigation.footer(
                 context['preamble_toc'],
                 context['cfr_change_toc'],
-                **ids
+                full_id
             ),
         })
 
