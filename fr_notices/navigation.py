@@ -106,41 +106,39 @@ class CFRChangeBuilder(object):
     """Builds the ToC specific to CFR changes from amendment data. As there is
     some valuable state shared between amendment processing, we store it all
     in an object"""
-    def __init__(self, doc_number, version_info):
+    def __init__(self):
         """version_info structure: {cfr_part -> {"left": str, "right": str}}
         e.g.  {"111": {"left": "v1", "right": "v2"},
                "222": {"left": "vold", "right": "vnew"}}"""
-        self.current_part = None
-        self.current_section = None
+        self.cfr_title = self.cfr_part = self.section = None
         self.section_titles = {}
         self.toc = []
-        self.doc_number = doc_number
-        self.version_info = version_info
 
-    def new_cfr_part(self, amendment):
+    def add_cfr_part(self, doc_number, version_info, amendment):
         """While processing an amendment, if it refers to a CFR part which
         hasn't been seen before, we need to perform some accounting, fetching
         related meta data, etc."""
         part = amendment['cfr_part']
-        if part not in self.version_info:
+        if part not in version_info:
             logger.warning("No version info for %s", part)
-        elif (self.current_part is None or
-                self.current_part != amendment['cfr_part']):
-            meta = utils.regulation_meta(part,
-                                         self.version_info[part]['right'])
-            flat_toc = fetch_toc(part, self.version_info[part]['right'],
+        elif self.cfr_part is None or self.cfr_part != amendment['cfr_part']:
+            meta = utils.regulation_meta(part, version_info[part]['right'])
+            flat_toc = fetch_toc(part, version_info[part]['right'],
                                  flatten=True)
             self.section_titles = {
                 elt['index'][1]: elt['title']
                 for elt in flat_toc if len(elt['index']) == 2}
-            self.current_part = part
-            self.current_section = None
+            self.cfr_part = part
+            self.cfr_title = meta.get('cfr_title_number')
+            self.section = None
 
-            title = '{} CFR {}'.format(meta.get('cfr_title_number'), part)
+            title = '{} CFR {}'.format(self.cfr_title, part)
+            section_id = '{}-cfr-{}'.format(doc_number, part)
             self.toc.append(NavItem(
                 url=reverse('cfr_changes', kwargs={
-                    'doc_number': self.doc_number, 'section': part}),
-                title=Title(title, title, 'Authority'),
+                    'doc_number': doc_number, 'section': part}),
+                title=Title('Authority', title, 'Authority'),
+                section_id=section_id,
                 category=title))
 
     _cfr_re = re.compile(r'(§ [\d.]+) (.*)')
@@ -153,40 +151,40 @@ class CFRChangeBuilder(object):
         if match:
             return Title(title_str, *match.groups())
         else:
-            return Title(title_str, self.title)
+            return Title(title_str, title_str)
 
-    def add_change(self, label_parts):
+    def add_change(self, doc_number, label_parts):
         """While processing an amendment, we will encounter sections we
         haven't seen before -- these will ultimately be ToC entries"""
         change_section = label_parts[1]
         is_subpart = 'Subpart' in label_parts or 'Subjgrp' in label_parts
-        if not is_subpart and (self.current_section is None or
-                               self.current_section != change_section):
-            self.current_section = change_section
+        if not is_subpart and (self.section is None or
+                               self.section != change_section):
+            self.section = change_section
             section = '-'.join(label_parts[:2])
 
             self.toc.append(NavItem(
                 url=reverse('cfr_changes', kwargs={
-                    'doc_number': self.doc_number,
+                    'doc_number': doc_number,
                     'section': section}),
-                title=self._change_title(section),
-                section_id='{}-cfr-{}'.format(self.doc_number, section),
-                category='{} CFR {}'.format(self.current_part, change_section)
+                title=self._change_title(change_section),
+                section_id='{}-cfr-{}'.format(doc_number, section),
+                category='{} CFR {}'.format(self.cfr_title, self.cfr_part)
             ))
 
 
 def make_cfr_change_nav(doc_number, version_info, amendments):
     """Soup to nuts conversion from a document number to a table of contents
     list"""
-    builder = CFRChangeBuilder(doc_number, version_info)
+    builder = CFRChangeBuilder()
     for amendment in amendments:
         # Amendments are of the form
         # {'cfr_part': 111, 'instruction': 'text1', 'authority': 'text2'} or
         # {'cfr_part': 111, 'instruction': 'text3',
         #  'changes': [['111-22-c', [data1]], ['other', [data2]]}
-        builder.add_cfr_part(amendment)
+        builder.add_cfr_part(doc_number, version_info, amendment)
         for change_label, _ in amendment.get('changes', []):
-            builder.add_change(change_label.split('-'))
+            builder.add_change(doc_number, change_label.split('-'))
     return builder.toc
 
 
