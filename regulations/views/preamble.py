@@ -279,7 +279,7 @@ class CFRChangesView(View):
         if len(label_parts) == 1:
             sub_context = self.authorities_context(
                 amendments, cfr_part=section)
-            section_label = ''
+            section_label = 'Authority'
         else:
             toc_position = next(
                 idx for idx, nav in enumerate(context['cfr_change_toc'])
