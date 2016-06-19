@@ -50,17 +50,17 @@
     </div>
     <nav id="cfr-toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
       <ol>
-        {% regroup cfr_change_toc by category as cfr_toc %}
-        {% for cfr_part_toc in cfr_toc %}
+        {% regroup cfr_change_toc by category as cfr_toc_by_category %}
+        {% for category in cfr_toc_by_category %}
           <li>
-            <h3 class="subpart-heading">{{cfr_part_toc.grouper}}</h3>
+            <h3 class="subpart-heading">{{category.grouper}}</h3>
           </li>
-          {% for item in cfr_part_toc.list %}
-            <li><a href="{{item.url}}"
-                   {% if item.section_id %}
-                   data-section-id="{{item.section_id}}"
+          {% for nav_item in category.list %}
+            <li><a href="{{nav_item.url}}"
+                   {% if nav_item.section_id %}
+                   data-section-id="{{nav_item.section_id}}"
                    {% endif %}
-                   >{{item.title.full}}</a></li>
+                   >{{nav_item.title.full}}</a></li>
           {% endfor %}
         {% endfor %}
       </ol>
