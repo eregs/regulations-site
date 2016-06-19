@@ -21,24 +21,30 @@ class Title(namedtuple('Title', ['full', 'short', 'subtitle'])):
 
 
 class NavItem(namedtuple(
-        'NavItem', ['url', 'title', 'section_id', 'children', 'category'])):
+        'NavItem',
+        ['url', 'title', 'markup_id', 'children', 'category', 'section_id'])):
     """Shared data structure to represent entries in the table of contents and
     the navigation in the page footer. We may be able to expand this
     standardization more broadly than fr_notices, but let's move one step at a
     time.
     :type title: Title
-    :type section_id: str or None
+    :type markup_id: str
     :type children: potentially empty list
     :type category: str or None
+    :param str section_id: markup id associated with AJAX and other JS;
+        temporary shim so that we can turn off AJAX per NavItem. Defaults to
+        copy the markup_id
     """
-    def __new__(cls, url, title, section_id=None, children=None,
-                category=None):
+    def __new__(cls, url, title, markup_id, children=None, category=None,
+                section_id=None):
         """Adds defaults to constructor"""
         if children is None:
             children = []
+        if section_id is None:
+            section_id = markup_id
 
-        return super(NavItem, cls).__new__(cls, url, title, section_id,
-                                           children, category)
+        return super(NavItem, cls).__new__(
+            cls, url, title, markup_id, children, category, section_id)
 
     # Properties/fns for backwards compatibility
 
@@ -82,8 +88,8 @@ def make_preamble_nav(nodes, depth=1, max_depth=3):
         if len(node['label']) > 2:
             url += '#' + '-'.join(node['label'])
 
-        section_id = '{}-preamble-{}'.format(node['label'][0],
-                                             '-'.join(node['label']))
+        markup_id = '{}-preamble-{}'.format(node['label'][0],
+                                            '-'.join(node['label']))
 
         if 'intro' in node['label'] or depth == max_depth:
             children = []
@@ -96,7 +102,7 @@ def make_preamble_nav(nodes, depth=1, max_depth=3):
         toc.append(NavItem(
             url=url,
             title=_preamble_titles(node),
-            section_id=section_id,
+            markup_id=markup_id,
             children=children
         ))
     return toc
@@ -133,13 +139,14 @@ class CFRChangeBuilder(object):
             self.section = None
 
             title = '{} CFR {}'.format(self.cfr_title, part)
-            section_id = '{}-cfr-{}'.format(doc_number, part)
+            markup_id = '{}-cfr-{}'.format(doc_number, part)
             self.toc.append(NavItem(
                 url=reverse('cfr_changes', kwargs={
                     'doc_number': doc_number, 'section': part}),
                 title=Title('Authority', title, 'Authority'),
-                section_id=section_id,
-                category=title))
+                markup_id=markup_id,
+                category=title,
+                section_id=''))     # disable AJAX
 
     _cfr_re = re.compile(r'(§ [\d.]+) (.*)')
 
@@ -168,7 +175,7 @@ class CFRChangeBuilder(object):
                     'doc_number': doc_number,
                     'section': section}),
                 title=self._change_title(change_section),
-                section_id='{}-cfr-{}'.format(doc_number, section),
+                markup_id='{}-cfr-{}'.format(doc_number, section),
                 category='{} CFR {}'.format(self.cfr_title, self.cfr_part)
             ))
 
@@ -194,7 +201,7 @@ def footer(preamble_toc, cfr_toc, full_id):
     items = preamble_toc + cfr_toc
     nav = {'previous': None, 'next': None, 'page_type': 'preamble-section'}
     for idx, item in enumerate(items):
-        if item.section_id == full_id:
+        if item.markup_id == full_id:
             if idx > 0:
                 nav['previous'] = items[idx - 1]
             if idx < len(items) - 1:

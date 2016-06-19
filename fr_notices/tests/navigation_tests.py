@@ -28,17 +28,17 @@ class PreambleToCTests(TestCase):
             navigation.NavItem(
                 url='/preamble/doc_id/I',
                 title=navigation.Title('one', 'I', 'one'),
-                section_id='doc_id-preamble-doc_id-I',
+                markup_id='doc_id-preamble-doc_id-I',
                 children=[navigation.NavItem(
                     url='/preamble/doc_id/I#doc_id-I-A',
                     title=navigation.Title('two', 'A', 'two'),
-                    section_id='doc_id-preamble-doc_id-I-A'
+                    markup_id='doc_id-preamble-doc_id-I-A',
                 )]
             ),
             navigation.NavItem(
                 url='/preamble/doc_id/II',
                 title=navigation.Title('three', 'II', 'three'),
-                section_id='doc_id-preamble-doc_id-II',
+                markup_id='doc_id-preamble-doc_id-II',
             )
         ])
 
@@ -95,24 +95,26 @@ class CFRChangeBuilderTests(TestCase):
             navigation.NavItem(
                 url='/preamble/docdoc/cfr_changes/111',
                 title=navigation.Title('Authority', '99 CFR 111', 'Authority'),
-                section_id='docdoc-cfr-111',
-                category='99 CFR 111'),
+                markup_id='docdoc-cfr-111',
+                category='99 CFR 111',
+                section_id=''),
             navigation.NavItem(
                 url='/preamble/docdoc/cfr_changes/111-1',
                 title=navigation.Title(
                     '§ 111.1 Something', '§ 111.1', 'Something'),
-                section_id='docdoc-cfr-111-1',
+                markup_id='docdoc-cfr-111-1',
                 category='99 CFR 111'),
             navigation.NavItem(
                 url='/preamble/docdoc/cfr_changes/111-3',
                 title=navigation.Title('Unparsable', 'Unparsable'),
-                section_id='docdoc-cfr-111-3',
+                markup_id='docdoc-cfr-111-3',
                 category='99 CFR 111'),
             navigation.NavItem(
                 url='/preamble/docdoc/cfr_changes/222',
                 title=navigation.Title('Authority', '99 CFR 222', 'Authority'),
-                section_id='docdoc-cfr-222',
-                category='99 CFR 222')
+                markup_id='docdoc-cfr-222',
+                category='99 CFR 222',
+                section_id='')
         ])
 
     def test_footer(self):
@@ -120,19 +122,19 @@ class CFRChangeBuilderTests(TestCase):
             navigation.NavItem(
                 url='/preamble/2016_02749/cfr_changes/478',
                 title=navigation.Title('Authority', '27 CFR 478', 'Authority'),
-                section_id='2016_02749-cfr-478',
+                markup_id='2016_02749-cfr-478',
                 category='27 CFR 478'),
             navigation.NavItem(
                 url='/preamble/2016_02749/cfr_changes/478-99',
                 title=navigation.Title(
                     '§ 478.99 Certain', '§ 478.99', 'Certain'),
-                section_id='2016_02749-cfr-478-99',
+                markup_id='2016_02749-cfr-478-99',
                 category='27 CFR 478'),
             navigation.NavItem(
                 url='/preamble/2016_02749/cfr_changes/478-120',
                 title=navigation.Title(
                     '§ 478.120 Firearms', '§ 478.120', 'Firearms'),
-                section_id='2016_02749-cfr-478-120',
+                markup_id='2016_02749-cfr-478-120',
                 category='27 CFR 478')
         ]
 
