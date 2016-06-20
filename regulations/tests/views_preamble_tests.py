@@ -4,7 +4,7 @@ from mock import patch
 from unittest import TestCase
 from datetime import date, timedelta
 
-from nose.tools import *  # noqa
+from nose.tools import assert_equal, assert_is_none
 from django.http import Http404
 from django.test import RequestFactory, override_settings
 
