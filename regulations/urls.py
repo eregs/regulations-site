@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.decorators.cache import cache_page
 
 from regulations.views.about import about
@@ -42,8 +42,7 @@ lt_cache = cache_page(settings.CACHES['eregs_longterm_cache']['TIMEOUT'],
                       cache='eregs_longterm_cache')
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', universal, name='universal_landing'),
     # about page
     url(r'^about$', about, name='about'),
@@ -186,4 +185,4 @@ urlpatterns = patterns(
     url(r'^partial/%s/%s$' % (paragraph_pattern, version_pattern),
         lt_cache(PartialParagraphView.as_view()),
         name='partial_paragraph_view'),
-)
+]
