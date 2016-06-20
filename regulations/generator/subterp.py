@@ -9,8 +9,12 @@ def filter_by_subterp(nodes, subterp_label, version):
     efficient than compiling nodes when API calls are involved. We use
     takewhile and dropwhile in case extra, non-node interpretations are in
     the range"""
-    is_section = lambda n: n['label'][1].isdigit()
-    not_section = lambda n: not is_section(n)
+
+    def is_section(n):
+        return n['label'][1].isdigit()
+
+    def not_section(n):
+        return not is_section(n)
 
     if subterp_label[1:] == ['Subpart', 'Interp']:      # Empty part
         skip_intros = dropwhile(not_section, nodes)
@@ -22,22 +26,25 @@ def filter_by_subterp(nodes, subterp_label, version):
         return list(skip_sections)
     else:   # A Subpart. Most costly as we need to know the toc
         subpart_label = subterp_label[:-1]
-        not_subpart = lambda el: el['index'] != subpart_label
         toc = fetch_toc(subterp_label[0], version)
-        toc = list(dropwhile(not_subpart, toc))
+        toc = list(dropwhile(
+            lambda el: el['index'] != subpart_label,    # not subpart
+            toc))
         if toc:
             sections = set(tuple(el['index'] + ['Interp'])
                            for el in toc[0]['sub_toc'])
-            not_relevant = lambda el: tuple(el['label']) not in sections
-            relevant_interps = dropwhile(not_relevant, nodes)
+            relevant_interps = dropwhile(
+                lambda el: tuple(el['label']) not in sections,   # not relevant
+                nodes)
 
             other_sections = set()
             for el in toc[1:]:
                 other_sections.add(tuple(el['index'] + ['Interp']))
                 for sub in el.get('sub_toc', []):
                     other_sections.add(tuple(sub['index'] + ['Interp']))
-            is_relevant = lambda el: tuple(el['label']) not in other_sections
-            relevant_interps = takewhile(is_relevant, relevant_interps)
+            relevant_interps = takewhile(
+                lambda n: tuple(n['label']) not in other_sections,  # relevant
+                relevant_interps)
 
             return list(relevant_interps)
     # Couldn't find the subpart - wrong label? - implicit return None
