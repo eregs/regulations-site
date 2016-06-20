@@ -28,7 +28,8 @@ class VersionsTest(TestCase):
         n4 = {'effective_on': future, 'publication_date': '2005-05-05'}
         n5 = {'effective_on': future, 'publication_date': '2005-06-05'}
         n6 = {'effective_on': future, 'publication_date': '2005-07-05'}
-        client.notices.return_value = {'results': [n1, n2, n3, n5, n4, n6]}
+        n7 = {'publication_date': '2001-02-02'}     # proposal
+        client.notices.return_value = {'results': [n1, n2, n3, n5, n4, n6, n7]}
 
         history = versions.fetch_grouped_history('111')
         self.assertEqual(3, len(history))
