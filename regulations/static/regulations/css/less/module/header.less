@@ -21,7 +21,7 @@
 }
 
 .main-head {
-    .border-bottom-dark(@width: 3px);
+    border-bottom: 2px solid @blue;
     background: #fff;
     position: fixed;
     top: 0;
@@ -36,6 +36,18 @@
     line-height: 57px;
     height: 57px;
     overflow: hidden;
+
+    a {
+      &:link,
+      &:visited {
+        color: @blue;
+      }
+
+      &:hover,
+      &:active {
+        color: darken(@blue, 10%);
+      }
+    }
 
     .reg-title,
     .site-title {
@@ -82,20 +94,20 @@
 .title a:link,
 .title a:visited {
     border-bottom: none;
-    color: @dark_field;
+    color: @blue;
     text-decoration: none;
 }
 
 .title a:hover,
 .title a:active {
-    color: @pacific;
+    color: darken(@blue, 10%);
 }
 
 .sub-head {
     position: fixed;
     top: @mainhead_height;
     min-width: 100%;
-    background: @grey;
+    background: @light_gray;
     color: @black;
     line-height: 35px;
     height: 2.125em;
@@ -169,22 +181,20 @@ Application Nav
 ================
 */
 
-.app-nav {
+.app-nav a{
 
-    a {
-        .font-bold;
-    }
+  .font-bold;
 
-    a:link,
-    a:visited {
-        color: @dark_gray;
-    }
+  &:link,
+  &:visited {
+    color: @blue;
+  }
 
-    a:hover,
-    a:active,
-    a:focus {
-        color: @pacific;
-    }
+  &:hover,
+  &:active,
+  &:focus {
+    color: darken(@blue, 10%);;
+  }
 }
 
 /*
@@ -227,6 +237,15 @@ BIG SCREENS
         height: 57px;
         line-height: 57px;
         margin: 0 0 0 24px;
+
+        a {
+          color: @dark_field;
+          padding: 0;
+        }
+
+        &:last-child {
+          border-bottom: 2px solid @dark_gray;
+        }
 
         .logo {
             display: inline;

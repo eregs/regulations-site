@@ -43,21 +43,42 @@ N&C Header - including Read/Write tab
     margin-right: -4px;
     width: 245px;
 
+    a {
+      color: @navigation_gray;
+      padding-left: 5px;
+    }
+
     .read-icon,
     .write-icon {
       padding: 0;
       font-size: 14px;
+      fill: @navigation_gray;
+    }
+
+    &.active-mode a {
+      color: @blue;
+    }
+
+    &:hover span,
+    &:hover a {
+      color: @blue;
     }
 
     &:hover:not(.active-mode) {
+      background: lighten(@gray, 10%);
       height: 33px;
     }
   }
 
   .active-mode {
-    background: #FFFFFF;
-    color: @pacific;
+    background: @white;
+    color: @blue;
     cursor: default;
+
+    .read-icon,
+    .write-icon {
+      fill: @blue;
+    }
   }
 }
 
@@ -85,7 +106,7 @@ Write Mode
 
       .comment-header-link a {
         color: @black;
-        border-bottom: 2px solid fade(@blue, 80%);
+        border-bottom: 2px solid @link_blue;
       }
     }
 
@@ -99,7 +120,7 @@ Write Mode
 
     // Show toggle box
     a.comment-context-toggle {
-      background-color: @grey;
+      background-color: @light_gray;
       border-radius: 2px;
       color: @dark_text;
       cursor: pointer;
@@ -108,7 +129,7 @@ Write Mode
       padding: 10px 15px;
 
       .comment-context-text {
-        color: @blue;
+        color: @link_blue;
       }
 
       .fa-minus-circle,
@@ -222,9 +243,9 @@ Write Mode
 
   .comment-button,
   a.comment-index-review {
-    background-color: @pacific;
+    background-color: @blue;
     border-radius: 2px;
-    color: #FFFFFF;
+    color: @white;
     .font-regular;
     font-weight: 500;
     letter-spacing: 0.03em;
@@ -237,7 +258,7 @@ Write Mode
     transition: .1s;
 
     &:hover {
-      background-color: @pacific_hover;
+      background-color: darken(@blue, 10%);
     }
   }
 
@@ -272,6 +293,11 @@ Write Mode
   .comment-attachment-limit {
     float: left;
     clear: both;
+  }
+
+  .comment-attachment-count,
+  .comment-attachment-limit {
+    color: @citation_gray;
   }
 
   .comment-upload-button {
@@ -389,8 +415,8 @@ Write Mode
   }
 
   li {
-    background: @80_gray;
-    color: white;
+    background: @gray;
+    color: @black;
     cursor: default;
     font-weight: 500;
     padding: 10px 15px;
@@ -433,7 +459,7 @@ Write Mode
     }
 
     &:hover {
-      background: darken(@80_gray, 10%);
+      background: lighten(@gray, 10%);
 
       .fa {
         display: inline-block;
