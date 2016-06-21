@@ -11,6 +11,10 @@ var MainEvents = require('../../events/main-events');
 var GAEvents = require('../../events/ga-events');
 Backbone.$ = $;
 
+// Adjust the offset of how far past the section top before the wayfinder
+// changes. Based on 2 * line-height + padding-top.
+var WAYFINDER_SCROLL_OFFSET = window.WAYFINDER_SCROLL_OFFSET || 64;
+
 var ChildView = Backbone.View.extend({
     el: '#content-wrapper',
 
@@ -79,10 +83,11 @@ var ChildView = Backbone.View.extend({
     // naive way to update the active table of contents link and wayfinding header
     // once a scroll event ends, we loop through each content section DOM node
     // the first one whose offset is greater than the window scroll position, accounting
-    // for the fixed position header, is deemed the active section
+    // for the fixed position header (via margin/border offsets), is deemed the
+    // active section
     checkActiveSection: function() {
       $.each(this.$sections, function(idx, $section) {
-        if ($section.offset().top + this.$contentHeader.height() >= $(window).scrollTop()) {
+        if ($section.offset().top + WAYFINDER_SCROLL_OFFSET >= $(window).scrollTop()) {
           if (_.isEmpty(this.activeSection) || (this.activeSection !== $section.id)) {
             this.activeSection = $section[0].id;
             this.$activeSection = $($section[0]);
@@ -108,10 +113,9 @@ var ChildView = Backbone.View.extend({
 
     updateWayfinding: function() {
       // cache all sections in the DOM eligible to be the active section
-      // also cache some jQobjs that we will refer to frequently
-      this.$contentHeader = this.$contentHeader || $('header.reg-header');
-
-      // sections that are eligible for being the active section
+      // also cache some jQobjs that we will refer to frequently.
+      //
+      // Sections that are eligible for being the active section.
       this.$sections = this.$el
         .find('li[id], .reg-section, .appendix-section, .supplement-section')
         .map(function(idx, elm) {
