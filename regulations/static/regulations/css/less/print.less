@@ -111,6 +111,21 @@ footer.search-nav {
  Print only the text of the regulation
  */
 
+#preamble-read {
+  width: 100%;
+  padding: 0 40px;
+  margin: 0 auto;
+
+  .activate-write {
+    display: none;
+  }
+
+  //removes indent on the first level of depth
+  .preamble-content > ul {
+    padding: 0;
+  }
+}
+
 .wrap,
 .main-content,
 .secondary-content,
@@ -122,6 +137,16 @@ footer.search-nav {
     float: none !important;
     margin: 0;
     padding: 0;
+}
+
+// overrides dynamic sizing done by the DataTables plugin which breaks in print mode
+
+.dataTables_scrollHeadInner {
+  width: 100% !important;
+
+  table {
+    width: 100% !important;
+  }
 }
 
  /*
