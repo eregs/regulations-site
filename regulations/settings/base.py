@@ -223,8 +223,7 @@ LOGGING = {
 DATA_LAYERS = (
     'regulations.generator.layers.defined.DefinedLayer',
     'regulations.generator.layers.definitions.DefinitionsLayer',
-    # Commented out of the defaults until the feature is considered complete
-    # 'regulations.generator.layers.external_citation.ExternalCitationLayer',
+    'regulations.generator.layers.external_citation.ExternalCitationLayer',
     'regulations.generator.layers.footnotes.FootnotesLayer',
     'regulations.generator.layers.formatting.FormattingLayer',
     'regulations.generator.layers.internal_citation.InternalCitationLayer',
