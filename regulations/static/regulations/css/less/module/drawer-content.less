@@ -14,6 +14,11 @@ This contains all of the styles specific to the TOC
       text-indent: -15px;
     }
 
+    a:link,
+    a:visited {
+      .border-bottom-light (@width: 0px);
+    }
+
     a:hover,
     a:active,
     .current {
@@ -90,7 +95,7 @@ This contains all of the styles specific to the TOC
 
   a:link,
   a:visited {
-    color: @black;
+    color: @navigation_gray;
     .border-bottom-light (@width: 1px);
   }
 

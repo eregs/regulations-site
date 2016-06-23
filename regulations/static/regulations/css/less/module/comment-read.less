@@ -42,13 +42,8 @@ Preamble Read Mode
     width: 250px;
 
     a {
-      color: @pacific_light;
+      color: @write_link_inactive;
       display: block;
-    }
-
-    &:hover a,
-    a:focus {
-      color: @pacific_hover;
     }
 
     // write a comment pencil icon font
@@ -70,9 +65,9 @@ Preamble Read Mode
 
   // hidden content (with stars) on CFR
   .show-more-context {
-    background-color: @grey;
+    background-color: @light_gray;
     border-radius: 2px;
-    color: @pacific;
+    color: @link_blue;
     font-size: 10px;
     margin: 10px 0;
     text-align: center;
@@ -117,7 +112,8 @@ Preamble Read Mode
   }
 
   .cfr-instructions {
-    .font-regular;
+    font-family: "Merriweather", Georgia, serif;
+    font-weight: 400;
     font-size: 16px;
     line-height: 24px;
     padding-top: 15px;
