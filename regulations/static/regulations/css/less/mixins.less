@@ -5,28 +5,42 @@ mixins.less contains any mixins to be used throughout the LESS files
 */
 
 
-.font-regular {
-    font-family: "Avenir Next", Arial, sans-serif;
-    font-weight: normal;
+
+.sans-font-light {
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    font-weight: 300;
     font-style: normal;
 }
 
-.font-bold {
-    font-family: "Avenir Next Demi", Arial, sans-serif;
-    font-weight: 600;
+.sans-font-regular {
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
-.font-italic {
-    font-family: "Avenir Next Demi Italic", Arial, sans-serif;
+.sans-font-bold {
+    font-family: "Source Sans Pro", Arial, sans-serif;
     font-weight: 600;
+    font-style: normal;
+}
+
+.serif-font-italic {
+    font-family: "Merriweather", Georgia, serif;
+    font-weight: 400;
     font-style: italic;
+}
+
+.serif-font-regular {
+  font-family: "Merriweather", Georgia, serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 
 /* Drawer font styles */
 
 .drawer-header-font {
-    &:extend(.font-bold);
+    &:extend(.sans-font-bold);
     color: @mid_text;
     font-size: .875em; /* 12px / (26px * .875em) */
     text-transform: uppercase;
@@ -35,7 +49,7 @@ mixins.less contains any mixins to be used throughout the LESS files
 /* Regulation nav (drawer) font styles */
 
 .regulation-nav-section-marker-font {
-    &:extend(.font-bold);
+    &:extend(.sans-font-bold);
     display: block;
     font-size: 18px;
 }
@@ -50,20 +64,20 @@ mixins.less contains any mixins to be used throughout the LESS files
 }
 
 .regulation-nav-interp-heading-font {
-    &:extend(.font-regular);
+    &:extend(.sans-font-regular);
     text-transform: uppercase;
     font-size: 12px;
 }
 
 .regulation-nav-interp-title-font {
-    &:extend(.font-bold);
+    &:extend(.sans-font-bold);
     font-size: 14px;
 }
 
 /* History (drawer) font styles */
 
 .regulation-history-version-date-font {
-    &:extend(.font-bold);
+    &:extend(.sans-font-bold);
     font-size: 1.285714286em;
 }
 

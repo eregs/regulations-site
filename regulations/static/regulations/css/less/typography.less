@@ -23,7 +23,7 @@ body {
 }
 
 strong {
-  .font-bold;
+  .sans-font-bold;
 }
 
 /*  Default Headings
@@ -36,41 +36,61 @@ strong {
     <h6>Heading Level 6</h6>
  */
 
+ a:link,
+ a:visited {
+     color: @link_blue;
+ }
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    .font-bold;
-    margin-bottom: 0;
+    .sans-font-bold;
+    margin: 0.5em 0;
 }
 
 h1 {
-    font-size: 2.125em;
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 50px;
 }
 
-h2, h3.section-title {
-    font-size: 1.625em;
+h2 {
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 50px;
 }
 
 h3 {
-    font-size: 1.375em;
+  font-size: 34px;
+  line-height: 40px;
 }
 
 h4 {
-    font-size: 1em;
-    text-transform: uppercase;
+  font-size: 24px;
+  line-height: 29px;
+  text-transform: none;
 }
 
 h5 {
-    font-size: 0.875em;
-    text-transform: uppercase;
+  font-size: 19px;
+  line-height: 24px;
+  text-transform: uppercase;
 }
 
 h6 {
-    font-size: 0.875em;
+    font-size: 14px;
+    line-height: 18px;
+    text-transform: uppercase;
     margin: 1em 0 0 0;
+}
+
+.main-content p {
+  .serif-font-regular;
+  font-size: 16px;
+  line-height: 26px;
 }
 
 /*  Sub Headings
@@ -79,7 +99,7 @@ h6 {
 */
 
 .sub-text {
-    .font-regular;
+    .sans-font-regular;
 }
 
 .small-header {
@@ -91,7 +111,7 @@ h6 {
 }
 
 .light-header {
-    .font-regular;
+    .sans-font-regular;
 }
 
 .upper-header {
@@ -267,7 +287,7 @@ a:visited {
 /* button styles */
 
 .btn {
-    .font-regular;
+    .sans-font-regular;
     display: inline-block;
     box-sizing: border-box;
     padding: .57142857em 1em;
@@ -311,7 +331,7 @@ a:visited {
 .appendix-heading,
 .supplement-section h3 {
     font-size: 1.8125em; /* 29px / 16 */
-    .font-bold;
+    .sans-font-bold;
     line-height: 1.25;
     letter-spacing: 1px;
 }
@@ -389,7 +409,7 @@ The `<ol>` tag needs to have the appropriate list type applied
 */
 
 .main-content ol, dfn, .stripped-marker {
-  .font-bold;
+  .sans-font-bold;
 }
 
 .appendix-section ol {
@@ -469,7 +489,7 @@ All key-terms are displayed as block elements to force a line-break.
 .supplement-section .level-1 .key-term {
     text-transform: uppercase;
     font-size: 1em;
-    .font-bold;
+    .sans-font-bold;
 }
 
 /*  Level-3 key-terms
@@ -487,7 +507,7 @@ All key-terms are displayed as block elements to force a line-break.
 */
 
 .level-3 .key-term {
-    .font-bold;
+    .sans-font-bold;
     text-transform: none;
 }
 
