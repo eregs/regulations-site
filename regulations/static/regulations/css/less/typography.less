@@ -590,23 +590,19 @@ thead {
     Datatables-specific css
 */
 
-.dataTable {
-    table& {
-        margin-top:0;
-        thead {
-            height:0;
-        }
-        tr:first-child td {
-            border-top: none;
-        }
+table.dataTable {
+    margin-top:0;
+    thead {
+        height:0;
+    }
+    tr:first-child td {
+        border-top: none;
     }
 }
 
 .dataTables_scrollHeadInner {
-    div& {
-        table {
-            margin-bottom: 0px;
-        }
+    table {
+        margin-bottom: 0px;
     }
 }
 table.dataTable, table.dataTable th, table.dataTable td {
