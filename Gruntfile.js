@@ -34,6 +34,20 @@ module.exports = function(grunt) {
     },
 
     /**
+     * https://github.com/gruntjs/grunt-contrib-sass
+     */
+    sass: {
+        dev: {
+            options: {
+              style: 'expanded'
+            },
+            files: {
+                '<%= env.frontEndPath %>/css/style.css': '<%= env.frontEndPath %>/css/scss/main.scss'
+            }
+        }
+    },
+
+    /**
      * https://github.com/gruntjs/grunt-contrib-less
      */
     less: {
@@ -192,7 +206,7 @@ module.exports = function(grunt) {
   grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'less']);
-  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'less', 'cssmin']);
+  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'sass']);
+  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'sass', 'cssmin']);
   grunt.registerTask('default', ['build-dist']);
 };
