@@ -39,7 +39,7 @@ class bdist_egg(_bdist_egg):
 
 setup(
     name="regulations",
-    version="2.0.0",
+    version="5.0.0",
     packages=find_packages(),
     install_requires=[
         'boto3',
