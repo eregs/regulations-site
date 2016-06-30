@@ -24,7 +24,7 @@ var CommentReviewView = Backbone.View.extend({
   events: {
     'click .edit-comment': 'editComment',
     'click .preview-button': 'preview',
-    'change .agree': 'toggleSubmit'
+    'change #agree': 'toggleSubmit'
   },
 
   initialize: function(options) {
@@ -45,7 +45,7 @@ var CommentReviewView = Backbone.View.extend({
   findElms: function() {
     this.$form = this.$el.find('form');
     this.$submit = this.$el.find('.submit-button');
-    this.$agree = this.$el.find('.agree');
+    this.$agree = this.$el.find('#agree');
   },
 
   editComment: function(e) {
