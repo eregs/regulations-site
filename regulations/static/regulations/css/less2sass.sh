@@ -1,4 +1,3 @@
-
 #########
 # less2sass BASH script for eregs
 #
@@ -53,11 +52,6 @@ sed -i.bak -e 's/^\./@mixin /g' mixins.scss
 sed -i.bak -e 's/\.cf-icon__rotate/@include cf-icon__rotate/g' cf-icons.scss
 sed -i.bak -e 's/\.cf-icon__flip/@include cf-icon__flip/g' cf-icons.scss
 
-echo "correcting mixin font extends..."
-# correct syntax from extend to mixin include
-sed -i.bak -e 's/&:extend(\.font-bold)/@include font-bold/g' mixins.scss
-sed -i.bak -e 's/&:extend(\.font-regular)/@include font-regular/g' mixins.scss
-
 echo "correcting cf-icon, font-awesome, group extends in stylesheets..."
 # .cf-icon, .cf_icon__spin extend
 sed -i.bak -e 's/@include cf-icon/@extend .cf-icon/g' mixins.scss
@@ -92,4 +86,3 @@ rm *.bak **/*.bak
 
 # go back to css folder
 cd ../
-

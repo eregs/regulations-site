@@ -1,0 +1,327 @@
+/*
+Main.scss
+==========================================================================
+main.scss imports all supporting less files
+and includes any non-semantic helper classes
+*/
+
+/*
+Type & Layout
+------------- */
+@import "base-variables.scss";
+@import "normalize.scss";
+@import "cf-icons.scss";
+@import "variables.scss";
+@import "mixins.scss";
+@import "fonts.scss";
+@import "typography.scss";
+@import "layout.scss";
+@import "font-awesome.scss";
+
+/*
+Modules
+------- */
+@import "module/navigation.scss";
+@import "module/drawer.scss";
+@import "module/extract.scss";
+@import "module/interpretations.scss";
+@import "module/note.scss";
+@import "module/header.scss";
+@import "module/footer.scss";
+@import "module/full-footer.scss";
+@import "module/sidebar.scss";
+@import "module/sxs.scss";
+@import "module/search-results.scss";
+@import "module/forms.scss";
+@import "module/diffs.scss";
+@import "module/expandables.scss";
+@import "module/reg-landing.scss";
+@import "module/universal-landing.scss";
+@import "module/about.scss";
+@import "module/error.scss";
+@import "module/paragraph-markers.scss";
+@import "module/comment.scss";
+@import "module/comment-read.scss";
+@import "module/comment-review.scss";
+@import "module/comment-confirm.scss";
+@import "module/comment-media-queries.scss";
+@import "module/custom.scss";
+
+
+/*
+ Helper Classes
+ ========================================================================== */
+
+/* apply a natural box layout model to all elements */
+*, *:before, *:after {
+  -moz-box-sizing: border-box;-webkit-box-sizing: border-box; box-sizing: border-box;
+ }
+
+/*.lt-ie10 {
+  *, *:before, *:after {
+      box-sizing: content-box;
+  }
+}*/
+ /* hide sxs links */
+.sxs-ref {
+    display: none;
+}
+
+.inline {
+    display: inline;
+    margin: 0;
+}
+
+.js {
+    .hidden {
+        display: none;
+    }
+}
+
+.hidden-text {
+    position: absolute;
+    left: -99999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.icon-text {
+    position: absolute;
+    left: -99999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.disabled {
+    display: none;
+}
+
+.content-wrap {
+    padding: 0 15px;
+}
+
+.loading {
+    -moz-opacity: 0.3;
+    opacity: 0.3;
+
+    * {
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; /* IE 8 */
+        filter: alpha(opacity=30); /* IE 6 & 7 */
+    }
+}
+
+.loading-spinner:after {
+    @include u_spinner;
+}
+
+.important {
+    color: $red_orange;
+}
+
+.alert {
+    background-color: #F6D9D3;
+    border: 1px solid #E8A091;
+    @include sans-font-regular;
+
+    ul {
+        @include reset;
+    }
+}
+
+.reset-indent {
+    text-indent: 0;
+}
+
+.well {
+    padding: 1em 1.25em;
+    background: $bg_gray;
+}
+
+.bump {
+    margin-top: 2em;
+}
+
+.s-bump {
+    margin-top: 1em;
+}
+
+.shrink {
+    font-size: 0.875em;
+}
+
+.sub-text {
+    font-size: 0.875em;
+}
+
+.left {
+    float: left;
+    margin-right: 15px;
+}
+
+.right {
+    float: right;
+    margin-left: 15px;
+}
+
+.full-right {
+    float: right;
+    text-align: right;
+}
+
+.error {
+    @include sans-font-regular;
+    color: $red_orange;
+    border-bottom: 1px solid $light_field;
+    font-size: .9em;
+    padding: 1em 0;
+    line-height: 1.6em;
+}
+
+.icon-warning {
+    float: left;
+    margin: .25em .5em 0 0;
+    color: $red_orange;
+}
+
+/* credit */
+#modal {
+    @include sans-font-bold;
+    color: $dark_gray;
+    width: 400px;
+    height: 400px;
+    position: fixed;
+    z-index: 9999;
+    border: 4px solid $gray_80;
+    padding: 20px 40px;
+
+    ul {
+        padding: 0;
+        margin-top: 0;
+
+        li {
+            @include sans-font-regular;
+            margin-top: .75em;
+        }
+    }
+}
+
+#modal-overlay {
+    position: absolute;
+    top: 0;
+    z-index: 9990;
+    background-color: #fff;
+}
+
+#x {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    line-height: 0;
+    padding: 9px 5px 10px 5px;
+}
+
+#modal-intro,
+#sig {
+    margin-top: 20px;
+}
+
+#modal-intro {
+    font-size: 1.7em;
+}
+
+#sig {
+    @include sans-font-regular;
+}
+
+.love {
+    color: #DA6750;
+}
+
+/* focus styles need to be defined */
+section:focus,
+.open-definition {
+    outline: none;
+}
+
+img.reg-image {
+    width: 60%;
+    padding: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: 1px solid $light_field;
+}
+
+.block-image {
+    display: block;
+}
+
+/* IE7 browser warning message */
+.browser-warning {
+    display: block;
+    position: absolute;
+    width: 100%;
+    margin-top: 0;
+    background-color: #F6D9D3;
+    border-bottom: 2px solid #E8A091;
+    font-family: Arial, sans-serif;
+    z-index: 999999;
+
+    h2 {
+        font-size: 18px;
+        margin-left: 20px;
+        padding: 0 26px;
+        background: url(../img/exclamation.png) left center no-repeat;
+    }
+
+    ul {
+        margin-top: 10px;
+        margin-left: 26px;
+    }
+
+    li {
+        display: inline;
+        font-size: 14px;
+        padding-right: 20px;
+    }
+
+    .cf-icon-right {
+        font-size: 12px;
+    }
+ }
+
+/*
+Clearfix
+--------
+* Use .group class as clearfix...
+* It just sounds nicer!
+*/
+.group:before,
+.group:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.group:after {
+    clear: both;
+}
+
+/*
+* For IE 6/7 only
+* Include this rule to trigger hasLayout and contain floats.
+*/
+
+.group {
+    *zoom: 1;
+}
+
+/*
+Import no-js.scss and print.scss at the end, since they override other rules
+*/
+@import "module/no-js.scss";
+@import "print.scss";
