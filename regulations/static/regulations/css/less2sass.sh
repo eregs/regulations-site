@@ -79,7 +79,7 @@ sed -i.bak -e 's/\$page/@page/g' print.scss
 
 echo "renaming incompatible variables..."
 # can't start a sass variable with int
-find . -type f -exec sed -i.bak 's/\$80_gray/\$gray/g' {} \;
+find . -type f -exec sed -i.bak 's/\$80_gray/\$gray_80/g' {} \;
 
 # remove backup files from stream editing
 rm *.bak **/*.bak
