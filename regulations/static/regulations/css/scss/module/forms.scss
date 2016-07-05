@@ -19,8 +19,8 @@ button {
     height: 32px;
     vertical-align: bottom;
     margin: 0;
-    background-color: $pacific;
-    color: #fff;
+    background-color: $blue_light;
+    color: $white;
     border: none;
     vertical-align: bottom;
     text-align: center;
@@ -31,12 +31,12 @@ button {
 
 button:hover,
 button:active {
-    background-color: $pacific_hover;
+    background-color: $blue_light;
 }
 
 textarea:focus,
 input:focus {
-    border: 1px solid $pacific;
+    border: 1px solid $blue_light;
 }
 
 .file-upload {
@@ -69,7 +69,7 @@ Selects
     position: relative;
     background: white url('../img/select.png') no-repeat bottom right;
     //width: 100%;
-    border: solid 1px $light_field;
+    border: solid 1px $gray_light;
     height: 32px;
 }
 
@@ -90,7 +90,7 @@ select {
     border: none;
     box-shadow: none;
     padding: 0 10px; /* add padding to the select, not the div */
-    color: $dark_text;
+    color: $gray_darker;
     height: 32px;
 }
 

@@ -41,7 +41,7 @@ mixins.scss contains any mixins to be used throughout the LESS files
 
 @mixin drawer-header-font {
     @include sans-font-bold;
-    color: $mid_text;
+    color: $gray_darkest;
     font-size: .875em; /* 12px / (26px * .875em) */
     text-transform: uppercase;
 }
@@ -60,7 +60,7 @@ mixins.scss contains any mixins to be used throughout the LESS files
 @mixin regulation-nav-subpart-heading-font {
     font-size: 1em;
     text-transform: uppercase;
-    color: $mid_text;
+    color: $gray_darkest;
 }
 
 @mixin regulation-nav-interp-heading-font {
@@ -103,27 +103,27 @@ mixins.scss contains any mixins to be used throughout the LESS files
 */
 
 @mixin border-bottom-medium($width: 1px) {
-    border-bottom: $width solid $medium_gray;
+    border-bottom: $width solid $gray_light;
 }
 
 @mixin border-bottom-light($width: 1px) {
-    border-bottom: $width solid $light_field;
+    border-bottom: $width solid $gray_light;
 }
 
 @mixin border-bottom-dark($width: 1px) {
-    border-bottom: $width solid $dark_gray;
+    border-bottom: $width solid $gray_light;
  }
 
  @mixin border-top-light($width: 1px) {
-    border-top: $width solid $light_field;
+    border-top: $width solid $gray_light;
  }
 
  @mixin border-top-medium($width: 1px) {
-    border-top: $width solid $medium_gray;
+    border-top: $width solid $gray_light;
 }
 
 @mixin border-right-light($width: 1px) {
-    border-right: $width solid $light_field;
+    border-right: $width solid $gray_light;
 }
 
 /*

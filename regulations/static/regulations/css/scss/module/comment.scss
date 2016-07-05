@@ -18,7 +18,7 @@ N&C Header - including Read/Write tab
 
   .tab-descriptions {
     font-size: 14px;
-    color: $dark_field;
+    color: $gray_darker;
     padding: 0 5px;
   }
 
@@ -32,8 +32,8 @@ N&C Header - including Read/Write tab
 
   .read-proposal,
   .write-comment {
-    border-left: 1px solid $medium_gray;
-    color: $dark_text;
+    border-left: 1px solid $gray_light;
+    color: $gray_darker;
     cursor: pointer;
     display: inline-block;
     @include sans-font-regular;
@@ -44,7 +44,7 @@ N&C Header - including Read/Write tab
     width: 245px;
 
     a {
-      color: $navigation_gray;
+      color: $gray_darker;
       padding-left: 5px;
     }
 
@@ -52,7 +52,7 @@ N&C Header - including Read/Write tab
     .write-icon {
       padding: 0;
       font-size: 14px;
-      fill: $navigation_gray;
+      fill: $gray_darker;
     }
 
     &.active-mode a {
@@ -106,7 +106,7 @@ Write Mode
 
       .comment-header-link a {
         color: $black;
-        border-bottom: 2px solid $link_blue;
+        border-bottom: 2px solid $blue_light;
       }
     }
 
@@ -120,16 +120,16 @@ Write Mode
 
     // Show toggle box
     a.comment-context-toggle {
-      background-color: $light_gray;
+      background-color: $gray_lightest;
       border-radius: 2px;
-      color: $dark_text;
+      color: $gray_darker;
       cursor: pointer;
       display: block;
       font-size: 16px;
       padding: 10px 15px;
 
       .comment-context-text {
-        color: $link_blue;
+        color: $blue_light;
       }
 
       .fa-minus-circle,
@@ -193,8 +193,8 @@ Write Mode
       .ProseMirror-menubar {
         min-height: 28px;
         padding: 3px 6px;
-        color: $dark_field;
-        border-bottom: 1px solid $light_field;
+        color: $gray_darker;
+        border-bottom: 1px solid $gray_light;
       }
 
       .comment-content,
@@ -243,7 +243,7 @@ Write Mode
 
   .comment-button,
   a.comment-index-review {
-    background-color: $link_blue;
+    background-color: $blue_light;
     border-radius: 2px;
     color: $white;
     @include sans-font-regular;
@@ -258,7 +258,7 @@ Write Mode
     transition: .1s;
 
     &:hover {
-      background-color: darken($link_blue, 10%);
+      background-color: darken($blue_light, 10%);
     }
   }
 
@@ -272,7 +272,7 @@ Write Mode
   }
 
   .comment-upload-button {
-    background-color: $grey;
+    background-color: $gray_lighter;
     color: $black;
     cursor: pointer;
     border-radius: 2px;
@@ -283,7 +283,7 @@ Write Mode
     padding: 8px 20px;
 
     &:hover {
-      background-color: darken($grey, 10%);
+      background-color: darken($gray_lighter, 10%);
     }
   }
 
@@ -297,7 +297,7 @@ Write Mode
 
   .comment-attachment-count,
   .comment-attachment-limit {
-    color: $citation_gray;
+    color: $gray_dark;
   }
 
   .comment-upload-button {
@@ -315,7 +315,7 @@ Write Mode
   }
 
   .comment-attachment {
-    background: $grey;
+    background: $gray_lighter;
     padding: 3px 10px;
     margin: 5px 5px 0 0;
     word-break: break-all;
@@ -330,7 +330,7 @@ Write Mode
 
     .attachment-remove {
       padding-left: 9px;
-      color: $gray_80;
+      color: $gray;
 
       &:hover {
         color: $black;
@@ -344,7 +344,7 @@ Write Mode
   }
 
   .comment-delete-response {
-    color: $uswds_dark_red;
+    color: $red;
     display: block;
     @include sans-font-bold;
     float: right;
@@ -359,7 +359,7 @@ Write Mode
 
   $icon_width: 48px;
   .write-warning {
-    background-color: $toc_highlight;
+    background-color: $blue_lightest;
     padding: $icon_width/2 $icon_width/4 $icon_width/4 2*$icon_width;
     margin: $icon_width/2 0;
 
@@ -415,7 +415,7 @@ Write Mode
   }
 
   li {
-    background: $gray;
+    background: $gray_light;
     color: $black;
     cursor: default;
     font-weight: 500;
@@ -441,7 +441,7 @@ Write Mode
         vertical-align: middle;
         display: none;
         margin-left: 5px;
-        color: $dark_field;
+        color: $gray_darker;
 
         &:hover {
           color: darken($black, 10%);

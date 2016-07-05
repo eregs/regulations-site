@@ -18,7 +18,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     padding: 15px 10px 10px;
 
     &.success-alert {
-      background-color: $green_light;
+      background-color: $green_lightest;
     }
 
     &.fail-alert {
@@ -89,7 +89,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
   }
 
   section {
-    border-top: 1px solid $medium_gray;
+    border-top: 1px solid $gray_light;
     padding: 25px 0 35px;
 
     h4 {
@@ -127,7 +127,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     }
 
     .status {
-      background-color: $blue_light;
+      background-color: $blue_lightest;
       padding: 8px 16px;
       margin: 0;
 
@@ -141,7 +141,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     }
 
     .status-waiting {
-      background-color: $blue_light;
+      background-color: $blue_lightest;
       padding: 8px 16px;
       margin: 1px 0;
 
@@ -152,7 +152,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     }
 
     .tracking-number-retrieved {
-      background-color: $green_light;
+      background-color: $green_lightest;
     }
   }
 
@@ -166,7 +166,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
       padding-left: 0;
 
       &:before {
-        border-color: transparent $orange;
+        border-color: transparent $orange_light;
         border-radius: 3px;
         border-style: solid;
         border-width: 8px 0 8px 13px;

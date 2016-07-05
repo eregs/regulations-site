@@ -11,20 +11,20 @@ Universal drawer styles
 --------------------- */
 
 .panel {
-    background-color: $light_gray;
-    border-right: 2px solid $dark_gray;
+    background-color: $gray_lightest;
+    border-right: 2px solid $gray_light;
     @include sans-font-regular;
     font-size: 1em;
     overflow-y: scroll; /* allow content to be scrollable */
 }
 
 .toc-head {
-  border-right: 2px solid $dark_gray;
+  border-right: 2px solid $gray_light;
   transition: 0.1s;
 
   a:link,
   a:visited {
-    color: $navigation_gray;
+    color: $gray_darker;
     text-decoration: none;
     height: 33px;
   }
@@ -62,8 +62,8 @@ Panel Header
 
   position: fixed;
   background-color: $white;
-  border-right: 2px solid $dark_gray;
-  border-bottom: 1px solid $dark_gray;
+  border-right: 2px solid $gray_light;
+  border-bottom: 1px solid $gray_light;
 
   .toc-type, .toc-subheader {
     position: relative;
@@ -119,7 +119,7 @@ Panel Slide Button
     }
 
     .close & {
-        border-bottom: 1px solid $medium_gray;
+        border-bottom: 1px solid $gray_light;
 
         .lt-ie8 &,
          html.no-fontface & {
@@ -161,8 +161,8 @@ currently these are TOC, History, and Search
     margin: 0;
     width: 56px;
     text-align: center;
-    background-color: $light_gray;
-    color: $navigation_gray;
+    background-color: $gray_lightest;
+    color: $gray_darker;
 
     &.current {
         background-color: $white;
@@ -200,7 +200,7 @@ currently these are TOC, History, and Search
       }
 
       .toc-nav-link:hover {
-          background-color: $light_field;
+          background-color: $gray_light;
           border-bottom: none;
       }
 }
@@ -223,7 +223,7 @@ currently these are TOC, History, and Search
         position: absolute;
         width: $closed_drawer_width;
         top: 33px;
-        border-top: 1px solid $medium_gray;
+        border-top: 1px solid $gray_light;
         right: 0;
         left: 198px;
     }
@@ -233,13 +233,13 @@ currently these are TOC, History, and Search
     display: inline-block;
     zoom: 1;
     margin-left: -4px;
-    border-right: 1px solid $medium_gray;
-    border-left: 1px solid $medium_gray;
+    border-right: 1px solid $gray_light;
+    border-left: 1px solid $gray_light;
 
     .close & {
         margin-left: 0;
         display: list-item;
-        border-bottom: 1px solid $medium_gray;
+        border-bottom: 1px solid $gray_light;
         border-right: none;
     }
 }

@@ -188,7 +188,7 @@ a.definition:visited,
 a.citation:link,
 a.citation:visited {
     border-bottom: none;
-    color: #101820;
+    color: $black;
 }
 
 a[href^="http://"] {
@@ -210,8 +210,8 @@ a[href^="http://"] {
 
 .inline-interpretation {
 
-    background: $bg_gray;
-    border: 1px solid $bg_gray;
+    background: $gray_lightest;
+    border: 1px solid $gray_lightest;
 
      .hidden {
 
@@ -237,7 +237,7 @@ a[href^="http://"] {
     position: relative;
     padding: 0;
     margin: 10px;
-    border: 1px solid $light_neutral;
+    border: 1px solid $gray_light;
 
     .sidebar-header {
         display: none;
@@ -357,7 +357,7 @@ a[href^="http://"] {
 }
 
 .hero {
-    background-color: #ffffff;
+    background-color: $white;
 
     .inner-wrap {
         height: 180px;
@@ -396,7 +396,7 @@ a[href^="http://"] {
 }
 
 .title-hero {
-    background-color: #ffffff;
+    background-color: $white;
 }
 
 

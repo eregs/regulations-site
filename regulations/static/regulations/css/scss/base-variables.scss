@@ -8,70 +8,55 @@ variables.scss contains all theme variable / variable overrides
  ----------------
  */
 
-$green: #2CB34A;
-$green_midtone: #ADDC91;
-$green_light: #E7F4E4;
-$uswds_green: #2F8540;
-$black: #101820;
-$white: #FFFFFF;
-$dark_field: #5C6065;
-$light_field: #D1D3D5;
-$uswds_gray_lighter: #D6D7D9;
-$grey: #E6E7E9;
-$red_orange: #D12124;
-$uswds_dark_red: #CD2026;
-$pacific: #0072CE;
-$blue_light: #E2F4F9;
-$light_neutral: #D7D2CB;
-$dark_gray: #797D81; /* dark border */
-$bg_gray: #F7F8F9; /* background header */
-$medium_gray: #B8BABD; /* light border */
-$gray_80: #9A9DA1;
-$diff_gray: #767676;
-$dark_text: #666666;
-$mid_text: #43484E;
-$orange: #FBCD92;
-$light_orange: #FFECD1;
-$pacific_hover: #328ED8;
-$pacific_light: #CCE3F5;
-$red_orange_80: #D96A4F;
-$red_orange_50: #E9A193;
-$pink: #F9DEDE;
-
-$text_area_border: rgba(0, 0, 0, 0.25);
-
-$history_drawer_border_color: #d1d3d5;
-
-/*
- From N&C
- ----------------------
-*/
-
 $black: #212121;
 $white: #FFFFFF;
 
+// Greens
+
+$green: #2F8540;
+$green_light: #ADDC91;
+$green_lightest: #E7F4E4;
+
+
+// Greys
+
+$gray_darkest: #43484E;
+$gray_darker: #5C6065;
+$gray_dark: #797D81;
+$gray: #9A9DA1;
+$gray_light: #D8D8D8;
+$gray_lighter: #E6E7E9;
+$gray_lightest: #F5F5F5;
+
+
+// Blues
+
+$blue_dark: #1F5593;
 $blue: #205493;
-$light_blue: #A1CBFC;
-$dark_blue: #1F5593;
-$aqua_blue: #B3E0EB;
-$aqua_blue_2: #9BDAF1;
+$blue_light: #0071BC;
+$blue_lighter: #A1CBFC;
+$blue_lightest: #E1F3F8;
 
-$link_blue: #0071BC;
-$link_blue_inactive: #9BDAF1;
-$write_link_inactive: #457D9A;
 
-$gray_blue: #5B616B;
-$navigation_gray: #676767;
-$toc_highlight: #E1F3F8;
+// Oranges and Reds
 
-$light_gray: #F5F5F5;
-$gray: #D6D7D9;
-$dark_gray: #D8D8D8;
+$red: #CD2026;
+$red_light: #D96A4F;
+$red_lightest: #E9A193;
 
-$citation_gray: #767676;
+$pink: #F9DEDE;
 
-$light_orange: #FFF1D2;
 $orange: #FDB81E;
+$orange_light: #FBCD92;
+$orange-lightest: #FFECD1;
+
+/*
+Element Variables
+*/
+
+$text_area_border: rgba(0, 0, 0, 0.25);
+$history_drawer_border_color: #d1d3d5;
+
 
 /*
  Type Variables

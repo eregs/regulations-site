@@ -119,7 +119,7 @@ Modules
 }
 
 .important {
-    color: $red_orange;
+    color: $red;
 }
 
 .alert {
@@ -138,7 +138,7 @@ Modules
 
 .well {
     padding: 1em 1.25em;
-    background: $bg_gray;
+    background: $gray_lightest;
 }
 
 .bump {
@@ -174,8 +174,8 @@ Modules
 
 .error {
     @include sans-font-regular;
-    color: $red_orange;
-    border-bottom: 1px solid $light_field;
+    color: $red;
+    border-bottom: 1px solid $gray_light;
     font-size: .9em;
     padding: 1em 0;
     line-height: 1.6em;
@@ -184,18 +184,18 @@ Modules
 .icon-warning {
     float: left;
     margin: .25em .5em 0 0;
-    color: $red_orange;
+    color: $red;
 }
 
 /* credit */
 #modal {
     @include sans-font-bold;
-    color: $dark_gray;
+    color: $gray_light;
     width: 400px;
     height: 400px;
     position: fixed;
     z-index: 9999;
-    border: 4px solid $gray_80;
+    border: 4px solid $gray;
     padding: 20px 40px;
 
     ul {
@@ -254,7 +254,7 @@ img.reg-image {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    border: 1px solid $light_field;
+    border: 1px solid $gray_light;
 }
 
 .block-image {

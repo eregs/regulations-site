@@ -14,7 +14,7 @@ h2.search-term {
 }
 
 p.search-version {
-    color: $dark_gray;
+    color: $gray_light;
     text-transform: uppercase;
     @include sans-font-bold;
     font-size: 0.875em;
@@ -47,7 +47,7 @@ p.search-version {
     }
     
     .internal {
-        color: $link_blue;
+        color: $blue_light;
     }
 }
 
@@ -58,13 +58,13 @@ p.search-version {
     a:link,
     a:visited {
         @include sans-font-bold;
-        color: $pacific;
+        color: $blue_light;
         text-decoration: none;
     }
 
     a:hover,
     a:active {
-        border-bottom: 1px solid $pacific;
+        border-bottom: 1px solid $blue_light;
     }
 
     .next {

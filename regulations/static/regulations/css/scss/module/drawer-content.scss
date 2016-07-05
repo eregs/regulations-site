@@ -28,14 +28,14 @@ This contains all of the styles specific to the TOC
     }
 
     .toc-entry-at-1, .toc-entry-at-1:hover {
-      border-top: 1px solid $light_field;
+      border-top: 1px solid $gray_light;
       @include sans-font-bold;
       margin-left: -100px;
       padding: 9px 0 9px 110px;
     }
 
     .toc-depth-2 {
-      border-top: 1px solid $light_field;
+      border-top: 1px solid $gray_light;
       margin-left: -100px;
       padding: 0 0 0 105px;
 
@@ -104,7 +104,7 @@ This contains all of the styles specific to the TOC
 
   a:link,
   a:visited {
-    color: $navigation_gray;
+    color: $gray_darker;
     @include border-bottom-light ($width: 1px);
   }
 
@@ -114,7 +114,7 @@ This contains all of the styles specific to the TOC
     margin-left: -100px;
     padding-left: 105px;
     color: $black;
-    background-color: $toc_highlight;
+    background-color: $blue_lightest;
   }
 
   /*
@@ -128,15 +128,15 @@ This contains all of the styles specific to the TOC
   .added a,
   .added a:link,
   .added a:visited {
-      border-right: 8px solid $green_midtone;
+      border-right: 8px solid $green_light;
   }
 
   .deleted a,
   .deleted a:link,
   .deleted a:visited {
-      border-right: 8px solid $red_orange_80;
+      border-right: 8px solid $red_light;
       text-decoration: line-through;
-      color: $gray_80;
+      color: $gray;
   }
 }
 
@@ -155,7 +155,7 @@ This contains all of the styles specific to the TOC
     padding: 10px 0 10px 105px;
     display: block;
     line-height: 1.4;
-    background-color: #F8F8F8;
+    background-color: $gray_lightest;
     @include border-bottom-light ($width: 1px);
     @include regulation-nav-subpart-heading-font;
 }
@@ -187,17 +187,17 @@ This contains all of the styles specific to the history
     .effective-label {
         padding: 0 15px;
         @include sans-font-regular;
-        color: $dark_text;
+        color: $gray_darker;
     }
 
     /*TODO: unify link styles with TOC*/
 
     .version-list {
-        border-top: 1px solid $light_field;
+        border-top: 1px solid $gray_light;
     }
 
     .status-list {
-        border-bottom: 1px solid $light_field;
+        border-bottom: 1px solid $gray_light;
     }
 
     .version-link {
@@ -213,16 +213,16 @@ This contains all of the styles specific to the history
     .current {
         .version-link {
             padding: 10px 15px 0px 15px;
-            background: $toc_highlight;
+            background: $blue_lightest;
         }
 
         .timeline-content-wrap {
-            background: $toc_highlight;
+            background: $blue_lightest;
         }
 
         .rule-list {
             display: block;
-            background: $toc_highlight;
+            background: $blue_lightest;
         }
     }
 
@@ -239,7 +239,7 @@ This contains all of the styles specific to the history
     .version-link:target,
     .current {
         color: $black;
-        background: $toc_highlight;
+        background: $blue_lightest;
         display: block;
     }
 
@@ -268,7 +268,7 @@ This contains all of the styles specific to the history
     }
 
     .rule-status {
-        color: $dark_text;
+        color: $gray_darker;
         text-transform: lowercase;
         @include sans-font-regular;
         display: block;
@@ -319,9 +319,9 @@ This contains all of the styles specific to the history
         margin: 15px;
         background-color: #fff;
         line-height: 32px;
-        border-top: 1px solid $light_field;
-        border-bottom: 1px solid $light_field;
-        border-left: 1px solid $light_field;
+        border-top: 1px solid $gray_light;
+        border-bottom: 1px solid $gray_light;
+        border-left: 1px solid $gray_light;
    }
 
    input[type=text]{
@@ -352,7 +352,7 @@ This contains all of the styles specific to the history
     #history {
         li:hover,
         li.current {
-            background-color: $toc_highlight;
+            background-color: $blue_lightest;
         }
     }
 }
@@ -370,20 +370,20 @@ This contains all of the styles specific to the history
     -webkit-border-radius: 3px;
     border-radius: 3px;
     margin: 15px;
-    background-color: $red_orange;
+    background-color: $red;
     padding: 10px;
     text-align: center;
 }
 
 .stop-button:link,
 .stop-button:visited {
-    color: #fff;
+    color: $white;
 }
 
 .stop-button:hover,
 .stop-button:active,
 .stop-button:focus {
-    background-color: $red_orange_50;
+    background-color: $red_lightest;
     color: $black;
 }
 
@@ -401,7 +401,7 @@ This contains all of the styles specific to the search
     }
 
     h3 {
-        color: $dark_text;
+        color: $gray_darker;
         @include sans-font-regular;
         font-size: 0.875em;
         line-height: normal;
@@ -410,12 +410,12 @@ This contains all of the styles specific to the search
     }
 
     .version-search {
-        border-bottom: 2px solid $medium_gray;
+        border-bottom: 2px solid $gray_light;
         padding: 0 15px 20px 15px;
     }
 
     .search-box {
-        border-bottom: 1px solid $medium_gray;
+        border-bottom: 1px solid $gray_light;
         padding: 20px 15px;
     }
 
@@ -439,9 +439,9 @@ This contains all of the styles specific to the search
     input[type=text]{
         padding: 0 10px;
         text-align: left;
-        border-top: 1px solid $light_field;
+        border-top: 1px solid $gray_light;
         border-right: none;
-        border-bottom: 1px solid $light_field;
-        border-left: 1px solid $light_field;
+        border-bottom: 1px solid $gray_light;
+        border-left: 1px solid $gray_light;
     }
 }
