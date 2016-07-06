@@ -189,7 +189,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
       font-size: 14px;
       line-height: 18px;
       padding: 8px 15px;
-      box-shadow: inset 0 0 1px fade($gray_light, 90%);
+      box-shadow: inset 0 0 1px $gray_lighter;
       border-radius: 2px;
       cursor: pointer;
 

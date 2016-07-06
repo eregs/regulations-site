@@ -45,7 +45,7 @@
 
       &:hover,
       &:active {
-        color: darken($blue, 10%);
+        color: $blue_dark;
       }
     }
 
@@ -100,7 +100,7 @@
 
 .title a:hover,
 .title a:active {
-    color: darken($blue, 10%);
+    color: $blue_dark;
 }
 
 .sub-head {
@@ -193,7 +193,7 @@ Application Nav
   &:hover,
   &:active,
   &:focus {
-    color: darken($blue, 10%);;
+    color: $blue_dark;
   }
 }
 

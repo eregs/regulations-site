@@ -258,7 +258,7 @@ Write Mode
     transition: .1s;
 
     &:hover {
-      background-color: darken($blue_light, 10%);
+      background-color: $blue;
     }
   }
 
@@ -283,7 +283,7 @@ Write Mode
     padding: 8px 20px;
 
     &:hover {
-      background-color: darken($gray_lighter, 10%);
+      background-color: $gray_light;
     }
   }
 
@@ -433,7 +433,7 @@ Write Mode
       width: 40px;
 
       a:focus .fa {
-        color: darken($black, 10%);
+        color: $black_dark;
         display: inline-block;
       }
 
@@ -444,7 +444,7 @@ Write Mode
         color: $gray_darker;
 
         &:hover {
-          color: darken($black, 10%);
+          color: $black_dark;
         }
       }
     }
