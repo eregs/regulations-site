@@ -20,7 +20,7 @@
   // offset persistent header
   .inner-wrap:before {
     display: block;
-    content: "";
+    content: '';
     height: 60px;
     margin-top: -60px;
     visibility: hidden;
@@ -46,36 +46,20 @@ hero
 
 .about-section {
   border-bottom: 1px solid $medium_gray;
-  padding-bottom: 1em;
-}
-
-.about-section:last-child {
-  border-bottom: 0px;
-}
-
-/*
-layout
--------------------
-*/
-
-
-.about-section {
-  padding: 4em 0;
+  padding: 4em 0 1em 0;
 
   .inner-wrap {
     padding: 0 1em;
   }
 }
 
+.about-section:last-child {
+  border-bottom: 0;
+}
+
 .easy-read {
   margin-top: 4em;
 }
-
-/*
-dev well
-------------------
-*/
-
 
 .dev-well {
 
@@ -107,7 +91,6 @@ snazzy ordered lists
 ------------------
 */
 
-
 .about-ol {
   counter-reset: li;
   list-style: none;
@@ -123,7 +106,7 @@ snazzy ordered lists
   margin-bottom: 0;
 }
 
-.about-ol > li:before{
+.about-ol > li:before {
   content: counter(li);
   counter-increment: li;
   background: $green;
@@ -181,7 +164,7 @@ custom styles
   text-transform: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  content: "\e642";
+  content: '\e642';
   color: $green;
   margin-left: -32px;
   padding-right: 12px;
@@ -200,7 +183,7 @@ Smaller Screen Styles
 ======================
 */
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   /*
   less section padding
@@ -212,7 +195,6 @@ Smaller Screen Styles
   .easy-read {
     margin-top: 2em;
   }
-
 
   /*
   hidden
@@ -246,7 +228,7 @@ Smaller Screen Styles
   /* styles
   ------------------- */
   .about-section {
-    border-bottom: 0px;
+    border-bottom: 0;
   }
 
 }
@@ -256,7 +238,7 @@ Smallest Screen Styles
 ======================
 */
 
-@media only screen and ( max-width: 460px ) {
+@media only screen and (max-width: 460px) {
 
   .title-hero {
     h2 {
