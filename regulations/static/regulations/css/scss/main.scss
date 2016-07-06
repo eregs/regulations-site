@@ -1,7 +1,7 @@
 /*
 Main.scss
 ==========================================================================
-main.scss imports all supporting less files
+main.scss imports all supporting scss files
 and includes any non-semantic helper classes
 */
 
@@ -10,13 +10,13 @@ Type & Layout
 ------------- */
 @import "base-variables.scss";
 @import "normalize.scss";
-@import "cf-icons.scss";
 @import "variables.scss";
 @import "mixins.scss";
 @import "fonts.scss";
 @import "typography.scss";
 @import "layout.scss";
-@import "font-awesome.scss";
+@import "icons/cf-icons.scss";
+@import "icons/font-awesome.scss";
 
 /*
 Modules
