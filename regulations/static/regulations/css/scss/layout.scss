@@ -15,7 +15,7 @@ Main Content
 
 .main-content {
     background: $white;
-    margin-top: $mainhead_height + $subhead_height + 4px;
+    margin-top: $mainhead_height + $subhead_height + 4px; // 4px adds additional padding to the content area, preventing text from being squished against the subhead nav
     padding: 0 60px 40px;
 }
 
