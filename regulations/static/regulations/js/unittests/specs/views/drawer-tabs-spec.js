@@ -2,8 +2,6 @@ var chai = require('chai');
 var expect = chai.expect;
 var jsdom = require('mocha-jsdom');
 
-var helpers = require('../spec-helpers');
-
 
 describe('DrawerTabsView', function() {
   jsdom();
