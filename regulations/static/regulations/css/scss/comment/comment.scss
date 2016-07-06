@@ -1,0 +1,92 @@
+/*
+comment.scss
+==========================================================================
+comment.scss contains general styles related to commenting on sections
+*/
+
+/*
+N&C Header - including Read/Write tab
+================
+*/
+.preamble-sub-head #content-header {
+  padding-left: 50px;
+}
+
+.preamble-header {
+  position: absolute;
+  right: 0;
+
+  .tab-descriptions {
+    font-size: 14px;
+    color: $dark_field;
+    padding: 0 5px;
+  }
+
+  a {
+    padding: 0 5px;
+
+    &.hide-mobile {
+      padding: 0;
+    }
+  }
+
+  .read-proposal,
+  .write-comment {
+    border-left: 1px solid $medium_gray;
+    color: $dark_text;
+    cursor: pointer;
+    display: inline-block;
+    @include sans-font-regular;
+    height: 34px;
+    font-size: 15px;
+    text-align: center;
+    margin-right: -4px;
+    width: 245px;
+
+    a {
+      color: $navigation_gray;
+      padding-left: 5px;
+    }
+
+    .read-icon,
+    .write-icon {
+      padding: 0;
+      font-size: 14px;
+      fill: $navigation_gray;
+    }
+
+    &.active-mode a {
+      color: $blue;
+    }
+
+    &:hover span,
+    &:hover a {
+      color: $blue;
+    }
+
+    &:hover:not(.active-mode) {
+      background: lighten($gray, 10%);
+      height: 33px;
+    }
+  }
+
+  .active-mode {
+    background: $white;
+    color: $blue;
+    cursor: default;
+
+    .read-icon,
+    .write-icon {
+      fill: $blue;
+    }
+  }
+}
+
+.preview-content {
+  margin: 15px 0 25px 0;
+}
+
+.watermark {
+  // for adding a draft watermark to PDFs of unsubmitted comments
+  background-image: url("../img/draft_watermark.png");
+}

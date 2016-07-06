@@ -40,11 +40,12 @@ Modules
 @import "module/about.scss";
 @import "module/error.scss";
 @import "module/paragraph-markers.scss";
-@import "module/comment.scss";
-@import "module/comment-read.scss";
-@import "module/comment-review.scss";
-@import "module/comment-confirm.scss";
-@import "module/comment-media-queries.scss";
+@import "comment/comment.scss";
+@import "comment/comment-read.scss";
+@import "comment/comment-write.scss";
+@import "comment/comment-review.scss";
+@import "comment/comment-confirm.scss";
+@import "comment/comment-media-queries.scss";
 @import "module/custom.scss";
 
 
