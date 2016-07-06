@@ -22,7 +22,7 @@ var DrawerTabsView = Backbone.View.extend({
         'search': '#search-link'
     },
 
-    initialize: function() {
+    initialize: function(options) {
         this.listenTo(DrawerEvents, 'pane:change', this.changeActiveTab);
         this.listenTo(DrawerEvents, 'pane:init', this.setStartingTab);
         this.$activeEls = $('#menu, #site-header, #content-body, #primary-footer, #content-header');
@@ -36,7 +36,7 @@ var DrawerTabsView = Backbone.View.extend({
 
         // For browser widths above 1100px apply the 'open' class
         //  and set drawer state to open
-        if (document.documentElement.clientWidth > 1100) {
+        if (options.forceOpen || document.documentElement.clientWidth > 1100) {
             this.$toggleArrow.addClass('open');
             this.drawerState = 'open';
         }
