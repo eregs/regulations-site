@@ -87,6 +87,8 @@ h6 {
 .main-content p {
   @include serif-font-regular;
   font-size: 16px;
+  font-family: $body_font;
+  font-weight: 400;
   line-height: 26px;
 }
 
@@ -142,7 +144,7 @@ ul li {
 }
 
 li {
-  margin-top: 1em; /*16px*/
+  margin-top: 1em; // 16px
 }
 
 address {
@@ -194,7 +196,7 @@ a:visited {
 
 .external:after{
   @extend .cf-icon;
-  content: "\e610";
+  content: '\e610';
   padding: 0 0 0 5px;
   font-size: 16px;
 }
@@ -206,27 +208,27 @@ a:visited {
 
 .phone:before {
   @extend .cf-icon;
-  content: "\e306";
+  content: '\e306';
   margin-right: 6px;
 }
 
 .mail:before {
   @extend .cf-icon;
-  content: "\e302";
+  content: '\e302';
   margin-right: 6px;
 }
 
 .go:after {
-   @extend .cf-icon;
-  content: "\e002";
+  @extend .cf-icon;
+  content: '\e002';
   font-size: 0.75em;
   margin-left: 6px;
   vertical-align: middle;
 }
 
 .pdf:after {
-   @extend .cf-icon;
-  content: "\e402";
+  @extend .cf-icon;
+  content: '\e402';
   margin-left: 6px;
 }
 
@@ -245,7 +247,7 @@ a:visited {
 .external:focus,
 .mail:focus,
 .go:focus,
-.pdf:focus
+.pdf:focus,
 .standard:focus,
 .what:focus, {
   border-bottom: 1px solid;
@@ -365,11 +367,11 @@ This attempts to define global rules for a clear hierarchical structure.
 
 .level-1 > li {
   padding: 1em 0 0 0;
-}
 
-.level-1 > li p {
-  margin-top: 0;
-  padding-top: 0;
+  p {
+    margin-top: 0;
+    padding-top: 0;
+  }
 }
 
 .supplement-section .level-1 > li {
@@ -405,17 +407,14 @@ The `<ol>` tag needs to have the appropriate list type applied
 ```
 */
 
-.main-content ol, dfn, .stripped-marker {
+.main-content ol,
+dfn,
+.stripped-marker {
   @include sans-font-bold;
 }
 
 .appendix-section ol {
   list-style-type: none;
-}
-
-.main-content p {
-  font-family: $body_font;
-  font-weight: 400;
 }
 
 .paragraph-marker, .stripped-marker {
@@ -650,19 +649,19 @@ pre {
 
 @media only screen and ( min-width: 1300px ){
   pre {
-  max-width: 680px;
+    max-width: 680px;
   }
 }
 
 @media only screen and ( max-width: 1300px ){
   pre {
-  max-width: 600px;
+    max-width: 600px;
   }
 }
 
-@media only screen and ( max-width: 1100px ){
+@media only screen and (max-width: 1100px){
   pre {
-  max-width: 500px;
+    max-width: 500px;
   }
 }
 
@@ -671,7 +670,7 @@ pre {
  ==============
 */
 
-@media only screen and ( max-width: 480px ) {
+@media only screen and (max-width: 480px) {
 
   .reg-text {
     margin-top: 20px;
@@ -695,7 +694,7 @@ pre {
   }
 }
 
-@media only screen and ( max-width: 600px ) {
+@media only screen and (max-width: 600px) {
 
   .main-content {
 
@@ -705,7 +704,7 @@ pre {
   }
 }
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   /*
   Typography
@@ -748,7 +747,7 @@ pre {
   }
 }
 
-@media only screen and ( max-width: 1100px ) {
+@media only screen and (max-width: 1100px) {
 
   .level-1 > li:after {
     margin-left: -10em;
