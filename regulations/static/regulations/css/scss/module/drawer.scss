@@ -11,11 +11,11 @@ Universal drawer styles
 --------------------- */
 
 .panel {
-    background-color: $light_gray;
-    border-right: 2px solid $dark_gray;
-    @include sans-font-regular;
-    font-size: 1em;
-    overflow-y: scroll; /* allow content to be scrollable */
+  background-color: $light_gray;
+  border-right: 2px solid $dark_gray;
+  @include sans-font-regular;
+  font-size: 1em;
+  overflow-y: scroll; /* allow content to be scrollable */
 }
 
 .toc-head {
@@ -59,13 +59,13 @@ Panel Header
 ------------ */
 
 .drawer-header {
-
   position: fixed;
   background-color: $white;
   border-right: 2px solid $dark_gray;
   border-bottom: 1px solid $dark_gray;
 
-  .toc-type, .toc-subheader {
+  .toc-type,
+  .toc-subheader {
     position: relative;
     margin: 0;
     width: 238px;
@@ -102,48 +102,58 @@ Panel Slide Button
 .panel-slide toggles the drawer open and closed  */
 
 .panel-slide {
-    display: block;
-    height: 34px; /* match height of main header */
-    line-height: 34px;
-    width: $closed_drawer_width;
-    float: right;
-    cursor: pointer;
-    text-align: center;
-    font-size: 0.875em;
+  display: block;
+  height: 34px; /* match height of main header */
+  line-height: 34px;
+  width: $closed_drawer_width;
+  float: right;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.875em;
 
-    /* use an image for IE7 and browsers that don't support @font-face */
+  /* use an image for IE7 and browsers that don't support @font-face */
+  .lt-ie8 &,
+  html.no-fontface & {
+    background: url(../img/left.png) center center no-repeat;
+    color: transparent;
+  }
+
+  .close & {
+    border-bottom: 1px solid $medium_gray;
+
     .lt-ie8 &,
-    html.no-fontface & {
-        background: url(../img/left.png) center center no-repeat;
-        color: transparent;
+     html.no-fontface & {
+      background: url(../img/right.png) center center no-repeat;
+      color: transparent;
     }
-
-    .close & {
-        border-bottom: 1px solid $medium_gray;
-
-        .lt-ie8 &,
-         html.no-fontface & {
-            background: url(../img/right.png) center center no-repeat;
-            color: transparent;
-        }
-    }
+  }
 }
 
 /* use the icon font for the drawer toggle arrow in browsers that support it */
 .panel-slide {
-    img:first-child { display:none; }
-    img:last-child { display:inline-block; }
+  img:first-child {
+    display: none;
+  }
 
-    .close & {
-        img:first-child { display:inline-block; }
-        img:last-child { display:none; }
+  img:last-child {
+    display: inline-block;
+  }
+
+  .close & {
+    img:first-child {
+      display: inline-block;
     }
+
+    img:last-child {
+      display: none;
+    }
+  }
 }
 
 .drawer-toggle-icon {
-    height:15px;
-    vertical-align:middle;
-    margin-bottom:4px;
+  height:15px;
+  vertical-align:middle;
+  margin-bottom:4px;
 }
 
 /*
@@ -154,55 +164,55 @@ currently these are TOC, History, and Search
 */
 
 .toc-nav-link {
-    display: inline-block;
-    zoom: 1;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    width: 56px;
-    text-align: center;
-    background-color: $light_gray;
-    color: $navigation_gray;
+  display: inline-block;
+  zoom: 1;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  width: 56px;
+  text-align: center;
+  background-color: $light_gray;
+  color: $navigation_gray;
 
-    &.current {
-        background-color: $white;
-        border-bottom: none;
-    }
+  &.current {
+    background-color: $white;
+    border-bottom: none;
+  }
 
-    .close & {
-        display: block;
-        border-right: none;
-        width: $closed_drawer_width - 1;
-    }
+  .close & {
+    display: block;
+    border-right: none;
+    width: $closed_drawer_width - 1;
+  }
 
-    /* Fall back to PNG images for drawer icons when @font-face isn't supported */
-    .cf-icon {
-        html.no-fontface & {
-            background-size: 20px;
-            color: transparent;
-        }
+  /* Fall back to PNG images for drawer icons when @font-face isn't supported */
+  .cf-icon {
+    html.no-fontface & {
+      background-size: 20px;
+      color: transparent;
     }
+  }
 
-    .cf-icon-search {
-        html.no-fontface & {
-            background: url(../img/search.png) center center no-repeat;
-        }
+  .cf-icon-search {
+    html.no-fontface & {
+      background: url(../img/search.png) center center no-repeat;
     }
+  }
 
 }
 
 .close {
-     .toc-nav-link {
-          &.current {
-              background-color: $white;
-              border-bottom: none;
-          }
+   .toc-nav-link {
+      &.current {
+        background-color: $white;
+        border-bottom: none;
       }
+    }
 
-      .toc-nav-link:hover {
-          background-color: $light_field;
-          border-bottom: none;
-      }
+    .toc-nav-link:hover {
+      background-color: $light_field;
+      border-bottom: none;
+    }
 }
 
 .menu-tab {
@@ -213,35 +223,35 @@ currently these are TOC, History, and Search
 
 /* align the drawer toggle list*/
 .drawer-toggles {
-    position: relative;
-    top: 0;
-    left: 0;
-    margin: 0;
-    width: 200px;
+  position: relative;
+  top: 0;
+  left: 0;
+  margin: 0;
+  width: 200px;
 
-    .close & {
-        position: absolute;
-        width: $closed_drawer_width;
-        top: 33px;
-        border-top: 1px solid $medium_gray;
-        right: 0;
-        left: 198px;
-    }
+  .close & {
+    position: absolute;
+    width: $closed_drawer_width;
+    top: 33px;
+    border-top: 1px solid $medium_gray;
+    right: 0;
+    left: 198px;
+  }
 }
 
 .drawer-toggles li {
-    display: inline-block;
-    zoom: 1;
-    margin-left: -4px;
-    border-right: 1px solid $medium_gray;
-    border-left: 1px solid $medium_gray;
+  display: inline-block;
+  zoom: 1;
+  margin-left: -4px;
+  border-right: 1px solid $medium_gray;
+  border-left: 1px solid $medium_gray;
 
-    .close & {
-        margin-left: 0;
-        display: list-item;
-        border-bottom: 1px solid $medium_gray;
-        border-right: none;
-    }
+  .close & {
+    margin-left: 0;
+    display: list-item;
+    border-bottom: 1px solid $medium_gray;
+    border-right: none;
+  }
 }
 
 
@@ -250,29 +260,29 @@ Drawer default closed state
 ---------------------------- */
 
 .panel.close {
-    left: -200px;
-    top: $mainhead_height + $subhead_height + 3 * 34px + 1; // Header, subheader, 3 TOC list items + 1px drawer-toggles border
-    overflow-y: hidden;
+  left: -200px;
+  top: $mainhead_height + $subhead_height + 3 * 34px + 1; // Header, subheader, 3 TOC list items + 1px drawer-toggles border
+  overflow-y: hidden;
 
 /* slide content fully offscreen*/
-    .drawer-content {
-        position: absolute;
-        left: -999px;
-    }
+  .drawer-content {
+    position: absolute;
+    left: -999px;
+  }
 
-    .drawer-header {
-        left: -260px; /*60px extra to accomodate for stacked buttons*/
+  .drawer-header {
+    left: -260px; /*60px extra to accomodate for stacked buttons*/
 
-        .toc-type {
-            display: none;
-        }
+    .toc-type {
+      display: none;
     }
+  }
 }
 
 .close .toc-head {
-    left: -200px;
-    margin-right: 15px;
-    height: 150px; /* extra height for TOC toggle buttons */
+  left: -200px;
+  margin-right: 15px;
+  height: 150px; /* extra height for TOC toggle buttons */
 }
 
 /*

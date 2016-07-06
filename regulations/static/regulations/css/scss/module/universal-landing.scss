@@ -6,12 +6,12 @@
 
 /* offset the persistent header */
 .landing-content {
-    margin-top: 56px;
-    @include sans-font-regular;
+  margin-top: 56px;
+  @include sans-font-regular;
 
-    .disclaimer {
-        margin-top: 1em;
-    }
+  .disclaimer {
+    margin-top: 1em;
+  }
 }
 
 /*
@@ -21,51 +21,51 @@
  */
 
 .hero {
-    background-color: $green_midtone;
-    overflow: hidden;
-    @include sans-font-regular;
-    @include border-bottom-light;
+  background-color: $green_midtone;
+  overflow: hidden;
+  @include sans-font-regular;
+  @include border-bottom-light;
 
-    .inner-wrap {
-        background: url(../img/hero.png) 96% -100% no-repeat;
-    }
+  .inner-wrap {
+    background: url('../img/hero.png') 96% -100% no-repeat;
+  }
 }
 
 @media
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
-    .hero .inner-wrap {
-        background: url('../img/hero$2x.png') 96% -100% no-repeat;
-        background-size: 325px 206px;
-    }
+  .hero .inner-wrap {
+    background: url('../img/hero$2x.png') 96% -100% no-repeat;
+    background-size: 325px 206px;
+  }
 }
 
-@media only screen and ( max-width: 875px ) {
-    .hero .inner-wrap {
-         background: none;
-    }
+@media only screen and (max-width: 875px) {
+  .hero .inner-wrap {
+    background: none;
+  }
 
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-resolution: 192dpi) {
-        .hero .inner-wrap {
-            background: none;
-        }
+  @media
+  (-webkit-min-device-pixel-ratio: 2),
+  (min-resolution: 192dpi) {
+    .hero .inner-wrap {
+      background: none;
     }
+  }
 }
 
 .hero-header {
-    font-size: 2.125em;
-    @include sans-font-regular;
+  font-size: 2.125em;
+  @include sans-font-regular;
 }
 
 .hero-text {
-    font-size: 1.125em;
-    margin-top: 0;
+  font-size: 1.125em;
+  margin-top: 0;
 }
 
 .read-more-link {
-    margin-bottom: 2em;
+  margin-bottom: 2em;
 }
 
 /*
@@ -74,87 +74,87 @@
 */
 
 .reg-list {
-    @include reset;
-    margin-top: 1em;
-    @include border-top-light;
+  @include reset;
+  margin-top: 1em;
+  @include border-top-light;
 
-    li {
-        display: block;
-        margin: 0;
-        @include border-bottom-light;
-    }
+  li {
+    display: block;
+    margin: 0;
+    @include border-bottom-light;
+  }
+
+  a {
+    display: table;
+    height: 94px;
+    width: 100%;
+    padding: 15px;
+  }
+
+  a:link,
+  a:visited {
+    color: $black;
+  }
+
+  a:hover,
+  a:active,
+  a:focus {
+    background-color: $bg_gray;
+  }
+
+  .title-num {
+    @include reset;
+    display: block;
+    height: 100%;
+    float: left;
+    @include sans-font-bold;
+    font-size: 1.375em;
+    margin-right: 36px;
+  }
+
+  .reg-sub-title {
+    display: block;
+    float: left;
+    max-width: 75%;
+  }
+
+  .reg-major-text {
+    display: block;
+    font-size: 1.375em;
+  }
+
+  .cf-icon-right-round {
+    display: block;
+    float: right;
+    line-height: 60px;
+    color: $pacific;
+    font-size: 1.25em;
+  }
+
+  .mini-alert {
+    display: block;
+    margin-left: 100px;
+    margin-bottom: 0.5em;
+    padding: 0.5em 15px 0 0;
+    @include border-top-light;
+    font-size: 0.875em;
+    clear: both;
+    overflow: auto;
 
     a {
-        display: table;
-        height: 94px;
-        width: 100%;
-        padding: 15px;
+      display: inline-block;
+      float: right;
+      color: $link_blue;
+      margin: 0;
+      padding: 0;
+      height: auto;
+      width: auto;
+
+      &:hover {
+        background-color: inherit;
+      }
     }
-
-    a:link,
-    a:visited {
-        color: $black;
-    }
-
-    a:hover,
-    a:active,
-    a:focus {
-        background-color: $bg_gray;
-    }
-
-    .title-num {
-        @include reset;
-        display: block;
-        height: 100%;
-        float: left;
-        @include sans-font-bold;
-        font-size: 1.375em;
-        margin-right: 36px;
-    }
-
-    .reg-sub-title {
-        display: block;
-        float: left;
-        max-width: 75%;
-    }
-
-    .reg-major-text {
-        display: block;
-        font-size: 1.375em;
-    }
-
-    .cf-icon-right-round {
-        display: block;
-        float: right;
-        line-height: 60px;
-        color: $pacific;
-        font-size: 1.25em;
-    }
-
-    .mini-alert {
-        display: block;
-        margin-left: 100px;
-        margin-bottom: 0.5em;
-        padding: 0.5em 15px 0 0;
-        @include border-top-light;
-        font-size: 0.875em;
-        clear: both;
-        overflow: auto;
-
-        a {
-            display: inline-block;
-            float: right;
-            color: $link_blue;
-            margin: 0;
-            padding: 0;
-            height: auto;
-            width: auto;
-
-            &:hover {
-                background-color: inherit;
-            }
-        }
-    }
+  }
 }
 
 /*
@@ -163,10 +163,10 @@
 */
 
 .notices {
-    @include reset;
-    @include sans-font-regular;
-    font-size: 0.875em;
-    min-height: 250px;
+  @include reset;
+  @include sans-font-regular;
+  font-size: 0.875em;
+  min-height: 250px;
 }
 
 /*
@@ -175,9 +175,9 @@
 */
 
 .about {
-    h3 {
-        @include reset;
-    }
+  h3 {
+    @include reset;
+  }
 }
 
 /*
@@ -186,19 +186,19 @@
 */
 
 .secondary {
-    .well {
-        font-size: 0.875em;
+  .well {
+    font-size: 0.875em;
 
-        ul {
-            @include reset;
-        }
+    ul {
+      @include reset;
     }
+  }
 }
 
 .contact {
-    ul {
-        padding: 0;
-    }
+  ul {
+    padding: 0;
+  }
 }
 
 /*
@@ -208,53 +208,56 @@ Small screens
 
 @media only screen and ( max-width: 480px ) {
 
-    .banner-text {
-        margin-top: 50px;
-        font-size: 1.625em;
+  .banner-text {
+    margin-top: 50px;
+    font-size: 1.625em;
+  }
+
+  .disclaimer,
+  .about-the-tool,
+  .feedback {
+    p,
+    li {
+      font-size: 1em;
+    }
+  }
+
+  .reg-list {
+
+    .title-num {
+      display: block;
+      height: auto;
+      float: none;
+      margin-right: 0;
+      padding-right: 0;
     }
 
-    .disclaimer, .about-the-tool, .feedback {
-        p, li {
-            font-size: 1em;
-        }
+    .reg-sub-title {
+      display: block;
+      float: none;
+      width: 80%;
+      margin-right: 0;
+      padding-right: 0;
     }
 
-    .reg-list {
-
-        .title-num {
-            display: block;
-            height: auto;
-            float: none;
-            margin-right: 0;
-            padding-right: 0;
-        }
-
-        .reg-sub-title {
-            display: block;
-            float: none;
-            width: 80%;
-            margin-right: 0;
-            padding-right: 0;
-        }
-
-        .reg-letter {
-            display: block;
-            float: none;
-            width: 80%;
-            margin-right: 0;
-            padding-right: 0;
-        }
-
-        a {
-            height: 120px;
-            position: relative;
-        }
-
-        .cf-icon-right-round {
-            display: block;
-            position: absolute;
-            top: 25%;
-            right: 15px;
-        }
+    .reg-letter {
+      display: block;
+      float: none;
+      width: 80%;
+      margin-right: 0;
+      padding-right: 0;
     }
+
+    a {
+      height: 120px;
+      position: relative;
+    }
+
+    .cf-icon-right-round {
+      display: block;
+      position: absolute;
+      top: 25%;
+      right: 15px;
+    }
+  }
 }

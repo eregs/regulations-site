@@ -4,30 +4,28 @@ LESS Mixins
 mixins.scss contains any mixins to be used throughout the Sass files
 */
 
-
-
 @mixin sans-font-light {
-    font-family: "Source Sans Pro", Arial, sans-serif;
-    font-weight: 300;
-    font-style: normal;
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
 @mixin sans-font-regular {
-    font-family: "Source Sans Pro", Arial, sans-serif;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 @mixin sans-font-bold {
-    font-family: "Source Sans Pro", Arial, sans-serif;
-    font-weight: 600;
-    font-style: normal;
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 600;
+  font-style: normal;
 }
 
 @mixin serif-font-italic {
-    font-family: "Merriweather", Georgia, serif;
-    font-weight: 400;
-    font-style: italic;
+  font-family: "Merriweather", Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
 }
 
 @mixin serif-font-regular {
@@ -40,45 +38,45 @@ mixins.scss contains any mixins to be used throughout the Sass files
 /* Drawer font styles */
 
 @mixin drawer-header-font {
-    @include sans-font-bold;
-    color: $mid_text;
-    font-size: .875em; /* 12px / (26px * .875em) */
-    text-transform: uppercase;
+  @include sans-font-bold;
+  color: $mid_text;
+  font-size: .875em; /* 12px / (26px * .875em) */
+  text-transform: uppercase;
 }
 
 /* Regulation nav (drawer) font styles */
 
 @mixin regulation-nav-section-marker-font {
-    @include sans-font-bold;
-    display: block;
-    font-size: 18px;
+  @include sans-font-bold;
+  display: block;
+  font-size: 18px;
 }
 
 @mixin regulation-nav-item-font {
 }
 
 @mixin regulation-nav-subpart-heading-font {
-    font-size: 1em;
-    text-transform: uppercase;
-    color: $mid_text;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: $mid_text;
 }
 
 @mixin regulation-nav-interp-heading-font {
-    @include sans-font-regular;
-    text-transform: uppercase;
-    font-size: 12px;
+  @include sans-font-regular;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 @mixin regulation-nav-interp-title-font {
-    @include sans-font-bold;
-    font-size: 14px;
+  @include sans-font-bold;
+  font-size: 14px;
 }
 
 /* History (drawer) font styles */
 
 @mixin regulation-history-version-date-font {
-    @include sans-font-bold;
-    font-size: 1.285714286em;
+  @include sans-font-bold;
+  font-size: 1.285714286em;
 }
 
 
@@ -89,7 +87,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
 /* Navigation links */
 
 @mixin next-prev-link-link-font {
-    font-size: 0.875em;
+  font-size: 0.875em;
 }
 
 @mixin next-prev-link-title-font {
@@ -103,27 +101,27 @@ mixins.scss contains any mixins to be used throughout the Sass files
 */
 
 @mixin border-bottom-medium($width: 1px) {
-    border-bottom: $width solid $medium_gray;
+  border-bottom: $width solid $medium_gray;
 }
 
 @mixin border-bottom-light($width: 1px) {
-    border-bottom: $width solid $light_field;
+  border-bottom: $width solid $light_field;
 }
 
 @mixin border-bottom-dark($width: 1px) {
-    border-bottom: $width solid $dark_gray;
+  border-bottom: $width solid $dark_gray;
  }
 
  @mixin border-top-light($width: 1px) {
-    border-top: $width solid $light_field;
+  border-top: $width solid $light_field;
  }
 
  @mixin border-top-medium($width: 1px) {
-    border-top: $width solid $medium_gray;
+  border-top: $width solid $medium_gray;
 }
 
 @mixin border-right-light($width: 1px) {
-    border-right: $width solid $light_field;
+  border-right: $width solid $light_field;
 }
 
 /*
@@ -132,33 +130,33 @@ mixins.scss contains any mixins to be used throughout the Sass files
 */
 
 @mixin slide($direction: left, $speed: 300ms) {
-    transform: translate3d(0,0,0);
-    -webkit-transition: $direction $speed ease;
-       -moz-transition: $direction $speed ease;
-        -ms-transition: $direction $speed ease;
-         -o-transition: $direction $speed ease;
-            transition: $direction $speed ease;
+  transform: translate3d(0,0,0);
+  -webkit-transition: $direction $speed ease;
+     -moz-transition: $direction $speed ease;
+    -ms-transition: $direction $speed ease;
+     -o-transition: $direction $speed ease;
+      transition: $direction $speed ease;
 }
 
 // utility class for spinning loading indicators
 @mixin u_spinner {
-    @extend .cf-icon;
-    @extend .cf-icon__spin;
-    display: block;
-    width: 1em;
-    height: 1em;
-    margin: 0 auto;
-    content: "\e112";
-    color: $blue;
-    text-align: center;
-    font-size: 1.375em;
-    margin-top: 2em;
+  @extend .cf-icon;
+  @extend .cf-icon__spin;
+  display: block;
+  width: 1em;
+  height: 1em;
+  margin: 0 auto;
+  content: "\e112";
+  color: $blue;
+  text-align: center;
+  font-size: 1.375em;
+  margin-top: 2em;
 }
 
  /*
  Helpers
  ------------- */
 @mixin reset {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }

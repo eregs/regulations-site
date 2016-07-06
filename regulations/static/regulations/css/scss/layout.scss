@@ -5,7 +5,7 @@
  */
 
 .wrap {
-    width: 100%;
+  width: 100%;
 }
 
 /*
@@ -14,29 +14,29 @@ Main Content
 */
 
 .main-content {
-    background: $white;
-    margin-top: $mainhead_height + $subhead_height;
-    padding: 0 60px 40px;
+  background: $white;
+  margin-top: $mainhead_height + $subhead_height;
+  padding: 0 60px 40px;
 }
 
 @media only screen and ( max-width: 600px ) {
-    .main-content {
-        padding-left: 60px;
-        padding-right: 15px;
-    }
+  .main-content {
+    padding-left: 60px;
+    padding-right: 15px;
+  }
 }
 
 @media only screen and ( max-width: 780px ) {
   .main-content {
-      padding-left: 65px;
+    padding-left: 65px;
   }
 }
 
 @media only screen and ( min-width: 780px ) {
 
   .main-content {
-      margin-right: 32%; /* offset .secondary-content */
-      overflow-x: none;
+    margin-right: 32%; /* offset .secondary-content */
+    overflow-x: none;
   }
 
   /*
@@ -44,30 +44,30 @@ Main Content
   --------------------------------------
   */
   .active {
-      .header-main {
-          margin-left: 40px;
-          max-width: 73.6%;
-      }
+    .header-main {
+      margin-left: 40px;
+      max-width: 73.6%;
+    }
 
-      .level-1 > li:after {
-          margin-left: -14em;
-      }
+    .level-1 > li:after {
+      margin-left: -14em;
+    }
   }
 }
 
 @media only screen and ( min-width: 1100px ) {
-    .main-content {
-      margin-right: 25%; /* offset .secondary-content */
-      margin-left: 240px; /*240px; - offsets .panel */
-      padding-left: 65px;
-    }
+  .main-content {
+    margin-right: 25%; /* offset .secondary-content */
+    margin-left: 240px; /*240px; - offsets .panel */
+    padding-left: 65px;
+  }
 
-    .main-content {
-        &.close {
-            margin-left: 40px;
-            max-width: 73.6%;
-        }
+  .main-content {
+    &.close {
+      margin-left: 40px;
+      max-width: 73.6%;
     }
+  }
 }
 
 /*
@@ -76,38 +76,38 @@ Secondary Content
 */
 
 .secondary-content {
-    position: static;
-    width: auto;
-    max-width: 100%;
-    margin: 0 auto;
-    border-left: none;
-    padding-left: 40px;
+  position: static;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  border-left: none;
+  padding-left: 40px;
 }
 
 @media only screen and ( min-width: 780px ) {
-    .secondary-content {
-        position: fixed;
-        overflow-y: auto;
-        border-left: 1px solid $light_field;
-        top: $mainhead_height + $subhead_height;
-        right: 0px;
-        bottom: 0;
-        height: 100%;
-        width: 25%;
-        padding-left: 0px;
-        background: #fff;
-        z-index: 100;
-        margin-left: 15px;
-    }
+  .secondary-content {
+    position: fixed;
+    overflow-y: auto;
+    border-left: 1px solid $light_field;
+    top: $mainhead_height + $subhead_height;
+    right: 0px;
+    bottom: 0;
+    height: 100%;
+    width: 25%;
+    padding-left: 0px;
+    background: #fff;
+    z-index: 100;
+    margin-left: 15px;
+  }
 
 }
 
 @media only screen and ( max-width: 1100px ) {
-    /* Secondary content */
+  /* Secondary content */
 
-    .secondary-content {
-        width: 32%;
-    }
+  .secondary-content {
+    width: 32%;
+  }
 }
 
 /*
@@ -116,60 +116,60 @@ Secondary Content
 */
 
 .inner-wrap {
-    max-width: 1024px;
-    margin: 0 auto;
-    padding: 0 1em;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 1em;
 }
 
 @media only screen and ( min-width: 780px ) {
 
-    .content-primary {
-        width: 65.5241935%;
-    }
+  .content-primary {
+    width: 65.5241935%;
+  }
 
-    .content-secondary {
-        width: 31.25%;
-    }
+  .content-secondary {
+    width: 31.25%;
+  }
 
-    .column-l {
-        float: left;
-    }
+  .column-l {
+    float: left;
+  }
 
-    .column-r {
-        float: right;
-    }
+  .column-r {
+    float: right;
+  }
 
-    .column-3 {
-        display: inline-block;
-        width: 30%;
-        vertical-align: top;
-    }
+  .column-3 {
+    display: inline-block;
+    width: 30%;
+    vertical-align: top;
+  }
 
-    .column-3+.column-3 {
-        margin-left: 4%;
-    }
+  .column-3+.column-3 {
+    margin-left: 4%;
+  }
 
 }
 
 
 /*TODO: convert TOC drawer width to em*/
 .panel {
-    position: fixed;
-    top: $mainhead_height + $subhead_height;
-    bottom: 0px;
-    width: 240px;
-    padding-bottom: 60px;
-    z-index: 300;
+  position: fixed;
+  top: $mainhead_height + $subhead_height;
+  bottom: 0px;
+  width: 240px;
+  padding-bottom: 60px;
+  z-index: 300;
 }
 
 /*IE 9 does all sorts of whacky things with the box model and scrollbars. This should fix that*/
 .lt-ie10 {
-    .panel {
-        width: 238px;
-        -moz-box-sizing: content-box;
-        -webkit-box-sizing: content-box;
-        box-sizing: content-box;
-    }
+  .panel {
+    width: 238px;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+  }
 }
 
 /*
@@ -178,47 +178,47 @@ TOC Header Navigation
 */
 
 .toc-head {
-    position: absolute;
-    left: 0;
-    width: 240px;
-    height: 34px;
-    border-right: 2px solid $medium_gray;
-    @include border-bottom-medium($width: 1px);
-    background-color: $bg_gray;
+  position: absolute;
+  left: 0;
+  width: 240px;
+  height: 34px;
+  border-right: 2px solid $medium_gray;
+  @include border-bottom-medium($width: 1px);
+  background-color: $bg_gray;
 }
 
 .header-main { /* TODO: closely matches main content layout - should unify into single class*/
-    margin-right: 25%;
-    margin-left: 240px;
-    padding-left: 65px;
+  margin-right: 25%;
+  margin-left: 240px;
+  padding-left: 65px;
 }
 
 @media only screen and ( min-width: 780px ) {
   .header-main {
-    margin-right: 25%;
-    margin-left: 240px;
-    padding-left: 65px;
+  margin-right: 25%;
+  margin-left: 240px;
+  padding-left: 65px;
   }
 }
 
 @media only screen and ( min-width: 1100px ) {
-    .header-main {
-        &.close {
-            margin-left: 40px;
-        }
+  .header-main {
+    &.close {
+      margin-left: 40px;
     }
+  }
 }
 
 @media only screen and ( max-width: 1100px ) {
 
-    .header-main {
-        margin-left: 40px;
-        margin-right: 32%;
-    }
+  .header-main {
+    margin-left: 40px;
+    margin-right: 32%;
+  }
 
-    .content-header {
-        margin-left: 40px;
-    }
+  .content-header {
+    margin-left: 40px;
+  }
 }
 
 
@@ -235,53 +235,53 @@ Section Offsets
 */
 @media only screen and ( min-width: 480px ) {
 
-    .reg-section:before,
-    .appendix-section:before,
-    .supplement-section:before,
-    .supplement-section section:before,
-    .footnotes li:before {
-        display: block;
-        content: "";
-        height: $mainhead_height + $subhead_height;
-        margin: -1 * ($mainhead_height + $subhead_height) 0 0;
-        visibility: hidden;
-    }
+  .reg-section:before,
+  .appendix-section:before,
+  .supplement-section:before,
+  .supplement-section section:before,
+  .footnotes li:before {
+    display: block;
+    content: "";
+    height: $mainhead_height + $subhead_height;
+    margin: -1 * ($mainhead_height + $subhead_height) 0 0;
+    visibility: hidden;
+  }
 
-    .reg-section .level-1 li,
-    .appendix-section .level-1 li,
-    .supplement-section .level-1 li {
-        border-top: $mainhead_height + $subhead_height solid transparent;
-        margin-top: -1 * ($mainhead_height + $subhead_height);
-        -webkit-background-clip:padding-box;
-        -moz-background-clip:padding;
-        background-clip:padding-box;
-    }
+  .reg-section .level-1 li,
+  .appendix-section .level-1 li,
+  .supplement-section .level-1 li {
+    border-top: $mainhead_height + $subhead_height solid transparent;
+    margin-top: -1 * ($mainhead_height + $subhead_height);
+    -webkit-background-clip:padding-box;
+    -moz-background-clip:padding;
+    background-clip:padding-box;
+  }
 
 }
 
 @media only screen and ( max-width: 480px ) {
 
-    .reg-section:before,
-    .appendix-section:before,
-    .supplement-section:before,
-    .supplement-section section:before,
-    .footnotes li:before {
-        display: block;
-        content: "";
-        height: 120px;
-        margin: -120px 0 0;
-        visibility: hidden;
-    }
+  .reg-section:before,
+  .appendix-section:before,
+  .supplement-section:before,
+  .supplement-section section:before,
+  .footnotes li:before {
+    display: block;
+    content: "";
+    height: 120px;
+    margin: -120px 0 0;
+    visibility: hidden;
+  }
 
-    .reg-section .level-1 li,
-    .appendix-section .level-1 li,
-    .supplement-section .level-1 li {
-        border-top: 120px solid transparent;
-        margin-top: -120px;
-        -webkit-background-clip:padding-box;
-        -moz-background-clip:padding;
-        background-clip:padding-box;
-    }
+  .reg-section .level-1 li,
+  .appendix-section .level-1 li,
+  .supplement-section .level-1 li {
+    border-top: 120px solid transparent;
+    margin-top: -120px;
+    -webkit-background-clip:padding-box;
+    -moz-background-clip:padding;
+    background-clip:padding-box;
+  }
 
 }
 
@@ -290,6 +290,6 @@ Reset for inline interpretations
 --------------------------------
 */
 .inline-interpretation-content .level-1 li {
-    border-top: 0px;
-    margin-top: 0px;
+  border-top: 0px;
+  margin-top: 0px;
 }
