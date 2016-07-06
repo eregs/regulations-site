@@ -1,5 +1,5 @@
 /*
-LESS Mixins
+Sass Mixins
  ==========================================================================
 mixins.scss contains any mixins to be used throughout the Sass files
 */
@@ -40,7 +40,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
 @mixin drawer-header-font {
   @include sans-font-bold;
   color: $mid_text;
-  font-size: .875em; /* 12px / (26px * .875em) */
+  font-size: .875em; // 12px / (26px * .875em)
   text-transform: uppercase;
 }
 
@@ -53,6 +53,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
 }
 
 @mixin regulation-nav-item-font {
+
 }
 
 @mixin regulation-nav-subpart-heading-font {
@@ -91,6 +92,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
 }
 
 @mixin next-prev-link-title-font {
+
 }
 
 
@@ -110,13 +112,13 @@ mixins.scss contains any mixins to be used throughout the Sass files
 
 @mixin border-bottom-dark($width: 1px) {
   border-bottom: $width solid $dark_gray;
- }
+}
 
- @mixin border-top-light($width: 1px) {
+@mixin border-top-light($width: 1px) {
   border-top: $width solid $light_field;
- }
+}
 
- @mixin border-top-medium($width: 1px) {
+@mixin border-top-medium($width: 1px) {
   border-top: $width solid $medium_gray;
 }
 
@@ -132,10 +134,10 @@ mixins.scss contains any mixins to be used throughout the Sass files
 @mixin slide($direction: left, $speed: 300ms) {
   transform: translate3d(0,0,0);
   -webkit-transition: $direction $speed ease;
-     -moz-transition: $direction $speed ease;
-    -ms-transition: $direction $speed ease;
-     -o-transition: $direction $speed ease;
-      transition: $direction $speed ease;
+  -moz-transition: $direction $speed ease;
+  -ms-transition: $direction $speed ease;
+  -o-transition: $direction $speed ease;
+  transition: $direction $speed ease;
 }
 
 // utility class for spinning loading indicators
@@ -146,7 +148,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
   width: 1em;
   height: 1em;
   margin: 0 auto;
-  content: "\e112";
+  content: '\e112';
   color: $blue;
   text-align: center;
   font-size: 1.375em;

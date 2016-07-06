@@ -5,8 +5,8 @@
  media-queries that are specific to modules/functionality may be located within the appropriate .scss file
  */
 
-@import "breakpoints/min-width-1100.scss";
-@import "breakpoints/max-width-1100.scss";
-@import "breakpoints/max-width-780.scss";
-@import "breakpoints/max-width-600.scss";
-@import "breakpoints/max-width-480.scss";
+@import 'breakpoints/min-width-1100';
+@import 'breakpoints/max-width-1100';
+@import 'breakpoints/max-width-780';
+@import 'breakpoints/max-width-600';
+@import 'breakpoints/max-width-480';
