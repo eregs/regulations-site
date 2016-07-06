@@ -2,6 +2,7 @@
 from django.test import TestCase
 from mock import patch
 import httpretty
+import requests
 
 from regulations.docket import sanitize_fields
 
@@ -77,6 +78,13 @@ class SanitizeFieldsHTTPErrorsTest(TestCase):
 
     def test_503(self):
         httpretty.register_uri(httpretty.GET, 'http://example.com', status=503)
+        with self.settings(REGS_GOV_API_URL='http://example.com'):
+            valid, message = sanitize_fields({'something': 'else'})
+        self.assertTrue(valid)
+
+    @patch('regulations.docket.requests.get')
+    def test_timeout(self, get):
+        get.side_effect = requests.Timeout
         with self.settings(REGS_GOV_API_URL='http://example.com'):
             valid, message = sanitize_fields({'something': 'else'})
         self.assertTrue(valid)

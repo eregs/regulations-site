@@ -14,6 +14,7 @@ cache = caches['regs_gov_cache']
 def fetch(url, **kwargs):
     kwargs['headers'] = kwargs.get(
         'headers', {'X-Api-Key': settings.REGS_GOV_API_KEY})
+    kwargs['timeout'] = kwargs.get('timeout', 10)   # timeout after 10 seconds
     response = requests.get(url, **kwargs)
     if response.status_code != requests.codes.ok:
         response.raise_for_status()
@@ -49,7 +50,7 @@ def safe_get_document_fields(document_id):
     """Like get_document_fields, but returns None on error"""
     try:
         return get_document_fields(document_id)
-    except requests.exceptions.HTTPError as e:
+    except requests.exceptions.RequestException as e:
         logger.warning("Error getting data from regs.gov: %s", e)
         return None
 
