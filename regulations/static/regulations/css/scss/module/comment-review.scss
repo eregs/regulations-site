@@ -194,10 +194,10 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
       cursor: pointer;
 
       &:hover {
-        background: darken($gray_lighter, 10%);
+        background: $gray_light;
       }
       &:active, &.current {
-        background: darken($gray_lighter, 20%);
+        background: $gray_light;
       }
     }
 
@@ -245,7 +245,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
       height: auto;
       border-radius: 3px;
       border: 1px solid rgba(0,0,0,.25);
-      box-shadow: inset 0 0 1px fade($gray_light, 90%);
+      box-shadow: inset 0 0 1px $gray_lighter;
       color: $black;
     }
 
@@ -312,7 +312,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
       font-size: 14px;
 
       &:hover {
-        color: darken($blue_light, 10%);
+        color: $blue;
       }
 
       .text-expand {
@@ -333,7 +333,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
 
     &:disabled, &:disabled:hover {
       background: $gray_lighter;
-      color: #000;
+      color: $black;
     }
     &:hover {
       background-color: $blue_light;
