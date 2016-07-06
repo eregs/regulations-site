@@ -19,23 +19,23 @@ Main Content
   padding: 0 60px 40px;
 }
 
-@media only screen and ( max-width: 600px ) {
+@media only screen and (max-width: 600px) {
   .main-content {
     padding-left: 60px;
     padding-right: 15px;
   }
 }
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
   .main-content {
     padding-left: 65px;
   }
 }
 
-@media only screen and ( min-width: 780px ) {
+@media only screen and (min-width: 780px) {
 
   .main-content {
-    margin-right: 32%; /* offset .secondary-content */
+    margin-right: 32%; // offset .secondary-content
     overflow-x: none;
   }
 
@@ -57,8 +57,8 @@ Main Content
 
 @media only screen and ( min-width: 1100px ) {
   .main-content {
-    margin-right: 25%; /* offset .secondary-content */
-    margin-left: 240px; /*240px; - offsets .panel */
+    margin-right: 25%; // offset .secondary-content
+    margin-left: 240px; // 240px; - offsets .panel
     padding-left: 65px;
   }
 
@@ -84,17 +84,17 @@ Secondary Content
   padding-left: 40px;
 }
 
-@media only screen and ( min-width: 780px ) {
+@media only screen and (min-width: 780px) {
   .secondary-content {
     position: fixed;
     overflow-y: auto;
     border-left: 1px solid $light_field;
     top: $mainhead_height + $subhead_height;
-    right: 0px;
+    right: 0;
     bottom: 0;
     height: 100%;
     width: 25%;
-    padding-left: 0px;
+    padding-left: 0;
     background: #fff;
     z-index: 100;
     margin-left: 15px;
@@ -102,7 +102,7 @@ Secondary Content
 
 }
 
-@media only screen and ( max-width: 1100px ) {
+@media only screen and (max-width: 1100px) {
   /* Secondary content */
 
   .secondary-content {
@@ -121,7 +121,7 @@ Secondary Content
   padding: 0 1em;
 }
 
-@media only screen and ( min-width: 780px ) {
+@media only screen and (min-width: 780px) {
 
   .content-primary {
     width: 65.5241935%;
@@ -156,7 +156,7 @@ Secondary Content
 .panel {
   position: fixed;
   top: $mainhead_height + $subhead_height;
-  bottom: 0px;
+  bottom: 0;
   width: 240px;
   padding-bottom: 60px;
   z-index: 300;
@@ -187,21 +187,22 @@ TOC Header Navigation
   background-color: $bg_gray;
 }
 
-.header-main { /* TODO: closely matches main content layout - should unify into single class*/
+.header-main {
+  // TODO: closely matches main content layout - should unify into single class
   margin-right: 25%;
   margin-left: 240px;
   padding-left: 65px;
 }
 
-@media only screen and ( min-width: 780px ) {
+@media only screen and (min-width: 780px) {
   .header-main {
-  margin-right: 25%;
-  margin-left: 240px;
-  padding-left: 65px;
+    margin-right: 25%;
+    margin-left: 240px;
+    padding-left: 65px;
   }
 }
 
-@media only screen and ( min-width: 1100px ) {
+@media only screen and (min-width: 1100px) {
   .header-main {
     &.close {
       margin-left: 40px;
@@ -209,7 +210,7 @@ TOC Header Navigation
   }
 }
 
-@media only screen and ( max-width: 1100px ) {
+@media only screen and (max-width: 1100px) {
 
   .header-main {
     margin-left: 40px;
@@ -233,7 +234,7 @@ Section Offsets
 * reg-view.js, checkActiveSection()
 *
 */
-@media only screen and ( min-width: 480px ) {
+@media only screen and (min-width: 480px) {
 
   .reg-section:before,
   .appendix-section:before,
@@ -241,7 +242,7 @@ Section Offsets
   .supplement-section section:before,
   .footnotes li:before {
     display: block;
-    content: "";
+    content: '';
     height: $mainhead_height + $subhead_height;
     margin: -1 * ($mainhead_height + $subhead_height) 0 0;
     visibility: hidden;
@@ -259,7 +260,7 @@ Section Offsets
 
 }
 
-@media only screen and ( max-width: 480px ) {
+@media only screen and (max-width: 480px) {
 
   .reg-section:before,
   .appendix-section:before,
@@ -267,7 +268,7 @@ Section Offsets
   .supplement-section section:before,
   .footnotes li:before {
     display: block;
-    content: "";
+    content: '';
     height: 120px;
     margin: -120px 0 0;
     visibility: hidden;
@@ -290,6 +291,6 @@ Reset for inline interpretations
 --------------------------------
 */
 .inline-interpretation-content .level-1 li {
-  border-top: 0px;
-  margin-top: 0px;
+  border-top: 0;
+  margin-top: 0;
 }
