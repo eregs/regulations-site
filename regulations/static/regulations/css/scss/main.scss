@@ -8,45 +8,45 @@ and includes any non-semantic helper classes
 /*
 Type & Layout
 ------------- */
-@import "base-variables.scss";
-@import "normalize.scss";
-@import "variables.scss";
-@import "mixins.scss";
-@import "fonts.scss";
-@import "typography.scss";
-@import "layout.scss";
-@import "icons/cf-icons.scss";
-@import "icons/font-awesome.scss";
+@import 'base-variables';
+@import 'normalize';
+@import 'variables';
+@import 'mixins';
+@import 'fonts';
+@import 'typography';
+@import 'layout';
+@import 'icons/cf-icons';
+@import 'icons/font-awesome';
 
 /*
 Modules
 ------- */
-@import "module/navigation.scss";
-@import "module/drawer.scss";
-@import "module/extract.scss";
-@import "module/interpretations.scss";
-@import "module/note.scss";
-@import "module/header.scss";
-@import "module/footer.scss";
-@import "module/full-footer.scss";
-@import "module/sidebar.scss";
-@import "module/sxs.scss";
-@import "module/search-results.scss";
-@import "module/forms.scss";
-@import "module/diffs.scss";
-@import "module/expandables.scss";
-@import "module/reg-landing.scss";
-@import "module/universal-landing.scss";
-@import "module/about.scss";
-@import "module/error.scss";
-@import "module/paragraph-markers.scss";
-@import "comment/comment.scss";
-@import "comment/comment-read.scss";
-@import "comment/comment-write.scss";
-@import "comment/comment-review.scss";
-@import "comment/comment-confirm.scss";
-@import "comment/comment-media-queries.scss";
-@import "module/custom.scss";
+@import 'module/navigation';
+@import 'module/drawer';
+@import 'module/extract';
+@import 'module/interpretations';
+@import 'module/note';
+@import 'module/header';
+@import 'module/footer';
+@import 'module/full-footer';
+@import 'module/sidebar';
+@import 'module/sxs';
+@import 'module/search-results';
+@import 'module/forms';
+@import 'module/diffs';
+@import 'module/expandables';
+@import 'module/reg-landing';
+@import 'module/universal-landing';
+@import 'module/about';
+@import 'module/error';
+@import 'module/paragraph-markers';
+@import 'comment/comment';
+@import 'comment/comment-read';
+@import 'comment/comment-write';
+@import 'comment/comment-review';
+@import 'comment/comment-confirm';
+@import 'comment/comment-media-queries';
+@import 'module/custom';
 
 
 /*
@@ -54,8 +54,12 @@ Modules
  ========================================================================== */
 
 /* apply a natural box layout model to all elements */
-*, *:before, *:after {
-  -moz-box-sizing: border-box;-webkit-box-sizing: border-box; box-sizing: border-box;
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
  }
 
 /*.lt-ie10 {
@@ -110,8 +114,8 @@ Modules
   opacity: 0.3;
 
   * {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; /* IE 8 */
-    filter: alpha(opacity=30); /* IE 6 & 7 */
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=30)'; /* IE 8 */
+    filter: alpha(opacity = 30); /* IE 6 & 7 */
   }
 }
 
@@ -277,7 +281,7 @@ img.reg-image {
     font-size: 18px;
     margin-left: 20px;
     padding: 0 26px;
-    background: url(../img/exclamation.png) left center no-repeat;
+    background: url('../img/exclamation.png') left center no-repeat;
   }
 
   ul {
@@ -304,8 +308,8 @@ Clearfix
 */
 .group:before,
 .group:after {
-  content: " "; /* 1 */
-  display: table; /* 2 */
+  content: ' ';
+  display: table;
 }
 
 .group:after {
@@ -324,5 +328,5 @@ Clearfix
 /*
 Import no-js.scss and print.scss at the end, since they override other rules
 */
-@import "module/no-js.scss";
-@import "print.scss";
+@import 'module/no-js';
+@import 'print';

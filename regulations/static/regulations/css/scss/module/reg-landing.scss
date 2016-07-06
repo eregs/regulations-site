@@ -143,7 +143,8 @@ Main Content Area
 .disclaimer,
 .about-the-tool,
 .feedback {
-  p, li {
+  p,
+  li {
     font-size: 0.875em;
   }
 
@@ -160,7 +161,7 @@ Main Content Area
   padding: 10px;
 }
 
-@media only screen and ( min-width: 1000px ) {
+@media only screen and (min-width: 1000px) {
   .alert_effective-date {
     float: left;
   }
@@ -179,7 +180,7 @@ Small screens
 --------------
 */
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   .reg-tags {
     width: 100%;

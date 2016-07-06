@@ -9,7 +9,7 @@ input {
   margin: 0;
 }
 
-input[type=text]{
+input[type=text] {
   vertical-align: bottom;
   @include sans-font-regular;
   color: $black;
@@ -22,7 +22,6 @@ button {
   background-color: $pacific;
   color: #fff;
   border: none;
-  vertical-align: bottom;
   text-align: center;
   -webkit-transition: .1s;
   -moz-transition: .1s;
@@ -43,6 +42,7 @@ input:focus {
   position: relative;
   overflow: hidden;
 }
+
 .file-upload input[type=file] {
   position: absolute;
   top: 0;
@@ -51,10 +51,10 @@ input:focus {
   min-height: 100%;
   font-size: 100px;
   text-align: right;
-  filter: alpha(opacity=0);
+  filter: alpha(opacity = 0);
   opacity: 0;
   outline: none;
-  background: white;
+  background: #fff;
   cursor: inherit;
   display: block;
 }
@@ -67,7 +67,7 @@ Selects
 .select-content {
   overflow: hidden; /* this hides the select's drop button */
   position: relative;
-  background: white url('../img/select.png') no-repeat bottom right;
+  background: #fff url('../img/select.png') no-repeat bottom right;
   //width: 100%;
   border: solid 1px $light_field;
   height: 32px;
@@ -77,7 +77,7 @@ Selects
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
   .select-content {
-    background: white url('../img/select$2x.png') no-repeat bottom right;
+    background: #fff url('../img/select$2x.png') no-repeat bottom right;
     background-size: 32px 32px;
   }
 }

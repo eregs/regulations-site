@@ -83,7 +83,7 @@
 
   .main-head {
     .reg-title:before {
-      content: "|";
+      content: '|';
       @include sans-font-regular;
       padding: 0 12px;
       color: $medium_gray;
@@ -133,7 +133,7 @@
   }
 
   .with-subpart:before {
-    content: "|";
+    content: '|';
     @include sans-font-regular;
     color: $dark_gray;
     display: inline-block;
@@ -143,7 +143,6 @@
 
 .header-label {
   @include reset;
-  display: inline-block;
   @include sans-font-bold;
   font-style: normal;
   font-size: 1em;
@@ -155,7 +154,7 @@
 }
 
 
-@media only screen and ( min-width: 480px ) {
+@media only screen and (min-width: 480px) {
   .header-main {
     .wayfinding {
       float: left;
@@ -168,7 +167,7 @@
   }
 }
 
-@media only screen and ( max-width: 480px ) {
+@media only screen and (max-width: 480px) {
   .header-main {
     .effective-date {
       display: block;
@@ -195,7 +194,7 @@ Application Nav
   &:hover,
   &:active,
   &:focus {
-    color: darken($blue, 10%);;
+    color: darken($blue, 10%);
   }
 }
 
@@ -211,7 +210,7 @@ mid-sized (tablet) screens
 
   #content-header {
     .with-subpart:before {
-      content: "";
+      content: '';
       margin: 0;
     }
   }
@@ -289,17 +288,12 @@ tiny screens
       font-weight: normal;
       line-height: 1;
       -webkit-font-smoothing: antialiased;
-
-      content: "\e610"; //This is an external link icon
+      content: '\e610'; //This is an external link icon
       padding-left: 6px;
       font-size: .875em;
       speak: none;
-      font-style: normal;
-      font-weight: normal;
       font-variant: normal;
       text-transform: none;
-      line-height: 1;
-      -webkit-font-smoothing: antialiased;
     }
   }
 
@@ -411,14 +405,14 @@ Small Screens
 
 }
 
-@media only screen and ( max-width: 600px ) {
+@media only screen and (max-width: 600px) {
 
   .header-label {
     margin-left: 6px;
   }
 }
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   .header-label {
     margin-left: 10px;
@@ -429,7 +423,7 @@ Small Screens
   }
 }
 
-@media only screen and ( max-width: 1100px ) {
+@media only screen and (max-width: 1100px) {
 
   #content-header {
     padding-left: 4%;

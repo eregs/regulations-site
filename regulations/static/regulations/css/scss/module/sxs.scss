@@ -242,7 +242,7 @@ Small screens
 -------------
 */
 
-@media only screen and ( max-width: 480px ) {
+@media only screen and (max-width: 480px) {
 
   #breakaway-view.open-sxs,
   .full-breakaway {
@@ -254,12 +254,12 @@ Small screens
   }
 }
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   .sxs-main-content {
     float: none;
-    padding-bottom: 1em; /*accomodate for persistent header*/
-    width: 100%
+    padding-bottom: 1em; // accomodate for persistent header
+    width: 100%;
   }
 
   .sxs-metadata {

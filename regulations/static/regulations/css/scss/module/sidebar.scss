@@ -135,14 +135,14 @@ Sidebar Headers
   .close-button {
     margin-top: .2em;
     text-indent: -9999px;
-    background: url(../img/close.png) no-repeat 0 0;
+    background: url('../img/close.png') no-repeat 0 0;
     cursor: pointer;
     z-index: 99999;
     width: 13px;
   }
 
   &.spinner {
-    background: $bg_gray url(../img/blue_spinner.gif) no-repeat center right;
+    background: $bg_gray url('../img/blue_spinner.gif') no-repeat center right;
     background-position-x: 92%;
   }
 
@@ -150,12 +150,12 @@ Sidebar Headers
   (-webkit-min-device-pixel-ratio: 2),
   (min-resolution: 192dpi) {
     .close-button {
-      background: $bg_gray url(../img/close@2x.png) no-repeat 0 0;
+      background: $bg_gray url('../img/close@2x.png') no-repeat 0 0;
       background-size: 13px 13px;
     }
 
     &.spinner {
-      background: $bg_gray url(../img/blue_spinner@2x.gif) no-repeat center right;
+      background: $bg_gray url('../img/blue_spinner@2x.gif') no-repeat center right;
       background-position-x: 92%;
       background-size: 19px 19px;
     }
@@ -368,7 +368,7 @@ Styles for the UI help slide down
   margin: 0;
   padding-right: 10px;
   display: inline-block;
-	padding-bottom: 0;
+  padding-bottom: 0;
 }
 
 .help-list {
@@ -395,12 +395,12 @@ Styles for the UI help slide down
 }
 
 .help-list {
-	margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .help-list li img {
-	padding-bottom: 10px;
-	padding-top: 5px;
+  padding-bottom: 10px;
+  padding-top: 5px;
 }
 
 .help-icon {
@@ -441,7 +441,7 @@ Small screens
 ---------------
 */
 
-@media only screen and ( max-width: 480px ) {
+@media only screen and (max-width: 480px) {
 
   .sidebar-inner {
     padding-bottom: 30px;
@@ -449,7 +449,7 @@ Small screens
 
 }
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   .secondary-content {
     position: static;
@@ -504,7 +504,7 @@ Small screens
 
     .sidebar-header,
     .definition-warning {
-      border-bottom: 0px;
+      border-bottom: 0;
     }
   }
 
@@ -519,7 +519,7 @@ Small screens
   }
 }
 
-@media only screen and ( max-width: 860px ) {
+@media only screen and (max-width: 860px) {
 
   /* Prevent expandables from going to two lines for as long as possible */
   .secondary-content {
@@ -535,7 +535,7 @@ Small screens
   }
 }
 
-@media only screen and ( max-width: 1100px ) {
+@media only screen and (max-width: 1100px) {
   .sidebar-header.spinner {
     background-position-x: 93%;
   }
@@ -545,7 +545,7 @@ Small screens
 Large screens
 -------------- */
 
-@media only screen and ( min-width: 1100px ) {
+@media only screen and (min-width: 1100px) {
 
   .sidebar-header.spinner {
     background-position-x: 94%;

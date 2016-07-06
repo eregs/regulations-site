@@ -43,7 +43,7 @@ Landing Page Footer
   .footer-links {
     float: right;
     width: 75%;
-		padding-top: 9px;
+    padding-top: 9px;
   }
 }
 
@@ -55,7 +55,7 @@ Landing Page Footer
   }
 
   li + li::before {
-    content: " | ";
+    content: ' | ';
     padding: 0 10px;
   }
 }
@@ -101,7 +101,7 @@ Next/Previous Links
 
 .previous {
   float: left;
-  padding: 0 15px 0 15px;
+  padding: 0 15px;
   margin-left: -15px;
 
   .cf-icon-left {
@@ -115,7 +115,7 @@ Next/Previous Links
 .next {
   float: right;
   text-align: right;
-  padding: 0 15px 0 15px;
+  padding: 0 15px;
 
   .cf-icon-right {
     font-size: 0.875em;
@@ -152,7 +152,7 @@ Small Screens
 -------------
 */
 
-@media only screen and ( max-width: 480px ) {
+@media only screen and (max-width: 480px) {
   .section-nav {
 
     .next-prev {
@@ -170,7 +170,6 @@ Small Screens
       margin-bottom: 1em;
 
       h1 {
-        //display: inline-block;
         font-size: 1em;
         margin-bottom: 1em;
       }
@@ -178,7 +177,7 @@ Small Screens
   }
 }
 
-@media only screen and ( max-width: 600px ) {
+@media only screen and (max-width: 600px) {
 
   .section-nav {
     margin-top: 1.5em;
@@ -206,7 +205,7 @@ Small Screens
   }
 }
 
-@media only screen and ( max-width: 780px ) {
+@media only screen and (max-width: 780px) {
 
   .landing-footer {
 
@@ -220,13 +219,11 @@ Small Screens
       float: none;
     }
   }
-
 }
 
-@media only screen and ( max-width: 1100px ) {
+@media only screen and (max-width: 1100px) {
 
   .application-footer {
     margin-left: 40px;
   }
-
 }

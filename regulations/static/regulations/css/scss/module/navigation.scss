@@ -26,13 +26,13 @@ Appendix Navigation
   ol {
     padding: 0;
   }
-}
 
-.appendix-nav li {
-  @include sans-font-bold;
-  margin: 0;
-  font-size: 0.875em; /*14px*/
-  line-height: 1.85714; /*26px*/
+  li {
+    @include sans-font-bold;
+    margin: 0;
+    font-size: 0.875em; /*14px*/
+    line-height: 1.85714; /*26px*/
+  }
 }
 
 .appendix-nav a:link,

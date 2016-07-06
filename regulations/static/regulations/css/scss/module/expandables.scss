@@ -9,11 +9,11 @@
 
 .expand-button:before {
   @extend .cf-icon;
-  content: "\e109";
+  content: '\e109';
   float: right;
   padding-left: 6px;
 }
 
 .open.expand-button:before {
-  content: "\e111";
+  content: '\e111';
 }
