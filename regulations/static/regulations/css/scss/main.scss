@@ -16,16 +16,19 @@ and includes any non-semantic helper classes
 @import 'icon_fonts/cf-icons';
 @import 'icon_fonts/font-awesome';
 
+// Partials - styles for elements outside of the main content
+@import 'partials/header';
+@import 'partials/navigation';
+@import 'partials/drawer';
+@import 'partials/drawer-content';
+@import 'partials/sidebar';
+@import 'partials/footer';
+@import 'partials/full-footer';
+
 // Modules
-@import 'module/navigation';
-@import 'module/drawer';
 @import 'module/extract';
 @import 'module/interpretations';
 @import 'module/note';
-@import 'module/header';
-@import 'module/footer';
-@import 'module/full-footer';
-@import 'module/sidebar';
 @import 'module/sxs';
 @import 'module/search-results';
 @import 'module/forms';
@@ -47,7 +50,6 @@ and includes any non-semantic helper classes
 
 // Custom imports
 @import 'module/custom';
-
 
 /*
  Helper Classes
