@@ -6,10 +6,7 @@ Regulation Drawer
 * It can be toggled with the "open" and "close" classes.
 */
 
-/*
-Universal drawer styles
---------------------- */
-
+// Universal drawer styles
 .panel {
   background-color: $gray_lightest;
   border-right: 2px solid $gray_light;
@@ -54,17 +51,15 @@ Drawer Behavior
 Drawer default state
 ==================== */
 
-/*
-Panel Header
------------- */
-
+// Panel Header
 .drawer-header {
   position: fixed;
   background-color: $white;
   border-right: 2px solid $gray_light;
   border-bottom: 1px solid $gray_light;
 
-  .toc-type, .toc-subheader {
+  .toc-type,
+  .toc-subheader {
     position: relative;
     margin: 0;
     width: 238px;
@@ -215,7 +210,6 @@ currently these are TOC, History, and Search
   color: $black;
 }
 
-
 // align the drawer toggle list
 .drawer-toggles {
   position: relative;
@@ -249,14 +243,11 @@ currently these are TOC, History, and Search
   }
 }
 
-
-/*
-Drawer default closed state
----------------------------- */
-
+// Drawer default closed state
 .panel.close {
   left: -200px;
-  top: $mainhead_height + $subhead_height + 3 * 34px + 1; // Header, subheader, 3 TOC list items + 1px drawer-toggles border
+  // Header, subheader, 3 TOC list items + 1px drawer-toggles border
+  top: $mainhead_height + $subhead_height + 3 * 34px + 1;
   overflow-y: hidden;
 
   // slide content fully offscreen
@@ -279,9 +270,5 @@ Drawer default closed state
   margin-right: 15px;
   height: 150px; // extra height for TOC toggle buttons
 }
-
-/*
-Small resolution drawer state
-============================= */
 
 @import 'drawer-content';
