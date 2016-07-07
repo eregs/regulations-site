@@ -1,0 +1,265 @@
+/*
+Section by Section Analysis
+===========================
+sxs.scss contains styles for the SxS overlay
+*/
+
+.breakaway-wrap {
+  #breakaway-view {
+    position: fixed;
+    left: 9999px;
+    @include slide ($direction: all, $speed: 600ms);
+  }
+}
+
+/*
+SxS window
+----------
+*/
+#breakaway-view.open-sxs,
+.full-breakaway {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: $white;
+  z-index: 9999;
+  overflow-y: auto;
+  padding-bottom: 120px; //offset persistent header for scroll
+}
+
+#breakaway-view.open-sxs {
+  top: 60px;
+}
+
+.inprogress:after {
+  @include u_spinner;
+}
+
+/*
+SxS header
+===================
+*/
+.sxs-header {
+  top: 60px;
+  width: 100%;
+  height: 2.125em;
+  background-color: $orange_lightest;
+  border-bottom: 1px solid $orange;
+  z-index: 100;
+
+  h2 {
+    @include sans-font-bold;
+    font-size: 1em;
+    margin: 0;
+    padding-left: 15px;
+    line-height: 2.125em;
+    letter-spacing: 1px;
+    display: inline-block;
+  }
+}
+
+.full-breakaway .sxs-header {
+  position: fixed;
+}
+
+/*
+Back link
+---------
+*/
+
+.sxs-back-button,
+.sxs-back-button:link,
+.sxs-back-button:visited {
+  @include sans-font-bold;
+  display: inline-block;
+  padding: 0 15px;
+  min-width: 5em;
+  background-color: $gray_lightest;
+  color: $gray_light;
+  border-right: 2px solid $gray_light;
+  text-decoration: none;
+  height: 34px;
+  line-height: 34px; /* match height of the .sxs-header - 1px */
+  vertical-align: top;
+  border-bottom: 1px solid $orange;
+
+  .cf-icon-left {
+    font-size: 0.75em;
+  }
+}
+
+.sxs-back-button:hover,
+.sxs-back-button:active {
+  color: $blue_light;
+}
+
+
+/*
+SxS content wrapper
+===================
+*/
+.sxs-content {
+  margin: 0 auto;
+  max-width: 1100px;
+  min-height: 100%;
+  height: 100%;
+  padding: 30px 15px;
+}
+
+#breakaway-view.open-sxs {
+  .sxs-content {
+    padding: 0 15px; //decrease additional padding with ajax loaded sxs
+    margin-top: -2.125em; // set to 0px in JS, sxs-view
+  }
+}
+
+/*
+Main content of the SxS Analysis
+================================
+*/
+.sxs-main-content {
+  float: left;
+  margin-top: 72px;
+  width: 70%;
+  padding-bottom: 100px;
+}
+
+/*
+Metadata info for the SxS Analysis
+==================================
+*/
+.sxs-metadata {
+  float: right;
+  width: 25%;
+  margin-top: 84px;
+  padding-bottom: 50px; /* prevent IE from cutting off the sidebar when it exceeds the window height */
+  font-size: 0.875em;
+  @include sans-font-regular;
+
+  ul,
+  li {
+      @include reset;
+  }
+
+  p {
+      margin: 0; /*this may need to change if there are multiple paragraphs in a section*/
+  }
+
+  h3,
+  h4 {
+    margin-bottom: 0;
+    color: $gray_light;
+    @include sans-font-bold;
+  }
+
+  h3 {
+    font-size: 1em;
+    text-transform: uppercase;
+  }
+
+  h4 {
+    margin-top: .75em;
+    font-size: 14px;
+    text-transform: none;
+  }
+}
+
+.further-analysis {
+  margin: 2em 0;
+}
+
+.analysis-list {
+  a {
+    @include sans-font-bold;
+    font-size: 1.142857143em;
+  }
+
+  li {
+    margin-top: 1em;
+  }
+}
+
+/*
+Footnotes
+==================================
+*/
+
+.footnote-title {
+  margin-top: 2em;
+  color: $gray_darker;
+}
+
+.footnotes {
+  @include reset;
+  margin-top: 1em;
+  @include border-top-medium ($width: 1px);
+
+  li {
+    @include reset;
+    @include border-bottom-medium ($width: 1px);
+  }
+
+  p {
+    margin: 0 4em 0 2.5em;
+  }
+
+  // pad an inner wrapper because padding on the li causes the header offset to be ignored
+  .footnote-inner {
+    position: relative;
+    padding: 1em 1.5em;
+  }
+
+  .reference-num {
+    float: left;
+    @include sans-font-bold;
+  }
+
+  .return-link {
+    position: absolute;
+    top: 40%;
+    right: 24px;
+  }
+
+  .return-link:hover,
+  .return-link:active,
+  .return-link:focus {
+    border-bottom: none;
+  }
+
+  .highlight {
+    .footnote-inner {
+      background-color: $gray_lightest;
+    }
+  }
+}
+
+/*
+Small screens
+-------------
+*/
+
+@media only screen and (max-width: 480px) {
+  #breakaway-view.open-sxs,
+  .full-breakaway {
+    position: fixed;
+  }
+
+  .sxs-label {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 780px) {
+  .sxs-main-content {
+    float: none;
+    padding-bottom: 1em; // accomodate for persistent header
+    width: 100%;
+  }
+
+  .sxs-metadata {
+    float: none;
+    width: 100%;
+  }
+}

@@ -1,0 +1,192 @@
+.inline-interpretation {
+  background-color: $gray_lightest;
+  padding: 0.125em 0.625em;
+  margin-bottom: 1em;
+  margin-left: -20px; // aligns with list marker
+  border-bottom: 0;
+  position: relative;
+
+  &:hover {
+    background-color: $gray_lighter;
+    cursor: pointer;
+  }
+
+  &.open {
+    background-color: $gray_lighter;
+    cursor: auto;
+  }
+
+  h4 {
+    color: $black;
+    text-transform: uppercase;
+    @include sans-font-regular;
+    display: inline-block;
+    font-size: .8em;
+    margin: 0;
+    padding: 0 0 0 20px;
+    background: url('../img/interpretation.png') no-repeat 0 3px;
+  }
+
+  .expand-button {
+    color: $blue_light;
+    @include sans-font-bold;
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    padding-right: 10px;
+    text-transform: uppercase;
+    line-height: 24px; // match h4
+    font-size: .8em;
+    cursor: pointer;
+  }
+
+  .expand-button:before {
+    @extend .cf-icon;
+    content: '\e109'; // cf-icon-plus-round
+    float: right;
+    padding-left: 6px;
+    line-height: 24px;
+  }
+
+  .open.expand-button:before {
+    content: '\e111'; // cf-icon-minus-round
+  }
+
+  h5 {
+    text-transform: none;
+    font-size: 1.375em;
+    margin: 0.875em 0 1em 0;
+    line-height: 1.272727273;
+  }
+
+  .level-1 .key-term {
+    font-size: 1em;
+    text-transform: uppercase;
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    h4 {
+      background: url('../img/interpretation@2x.png') no-repeat 0 3px;
+      background-size: 12px 15px;
+    }
+  }
+
+  .ref-num {
+    text-transform: none;
+    @include sans-font-bold;
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  ol {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  /*
+  reset borders
+  -------------
+  */
+
+  li {
+    border: none;
+    margin-left: 5px;
+    // inline interp lists are hanging into the margin
+    // this accomodates to align content
+    // TODO: clean up all alignment in interps
+  }
+
+  .level-1 > li {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  // reset padding used to accomodate permalink marker in main content
+  .reg-section li > p {
+    padding-left: 0;
+    margin-left: 0;
+    color: pink;
+  }
+
+  .level-1 > li:after {
+    padding-top: 1em;
+    height: 1px;
+    display: block;
+    width: 100%;
+    border-bottom: none;
+    content: '';
+    margin-left: 0;
+  }
+
+  .section-link {
+    @include sans-font-bold;
+  }
+
+}
+
+.level-1 > .inline-interpretation:last-child {
+  margin-bottom: 0;
+}
+
+.inline-interpretation-content {
+  padding: 0;
+}
+
+.appendix-note {
+  ol {
+    @include sans-font-regular;
+    color: $black;
+    font-size: 0.875em;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0 0 1em 0;
+    padding: 0;
+  }
+
+  h4 {
+    @include sans-font-bold;
+    background: none;
+    padding: 0;
+  }
+
+  &:hover {
+    cursor: default;
+    background-color: $gray_lightest;
+  }
+}
+
+/*
+Small screens
+-------------
+*/
+
+@media only screen and (max-width: 480px) {
+  .inline-interpretation {
+    h4 {
+      padding: 0;
+      background: none;
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      h4 {
+        background: none;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .inline-interpretation {
+    margin-left: 0;
+
+    .expand-text {
+      display: none;
+    }
+  }
+}

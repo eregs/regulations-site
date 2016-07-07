@@ -1,0 +1,53 @@
+/*
+==========================================================================
+variables.scss contains all theme variable / variable overrides
+*/
+
+// Black and white
+$black_dark: #111111;
+$black: #212121;
+$white: #FFFFFF;
+
+// Greens
+$green: #2F8540;
+$green_light: #ADDC91;
+$green_lightest: #E7F4E4;
+
+// Greys
+$gray_darkest: #43484E;
+$gray_darker: #5C6065;
+$gray_dark: #797D81;
+$gray: #9A9DA1;
+$gray_light: #D8D8D8;
+$gray_lighter: #E6E7E9;
+$gray_lightest: #F5F5F5;
+
+// Blues
+$blue_dark: #1F5593;
+$blue: #205493;
+$blue_light: #0071BC;
+$blue_lighter: #A1CBFC;
+$blue_lightest: #E1F3F8;
+
+// Oranges and Reds
+$red: #CD2026;
+$red_light: #D96A4F;
+$red_lightest: #E9A193;
+
+$pink: #F9DEDE;
+
+$orange: #FDB81E;
+$orange_light: #FBCD92;
+$orange_lightest: #FFECD1;
+
+// Element Variables
+$text_area_border: rgba(0, 0, 0, 0.25);
+$history_drawer_border_color: #d1d3d5;
+
+// Type Variables
+$body_font: "Merriweather", Georgia, serif;
+
+// Layout Variables
+$closed_drawer_width: 40px;
+$mainhead_height: 56px; // Height of your .main-head element. Used to calculate the fixed offsets.
+$subhead_height: 34px;  // Height of your .sub-head element. Used to calculate the fixed offsets.

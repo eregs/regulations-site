@@ -1,0 +1,56 @@
+ol,
+li {
+  list-style-type: none;
+
+  /* Paragraphs without content. We may want to display their paragraph marker */
+  .collapsed {
+    position: absolute;
+  }
+
+  .collapsed + ol {
+
+    p:first-child {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    position: relative;
+
+    .stripped-marker {
+      display: block;
+      left: -10em;
+      position: absolute;
+      text-align: right;
+      width: 9.5em;
+    }
+  }
+}
+
+// reset margins for ordered lists
+ol {
+  margin-top: 0;
+
+  &.level-1 {
+    margin-top: 1em;
+  }
+}
+
+/*
+   Move key term headings up to center with paragraph markers
+-- note: we generically set properties for all the key terms
+   despite wanting to target only level-1 key terms because of
+   the way the ordered list classes are set. setting level-2
+   properties then "unsets" the properties originally intended
+   for level-1 because of the way the properties cascade down
+   (setting for level-2 actually sets for level-2 and all levels below)
+*/
+.paragraph-marker + .key-term {
+  display: inline-block;
+  margin-top: -1px; // better key term and paragraph marker alignment
+  width: 100%;
+}
+
+.level-2 .paragraph-marker + .key-term {
+  margin: 0;
+}
