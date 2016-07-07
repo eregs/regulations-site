@@ -35,17 +35,15 @@ mixins.scss contains any mixins to be used throughout the Sass files
 }
 
 
-/* Drawer font styles */
-
+// Drawer font styles
 @mixin drawer-header-font {
   @include sans-font-bold;
-  color: $mid_text;
-  font-size: .875em; // 12px / (26px * .875em)
+  color: $gray_darkest;
+  font-size: 0.875em; // 12px / (26px * .875em)
   text-transform: uppercase;
 }
 
-/* Regulation nav (drawer) font styles */
-
+// Regulation nav (drawer) font styles
 @mixin regulation-nav-section-marker-font {
   @include sans-font-bold;
   display: block;
@@ -59,7 +57,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
 @mixin regulation-nav-subpart-heading-font {
   font-size: 1em;
   text-transform: uppercase;
-  color: $mid_text;
+  color: $gray_darkest;
 }
 
 @mixin regulation-nav-interp-heading-font {
@@ -73,20 +71,14 @@ mixins.scss contains any mixins to be used throughout the Sass files
   font-size: 14px;
 }
 
-/* History (drawer) font styles */
-
+// History (drawer) font styles
 @mixin regulation-history-version-date-font {
   @include sans-font-bold;
   font-size: 1.285714286em;
 }
 
 
-/* Key Terms */
-/* todo: merge from atf */
-
-
-/* Navigation links */
-
+// Navigation links
 @mixin next-prev-link-link-font {
   font-size: 0.875em;
 }
@@ -95,44 +87,34 @@ mixins.scss contains any mixins to be used throughout the Sass files
 
 }
 
-
-
-/*
- Border Styles
- --------------
-*/
-
+// Border Styles
 @mixin border-bottom-medium($width: 1px) {
-  border-bottom: $width solid $medium_gray;
+  border-bottom: $width solid $gray_light;
 }
 
 @mixin border-bottom-light($width: 1px) {
-  border-bottom: $width solid $light_field;
+  border-bottom: $width solid $gray_light;
 }
 
 @mixin border-bottom-dark($width: 1px) {
-  border-bottom: $width solid $dark_gray;
+  border-bottom: $width solid $gray_light;
 }
 
 @mixin border-top-light($width: 1px) {
-  border-top: $width solid $light_field;
+  border-top: $width solid $gray_light;
 }
 
 @mixin border-top-medium($width: 1px) {
-  border-top: $width solid $medium_gray;
+  border-top: $width solid $gray_light;
 }
 
 @mixin border-right-light($width: 1px) {
-  border-right: $width solid $light_field;
+  border-right: $width solid $gray_light;
 }
 
-/*
- Animations
- -----------
-*/
-
+// Animations
 @mixin slide($direction: left, $speed: 300ms) {
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   -webkit-transition: $direction $speed ease;
   -moz-transition: $direction $speed ease;
   -ms-transition: $direction $speed ease;
@@ -155,9 +137,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
   margin-top: 2em;
 }
 
- /*
- Helpers
- ------------- */
+// Helpers
 @mixin reset {
   margin: 0;
   padding: 0;

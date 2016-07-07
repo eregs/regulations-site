@@ -7,60 +7,64 @@ This contains all of the styles specific to the TOC
   padding-top: 40px;
 
   &.preamble-nav {
-  padding: 62px 0 0 10px;
+    padding: 62px 0 0 10px;
 
-  .toc-item {
-    padding: 7px 15px 5px 5px;
-    margin-left: 0;
-    text-indent: -15px;
-  }
-
-  a:link,
-  a:visited {
-    @include border-bottom-light ($width: 0px);
-  }
-
-  a:hover,
-  a:active,
-  .current {
-    padding-left: 105px;
-    margin-left: -100px;
-  }
-
-  .toc-entry-at-1, .toc-entry-at-1:hover {
-    border-top: 1px solid $light_field;
-    @include sans-font-bold;
-    margin-left: -100px;
-    padding: 9px 0 9px 110px;
-  }
-
-  .toc-depth-2 {
-    border-top: 1px solid $light_field;
-    margin-left: -100px;
-    padding: 0 0 0 105px;
-
-    .toc-entry-at-2 {
-    padding-top: 5px;
+    .toc-item {
+      padding: 7px 15px 5px 5px;
+      margin-left: 0;
+      text-indent: -15px;
     }
-    &> li:first-child .toc-entry-at-2 {
-    padding-top: 10px;
-    }
-    &> li:last-child .toc-entry-at-2 {
-    padding-bottom: 10px;
-    }
-  }
 
-  .toc-depth-3 {
-    // to account for the last child padding
-    // when there's a nested list
-    .toc-entry-at-3 {
-      padding-top: 5px;
-      padding-bottom: 5px;
+    a:link,
+    a:visited {
+      @include border-bottom-light ($width: 0);
     }
-    & > li:last-child .toc-entry-at-3 {
-      padding-bottom: 10px;
+
+    a:hover,
+    a:active,
+    .current {
+      padding-left: 105px;
+      margin-left: -100px;
     }
-  }
+
+    .toc-entry-at-1,
+    .toc-entry-at-1:hover {
+      border-top: 1px solid $gray_light;
+      @include sans-font-bold;
+      margin-left: -100px;
+      padding: 9px 0 9px 110px;
+    }
+
+    .toc-depth-2 {
+      border-top: 1px solid $gray_light;
+      margin-left: -100px;
+      padding: 0 0 0 105px;
+
+      .toc-entry-at-2 {
+        padding-top: 5px;
+      }
+
+      & > li:first-child .toc-entry-at-2 {
+        padding-top: 10px;
+      }
+
+      & > li:last-child .toc-entry-at-2 {
+        padding-bottom: 10px;
+      }
+    }
+
+    .toc-depth-3 {
+      // to account for the last child padding
+      // when there's a nested list
+      .toc-entry-at-3 {
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+
+      & > li:last-child .toc-entry-at-3 {
+        padding-bottom: 10px;
+      }
+    }
   }
 
   &.cfr-nav {
@@ -86,7 +90,7 @@ This contains all of the styles specific to the TOC
     display: block;
   }
 
-  /* Interpretation Subparts in the TOC are styled differently */
+  // Interpretation Subparts in the TOC are styled differently
   .toc-interp-heading {
     @include regulation-nav-interp-heading-font;
   }
@@ -104,7 +108,7 @@ This contains all of the styles specific to the TOC
 
   a:link,
   a:visited {
-    color: $navigation_gray;
+    color: $gray_darker;
     @include border-bottom-light ($width: 1px);
   }
 
@@ -114,7 +118,7 @@ This contains all of the styles specific to the TOC
     margin-left: -100px;
     padding-left: 105px;
     color: $black;
-    background-color: $toc_highlight;
+    background-color: $blue_lightest;
   }
 
   /*
@@ -128,19 +132,19 @@ This contains all of the styles specific to the TOC
   .added a,
   .added a:link,
   .added a:visited {
-    border-right: 8px solid $green_midtone;
+      border-right: 8px solid $green_light;
   }
 
   .deleted a,
   .deleted a:link,
   .deleted a:visited {
-    border-right: 8px solid $red_orange_80;
+    border-right: 8px solid $red_light;
     text-decoration: line-through;
-    color: $gray_80;
+    color: $gray;
   }
 }
 
-/* Highlight the History tab in diff view */
+// Highlight the History tab in diff view
 .active-tab a:link,
 .active-tab a:visited,
 .active-tab a:hover,
@@ -149,13 +153,13 @@ This contains all of the styles specific to the TOC
 }
 
 
-/* Negative margin, positive padding to extend borders full width */
+// Negative margin, positive padding to extend borders full width
 .subpart-heading {
   margin: 0 0 0 -100px;
   padding: 10px 0 10px 105px;
   display: block;
   line-height: 1.4;
-  background-color: #F8F8F8;
+  background-color: $gray_lightest;
   @include border-bottom-light ($width: 1px);
   @include regulation-nav-subpart-heading-font;
 }
@@ -172,7 +176,6 @@ This contains all of the styles specific to the history
 */
 
 .history-drawer {
-
   @include sans-font-bold;
 
   ul,
@@ -187,17 +190,17 @@ This contains all of the styles specific to the history
   .effective-label {
     padding: 0 15px;
     @include sans-font-regular;
-    color: $dark_text;
+    color: $gray_darker;
   }
 
-  /*TODO: unify link styles with TOC*/
+  // TODO: unify link styles with TOC
 
   .version-list {
-    border-top: 1px solid $light_field;
+    border-top: 1px solid $gray_light;
   }
 
   .status-list {
-    border-bottom: 1px solid $light_field;
+    border-bottom: 1px solid $gray_light;
   }
 
   .version-link {
@@ -209,20 +212,20 @@ This contains all of the styles specific to the history
     z-index: 0;
   }
 
-  /* IE8 only respects the background color on the individual elements */
+  // IE8 only respects the background color on the individual elements
   .current {
     .version-link {
-      padding: 10px 15px 0px 15px;
-      background: $toc_highlight;
+      padding: 10px 15px 0 15px;
+      background: $blue_lightest;
     }
 
     .timeline-content-wrap {
-      background: $toc_highlight;
+      background: $blue_lightest;
     }
 
     .rule-list {
       display: block;
-      background: $toc_highlight;
+      background: $blue_lightest;
     }
   }
 
@@ -239,7 +242,7 @@ This contains all of the styles specific to the history
   .version-link:target,
   .current {
     color: $black;
-    background: $toc_highlight;
+    background: $blue_lightest;
     display: block;
   }
 
@@ -268,7 +271,7 @@ This contains all of the styles specific to the history
   }
 
   .rule-status {
-    color: $dark_text;
+    color: $gray_darker;
     text-transform: lowercase;
     @include sans-font-regular;
     display: block;
@@ -281,11 +284,11 @@ This contains all of the styles specific to the history
   }
 
   .rule-list li {
-    padding: 0 0 .5em 0;
+    padding: 0 0 0.5em 0;
   }
 
   .rule-list li:last-child {
-    padding-bottom: .2em;
+    padding-bottom: 0.2em;
   }
 
   .version-date {
@@ -317,14 +320,14 @@ This contains all of the styles specific to the history
   */
   .form-wrap {
     margin: 15px;
-    background-color: #fff;
+    background-color: $white;
     line-height: 32px;
-    border-top: 1px solid $light_field;
-    border-bottom: 1px solid $light_field;
-    border-left: 1px solid $light_field;
+    border-top: 1px solid $gray_light;
+    border-bottom: 1px solid $gray_light;
+    border-left: 1px solid $gray_light;
   }
 
-  input[type=text]{
+  input[type=text] {
     border: none;
     text-align: center;
     line-height: 32px;
@@ -347,17 +350,17 @@ This contains all of the styles specific to the history
   }
 }
 
-/*IE8 refuses to apply the link hovers*/
+// IE8 refuses to apply the link hovers
 .lt-ie9 {
   #history {
     li:hover,
     li.current {
-      background-color: $toc_highlight;
+      background-color: $blue_lightest;
     }
   }
 }
 
-/* when ie7 users do visit, the drawer header won't stick out */
+// when ie7 users do visit, the drawer header won't stick out
 .lt-ie8 {
   .drawer-header .toc-type {
     width: 210px;
@@ -370,20 +373,20 @@ This contains all of the styles specific to the history
   -webkit-border-radius: 3px;
   border-radius: 3px;
   margin: 15px;
-  background-color: $red_orange;
+  background-color: $red;
   padding: 10px;
   text-align: center;
 }
 
 .stop-button:link,
 .stop-button:visited {
-  color: #fff;
+  color: $white;
 }
 
 .stop-button:hover,
 .stop-button:active,
 .stop-button:focus {
-  background-color: $red_orange_50;
+  background-color: $red_lightest;
   color: $black;
 }
 
@@ -401,7 +404,7 @@ This contains all of the styles specific to the search
   }
 
   h3 {
-    color: $dark_text;
+    color: $gray_darker;
     @include sans-font-regular;
     font-size: 0.875em;
     line-height: normal;
@@ -410,16 +413,16 @@ This contains all of the styles specific to the search
   }
 
   .version-search {
-    border-bottom: 2px solid $medium_gray;
+    border-bottom: 2px solid $gray_light;
     padding: 0 15px 20px 15px;
   }
 
   .search-box {
-    border-bottom: 1px solid $medium_gray;
+    border-bottom: 1px solid $gray_light;
     padding: 20px 15px;
   }
 
-  input[type=text]{
+  input[type=text] {
     width: 80%;
   }
 
@@ -429,19 +432,18 @@ This contains all of the styles specific to the search
 }
 
 .search-box {
-
   input {
     height: 32px;
     line-height: 32px;
     margin: 0;
   }
 
-  input[type=text]{
+  input[type=text] {
     padding: 0 10px;
     text-align: left;
-    border-top: 1px solid $light_field;
+    border-top: 1px solid $gray_light;
     border-right: none;
-    border-bottom: 1px solid $light_field;
-    border-left: 1px solid $light_field;
+    border-bottom: 1px solid $gray_light;
+    border-left: 1px solid $gray_light;
   }
 }

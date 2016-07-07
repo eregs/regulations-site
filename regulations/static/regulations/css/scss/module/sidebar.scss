@@ -24,7 +24,7 @@ Sidebar
 =======
 */
 .secondary-content {
-  font-size: .875em;
+  font-size: 0.875em;
   @include sans-font-regular;
 
   /* reset the margin and padding of all sidebar lists*/
@@ -32,27 +32,24 @@ Sidebar
   li {
     @include reset;
   }
-/*
-Headers within the sidebar should be <h4>
-*/
 
+  // Headers within the sidebar should be <h4>
   h4 {
     font-size: 0.857142857em;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: $mid_text;
+    color: $gray_darkest;
     @include sans-font-bold;
 
     &.important {
-      color: $red_orange;
+      color: $red;
     }
 
     h5 {
       margin: 0;
     }
   }
-
 
 /*
 Sidebar Expandables
@@ -61,11 +58,11 @@ Sidebar Expandables
 
   .expandable {
     cursor: pointer;
-    background-color: $bg_gray;
+    background-color: $gray_lightest;
     width: 100%;
 
     &.has-content {
-      background-color: $light_orange;
+      background-color: $orange_lightest;
     }
 
     h4 {
@@ -84,13 +81,13 @@ Sidebar Expandables
     &.expandable a:before {
       @extend .cf-icon;
       content: '\e109';
-      color: $pacific;
+      color: $blue_light;
     }
 
     &.open a:before {
       @extend .cf-icon;
       content: '\e111';
-      color: $pacific;
+      color: $blue_light;
     }
   }
 
@@ -98,9 +95,8 @@ Sidebar Expandables
   Helpers
   -------------------
   */
-
   .sidebar-subsection {
-    border-bottom: 1px solid $light_neutral;
+    border-bottom: 1px solid $gray_light;
     padding-bottom: 28px;
     padding-top: 28px;
   }
@@ -122,11 +118,11 @@ Sidebar Headers
 */
 .sidebar-header {
   @extend .group;
-  background-color: $bg_gray;
+  background-color: $gray_lightest;
 
   h4 {
-    color: $dark_gray;
-    padding: .5em 0 .5em .9375em;
+    color: $gray_light;
+    padding: 0.5em 0 0.5em 0.9375em;
     @include sans-font-bold;
     text-transform: uppercase;
     padding-right: 25px;
@@ -142,24 +138,21 @@ Sidebar Headers
   }
 
   &.spinner {
-    background: $bg_gray url('../img/blue_spinner.gif') no-repeat center right;
+    background: $gray_lightest url('../img/blue_spinner.gif') no-repeat center right;
     background-position-x: 92%;
   }
 
-  @media
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .close-button {
-      background: $bg_gray url('../img/close@2x.png') no-repeat 0 0;
+      background: $gray_lightest url('../img/close@2x.png') no-repeat 0 0;
       background-size: 13px 13px;
     }
 
     &.spinner {
-      background: $bg_gray url('../img/blue_spinner@2x.gif') no-repeat center right;
+      background: $gray_lightest url('../img/blue_spinner@2x.gif') no-repeat center right;
       background-position-x: 92%;
       background-size: 19px 19px;
     }
-
   }
 }
 
@@ -177,7 +170,7 @@ Regs Meta contains the sub-content meta data found in the sidebar
 .regs-meta {
 
   h4 {
-    padding: .5em 1em;
+    padding: 0.5em 1em;
     @include sans-font-bold;
   }
 
@@ -193,18 +186,18 @@ Regs Meta contains the sub-content meta data found in the sidebar
   }
 
   .explanation {
-    color: $dark_gray;
+    color: $gray_light;
     margin: 0;
   }
 
   .divided-list {
     margin-top: 12px;
-    border-top: 1px solid $light_neutral;
+    border-top: 1px solid $gray_light;
 
     li {
       display: block;
       @include border-bottom-light;
-      padding: .5em;
+      padding: 0.5em;
     }
   }
 
@@ -228,15 +221,15 @@ Regs Meta contains the sub-content meta data found in the sidebar
       float: right;
       font-size: 0.875em;
       line-height: 2;
-      color: $dark_gray;
+      color: $gray_light;
     }
 
     &:hover, &:active {
       text-decoration: none;
-      color: $pacific;
+      color: $blue_light;
 
       .cf-icon-right {
-        color: $pacific;
+        color: $blue_light;
       }
     }
   }
@@ -289,7 +282,7 @@ When open definitions appear in the right sidebar
   }
 
   .open-definition {
-    border-bottom: 1px solid $medium_gray;
+    border-bottom: 1px solid $gray_light;
   }
 
   .definition-text,
@@ -304,13 +297,13 @@ When open definitions appear in the right sidebar
     &.inactive,
     &.inactive a.continue-link.internal,
     &.inactive a.citation.definition {
-      color: $gray_80;
+      color: $gray;
     }
   }
 
   .definition-warning {
-    color: $red_orange;
-    border-bottom: 1px solid $light_field;
+    color: $red;
+    border-bottom: 1px solid $gray_light;
     margin: 0 1em;
     padding: 1em 0 0 0;
 
@@ -328,7 +321,7 @@ When open definitions appear in the right sidebar
   .msg {
     width: 85%;
     float: left;
-    border-bottom: 1px solid $light_field;
+    border-bottom: 1px solid $gray_dark;
     padding-bottom: 1em;
   }
 
@@ -372,10 +365,9 @@ Styles for the UI help slide down
 }
 
 .help-list {
-
   li {
     margin-top: 15px;
-    color: $mid_text;
+    color: $gray_darkest;
   }
 
   .cf-icon-right {
@@ -383,15 +375,14 @@ Styles for the UI help slide down
   }
 
   .modified {
-    border-right: 8px solid $green_midtone;
+    border-right: 8px solid $green_light;
   }
 
   .deleted {
-    border-right: 8px solid $red_orange_80;
+    border-right: 8px solid $red_light;
     text-decoration: line-through;
-    color: $gray_80;
+    color: $gray;
   }
-
 }
 
 .help-list {
@@ -409,7 +400,7 @@ Styles for the UI help slide down
   padding: 10px;
   margin-right: 15px;
   border-radius: 4px;
-  background-color: $bg_gray;
+  background-color: $gray_lightest;
   text-align: center;
   vertical-align: middle;
 }
@@ -418,7 +409,7 @@ Styles for the UI help slide down
   width: 60px;
   display: block;
   float: left;
-	font-family: $body_font;
+  font-family: $body_font;
 }
 
 .help-text {
@@ -427,13 +418,13 @@ Styles for the UI help slide down
 
 .sample-menu {
   display: block;
-  background: $bg_gray;
+  background: $gray_lightest;
   padding: 15px;
-  border-bottom: 1px solid $medium_gray;
+  border-bottom: 1px solid $gray_light;
 }
 
 .sample-menu:first-child {
-  border-top: 1px solid $medium_gray;
+  border-top: 1px solid $gray_light;
 }
 
 /*
@@ -442,15 +433,12 @@ Small screens
 */
 
 @media only screen and (max-width: 480px) {
-
   .sidebar-inner {
     padding-bottom: 30px;
   }
-
 }
 
 @media only screen and (max-width: 780px) {
-
   .secondary-content {
     position: static;
     width: auto;
@@ -477,7 +465,7 @@ Small screens
   }
 
   .regs-meta {
-    border-top: 1px solid $light_neutral;
+    border-top: 1px solid $gray_light;
   }
 
   /*
@@ -493,7 +481,7 @@ Small screens
     min-width: 100%;
     min-height: 200px;
     padding: 0 20px 80px 50px;
-    background: $bg_gray;
+    background: $gray_lightest;
     @include border-top-light($width: 2px);
     z-index: 200;
     overflow-y: scroll;
@@ -515,17 +503,16 @@ Small screens
   }
 
   .sidebar-header {
-    background-color: $bg_gray;
+    background-color: $gray_lightest;
   }
 }
 
 @media only screen and (max-width: 860px) {
-
-  /* Prevent expandables from going to two lines for as long as possible */
+  // Prevent expandables from going to two lines for as long as possible
   .secondary-content {
     .expandable {
       h4 {
-        font-size: .75em;
+        font-size: 0.75em;
       }
 
       a {
@@ -544,11 +531,8 @@ Small screens
 /*
 Large screens
 -------------- */
-
 @media only screen and (min-width: 1100px) {
-
   .sidebar-header.spinner {
     background-position-x: 94%;
   }
-
 }

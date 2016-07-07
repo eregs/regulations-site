@@ -13,7 +13,6 @@ reg-landing.scss contains styles specific to the regulation landing page
 }
 
 .landing {
-
   h4 {
     @include sans-font-regular;
     display: inline;
@@ -66,7 +65,7 @@ reg-landing.scss contains styles specific to the regulation landing page
   padding-top: 2em;
   height: 1px;
   display: block;
-  border-bottom: 1px solid $light_field;
+  border-bottom: 1px solid $gray_light;
   content: '';
 }
 
@@ -97,7 +96,7 @@ Tags
   margin-bottom: 0;
 }
 
- /*
+/*
 Sidebar
 ============================
 */
@@ -181,7 +180,6 @@ Small screens
 */
 
 @media only screen and (max-width: 780px) {
-
   .reg-tags {
     width: 100%;
     padding-right: none;
@@ -190,6 +188,6 @@ Small screens
 
   .secondary-content .landing-sidebar .alert {
     margin-top: 0;
-    border-top: 1px solid $light_field;
+    border-top: 1px solid $gray_light;
   }
 }

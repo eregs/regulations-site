@@ -1,9 +1,6 @@
 @media print {
 
-  /*
-   Typography
-   ========================================================================== */
-
+  // Typography
   body {
     font-size: 11pt;
     line-height: 14pt;
@@ -56,9 +53,7 @@
     font-family: $body_font !important;
   }
 
-  /*
-   Page Breaks & Orphans
-   ========================================================================== */
+  // Page Breaks & Orphans
   h1,
   h2,
   h3,
@@ -70,10 +65,7 @@
     orphans: 3;
   }
 
-  /*
-   Hidden Elements
-   ========================================================================== */
-
+  // Hidden Elements
   nav,
   #table-of-contents,
   .panel,
@@ -86,7 +78,7 @@
   .regs-meta,
   .sxs-back-button {
     display: none !important;
-   }
+  }
 
   .reg-header,
   .main-head,
@@ -157,26 +149,20 @@
     }
   }
 
-   /*
-   Margin/Padding Resets
-   ========================================================================== */
-
+  // Margin/Padding Resets
   body,
   .wrap {
     margin: 0;
     padding: 0;
   }
 
-   /*
-   Heading/Keyword Styles
-   ========================================================================== */
-
+  // Heading/Keyword Styles
   h1 {
     font-size: 26pt;
     line-height: 30pt;
   }
 
-   .section-title {
+  .section-title {
     font-size: 20pt;
     line-height: 26pt;
     margin-top: 15px;
@@ -197,7 +183,7 @@
   a.citation:link,
   a.citation:visited {
     border-bottom: none;
-    color: #101820;
+    color: $black;
   }
 
   a[href^="http://"] {
@@ -205,9 +191,7 @@
     padding-right: 0;
   }
 
-  @media
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     a[href^="http://"] {
       background: none;
     }
@@ -218,8 +202,8 @@
    ========================================================================== */
 
   .inline-interpretation {
-    background: $bg_gray;
-    border: 1px solid $bg_gray;
+    background: $gray_lightest;
+    border: 1px solid $gray_lightest;
 
     .hidden {
       .js & {
@@ -244,7 +228,7 @@
     position: relative;
     padding: 0;
     margin: 10px;
-    border: 1px solid $light_neutral;
+    border: 1px solid $gray_light;
 
     .sidebar-header {
       display: none;
@@ -264,10 +248,7 @@
   }
 
 
-  /*
-   Layout Styles/Resets
-   ========================================================================== */
-
+  // Layout Styles/Resets
   .level-1 > li {
     border-bottom: none;
     padding: .5em 0;
@@ -296,8 +277,7 @@
     padding-bottom: 0;
   }
 
-  /* Reset internal navigation offsets */
-
+  // Reset internal navigation offsets
   .reg-section .level-1 li,
   .appendix-section .level-1 li,
   .supplement-section .level-1 li {
@@ -305,10 +285,7 @@
     margin-top: 0;
   }
 
-  /*
-   Section by Section Styles/Resets
-   ========================================================================== */
-
+  // Section by Section Styles/Resets
   .sxs {
     padding-bottom: 0;
   }
@@ -338,10 +315,7 @@
     background: none;
   }
 
-  /*
-   eRegs Home Page Styles/Resets
-   ========================================================================== */
-
+  // eRegs Home Page Styles/Resets
   .hero-header,
   .hero-text,
   .read-more-link,
@@ -356,7 +330,6 @@
     .content-secondary {
       width: 100%;
     }
-
   }
 
   .notices {
@@ -364,17 +337,14 @@
   }
 
   .hero {
-    background-color: #ffffff;
+    background-color: $white;
 
     .inner-wrap {
       height: 180px;
     }
   }
 
-  /*
-   eRegs About Page Styles/Resets
-   ========================================================================== */
-
+  // eRegs About Page Styles/Resets
   .about-content {
     img {
       display: inline-block;
@@ -404,8 +374,6 @@
   }
 
   .title-hero {
-    background-color: #ffffff;
+    background-color: $white;
   }
-
-
 }

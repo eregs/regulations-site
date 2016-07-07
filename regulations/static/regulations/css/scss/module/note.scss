@@ -1,22 +1,23 @@
 .note {
-  background-color: $bg_gray;
+  background-color: $gray_lightest;
   padding: 1em;
   padding-left: -40px;
   // 40px is the amount of indentation per ol level
   // This makes notes look flush with their parent
+
   h4 {
     margin-top: 0;
   }
 }
 
 .footnote-box {
-  background-color: $bg_gray;
+  background-color: $gray_lightest;
   padding: 1.5em;
   margin-left: 20px;
 
   h5 {
     margin-top: 0;
-    color: $dark_text;
+    color: $gray_darker;
     @include sans-font-bold;
   }
 

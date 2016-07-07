@@ -19,23 +19,23 @@ button {
   height: 32px;
   vertical-align: bottom;
   margin: 0;
-  background-color: $pacific;
-  color: #fff;
+  background-color: $blue_light;
+  color: $white;
   border: none;
   text-align: center;
-  -webkit-transition: .1s;
-  -moz-transition: .1s;
-  transition: .1s;
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  transition: 0.1s;
 }
 
 button:hover,
 button:active {
-  background-color: $pacific_hover;
+  background-color: $blue_light;
 }
 
 textarea:focus,
 input:focus {
-  border: 1px solid $pacific;
+  border: 1px solid $blue_light;
 }
 
 .file-upload {
@@ -54,7 +54,7 @@ input:focus {
   filter: alpha(opacity = 0);
   opacity: 0;
   outline: none;
-  background: #fff;
+  background: $white;
   cursor: inherit;
   display: block;
 }
@@ -65,19 +65,16 @@ Selects
 */
 
 .select-content {
-  overflow: hidden; /* this hides the select's drop button */
+  overflow: hidden; // this hides the select's drop button
   position: relative;
-  background: #fff url('../img/select.png') no-repeat bottom right;
-  //width: 100%;
-  border: solid 1px $light_field;
+  background: $white url('../img/select.png') no-repeat bottom right;
+  border: solid 1px $gray_light;
   height: 32px;
 }
 
-@media
-(-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .select-content {
-    background: #fff url('../img/select$2x.png') no-repeat bottom right;
+    background: $white url('../img/select$2x.png') no-repeat bottom right;
     background-size: 32px 32px;
   }
 }
@@ -89,8 +86,8 @@ select {
   -webkit-appearance: none;
   border: none;
   box-shadow: none;
-  padding: 0 10px; /* add padding to the select, not the div */
-  color: $dark_text;
+  padding: 0 10px; // add padding to the select, not the div
+  color: $gray_darker;
   height: 32px;
 }
 

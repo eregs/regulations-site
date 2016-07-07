@@ -21,7 +21,7 @@
  */
 
 .hero {
-  background-color: $green_midtone;
+  background-color: $green_light;
   overflow: hidden;
   @include sans-font-regular;
   @include border-bottom-light;
@@ -31,9 +31,7 @@
   }
 }
 
-@media
-(-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .hero .inner-wrap {
     background: url('../img/hero$2x.png') 96% -100% no-repeat;
     background-size: 325px 206px;
@@ -45,9 +43,7 @@
     background: none;
   }
 
-  @media
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .hero .inner-wrap {
       background: none;
     }
@@ -74,8 +70,8 @@
 */
 
 .reg-list {
-  @include reset;
   margin-top: 1em;
+  @include reset;
   @include border-top-light;
 
   li {
@@ -99,7 +95,7 @@
   a:hover,
   a:active,
   a:focus {
-    background-color: $bg_gray;
+    background-color: $gray_lightest;
   }
 
   .title-num {
@@ -127,7 +123,7 @@
     display: block;
     float: right;
     line-height: 60px;
-    color: $pacific;
+    color: $blue_light;
     font-size: 1.25em;
   }
 
@@ -144,7 +140,7 @@
     a {
       display: inline-block;
       float: right;
-      color: $link_blue;
+      color: $blue_light;
       margin: 0;
       padding: 0;
       height: auto;
@@ -207,7 +203,6 @@ Small screens
 */
 
 @media only screen and (max-width: 480px) {
-
   .banner-text {
     margin-top: 50px;
     font-size: 1.625em;
@@ -223,7 +218,6 @@ Small screens
   }
 
   .reg-list {
-
     .title-num {
       display: block;
       height: auto;

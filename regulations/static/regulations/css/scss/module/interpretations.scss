@@ -1,18 +1,18 @@
 .inline-interpretation {
-  background-color: $bg_gray;
-  padding: 0.125em .625em;
+  background-color: $gray_lightest;
+  padding: 0.125em 0.625em;
   margin-bottom: 1em;
   margin-left: -20px; // aligns with list marker
   border-bottom: 0;
   position: relative;
 
   &:hover {
-    background-color: $grey;
+    background-color: $gray_lighter;
     cursor: pointer;
   }
 
   &.open {
-    background-color: $grey;
+    background-color: $gray_lighter;
     cursor: auto;
   }
 
@@ -28,7 +28,7 @@
   }
 
   .expand-button {
-    color: $pacific;
+    color: $blue_light;
     @include sans-font-bold;
     position: absolute;
     display: inline-block;
@@ -64,9 +64,7 @@
     text-transform: uppercase;
   }
 
-  @media
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     h4 {
       background: url('../img/interpretation@2x.png') no-repeat 0 3px;
       background-size: 12px 15px;
@@ -105,7 +103,7 @@
     padding: 0;
   }
 
-  /* reset padding used to accomodate permalink marker in main content */
+  // reset padding used to accomodate permalink marker in main content
   .reg-section li > p {
     padding-left: 0;
     margin-left: 0;
@@ -159,7 +157,7 @@
 
   &:hover {
     cursor: default;
-    background-color: $bg_gray;
+    background-color: $gray_lightest;
   }
 }
 
@@ -175,9 +173,7 @@ Small screens
       background: none;
     }
 
-    @media
-    (-webkit-min-device-pixel-ratio: 2),
-    (min-resolution: 192dpi) {
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
       h4 {
         background: none;
       }

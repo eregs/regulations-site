@@ -11,20 +11,20 @@ Universal drawer styles
 --------------------- */
 
 .panel {
-  background-color: $light_gray;
-  border-right: 2px solid $dark_gray;
+  background-color: $gray_lightest;
+  border-right: 2px solid $gray_light;
   @include sans-font-regular;
   font-size: 1em;
-  overflow-y: scroll; /* allow content to be scrollable */
+  overflow-y: scroll; // allow content to be scrollable
 }
 
 .toc-head {
-  border-right: 2px solid $dark_gray;
+  border-right: 2px solid $gray_light;
   transition: 0.1s;
 
   a:link,
   a:visited {
-    color: $navigation_gray;
+    color: $gray_darker;
     text-decoration: none;
     height: 33px;
   }
@@ -61,11 +61,10 @@ Panel Header
 .drawer-header {
   position: fixed;
   background-color: $white;
-  border-right: 2px solid $dark_gray;
-  border-bottom: 1px solid $dark_gray;
+  border-right: 2px solid $gray_light;
+  border-bottom: 1px solid $gray_light;
 
-  .toc-type,
-  .toc-subheader {
+  .toc-type, .toc-subheader {
     position: relative;
     margin: 0;
     width: 238px;
@@ -103,7 +102,7 @@ Panel Slide Button
 
 .panel-slide {
   display: block;
-  height: 34px; /* match height of main header */
+  height: 34px; // match height of main header
   line-height: 34px;
   width: $closed_drawer_width;
   float: right;
@@ -111,35 +110,16 @@ Panel Slide Button
   text-align: center;
   font-size: 0.875em;
 
-  /* use an image for IE7 and browsers that don't support @font-face */
+  // use an image for IE7 and browsers that don't support @font-face
   .lt-ie8 &,
   html.no-fontface & {
-    background: url(../img/left.png) center center no-repeat;
+    background: url('../img/left.png') center center no-repeat;
     color: transparent;
   }
 
   .close & {
-    border-bottom: 1px solid $medium_gray;
+    border-bottom: 1px solid $gray_light;
 
-    .lt-ie8 &,
-     html.no-fontface & {
-      background: url(../img/right.png) center center no-repeat;
-      color: transparent;
-    }
-  }
-}
-
-/* use the icon font for the drawer toggle arrow in browsers that support it */
-.panel-slide {
-  img:first-child {
-    display: none;
-  }
-
-  img:last-child {
-    display: inline-block;
-  }
-
-  .close & {
     img:first-child {
       display: inline-block;
     }
@@ -147,13 +127,28 @@ Panel Slide Button
     img:last-child {
       display: none;
     }
+
+    .lt-ie8 &,
+     html.no-fontface & {
+      background: url('../img/right.png') center center no-repeat;
+      color: transparent;
+    }
+  }
+
+  // use the icon font for the drawer toggle arrow in browsers that support it
+  img:first-child {
+    display: none;
+  }
+
+  img:last-child {
+    display: inline-block;
   }
 }
 
 .drawer-toggle-icon {
-  height:15px;
-  vertical-align:middle;
-  margin-bottom:4px;
+  height: 15px;
+  vertical-align: middle;
+  margin-bottom: 4px;
 }
 
 /*
@@ -171,8 +166,8 @@ currently these are TOC, History, and Search
   margin: 0;
   width: 56px;
   text-align: center;
-  background-color: $light_gray;
-  color: $navigation_gray;
+  background-color: $gray_lightest;
+  color: $gray_darker;
 
   &.current {
     background-color: $white;
@@ -185,7 +180,7 @@ currently these are TOC, History, and Search
     width: $closed_drawer_width - 1;
   }
 
-  /* Fall back to PNG images for drawer icons when @font-face isn't supported */
+  // Fall back to PNG images for drawer icons when @font-face isn't supported
   .cf-icon {
     html.no-fontface & {
       background-size: 20px;
@@ -195,24 +190,24 @@ currently these are TOC, History, and Search
 
   .cf-icon-search {
     html.no-fontface & {
-      background: url(../img/search.png) center center no-repeat;
+      background: url('../img/search.png') center center no-repeat;
     }
   }
 
 }
 
 .close {
-   .toc-nav-link {
-      &.current {
-        background-color: $white;
-        border-bottom: none;
-      }
-    }
-
-    .toc-nav-link:hover {
-      background-color: $light_field;
+  .toc-nav-link {
+    &.current {
+      background-color: $white;
       border-bottom: none;
     }
+  }
+
+  .toc-nav-link:hover {
+    background-color: $gray_light;
+    border-bottom: none;
+  }
 }
 
 .menu-tab {
@@ -221,7 +216,7 @@ currently these are TOC, History, and Search
 }
 
 
-/* align the drawer toggle list*/
+// align the drawer toggle list
 .drawer-toggles {
   position: relative;
   top: 0;
@@ -233,7 +228,7 @@ currently these are TOC, History, and Search
     position: absolute;
     width: $closed_drawer_width;
     top: 33px;
-    border-top: 1px solid $medium_gray;
+    border-top: 1px solid $gray_light;
     right: 0;
     left: 198px;
   }
@@ -243,13 +238,13 @@ currently these are TOC, History, and Search
   display: inline-block;
   zoom: 1;
   margin-left: -4px;
-  border-right: 1px solid $medium_gray;
-  border-left: 1px solid $medium_gray;
+  border-right: 1px solid $gray_light;
+  border-left: 1px solid $gray_light;
 
   .close & {
     margin-left: 0;
     display: list-item;
-    border-bottom: 1px solid $medium_gray;
+    border-bottom: 1px solid $gray_light;
     border-right: none;
   }
 }
@@ -264,14 +259,14 @@ Drawer default closed state
   top: $mainhead_height + $subhead_height + 3 * 34px + 1; // Header, subheader, 3 TOC list items + 1px drawer-toggles border
   overflow-y: hidden;
 
-/* slide content fully offscreen*/
+  // slide content fully offscreen
   .drawer-content {
     position: absolute;
     left: -999px;
   }
 
   .drawer-header {
-    left: -260px; /*60px extra to accomodate for stacked buttons*/
+    left: -260px; // 60px extra to accomodate for stacked buttons
 
     .toc-type {
       display: none;
@@ -282,11 +277,11 @@ Drawer default closed state
 .close .toc-head {
   left: -200px;
   margin-right: 15px;
-  height: 150px; /* extra height for TOC toggle buttons */
+  height: 150px; // extra height for TOC toggle buttons
 }
 
 /*
 Small resolution drawer state
 ============================= */
 
-@import "drawer-content.scss";
+@import 'drawer-content';

@@ -5,9 +5,7 @@ main.scss imports all supporting scss files
 and includes any non-semantic helper classes
 */
 
-/*
-Type & Layout
-------------- */
+// Type & Layout
 @import 'base-variables';
 @import 'normalize';
 @import 'variables';
@@ -18,9 +16,7 @@ Type & Layout
 @import 'icons/cf-icons';
 @import 'icons/font-awesome';
 
-/*
-Modules
-------- */
+// Modules
 @import 'module/navigation';
 @import 'module/drawer';
 @import 'module/extract';
@@ -40,12 +36,16 @@ Modules
 @import 'module/about';
 @import 'module/error';
 @import 'module/paragraph-markers';
+
+// Notice and Comment
 @import 'comment/comment';
 @import 'comment/comment-read';
 @import 'comment/comment-write';
 @import 'comment/comment-review';
 @import 'comment/comment-confirm';
 @import 'comment/comment-media-queries';
+
+// Custom imports
 @import 'module/custom';
 
 
@@ -53,7 +53,7 @@ Modules
  Helper Classes
  ========================================================================== */
 
-/* apply a natural box layout model to all elements */
+// apply a natural box layout model to all elements
 *,
 *:before,
 *:after {
@@ -62,12 +62,7 @@ Modules
   box-sizing: border-box;
  }
 
-/*.lt-ie10 {
-  *, *:before, *:after {
-    box-sizing: content-box;
-  }
-}*/
- /* hide sxs links */
+// hide sxs links
 .sxs-ref {
   display: none;
 }
@@ -124,7 +119,7 @@ Modules
 }
 
 .important {
-  color: $red_orange;
+  color: $red;
 }
 
 .alert {
@@ -143,7 +138,7 @@ Modules
 
 .well {
   padding: 1em 1.25em;
-  background: $bg_gray;
+  background: $gray_lightest;
 }
 
 .bump {
@@ -179,28 +174,27 @@ Modules
 
 .error {
   @include sans-font-regular;
-  color: $red_orange;
-  border-bottom: 1px solid $light_field;
-  font-size: .9em;
+  color: $red;
+  border-bottom: 1px solid $gray_light;
+  font-size: 0.9em;
   padding: 1em 0;
   line-height: 1.6em;
 }
 
 .icon-warning {
   float: left;
-  margin: .25em .5em 0 0;
-  color: $red_orange;
+  margin: 0.25em 0.5em 0 0;
+  color: $red;
 }
 
-/* credit */
 #modal {
   @include sans-font-bold;
-  color: $dark_gray;
+  color: $gray_light;
   width: 400px;
   height: 400px;
   position: fixed;
   z-index: 9999;
-  border: 4px solid $gray_80;
+  border: 4px solid $gray;
   padding: 20px 40px;
 
   ul {
@@ -209,7 +203,7 @@ Modules
 
     li {
       @include sans-font-regular;
-      margin-top: .75em;
+      margin-top: 0.75em;
     }
   }
 }
@@ -218,7 +212,7 @@ Modules
   position: absolute;
   top: 0;
   z-index: 9990;
-  background-color: #fff;
+  background-color: $white;
 }
 
 #x {
@@ -247,7 +241,7 @@ Modules
   color: #DA6750;
 }
 
-/* focus styles need to be defined */
+// focus styles need to be defined
 section:focus,
 .open-definition {
   outline: none;
@@ -259,14 +253,14 @@ img.reg-image {
   margin-left: auto;
   margin-right: auto;
   display: block;
-  border: 1px solid $light_field;
+  border: 1px solid $gray_light;
 }
 
 .block-image {
   display: block;
 }
 
-/* IE7 browser warning message */
+// IE7 browser warning message
 .browser-warning {
   display: block;
   position: absolute;
@@ -325,8 +319,6 @@ Clearfix
   *zoom: 1;
 }
 
-/*
-Import no-js.scss and print.scss at the end, since they override other rules
-*/
+// Import no-js.scss and print.scss at the end, since they override other rules
 @import 'module/no-js';
 @import 'print';

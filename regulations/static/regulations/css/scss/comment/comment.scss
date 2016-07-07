@@ -18,7 +18,7 @@ N&C Header - including Read/Write tab
 
   .tab-descriptions {
     font-size: 14px;
-    color: $dark_field;
+    color: $gray_darker;
     padding: 0 5px;
   }
 
@@ -32,8 +32,8 @@ N&C Header - including Read/Write tab
 
   .read-proposal,
   .write-comment {
-    border-left: 1px solid $medium_gray;
-    color: $dark_text;
+    border-left: 1px solid $gray_light;
+    color: $gray_darker;
     cursor: pointer;
     display: inline-block;
     @include sans-font-regular;
@@ -44,7 +44,7 @@ N&C Header - including Read/Write tab
     width: 245px;
 
     a {
-      color: $navigation_gray;
+      color: $gray_darker;
       padding-left: 5px;
     }
 
@@ -52,7 +52,7 @@ N&C Header - including Read/Write tab
     .write-icon {
       padding: 0;
       font-size: 14px;
-      fill: $navigation_gray;
+      fill: $gray_darker;
     }
 
     &.active-mode a {
@@ -88,5 +88,6 @@ N&C Header - including Read/Write tab
 
 .watermark {
   // for adding a draft watermark to PDFs of unsubmitted comments
-  background-image: url("../img/draft_watermark.png");
+  background-image: url('../img/draft_watermark.png');
 }
+

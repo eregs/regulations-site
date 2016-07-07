@@ -24,7 +24,7 @@ Preamble Write Mode
 
       .comment-header-link a {
         color: $black;
-        border-bottom: 2px solid $link_blue;
+        border-bottom: 2px solid $blue_light;
       }
     }
 
@@ -38,16 +38,16 @@ Preamble Write Mode
 
     // Show toggle box
     a.comment-context-toggle {
-      background-color: $light_gray;
+      background-color: $gray_lightest;
       border-radius: 2px;
-      color: $dark_text;
+      color: $gray_darker;
       cursor: pointer;
       display: block;
       font-size: 16px;
       padding: 10px 15px;
 
       .comment-context-text {
-        color: $link_blue;
+        color: $blue_light;
       }
 
       .fa-minus-circle,
@@ -111,8 +111,8 @@ Preamble Write Mode
       .ProseMirror-menubar {
         min-height: 28px;
         padding: 3px 6px;
-        color: $dark_field;
-        border-bottom: 1px solid $light_field;
+        color: $gray_darker;
+        border-bottom: 1px solid $gray_light;
       }
 
       .comment-content,
@@ -161,7 +161,7 @@ Preamble Write Mode
 
   .comment-button,
   a.comment-index-review {
-    background-color: $link_blue;
+    background-color: $blue_light;
     border-radius: 2px;
     color: $white;
     @include sans-font-regular;
@@ -176,7 +176,7 @@ Preamble Write Mode
     transition: .1s;
 
     &:hover {
-      background-color: darken($link_blue, 10%);
+      background-color: $blue;
     }
   }
 
@@ -190,7 +190,7 @@ Preamble Write Mode
   }
 
   .comment-upload-button {
-    background-color: $grey;
+    background-color: $gray_lighter;
     color: $black;
     cursor: pointer;
     border-radius: 2px;
@@ -201,7 +201,7 @@ Preamble Write Mode
     padding: 8px 20px;
 
     &:hover {
-      background-color: darken($grey, 10%);
+      background-color: $gray_light;
     }
   }
 
@@ -215,7 +215,7 @@ Preamble Write Mode
 
   .comment-attachment-count,
   .comment-attachment-limit {
-    color: $citation_gray;
+    color: $gray_dark;
   }
 
   .comment-upload-button {
@@ -233,7 +233,7 @@ Preamble Write Mode
   }
 
   .comment-attachment {
-    background: $grey;
+    background: $gray_lighter;
     padding: 3px 10px;
     margin: 5px 5px 0 0;
     word-break: break-all;
@@ -248,7 +248,7 @@ Preamble Write Mode
 
     .attachment-remove {
       padding-left: 9px;
-      color: $gray_80;
+      color: $gray;
 
       &:hover {
         color: $black;
@@ -262,7 +262,7 @@ Preamble Write Mode
   }
 
   .comment-delete-response {
-    color: $uswds_dark_red;
+    color: $red;
     display: block;
     @include sans-font-bold;
     float: right;
@@ -277,7 +277,7 @@ Preamble Write Mode
 
   $icon_width: 48px;
   .write-warning {
-    background-color: $toc_highlight;
+    background-color: $blue_lightest;
     padding: $icon_width/2 $icon_width/4 $icon_width/4 2*$icon_width;
     margin: $icon_width/2 0;
 
@@ -333,7 +333,7 @@ Preamble Write Mode
   }
 
   li {
-    background: $gray;
+    background: $gray_light;
     color: $black;
     cursor: default;
     font-weight: 500;
@@ -351,7 +351,7 @@ Preamble Write Mode
       width: 40px;
 
       a:focus .fa {
-        color: darken($black, 10%);
+        color: $black_dark;
         display: inline-block;
       }
 
@@ -359,10 +359,10 @@ Preamble Write Mode
         vertical-align: middle;
         display: none;
         margin-left: 5px;
-        color: $dark_field;
+        color: $gray_darker;
 
         &:hover {
-          color: darken($black, 10%);
+          color: $black_dark;
         }
       }
     }

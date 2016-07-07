@@ -8,14 +8,11 @@
   width: 100%;
 }
 
-/*
-Main Content
-============
-*/
-
 .main-content {
   background: $white;
-  margin-top: $mainhead_height + $subhead_height;
+  margin-top: $mainhead_height + $subhead_height + 4px;
+  // 4px adds additional padding to the content area
+  // preventing text from being squished against the subhead nav
   padding: 0 60px 40px;
 }
 
@@ -39,10 +36,7 @@ Main Content
     overflow-x: none;
   }
 
-  /*
-  active state layouts for large screens
-  --------------------------------------
-  */
+  // active state layouts for large screens
   .active {
     .header-main {
       margin-left: 40px;
@@ -70,11 +64,6 @@ Main Content
   }
 }
 
-/*
-Secondary Content
-============
-*/
-
 .secondary-content {
   position: static;
   width: auto;
@@ -88,23 +77,20 @@ Secondary Content
   .secondary-content {
     position: fixed;
     overflow-y: auto;
-    border-left: 1px solid $light_field;
+    border-left: 1px solid $gray_light;
     top: $mainhead_height + $subhead_height;
     right: 0;
     bottom: 0;
     height: 100%;
     width: 25%;
     padding-left: 0;
-    background: #fff;
+    background: $white;
     z-index: 100;
     margin-left: 15px;
   }
-
 }
 
 @media only screen and (max-width: 1100px) {
-  /* Secondary content */
-
   .secondary-content {
     width: 32%;
   }
@@ -122,7 +108,6 @@ Secondary Content
 }
 
 @media only screen and (min-width: 780px) {
-
   .content-primary {
     width: 65.5241935%;
   }
@@ -148,11 +133,9 @@ Secondary Content
   .column-3+.column-3 {
     margin-left: 4%;
   }
-
 }
 
-
-/*TODO: convert TOC drawer width to em*/
+// TODO: convert TOC drawer width to em
 .panel {
   position: fixed;
   top: $mainhead_height + $subhead_height;
@@ -162,7 +145,7 @@ Secondary Content
   z-index: 300;
 }
 
-/*IE 9 does all sorts of whacky things with the box model and scrollbars. This should fix that*/
+// IE 9 does all sorts of whacky things with the box model and scrollbars. This should fix that
 .lt-ie10 {
   .panel {
     width: 238px;
@@ -176,15 +159,14 @@ Secondary Content
 TOC Header Navigation
 ---------------------
 */
-
 .toc-head {
   position: absolute;
   left: 0;
   width: 240px;
   height: 34px;
-  border-right: 2px solid $medium_gray;
+  border-right: 2px solid $gray_light;
   @include border-bottom-medium($width: 1px);
-  background-color: $bg_gray;
+  background-color: $gray_lightest;
 }
 
 .header-main {
@@ -211,7 +193,6 @@ TOC Header Navigation
 }
 
 @media only screen and (max-width: 1100px) {
-
   .header-main {
     margin-left: 40px;
     margin-right: 32%;
@@ -221,8 +202,6 @@ TOC Header Navigation
     margin-left: 40px;
   }
 }
-
-
 
 
 /*
@@ -235,7 +214,6 @@ Section Offsets
 *
 */
 @media only screen and (min-width: 480px) {
-
   .reg-section:before,
   .appendix-section:before,
   .supplement-section:before,
@@ -257,11 +235,9 @@ Section Offsets
     -moz-background-clip:padding;
     background-clip:padding-box;
   }
-
 }
 
 @media only screen and (max-width: 480px) {
-
   .reg-section:before,
   .appendix-section:before,
   .supplement-section:before,
