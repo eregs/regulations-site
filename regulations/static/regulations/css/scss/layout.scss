@@ -15,7 +15,7 @@ Main Content
 
 .main-content {
     background: $white;
-    margin-top: $mainhead_height + $subhead_height;
+    margin-top: $mainhead_height + $subhead_height + 4px; // 4px adds additional padding to the content area, preventing text from being squished against the subhead nav
     padding: 0 60px 40px;
 }
 
@@ -88,14 +88,14 @@ Secondary Content
     .secondary-content {
         position: fixed;
         overflow-y: auto;
-        border-left: 1px solid $light_field;
+        border-left: 1px solid $gray_light;
         top: $mainhead_height + $subhead_height;
         right: 0px;
         bottom: 0;
         height: 100%;
         width: 25%;
         padding-left: 0px;
-        background: #fff;
+        background: $white;
         z-index: 100;
         margin-left: 15px;
     }
@@ -182,9 +182,9 @@ TOC Header Navigation
     left: 0;
     width: 240px;
     height: 34px;
-    border-right: 2px solid $medium_gray;
+    border-right: 2px solid $gray_light;
     @include border-bottom-medium($width: 1px);
-    background-color: $bg_gray;
+    background-color: $gray_lightest;
 }
 
 .header-main { /* TODO: closely matches main content layout - should unify into single class*/

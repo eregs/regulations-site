@@ -24,7 +24,7 @@ SxS window
     width: 100%;
     height: 100%;
     min-height: 100%;
-    background: #fff;
+    background: $white;
     z-index: 9999;
     overflow-y: auto;
     padding-bottom: 120px; //offset persistent header for scroll
@@ -46,7 +46,7 @@ SxS header
     top: 60px;
     width: 100%;
     height: 2.125em;
-    background-color: $light_orange;
+    background-color: $orange_lightest;
     border-bottom: 1px solid $orange;
     z-index: 100;
 
@@ -77,9 +77,9 @@ Back link
     display: inline-block;
     padding: 0 15px;
     min-width: 5em;
-    background-color: $bg_gray;
-    color: $dark_gray;
-    border-right: 2px solid $medium_gray;
+    background-color: $gray_lightest;
+    color: $gray_light;
+    border-right: 2px solid $gray_light;
     text-decoration: none;
     height: 34px;
     line-height: 34px; /* match height of the .sxs-header - 1px */
@@ -93,7 +93,7 @@ Back link
 
 .sxs-back-button:hover,
 .sxs-back-button:active {
-    color: $pacific;
+    color: $blue_light;
 }
 
 
@@ -151,7 +151,7 @@ Metadata info for the SxS Analysis
     h3,
     h4 {
         margin-bottom: 0;
-        color: $dark_gray;
+        color: $gray_light;
         @include sans-font-bold;
     }
 
@@ -190,7 +190,7 @@ Footnotes
 
 .footnote-title {
     margin-top: 2em;
-    color: $dark_text;
+    color: $gray_darker;
 }
 
 .footnotes {
@@ -232,7 +232,7 @@ Footnotes
 
     .highlight {
         .footnote-inner {
-            background-color: $bg_gray;
+            background-color: $gray_lightest;
         }
     }
 }

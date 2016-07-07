@@ -80,14 +80,14 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
   }
 
   .edit-comment {
-    color: $link_blue;
+    color: $blue_light;
     cursor: pointer;
     position: absolute;
     right: 2%;
     top: 0;
 
     .write-icon {
-      fill: $link_blue;
+      fill: $blue_light;
     }
 
     span:hover {
@@ -102,7 +102,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     max-width: 100%;
 
     ul {
-      background: $grey;
+      background: $gray_lighter;
       padding: 0;
       margin: 5px 0 0 0;
     }
@@ -130,12 +130,12 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
   }
 
   .download-comment {
-    background: $blue_light;
+    background: $blue_lightest;
     border-top: 1px solid $text_area_border;
     padding: 10px 15px;
 
     h4 {
-      color: $pacific;
+      color: $blue_light;
       margin: 0;
       float: left;
       font-size: 18px;
@@ -150,7 +150,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     }
 
     .details {
-      color: $dark_text;
+      color: $gray_darker;
       float: right;
       font-size: 14px;
       text-align: right;
@@ -185,19 +185,19 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     a.btn-group-item {
       color: $black;
       display: inline-block;
-      background: $grey;
+      background: $gray_lighter;
       font-size: 14px;
       line-height: 18px;
       padding: 8px 15px;
-      box-shadow: inset 0 0 1px fade($dark_gray, 90%);
+      box-shadow: inset 0 0 1px $gray_lighter;
       border-radius: 2px;
       cursor: pointer;
 
       &:hover {
-        background: darken($grey, 10%);
+        background: $gray_light;
       }
       &:active, &.current {
-        background: darken($grey, 20%);
+        background: $gray_light;
       }
     }
 
@@ -245,7 +245,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
       height: auto;
       border-radius: 3px;
       border: 1px solid rgba(0,0,0,.25);
-      box-shadow: inset 0 0 1px fade($dark_gray, 90%);
+      box-shadow: inset 0 0 1px $gray_lighter;
       color: $black;
     }
 
@@ -254,7 +254,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     }
 
     span {
-      color: $diff_gray;
+      color: $gray_light;
     }
 
     fieldset {
@@ -283,7 +283,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     max-width: 620px;
 
     .required {
-      color: $red_orange;
+      color: $red;
       margin-left: 5px;
     }
 
@@ -307,12 +307,12 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
 
     .show-more-toggle {
       display: inline;
-      color: $link_blue;
+      color: $blue_light;
       cursor: pointer;
       font-size: 14px;
 
       &:hover {
-        color: darken($link_blue, 10%);
+        color: $blue;
       }
 
       .text-expand {
@@ -323,7 +323,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
   }
 
   .submit-button {
-    background: $pacific;
+    background: $blue_light;
     border-radius: 3px;
     color: #FFF;
     font-size: 17px;
@@ -332,11 +332,11 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     padding: 12px 30px;
 
     &:disabled, &:disabled:hover {
-      background: $grey;
-      color: #000;
+      background: $gray_lighter;
+      color: $black;
     }
     &:hover {
-      background-color: $pacific_hover;
+      background-color: $blue_light;
     }
   }
 }
