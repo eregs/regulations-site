@@ -4,7 +4,7 @@
  about.scss defines the visual appearance of the eRegulations about page
  */
 
-/* about-content is the same as landing-content, these should be unified into one class */
+// about-content is the same as landing-content, these should be unified into one class
 .about-content {
   margin-top: 60px;
   @include sans-font-regular;
@@ -27,11 +27,7 @@
   }
 }
 
-/*
-hero
-------------------
-*/
-
+// hero
 .title-hero {
   background-color: $blue_lighter;
   @include border-bottom-light;
@@ -46,20 +42,6 @@ hero
 
 .about-section {
   border-bottom: 1px solid $gray_light;
-  padding-bottom: 1em;
-}
-
-.about-section:last-child {
-  border-bottom: 0;
-}
-
-/*
-layout
--------------------
-*/
-
-
-.about-section {
   padding: 4em 0;
 
   .inner-wrap {
@@ -67,15 +49,14 @@ layout
   }
 }
 
+.about-section:last-child {
+  border-bottom: 0;
+}
+
+
 .easy-read {
   margin-top: 4em;
 }
-
-/*
-dev well
-------------------
-*/
-
 
 .dev-well {
   h3 {
@@ -100,10 +81,7 @@ dev well
   }
 }
 
-/*
-snazzy ordered lists
-------------------
-*/
+// snazzy ordered lists
 .about-ol {
   counter-reset: li;
   list-style: none;
@@ -134,11 +112,7 @@ snazzy ordered lists
   border-radius: 20px;
 }
 
-/*
-custom styles
-------------------
-*/
-
+// custom styles
 .easy-nav {
   padding-left: 60px;
   position: relative;
@@ -191,13 +165,8 @@ custom styles
 }
 
 
-/*
-Smaller Screen Styles
-======================
-*/
-
+// Smaller Screen Styles
 @media only screen and (max-width: 780px) {
-
   // less section padding
   .about-section {
     padding: 2em 0;
@@ -206,7 +175,6 @@ Smaller Screen Styles
   .easy-read {
     margin-top: 2em;
   }
-
 
   // hidden
   .responsive-img {
@@ -241,13 +209,8 @@ Smaller Screen Styles
 
 }
 
-/*
-Smallest Screen Styles
-======================
-*/
-
+// Smallest Screen Styles
 @media only screen and (max-width: 460px) {
-
   .title-hero {
     h2 {
       font-size: 26px;
