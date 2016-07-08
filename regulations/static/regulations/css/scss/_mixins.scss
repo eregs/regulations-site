@@ -34,7 +34,6 @@ mixins.scss contains any mixins to be used throughout the Sass files
   font-style: normal;
 }
 
-
 // Drawer font styles
 @mixin drawer-header-font {
   @include sans-font-bold;
@@ -48,10 +47,6 @@ mixins.scss contains any mixins to be used throughout the Sass files
   @include sans-font-bold;
   display: block;
   font-size: 18px;
-}
-
-@mixin regulation-nav-item-font {
-
 }
 
 @mixin regulation-nav-subpart-heading-font {
@@ -81,10 +76,6 @@ mixins.scss contains any mixins to be used throughout the Sass files
 // Navigation links
 @mixin next-prev-link-link-font {
   font-size: 0.875em;
-}
-
-@mixin next-prev-link-title-font {
-
 }
 
 // Border Styles
