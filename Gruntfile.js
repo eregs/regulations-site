@@ -145,26 +145,6 @@ module.exports = function(grunt) {
             stderr: true
         }
       }
-    },
-
-    /**
-     * Watch: https://github.com/gruntjs/grunt-contrib-watch
-     *
-     * Run predefined tasks whenever watched file patterns are added, changed or deleted.
-     * Add files to monitor below.
-     */
-    watch: {
-      js: {
-        files: ['Gruntfile.js', '<%= env.frontEndPath %>/js/source/**/*.js'],
-        tasks: ['eslint', 'browserify:dev']
-      },
-      css: {
-        files: ['<%= env.frontEndPath %>/css/less/**/*.less'],
-        tasks: ['less:dev']
-      },
-      options: {
-        livereload: true
-      }
     }
   });
 
