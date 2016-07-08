@@ -69,11 +69,7 @@ reg-landing.scss contains styles specific to the regulation landing page
   content: '';
 }
 
-/*
-Tags
-============================
-*/
-
+// Tags
 .reg-tags {
   width: 50%;
   padding-right: 30px;
@@ -90,17 +86,12 @@ Tags
   }
 }
 
-
 .list-header {
   font-size: 1.125em;
   margin-bottom: 0;
 }
 
-/*
-Sidebar
-============================
-*/
-
+// Sidebar
 .secondary-content {
 
   .landing-sidebar {
@@ -130,15 +121,10 @@ Sidebar
     li {
       margin-top: 0.5em;
     }
-
   }
 }
 
- /*
-Main Content Area
-============================
-*/
-
+// Main Content Area
 .disclaimer,
 .about-the-tool,
 .feedback {
@@ -174,11 +160,7 @@ Main Content Area
   margin: 40px 0;
 }
 
-/*
-Small screens
---------------
-*/
-
+// Small screens
 @media only screen and (max-width: 780px) {
   .reg-tags {
     width: 100%;
