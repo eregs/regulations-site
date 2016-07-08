@@ -48,25 +48,6 @@ module.exports = function(grunt) {
     },
 
     /**
-     * https://github.com/gruntjs/grunt-contrib-less
-     */
-    less: {
-        dev: {
-            options: {
-                paths: ['<%= env.frontEndPath %>/css/less'],
-                compress: false,
-                sourceMap: true,
-                sourceMapFilename: '<%= env.frontEndPath %>/css/style.css.map',
-                sourceMapBasepath: '<%= env.frontEndPath %>/css/less/',
-                sourceMapURL: 'style.css.map'
-            },
-            files: {
-                '<%= env.frontEndPath %>/css/style.css': '<%= env.frontEndPath %>/css/less/main.less'
-            }
-        }
-    },
-
-    /**
      * CSSMin: https://github.com/gruntjs/grunt-contrib-cssmin
      *
      * Minify CSS for production
