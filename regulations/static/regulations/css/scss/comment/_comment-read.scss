@@ -45,11 +45,11 @@ Preamble Read Mode
     width: 250px;
 
     a {
-      color: $blue_light;
+      color: $action_color;
       display: block;
 
       &:hover {
-        color: $blue;
+        color: $action_color_dark;
       }
     }
 
@@ -72,9 +72,9 @@ Preamble Read Mode
 
   // hidden content (with stars) on CFR
   .show-more-context {
-    background-color: $gray_lightest;
+    background-color: $panel_background_color;
     border-radius: 2px;
-    color: $blue_light;
+    color: $action_color;
     font-size: 10px;
     margin: 10px 0;
     text-align: center;
@@ -106,10 +106,10 @@ Preamble Read Mode
       height: 10px;
       width: 10px;
       vertical-align: middle;
-      background-color: $gray_lighter;
+      background-color: $panel_background_color;
 
       &.current {
-        background-color: $blue_light;
+        background-color: $action_color;
       }
     }
   }

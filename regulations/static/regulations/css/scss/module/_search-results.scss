@@ -46,7 +46,7 @@ p.search-version {
   }
 
   .internal {
-    color: $blue_light;
+    color: $action_color;
   }
 }
 
@@ -56,13 +56,13 @@ p.search-version {
   a:link,
   a:visited {
     @include sans-font-bold;
-    color: $blue_light;
+    color: $action_color;
     text-decoration: none;
   }
 
   a:hover,
   a:active {
-    border-bottom: 1px solid $blue_light;
+    border-bottom: 1px solid $action_color;
   }
 
   .next {

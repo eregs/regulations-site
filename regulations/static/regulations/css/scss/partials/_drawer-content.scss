@@ -109,7 +109,7 @@ This contains all of the styles specific to the TOC
 
   a:link,
   a:visited {
-    color: $gray_darker;
+    color: $panel_text_color;
     @include border-bottom-light ($width: 1px);
   }
 
@@ -119,7 +119,7 @@ This contains all of the styles specific to the TOC
     margin-left: -100px;
     padding-left: 105px;
     color: $black;
-    background-color: $blue_lightest;
+    background-color: $panel_highlight_color;
   }
 
   /*
@@ -160,7 +160,7 @@ This contains all of the styles specific to the TOC
   padding: 10px 0 10px 105px;
   display: block;
   line-height: 1.4;
-  background-color: $gray_lightest;
+  background-color: $panel_background_color;
   @include border-bottom-light ($width: 1px);
   @include regulation-nav-subpart-heading-font;
 }
@@ -191,7 +191,7 @@ This contains all of the styles specific to the history
   .effective-label {
     padding: 0 15px;
     @include sans-font-regular;
-    color: $gray_darker;
+    color: $panel_text_color;
   }
 
   // TODO: unify link styles with TOC
@@ -217,16 +217,16 @@ This contains all of the styles specific to the history
   .current {
     .version-link {
       padding: 10px 15px 0 15px;
-      background: $blue_lightest;
+      background: $panel_highlight_color;
     }
 
     .timeline-content-wrap {
-      background: $blue_lightest;
+      background: $panel_highlight_color;
     }
 
     .rule-list {
       display: block;
-      background: $blue_lightest;
+      background: $panel_highlight_color;
     }
   }
 
@@ -243,7 +243,7 @@ This contains all of the styles specific to the history
   .version-link:target,
   .current {
     color: $black;
-    background: $blue_lightest;
+    background: $panel_highlight_color;
     display: block;
   }
 
@@ -272,7 +272,7 @@ This contains all of the styles specific to the history
   }
 
   .rule-status {
-    color: $gray_darker;
+    color: $panel_text_color;
     text-transform: lowercase;
     @include sans-font-regular;
     display: block;
@@ -356,7 +356,7 @@ This contains all of the styles specific to the history
   #history {
     li:hover,
     li.current {
-      background-color: $blue_lightest;
+      background-color: $panel_highlight_color;
     }
   }
 }
@@ -405,7 +405,7 @@ This contains all of the styles specific to the search
   }
 
   h3 {
-    color: $gray_darker;
+    color: $panel_text_color;
     @include sans-font-regular;
     font-size: 0.875em;
     line-height: normal;

@@ -37,13 +37,12 @@ Appendix Navigation
 
 .appendix-nav a:link,
 .appendix-nav a:visited {
-  color: #101820;
+  color: $black;
   text-decoration: none;
-  border-bottom: 1px solid $blue_light;
+  border-bottom: 1px solid $action_color;
 }
 
 .appendix-nav a:hover,
 .appendix-nav a:active {
-  background-color: #cde3f1;
+  background-color: $panel_highlight_color;
 }
-

@@ -44,6 +44,18 @@ $orange_lightest: #FFECD1;
 $text_area_border: rgba(0, 0, 0, 0.25);
 $history_drawer_border_color: #d1d3d5;
 
+// Theme Variables
+
+$primary_color: $blue !default; // Site title, Tab label text, Header stroke
+$primary_color_dark: $blue_dark !default; // Darker version of primary color often used for hover states
+$action_color: $blue_light !default; // Links and Buttons
+$action_color_dark: $blue !default; // Darker version of action color often used for hover states
+$panel_background_color: $gray_lightest !default; // Table of contents background, subhead color, drawer color
+$panel_border_color: $gray_light !default; // Colors the borders for panel_color
+$panel_highlight_color: $blue_lightest !default; // Highlight color for table of contents
+$panel_text_color: $gray_darker !default; // Text color for table of contents
+$text_highlight_color: $green_lightest !default; // Text highlight used for diffs
+
 // Type Variables
 $body_font: "Merriweather", Georgia, serif;
 

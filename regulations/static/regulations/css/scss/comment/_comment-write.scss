@@ -40,7 +40,7 @@ Preamble Write Mode
     a.comment-context-toggle {
       background-color: $gray_lightest;
       border-radius: 2px;
-      color: $gray_darker;
+      color: $panel_text_color;
       cursor: pointer;
       display: block;
       font-size: 16px;
@@ -111,7 +111,7 @@ Preamble Write Mode
       .ProseMirror-menubar {
         min-height: 28px;
         padding: 3px 6px;
-        color: $gray_darker;
+        color: $panel_text_color;
         border-bottom: 1px solid $gray_light;
       }
 
@@ -377,7 +377,7 @@ Preamble Write Mode
     }
 
     &:hover {
-      background: lighten($gray, 10%);
+      background: $gray_light;
 
       .fa {
         display: inline-block;

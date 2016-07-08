@@ -80,14 +80,14 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
   }
 
   .edit-comment {
-    color: $blue_light;
+    color: $action_color;
     cursor: pointer;
     position: absolute;
     right: 2%;
     top: 0;
 
     .write-icon {
-      fill: $blue_light;
+      fill: $action_color;
     }
 
     span:hover {
@@ -130,12 +130,12 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
   }
 
   .download-comment {
-    background: $blue_lightest;
+    background: $panel_highlight_color;
     border-top: 1px solid $text_area_border;
     padding: 10px 15px;
 
     h4 {
-      color: $blue_light;
+      color: $action_color;
       margin: 0;
       float: left;
       font-size: 18px;
@@ -307,12 +307,12 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
 
     .show-more-toggle {
       display: inline;
-      color: $blue_light;
+      color: $action_color;
       cursor: pointer;
       font-size: 14px;
 
       &:hover {
-        color: $blue;
+        color: $action_color_dark;
       }
 
       .text-expand {
@@ -323,9 +323,9 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
   }
 
   .submit-button {
-    background: $blue_light;
+    background: $action_color;
     border-radius: 3px;
-    color: #FFF;
+    color: $white;
     font-size: 17px;
     font-weight: bold;
     height: auto;
@@ -336,7 +336,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
       color: $black;
     }
     &:hover {
-      background-color: $blue_light;
+      background-color: $action_color_dark;
     }
   }
 }
