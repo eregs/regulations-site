@@ -18,11 +18,11 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     padding: 15px 10px 10px;
 
     &.success-alert {
-      background-color: $green_lightest;
+      background-color: $success_color;
     }
 
     &.fail-alert {
-      background-color: $pink;
+      background-color: $warning_color;
     }
 
     .fa-check-circle,
@@ -127,7 +127,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     }
 
     .status {
-      background-color: $blue_lightest;
+      background-color: $notice_color;
       padding: 8px 16px;
       margin: 0;
 
@@ -141,7 +141,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     }
 
     .status-waiting {
-      background-color: $blue_lightest;
+      background-color: $notice_color;
       padding: 8px 16px;
       margin: 1px 0;
 
@@ -152,7 +152,7 @@ Contains styles for Comment confirmation success/fail/invalid pages.
     }
 
     .tracking-number-retrieved {
-      background-color: $green_lightest;
+      background-color: $success_color;
     }
   }
 

@@ -18,7 +18,7 @@ N&C Header - including Read/Write tab
 
   .tab-descriptions {
     font-size: 14px;
-    color: $gray_darker;
+    color: $panel_text_color;
     padding: 0 5px;
   }
 
@@ -32,7 +32,7 @@ N&C Header - including Read/Write tab
 
   .read-proposal,
   .write-comment {
-    border-left: 1px solid $gray_light;
+    border-left: 1px solid $panel_border_color;
     color: $panel_text_color;
     cursor: pointer;
     display: inline-block;
@@ -65,7 +65,7 @@ N&C Header - including Read/Write tab
     }
 
     &:hover:not(.active-mode) {
-      background: $gray_light;
+      background: $white;
       height: 33px;
     }
   }

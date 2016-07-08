@@ -184,7 +184,7 @@ comment-media-queries.scss contains media query styles for Notice and Comment
   }
 
   .preamble-header {
-    background: $gray_lightest;
+    background: $panel_background_color;
     left: 40px;
     z-index: 10;
 
@@ -198,8 +198,8 @@ comment-media-queries.scss contains media query styles for Notice and Comment
 
     .read-proposal,
     .write-comment {
-      border-bottom: 1px solid $gray_light;
-      border-top: 1px solid $gray_light;
+      border-bottom: 1px solid $panel_border_color;
+      border-top: 1px solid $panel_border_color;
       width: 50% !important;
     }
 

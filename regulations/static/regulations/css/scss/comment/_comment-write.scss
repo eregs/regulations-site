@@ -24,7 +24,7 @@ Preamble Write Mode
 
       .comment-header-link a {
         color: $black;
-        border-bottom: 2px solid $blue_light;
+        border-bottom: 2px solid $action_color;
       }
     }
 
@@ -38,7 +38,7 @@ Preamble Write Mode
 
     // Show toggle box
     a.comment-context-toggle {
-      background-color: $gray_lightest;
+      background-color: $panel_background_color;
       border-radius: 2px;
       color: $panel_text_color;
       cursor: pointer;
@@ -47,7 +47,7 @@ Preamble Write Mode
       padding: 10px 15px;
 
       .comment-context-text {
-        color: $blue_light;
+        color: $action_color;
       }
 
       .fa-minus-circle,
@@ -161,7 +161,7 @@ Preamble Write Mode
 
   .comment-button,
   a.comment-index-review {
-    background-color: $blue_light;
+    background-color: $action_color;
     border-radius: 2px;
     color: $white;
     @include sans-font-regular;
@@ -176,7 +176,7 @@ Preamble Write Mode
     transition: .1s;
 
     &:hover {
-      background-color: $blue;
+      background-color: $action_color_dark;
     }
   }
 

@@ -55,6 +55,9 @@ $panel_border_color: $gray_light !default; // Colors the borders for panel_color
 $panel_highlight_color: $blue_lightest !default; // Highlight color for table of contents
 $panel_text_color: $gray_darker !default; // Text color for table of contents
 $text_highlight_color: $green_lightest !default; // Text highlight used for diffs
+$success_color: $green_lightest !default; // Used as background for success messages
+$notice_color: $blue_lightest !default; // Used as background for neutral notice messages
+$warning_color: $pink !default; // Used as background for warning messages 
 
 // Type Variables
 $body_font: "Merriweather", Georgia, serif;

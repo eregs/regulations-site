@@ -150,7 +150,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     }
 
     .details {
-      color: $gray_darker;
+      color: $panel_text_color;
       float: right;
       font-size: 14px;
       text-align: right;
@@ -254,7 +254,7 @@ comment-review.scss contains styles for Review Your Comment page and the PDF it 
     }
 
     span {
-      color: $gray_light;
+      color: $gray;
     }
 
     fieldset {
