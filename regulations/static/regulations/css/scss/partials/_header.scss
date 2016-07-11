@@ -4,7 +4,7 @@
 
 .reg-header {
   width: 100%;
-  color: $gray_darker;
+  color: $panel_text_color;
   @include sans-font-regular;
   position: absolute;
   height: $mainhead_height + $subhead_height;
@@ -21,7 +21,7 @@
 }
 
 .main-head {
-  border-bottom: 2px solid $blue;
+  border-bottom: 2px solid $primary_color;
   background: $white;
   position: fixed;
   top: 0;
@@ -40,12 +40,12 @@
   a {
     &:link,
     &:visited {
-      color: $blue;
+      color: $primary_color;
     }
 
     &:hover,
     &:active {
-      color: $blue_dark;
+      color: $primary_color_dark;
     }
   }
 
@@ -94,20 +94,20 @@
 .title a:link,
 .title a:visited {
   border-bottom: none;
-  color: $blue;
+  color: $primary_color;
   text-decoration: none;
 }
 
 .title a:hover,
 .title a:active {
-  color: $blue_dark;
+  color: $primary_color_dark;
 }
 
 .sub-head {
   position: fixed;
   top: $mainhead_height;
   min-width: 100%;
-  background: $gray_lightest;
+  background: $panel_background_color;
   color: $black;
   line-height: 35px;
   height: 2.125em;
@@ -115,7 +115,7 @@
   z-index: 200;
 
   .main {
-    border-right: 1px solid $gray_dark;
+    border-right: 1px solid $panel_border_color;
   }
 }
 
@@ -188,13 +188,13 @@ Application Nav
 
   &:link,
   &:visited {
-    color: $blue;
+    color: $primary_color;
   }
 
   &:hover,
   &:active,
   &:focus {
-    color: $blue_dark;
+    color: $primary_color_dark;
   }
 }
 
@@ -240,12 +240,12 @@ BIG SCREENS
     margin: 0 0 0 24px;
 
     a {
-      color: $gray_darker;
+      color: $panel_text_color;
       padding: 0;
     }
 
     &:last-child {
-      border-bottom: 2px solid $gray_dark;
+      border-bottom: 2px solid $panel_border_color;
     }
 
     .logo {
@@ -313,12 +313,12 @@ tiny screens
     position: fixed;
     top: 60px;
     width: 100%;
-    background: $gray_lightest;
+    background: $panel_background_color;
     z-index: 999999;
   }
 
   .app-nav-list-item {
-    border-bottom: 1px solid $gray_light;
+    border-bottom: 1px solid $panel_border_color;
     z-index: 999999;
 
     a {
@@ -345,7 +345,7 @@ tiny screens
   .mobile-nav-trigger:active,
   .mobile-nav-trigger:focus,
   .mobile-nav-trigger.open {
-    background-color: $gray_lightest;
+    background-color: $panel_background_color;
   }
 
   .title {

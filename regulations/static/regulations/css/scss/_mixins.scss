@@ -80,27 +80,27 @@ mixins.scss contains any mixins to be used throughout the Sass files
 
 // Border Styles
 @mixin border-bottom-medium($width: 1px) {
-  border-bottom: $width solid $gray_light;
+  border-bottom: $width solid $panel_border_color;
 }
 
 @mixin border-bottom-light($width: 1px) {
-  border-bottom: $width solid $gray_light;
+  border-bottom: $width solid $panel_border_color;
 }
 
 @mixin border-bottom-dark($width: 1px) {
-  border-bottom: $width solid $gray_light;
+  border-bottom: $width solid $panel_border_color;
 }
 
 @mixin border-top-light($width: 1px) {
-  border-top: $width solid $gray_light;
+  border-top: $width solid $panel_border_color;
 }
 
 @mixin border-top-medium($width: 1px) {
-  border-top: $width solid $gray_light;
+  border-top: $width solid $panel_border_color;
 }
 
 @mixin border-right-light($width: 1px) {
-  border-right: $width solid $gray_light;
+  border-right: $width solid $panel_border_color;
 }
 
 // Animations
@@ -122,7 +122,7 @@ mixins.scss contains any mixins to be used throughout the Sass files
   height: 1em;
   margin: 0 auto;
   content: '\e112';
-  color: $blue;
+  color: $primary_color;
   text-align: center;
   font-size: 1.375em;
   margin-top: 2em;

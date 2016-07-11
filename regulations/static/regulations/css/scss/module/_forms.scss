@@ -19,7 +19,7 @@ button {
   height: 32px;
   vertical-align: bottom;
   margin: 0;
-  background-color: $blue_light;
+  background-color: $action_color;
   color: $white;
   border: none;
   text-align: center;
@@ -30,12 +30,12 @@ button {
 
 button:hover,
 button:active {
-  background-color: $blue_light;
+  background-color: $action_color_dark;
 }
 
 textarea:focus,
 input:focus {
-  border: 1px solid $blue_light;
+  border: 1px solid $action_color;
 }
 
 .file-upload {

@@ -160,7 +160,7 @@ ol[type="no-marker"] {
 
 a:link,
 a:visited {
-  color: $blue_light;
+  color: $action_color;
   text-decoration: none;
   border: none;
   -webkit-transition: 0.1s;
@@ -178,13 +178,14 @@ a:visited {
 .internal:visited {
   color: $black;
   text-decoration: none;
-  border-bottom: 1px solid $blue_light;
+  border-bottom: 1px solid $action_color;
 }
 
 .internal:hover,
 .internal:active,
 .internal:focus {
-  background-color: $blue_lighter;
+  color: $black_dark;
+  border-bottom: 1px solid $action_color_dark;
 }
 
 /*  External Links
@@ -201,7 +202,7 @@ a:visited {
 
 .phone:link,
 .phone:visited {
-  color: $blue_light;
+  color: $action_color;
 }
 
 .phone:before {
@@ -279,39 +280,6 @@ a:visited {
   .definition:visited {
      border-bottom: 1px solid $gray_light;
   }
-}
-
-// button styles
-.btn {
-  @include sans-font-regular;
-  display: inline-block;
-  box-sizing: border-box;
-  padding: 0.57142857em 1em;
-  border: 0;
-  border-radius: 0.28571429em;
-  margin: 0;
-  vertical-align: middle;
-  font-size: 0.875em;
-  line-height: normal;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.1s;
-  -webkit-appearance: none;
-}
-
-.btn, .btn:link, .btn:visited {
-  background-color: #0072ce;
-  color: $white;
-}
-
-.btn.hover, .btn:hover {
-  background-color: #328ed8;
-}
-
-.btn.focus, .btn:focus {
-  background-color: #328ed8;
-  outline: #0072ce dotted 1px;
-  outline-offset: 1px;
 }
 
 /*

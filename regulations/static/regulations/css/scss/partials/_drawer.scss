@@ -8,20 +8,20 @@ Regulation Drawer
 
 // Universal drawer styles
 .panel {
-  background-color: $gray_lightest;
-  border-right: 2px solid $gray_light;
+  background-color: $panel_background_color;
+  border-right: 2px solid $panel_border_color;
   @include sans-font-regular;
   font-size: 1em;
   overflow-y: scroll; // allow content to be scrollable
 }
 
 .toc-head {
-  border-right: 2px solid $gray_light;
+  border-right: 2px solid $panel_border_color;
   transition: 0.1s;
 
   a:link,
   a:visited {
-    color: $gray_darker;
+    color: $panel_text_color;
     text-decoration: none;
     height: 33px;
   }
@@ -30,7 +30,7 @@ Regulation Drawer
   a:hover,
   a.current {
     background-color: $white;
-    color: $blue;
+    color: $primary_color;
     height: 34px;
   }
 
@@ -55,8 +55,8 @@ Drawer default state
 .drawer-header {
   position: fixed;
   background-color: $white;
-  border-right: 2px solid $gray_light;
-  border-bottom: 1px solid $gray_light;
+  border-right: 2px solid $panel_border_color;
+  border-bottom: 1px solid $panel_border_color;
 
   .toc-type,
   .toc-subheader {
@@ -76,14 +76,14 @@ Drawer default state
   }
 
   h2 {
-    color: $blue;
+    color: $primary_color;
     font-size: 0.875em;
     text-transform: uppercase;
     font-weight: bold;
   }
 
   h3 {
-    color: $blue;
+    color: $primary_color;
     @include sans-font-regular;
     font-size: 0.875em;
     text-transform: capitalize;
@@ -113,7 +113,7 @@ Panel Slide Button
   }
 
   .close & {
-    border-bottom: 1px solid $gray_light;
+    border-bottom: 1px solid $panel_border_color;
 
     img:first-child {
       display: inline-block;
@@ -161,8 +161,8 @@ currently these are TOC, History, and Search
   margin: 0;
   width: 56px;
   text-align: center;
-  background-color: $gray_lightest;
-  color: $gray_darker;
+  background-color: $panel_background_color;
+  color: $panel_text_color;
 
   &.current {
     background-color: $white;
@@ -200,7 +200,7 @@ currently these are TOC, History, and Search
   }
 
   .toc-nav-link:hover {
-    background-color: $gray_light;
+    background-color: $panel_background_color;
     border-bottom: none;
   }
 }
@@ -222,7 +222,7 @@ currently these are TOC, History, and Search
     position: absolute;
     width: $closed_drawer_width;
     top: 33px;
-    border-top: 1px solid $gray_light;
+    border-top: 1px solid $panel_border_color;
     right: 0;
     left: 198px;
   }
@@ -232,13 +232,13 @@ currently these are TOC, History, and Search
   display: inline-block;
   zoom: 1;
   margin-left: -4px;
-  border-right: 1px solid $gray_light;
-  border-left: 1px solid $gray_light;
+  border-right: 1px solid $panel_border_color;
+  border-left: 1px solid $panel_border_color;
 
   .close & {
     margin-left: 0;
     display: list-item;
-    border-bottom: 1px solid $gray_light;
+    border-bottom: 1px solid $panel_border_color;
     border-right: none;
   }
 }

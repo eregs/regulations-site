@@ -164,9 +164,9 @@ TOC Header Navigation
   left: 0;
   width: 240px;
   height: 34px;
-  border-right: 2px solid $gray_light;
+  border-right: 2px solid $panel_border_color;
   @include border-bottom-medium($width: 1px);
-  background-color: $gray_lightest;
+  background-color: $panel_background_color;
 }
 
 .header-main {
