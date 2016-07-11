@@ -184,7 +184,8 @@ a:visited {
 .internal:hover,
 .internal:active,
 .internal:focus {
-  background-color: $action_color_dark;
+  color: $black_dark;
+  border-bottom: 1px solid $action_color_dark;
 }
 
 /*  External Links
@@ -279,39 +280,6 @@ a:visited {
   .definition:visited {
      border-bottom: 1px solid $gray_light;
   }
-}
-
-// button styles
-.btn {
-  @include sans-font-regular;
-  display: inline-block;
-  box-sizing: border-box;
-  padding: 0.57142857em 1em;
-  border: 0;
-  border-radius: 0.28571429em;
-  margin: 0;
-  vertical-align: middle;
-  font-size: 0.875em;
-  line-height: normal;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.1s;
-  -webkit-appearance: none;
-}
-
-.btn, .btn:link, .btn:visited {
-  background-color: $action_color;
-  color: $white;
-}
-
-.btn.hover, .btn:hover {
-  background-color: $action_color_dark;
-}
-
-.btn.focus, .btn:focus {
-  background-color: $action_color_dark;
-  outline: $action_color dotted 1px;
-  outline-offset: 1px;
 }
 
 /*

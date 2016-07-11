@@ -44,5 +44,6 @@ Appendix Navigation
 
 .appendix-nav a:hover,
 .appendix-nav a:active {
-  background-color: $panel_highlight_color;
+  color: $black_dark;
+  border-bottom: 1px solid $action_color_dark;
 }
