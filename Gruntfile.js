@@ -48,25 +48,6 @@ module.exports = function(grunt) {
     },
 
     /**
-     * https://github.com/gruntjs/grunt-contrib-less
-     */
-    less: {
-        dev: {
-            options: {
-                paths: ['<%= env.frontEndPath %>/css/less'],
-                compress: false,
-                sourceMap: true,
-                sourceMapFilename: '<%= env.frontEndPath %>/css/style.css.map',
-                sourceMapBasepath: '<%= env.frontEndPath %>/css/less/',
-                sourceMapURL: 'style.css.map'
-            },
-            files: {
-                '<%= env.frontEndPath %>/css/style.css': '<%= env.frontEndPath %>/css/less/main.less'
-            }
-        }
-    },
-
-    /**
      * CSSMin: https://github.com/gruntjs/grunt-contrib-cssmin
      *
      * Minify CSS for production
@@ -163,26 +144,6 @@ module.exports = function(grunt) {
             stdout: true,
             stderr: true
         }
-      }
-    },
-
-    /**
-     * Watch: https://github.com/gruntjs/grunt-contrib-watch
-     *
-     * Run predefined tasks whenever watched file patterns are added, changed or deleted.
-     * Add files to monitor below.
-     */
-    watch: {
-      js: {
-        files: ['Gruntfile.js', '<%= env.frontEndPath %>/js/source/**/*.js'],
-        tasks: ['eslint', 'browserify:dev']
-      },
-      css: {
-        files: ['<%= env.frontEndPath %>/css/less/**/*.less'],
-        tasks: ['less:dev']
-      },
-      options: {
-        livereload: true
       }
     }
   });
