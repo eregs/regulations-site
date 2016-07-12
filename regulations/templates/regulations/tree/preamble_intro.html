@@ -47,7 +47,7 @@
         {{title_info.title}} CFR Parts {{ title_info.parts|join:", " }}<br />
       {% endfor %}
       {{meta.dockets|join:"; "}}<br />
-      {{meta.regulation_id_numbers|join:"; "}}
+      RIN {{meta.regulation_id_numbers|join:"; "}}
     </p>
     {% if meta.comment_state.name == 'OPEN' and node.accepts_comments %}
       <div

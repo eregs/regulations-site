@@ -12,7 +12,7 @@ Backbone.$ = $;
 var DrawerView = Backbone.View.extend({
     el: '#menu',
 
-    initialize: function() {
+    initialize: function(options) {
         this.listenTo(DrawerEvents, 'pane:change', this.setActivePane);
         this.listenTo(DrawerEvents, 'pane:init', this.setActivePane);
 
@@ -23,7 +23,7 @@ var DrawerView = Backbone.View.extend({
         this.childViews['table-of-contents'] = new TOCView();
         this.childViews['timeline'] = new HistoryView();
         this.childViews['search'] = new SearchView();
-        this.childViews['drawer-tabs'] = new DrawerTabs();
+        this.childViews['drawer-tabs'] = new DrawerTabs({forceOpen: options.forceOpen});
 
         var $tocSecondary = $('#table-of-contents-secondary');
         if ($tocSecondary.length) {

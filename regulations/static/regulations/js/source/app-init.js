@@ -23,11 +23,13 @@ Backbone.$ = $;
     },
 
     init: function() {
+        var regs = window.regs || {};
+
         Router.start();
         this.bindEvents();
         var gaview = new AnalyticsHandler();
         var header = new HeaderView();  // Header before Drawer as Drawer sends Header events
-        var drawer = new DrawerView();
+        var drawer = new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
         var main = new MainView();
         var sidebar = new SidebarView();
         setTimeout(function() {
