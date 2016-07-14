@@ -8,9 +8,9 @@ Check for preamble_toc first so empty <ol>s aren't drawn when it loops back thro
       <li>
           <a
               href="{{item.url}}"
-              data-section-id="{{item.full_id}}"
+              data-section-id="{{item.section_id}}"
               class="toc-item toc-entry-at-{{toc_depth}}">
-            {{item.title}}
+            {{item.title.full}}
           </a>
 
         {% with preamble_toc=item.children toc_depth=toc_depth|add:1 %}
