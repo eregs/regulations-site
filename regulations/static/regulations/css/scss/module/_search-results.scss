@@ -1,0 +1,75 @@
+/*
+Search Results
+===========================
+search-results.scss contains styles for search results
+*/
+
+.search-results {
+  margin-top: 30px;
+}
+
+h2.search-term {
+  @include sans-font-regular;
+  margin-bottom: 0;
+}
+
+p.search-version {
+  color: $gray_light;
+  text-transform: uppercase;
+  @include sans-font-bold;
+  font-size: 0.875em;
+  margin-top: 0;
+}
+
+.result-list {
+  padding: 0;
+
+  li {
+    margin-top: 2em;
+  }
+
+  h3 {
+    @include sans-font-bold;
+    margin-bottom: 0;
+  }
+
+  p {
+    margin-top: 0.5em;
+  }
+
+  p:before {
+    content: '“';
+  }
+
+  p:after {
+    content: '”';
+  }
+
+  .internal {
+    color: $action_color;
+  }
+}
+
+.search-nav {
+  margin-top: 4em;
+
+  a:link,
+  a:visited {
+    @include sans-font-bold;
+    color: $action_color;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    border-bottom: 1px solid $action_color;
+  }
+
+  .next {
+    padding: 0 15px 0 0;
+  }
+
+  .previous {
+    padding: 0 0 0 15px;
+  }
+}

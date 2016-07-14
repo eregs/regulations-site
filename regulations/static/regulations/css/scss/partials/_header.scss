@@ -1,0 +1,427 @@
+/* ==========================================================================
+ reg header
+ ========================================================================== */
+
+.reg-header {
+  width: 100%;
+  color: $panel_text_color;
+  @include sans-font-regular;
+  position: absolute;
+  height: $mainhead_height + $subhead_height;
+
+  ul {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  li {
+    margin-top: 0;
+  }
+}
+
+.main-head {
+  border-bottom: 2px solid $primary_color;
+  background: $white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  height: $mainhead_height;
+}
+
+.title {
+  display: inline-block;
+  float: left;
+  line-height: 57px;
+  height: 57px;
+  overflow: hidden;
+
+  a {
+    &:link,
+    &:visited {
+      color: $primary_color;
+    }
+
+    &:hover,
+    &:active {
+      color: $primary_color_dark;
+    }
+  }
+
+  .reg-title,
+  .site-title {
+    font-size: 1.325em;
+    @include reset;
+    display: inline;
+  }
+
+  .reg-title {
+    @include sans-font-regular;
+    font-size: 1.125em;
+    max-height: 20px;
+  }
+
+  .site-title {
+    @include sans-font-bold;
+    font-size: 1.375em;
+    padding-left: 15px;
+  }
+
+  .e {
+    @include sans-font-regular;
+  }
+}
+
+.js {
+  .reg_part {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 480px) {
+
+  .main-head {
+    .reg-title:before {
+      content: '|';
+      @include sans-font-regular;
+      padding: 0 12px;
+      color: $gray_light;
+    }
+  }
+}
+
+.title a:link,
+.title a:visited {
+  border-bottom: none;
+  color: $primary_color;
+  text-decoration: none;
+}
+
+.title a:hover,
+.title a:active {
+  color: $primary_color_dark;
+}
+
+.sub-head {
+  position: fixed;
+  top: $mainhead_height;
+  min-width: 100%;
+  background: $panel_background_color;
+  color: $black;
+  line-height: 35px;
+  height: 2.125em;
+  @include border-bottom-medium($width: 1px);
+  z-index: 200;
+
+  .main {
+    border-right: 1px solid $panel_border_color;
+  }
+}
+
+#content-header {
+  padding-left: 60px;
+
+  li {
+    height: 2.125em;
+    line-height: 34px;
+  }
+
+  .subpart {
+    @include sans-font-bold;
+    display: inline;
+  }
+
+  .with-subpart:before {
+    content: '|';
+    @include sans-font-regular;
+    color: $gray_light;
+    display: inline-block;
+    margin: 0 10px;
+  }
+}
+
+.header-label {
+  @include reset;
+  display: inline-block;
+  @include sans-font-bold;
+  font-style: normal;
+  font-size: 1em;
+  display: inline;
+}
+
+.header-label.with-subpart {
+  margin-left: 0;
+}
+
+
+@media only screen and (min-width: 480px) {
+  .header-main {
+    .wayfinding {
+      float: left;
+    }
+
+    .effective-date {
+      float: right;
+      margin-right: 45px;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .header-main {
+    .effective-date {
+      display: block;
+      font-size: .75em;
+      line-height: 1;
+    }
+  }
+}
+
+/*
+Application Nav
+================
+*/
+
+.app-nav a {
+  @include sans-font-bold;
+
+  &:link,
+  &:visited {
+    color: $primary_color;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $primary_color_dark;
+  }
+}
+
+/*
+mid-sized (tablet) screens
+=============================================
+*/
+
+@media only screen and (min-width: 480px) and (max-width: 880px) {
+  .subpart {
+    font-size: 0;
+  }
+
+  #content-header {
+    .with-subpart:before {
+      content: '';
+      margin: 0;
+    }
+  }
+}
+
+/*
+BIG SCREENS
+=============================================
+*/
+
+@media only screen and (min-width: 880px) {
+  .app-nav {
+    display: inline-block;
+    float: right;
+    margin-right: 15px;
+  }
+
+  .app-nav-list {
+    @include reset;
+    display: inline;
+  }
+
+  .app-nav-list-item {
+    float: left; // yes it's weird, but floats play nice with vertically centering the logo
+    height: 57px;
+    line-height: 57px;
+    margin: 0 0 0 24px;
+
+    a {
+      color: $panel_text_color;
+      padding: 0;
+    }
+
+    &:last-child {
+      border-bottom: 2px solid $panel_border_color;
+    }
+
+    .logo {
+      display: inline;
+      margin: 13px 10px 0 15px;
+    }
+  }
+
+  .app-nav-list-item:first-of-type {
+    margin: 0;
+  }
+
+  .org-title {
+    display: none;
+  }
+
+  .mobile-nav-trigger {
+    display: none;
+  }
+
+  .title {
+    max-width: 55%;
+  }
+
+}
+
+/*
+tiny screens
+=============================================
+*/
+
+@media only screen and (max-width: 879px) {
+  .org-title {
+    display: block;
+
+    a:after {
+      font-family: 'CFPB Minicons';
+      display: inline-block;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+
+      content: '\e610'; //This is an external link icon
+      padding-left: 6px;
+      font-size: .875em;
+      speak: none;
+      font-variant: normal;
+      text-transform: none;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+
+  .app-nav-list {
+    display: none;
+    @include reset;
+
+    .logo-list-item {
+      display: none;
+    }
+  }
+
+  .app-nav-list.open {
+    display: block;
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    background: $panel_background_color;
+    z-index: 999999;
+  }
+
+  .app-nav-list-item {
+    border-bottom: 1px solid $panel_border_color;
+    z-index: 999999;
+
+    a {
+      display: block;
+      padding: 20px 15px;
+      z-index: 999999;
+    }
+
+    a:hover,
+    a:active,
+    a:focus {
+      background: $gray_lighter;
+    }
+  }
+
+  .mobile-nav-trigger {
+    height: 57px;
+    position: absolute;
+    right: 0;
+    padding: 14px 15px 0 15px;
+  }
+
+  .mobile-nav-trigger:hover,
+  .mobile-nav-trigger:active,
+  .mobile-nav-trigger:focus,
+  .mobile-nav-trigger.open {
+    background-color: $panel_background_color;
+  }
+
+  .title {
+    width: 90%;
+  }
+}
+
+/*
+Small Screens
+==============
+*/
+
+@media only screen and (max-width: 480px) {
+  .chrome-header {
+    .title {
+      .site-title {
+        display: none;
+      }
+
+      .reg-title {
+        padding-left: 10px;
+        font-size: 1em;
+      }
+    }
+  }
+
+  /*
+  Subhead Styles
+  ----------------------
+  */
+
+  .header-main {
+    display: block;
+    width: auto;
+    float: none;
+    padding: 0 0 0 14px;
+    height: 24px;
+  }
+
+  .sub-head {
+    height: 50px;
+    line-height: 34px;
+  }
+
+  // match wayfinding padding to > icon
+  .header-label {
+    padding-top: 4px;
+  }
+
+  .effective-date {
+    display: block;
+
+    strong {
+      @include sans-font-regular;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .header-label {
+    margin-left: 6px;
+  }
+}
+
+@media only screen and (max-width: 780px) {
+  .header-label {
+    margin-left: 10px;
+  }
+
+  #content-header {
+    padding-left: 20px;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  #content-header {
+    padding-left: 4%;
+  }
+}

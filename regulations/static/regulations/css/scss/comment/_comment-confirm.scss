@@ -1,0 +1,187 @@
+/*
+comment-confirm.scss
+==========================================================================
+Contains styles for Comment confirmation success/fail/invalid pages.
+*/
+
+.comment-confirm {
+  @include sans-font-regular;
+  padding: 30px 20px;
+  width: 80%;
+
+  p {
+    @include sans-font-regular;
+    margin: 0;
+  }
+
+  .comment-confirm-alert {
+    padding: 15px 10px 10px;
+
+    &.success-alert {
+      background-color: $success_color;
+    }
+
+    &.fail-alert {
+      background-color: $warning_color;
+    }
+
+    .fa-check-circle,
+    .fa-exclamation-circle {
+      display: inline-block;
+      font-size: 34px;
+      padding: 5px 15px 0;
+      vertical-align: top;
+    }
+
+    .alert-text {
+      display: inline-block;
+      width: 90%;
+    }
+
+    h3 {
+      margin: 0;
+    }
+    p {
+      @include sans-font-regular;
+    }
+  }
+
+  .save-pdf {
+    padding: 25px;
+
+    .fa-file-pdf-o {
+      color: $blue;
+      font-size: 2.5em;
+      display: inline-block;
+      margin: 10px 12px 10px 0;
+      vertical-align: top;
+    }
+
+    .save-pdf-text {
+      display: inline-block;
+      padding: 5px 0;
+
+      h3 {
+        font-size: 20px;
+        line-height: 26px;
+        margin: 0;
+      }
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .return-to-draft {
+    padding: 25px;
+
+    h3 {
+      font-size: 20px;
+    }
+
+    .fa-chevron-left {
+      font-size: 0.75em;
+    }
+  }
+
+  h3 {
+    margin: 0 0 5px;
+  }
+
+  section {
+    border-top: 1px solid $gray_light;
+    padding: 25px 0 35px;
+
+    h4 {
+      margin: 0.25em 0;
+    }
+    p {
+      @include sans-font-regular;
+    }
+  }
+
+  .problem-persist {
+    p {
+      padding-bottom: 10px;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    margin: 0 0 0 10px;
+
+    li {
+      list-style-type: disc;
+      margin: 0 0 5px 5px;
+    }
+  }
+
+  .tracking-number {
+    .fa {
+      display: inline-block;
+      margin: 4px 6px 0 0;
+      vertical-align: top;
+    }
+
+    .status {
+      background-color: $notice_color;
+      padding: 8px 16px;
+      margin: 0;
+
+      .status-message {
+        display: inline-block;
+      }
+    }
+
+    .status-container {
+      margin: 16px 0;
+    }
+
+    .status-waiting {
+      background-color: $notice_color;
+      padding: 8px 16px;
+      margin: 1px 0;
+
+      .waiting-message {
+        display: inline-block;
+        width: 90%;
+      }
+    }
+
+    .tracking-number-retrieved {
+      background-color: $success_color;
+    }
+  }
+
+  .what-will-happen ul {
+    margin: 0 0 25px 0;
+    padding-left: 35px;
+
+    li {
+      list-style-type: none;
+      margin: -15px 0 0 0;
+      padding-left: 0;
+
+      &:before {
+        border-color: transparent $orange_light;
+        border-radius: 3px;
+        border-style: solid;
+        border-width: 8px 0 8px 13px;
+        content: "";
+        display: block;
+        height: 0;
+        left: -25px;
+        position: relative;
+        top: 20px;
+        width: 0;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

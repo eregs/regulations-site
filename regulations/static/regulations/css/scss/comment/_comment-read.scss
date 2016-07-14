@@ -1,0 +1,200 @@
+/*
+comment-read.scss
+==========================================================================
+Preamble Read Mode
+*/
+
+#preamble-read {
+  margin: 0;
+  padding: 0 0 0 15px;
+  width: 75%;
+  word-wrap: break-word;
+
+  // for hiding write comment links on paragraphs
+  // when section is not called out for comment
+  .not-called-out {
+    .activate-write a {
+      display: none;
+    }
+
+    // then show write comment links when paragraph
+    // section is hovered
+    &:hover {
+      .activate-write a {
+        display: block;
+      }
+    }
+  }
+
+  .not-called-out-extend {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: -275px;
+    top: 0;
+  }
+
+  // Write a comment about XXX link
+  .activate-write {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    right: -320px;
+    top: -5px;
+    width: 250px;
+
+    a {
+      color: $action_color;
+      display: block;
+
+      &:hover {
+        color: $action_color_dark;
+      }
+    }
+
+    // write a comment pencil icon font
+    .fa-pencil-square-o {
+      clear: both;
+      float: left;
+      line-height: 24px;
+      margin-right: 8px;
+    }
+
+    .paragraph-comment {
+      overflow: hidden;
+    }
+  }
+
+  p + .activate-write {
+    top: 0;
+  }
+
+  // hidden content (with stars) on CFR
+  .show-more-context {
+    background-color: $panel_background_color;
+    border-radius: 2px;
+    color: $action_color;
+    font-size: 10px;
+    margin: 10px 0;
+    text-align: center;
+    width: 100%;
+
+    span {
+      font-size: 12px;
+      padding: 0 30px;
+    }
+  }
+
+  .subpart-info {
+    border-bottom: 1px solid $gray_light;
+    margin-bottom: 15px;
+
+    .subpart-sections {
+      font-size: 14px;
+      @include sans-font-regular;
+      color: $gray_darker;
+      margin: 20px 0 0 0;
+    }
+
+    .subpart-wayfinding {
+      display: inline-block;
+      float: right;
+    }
+    a {
+      display: inline-block;
+      height: 10px;
+      width: 10px;
+      vertical-align: middle;
+      background-color: $gray_light;
+
+      &.current {
+        background-color: $action_color;
+      }
+    }
+  }
+
+  .cfr-wrapper {
+    padding-left: 15px;
+  }
+
+  .cfr-instructions {
+    font-family: "Merriweather", Georgia, serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 15px;
+  }
+
+  $remaining_days_size: 65px;
+
+  .comment-period-dates {
+    @include sans-font-regular;
+    min-height: $remaining_days_size;
+    margin: 35px 0 15px;
+
+    .explanation {
+      font-size: 1.25em;
+      padding: 4px 0 0;
+      white-space: nowrap;
+    }
+
+    .publish-date {
+      @include sans-font-regular;
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+
+  .days-remaining {
+    float: left;
+    height: $remaining_days_size;
+    width: $remaining_days_size;
+    margin-right: 10px;
+    border-radius: 3px;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    color: $white;
+
+    &.open {
+      background-color: $green;
+    }
+
+    &.closed {
+      background-color: $red;
+    }
+
+    strong {
+      display: block;
+      font-size: 32px;
+      line-height: 28px;
+      padding-top: 8px;
+    }
+  }
+
+  .view-supporting-docs {
+    @include sans-font-regular;
+    margin: 30px 0 35px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid $gray_light;
+
+    .fa {
+      margin: 0 6px;
+    }
+  }
+
+  .supporting-docs-list {
+    @include sans-font-regular;
+
+    .external:before {
+      margin-right: 10px;
+      content: '\f0f6';   // fa-file-text-o
+      font-family: FontAwesome;
+    }
+
+    .view-all:after {
+      content: $cf-icon-right;
+    }
+  }
+}

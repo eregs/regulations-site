@@ -1,0 +1,342 @@
+/*
+comment-review.scss
+==========================================================================
+comment-review.scss contains styles for Review Your Comment page and the PDF it generates
+*/
+
+.comment-pdf,
+.comment-review {
+  @include sans-font-regular;
+  margin-bottom: 50px;
+  padding-left: 25px;
+
+  h3, h4 {
+    margin: 0.5em 0 0;
+    text-transform: none;
+  }
+
+  p {
+    @include sans-font-regular;
+  }
+
+  .comments {
+    border: 1px solid $text_area_border;
+    border-radius: 2px;
+    margin: 25px 0;
+
+    h4 {
+      margin-top: 0;
+      text-transform: none;
+    }
+
+    input.highlight[type="file"] {
+      background: $blue;
+    }
+
+    & > ul {
+      margin: 25px 15px;
+    }
+
+    & > ul > li {
+      position: relative;
+
+      &:after {
+        content: "------";
+        display: block;
+        padding-top: 10px;
+      }
+      &:last-child:after {
+        content: "";
+      }
+    }
+  }
+
+  .comment-content {
+    max-width: 95%;
+
+    blockquote {
+      padding-left: 1em;
+      border-left: 3px solid #eee;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    ol,
+    ul {
+      padding-left: 20px;
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    li {
+      list-style-type: inherit;
+    }
+  }
+
+  .edit-comment {
+    color: $action_color;
+    cursor: pointer;
+    position: absolute;
+    right: 2%;
+    top: 0;
+
+    .write-icon {
+      fill: $action_color;
+    }
+
+    span:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .comment-attachments {
+    display: block;
+    float: none;
+    margin-top: 5px;
+    max-width: 100%;
+
+    ul {
+      background: $gray_lighter;
+      padding: 0;
+      margin: 5px 0 0 0;
+    }
+
+    li {
+      padding: 10px 15px;
+      margin: 0;
+
+      &:after {
+        content: "";
+        padding: 0;
+      }
+    }
+
+    .filename {
+      float: left;
+      max-width: 370px;
+    }
+
+    .attachment-preview {
+      float: right;
+      text-align: right;
+      width: 80px;
+    }
+  }
+
+  .download-comment {
+    background: $panel_highlight_color;
+    border-top: 1px solid $text_area_border;
+    padding: 10px 15px;
+
+    h4 {
+      color: $action_color;
+      margin: 0;
+      float: left;
+      font-size: 18px;
+      line-height: 22px;
+      text-transform: inherit;
+      max-width: 425px;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+
+    .details {
+      color: $panel_text_color;
+      float: right;
+      font-size: 14px;
+      text-align: right;
+      max-width: 250px;
+    }
+
+    .error {
+      border: none;
+      clear: left;
+      float: left;
+      padding: 0;
+    }
+  }
+
+  input[type=checkbox] {
+    height: auto;
+    margin-right: 5px;
+  }
+
+  .additional-info {
+    max-width: 535px;
+
+    .tabs {
+      margin: 10px 0 5px;
+    }
+
+    .btn-group {
+      display: inline-block;
+      list-style: none;
+    }
+
+    a.btn-group-item {
+      color: $black;
+      display: inline-block;
+      background: $gray_lighter;
+      font-size: 14px;
+      line-height: 18px;
+      padding: 8px 15px;
+      box-shadow: inset 0 0 1px $gray_lighter;
+      border-radius: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background: $gray_light;
+      }
+      &:active, &.current {
+        background: $gray_light;
+      }
+    }
+
+    .comment-form-subtext {
+      display: block;
+      font-size: 14px;
+      line-height: 14px;
+    }
+
+    .comment-form-fieldlabel {
+      font-size: 16px;
+      @include sans-font-bold;
+    }
+
+    .labeled-field {
+      margin: 5px 0;
+
+      &:first-child {
+        margin: 15px 0 5px;
+      }
+    }
+
+    .select-dropdown {
+      position: relative;
+
+      &:after {
+        @extend .fa; // font awesome icon
+        content: "\f107"; //down arrow
+        font-family: FontAwesome;
+        position: absolute;
+        right: 20px;
+        top: 18px;
+        font-size: 20px;
+        pointer-events: none;
+      }
+    }
+
+    select {
+      width: 100%;
+      background: $white;
+      font-size: 14px;
+      line-height: 18px;
+      padding: 12px 10px;
+      margin: 5px 0;
+      height: auto;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,.25);
+      box-shadow: inset 0 0 1px $gray_lighter;
+      color: $black;
+    }
+
+    h4 {
+      margin-bottom: 0.6em;
+    }
+
+    span {
+      color: $gray_darker;
+    }
+
+    fieldset {
+      border: none;
+      margin: 0 0 20px;
+      padding: 0;
+    }
+
+    legend {
+      display: none;
+    }
+
+    input[type=text] {
+      border: 1px solid $text_area_border;
+      border-radius: 3px;
+      height: auto;
+      padding: 5px 10px;
+      margin: 5px 0;
+      text-align: left;
+      width: 100%;
+    }
+  }
+
+  .statement {
+    margin: 0 0 30px 0;
+    max-width: 620px;
+
+    .required {
+      color: $red;
+      margin-left: 5px;
+    }
+
+    .statement-list li {
+      margin-top: 0.5em;
+      list-style-type: disc;
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      margin: 0.5em 0;
+    }
+
+    h5 {
+      @include sans-font-regular;
+      font-size: 16px;
+      text-transform: none;
+      display: inline;
+    }
+
+    .show-more-toggle {
+      display: inline;
+      color: $action_color;
+      cursor: pointer;
+      font-size: 14px;
+
+      &:hover {
+        color: $action_color_dark;
+      }
+
+      .text-expand {
+        font-size: 13px;
+        padding: 0 3px;
+      }
+    }
+  }
+
+  .submit-button {
+    background: $action_color;
+    border-radius: 3px;
+    color: $white;
+    font-size: 17px;
+    font-weight: bold;
+    height: auto;
+    padding: 12px 30px;
+
+    &:disabled, &:disabled:hover {
+      background: $gray_lighter;
+      color: $black;
+    }
+    &:hover {
+      background-color: $action_color_dark;
+    }
+  }
+}

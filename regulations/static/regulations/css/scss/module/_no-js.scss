@@ -1,0 +1,28 @@
+.no-js {
+  .inline-interpretation,
+  .regs-meta {
+
+    .hidden {
+      display: block;
+    }
+
+    .expand-button {
+      display: none;
+    }
+
+    .expandable {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .expandable:after {
+      background: none;
+    }
+  }
+
+  .inline-interpretation {
+    background-color: $gray_lighter;
+    pointer-events: none;
+    cursor: default;
+  }
+}

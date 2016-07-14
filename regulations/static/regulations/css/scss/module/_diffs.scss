@@ -1,0 +1,45 @@
+/*
+ Diffs
+ ==========================================================================
+ diffs.scss defines the visual appearance of regulations additions and deletions
+ */
+
+
+del {
+  color: $gray_dark;
+  text-decoration: line-through;
+
+  img {
+    border: 2px solid $red_lightest;
+    opacity: 0.7;
+  }
+}
+
+ins {
+  background-color: $text_highlight_color;
+  text-decoration: none;
+  font-style: italic;
+
+  .key-term {
+    background-color: $text_highlight_color;
+    text-decoration: none;
+    @include serif-font-italic;
+
+    .level-2 &,
+    .supplement-section .level-1 & {
+      @include serif-font-italic;
+    }
+  }
+
+  img {
+      border: 2px solid $text_highlight_color;
+  }
+}
+
+h2,
+h3,
+h4 {
+  ins {
+    @include serif-font-italic;
+  }
+}

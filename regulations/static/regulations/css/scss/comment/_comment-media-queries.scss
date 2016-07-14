@@ -1,0 +1,402 @@
+/*
+comment-media-queries.scss
+==========================================================================
+comment-media-queries.scss contains media query styles for Notice and Comment
+*/
+
+// margins in .preamble-wrapper are overrides for things defined in .main-content
+// because the preamble doesn't use the right sidebar
+@media only screen and ( min-width: 780px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    margin-left: 40px; /*40px; - offsets collapsed .panel */
+    padding-left: 15px;
+  }
+
+  #comment-review {
+    .comment-content {
+      max-width: 75%;
+    }
+    .edit-comment {
+      right: 2%;
+      top: 35px;
+    }
+  }
+}
+
+// laptop and desktop screen sizes
+@media only screen and ( min-width: 1100px ) {
+  .preamble-wrapper {
+    margin-right: 5%;
+    margin-left: 240px; /*240px; - offsets .panel */
+    padding-left: 15px;
+
+    // don't need max-width to account for a right sidebar
+    // so preamble text will fill the space when nav is minimized
+    &.close {
+      max-width: 100%;
+    }
+  }
+
+  #preamble-write {
+    width: 75%;
+  }
+
+  .section-nav .previous {
+    margin-left: -10px;
+  }
+}
+
+@media only screen and ( max-width: 1100px ) {
+
+  .header-main {
+    margin-right: 0;
+  }
+
+  #preamble-read .activate-write {
+    right: -275px;
+  }
+}
+
+// tablet + mobile screen sizes
+@media only screen and ( max-width: 780px ) {
+
+  .preamble-sub-head {
+
+    #content-header {
+      padding-left: 35px;
+    }
+  }
+
+  .hide-mobile {
+    display: none;
+    padding: 0;
+  }
+
+  .preamble-header {
+
+    .read-proposal,
+    .write-comment {
+      padding: 0 15px;
+      width: auto !important;
+    }
+  }
+
+  #preamble-read {
+    padding-left: 0;
+    width: 100%;
+
+    .not-called-out {
+      .activate-write {
+        display: block;
+      }
+    }
+
+    .not-called-out-extend {
+      display: none;
+    }
+
+    .activate-write {
+      padding: 0 0 5px;
+      position: relative;
+      right: 0;
+      top: 0;
+      width: 100%;
+
+    }
+
+    .comment-period-dates {
+      .explanation {
+        padding: 0;
+        white-space: normal;
+        line-height: 22px
+      }
+    }
+
+    p + .activate-write {
+      display: block;
+      top: 0;
+    }
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    padding-bottom: 35px;
+    width: 73%;
+
+    .comment-index {
+      right: -220px;
+      width: 210px;
+
+      li {
+        .comment-index-section {
+          width: 120px;
+        }
+
+        .comment-index-modify .fa {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .comment-review {
+    .download-comment .details {
+      float: none;
+      text-align: left;
+    }
+  }
+
+  .next-prev {
+    @include border-top-medium ($width: 2px);
+  }
+
+  .next-prev-label {
+    display: inline-block;
+  }
+}
+
+// mobile screen size
+@media only screen and ( max-width: 480px ) {
+
+  .sub-head {
+    line-height: 33px;
+
+    .wayfinding {
+      height: 33px;
+
+      .header-label {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .preamble-sub-head {
+    height: 35px;
+
+    .toc-head {
+      z-index: 100;
+    }
+
+    #content-header {
+      padding-left: 15px;
+    }
+  }
+
+  .preamble-header {
+    background: $panel_background_color;
+    left: 40px;
+    z-index: 10;
+
+    > span {
+      display: none;
+    }
+
+    .read-proposal {
+      border-left: none;
+    }
+
+    .read-proposal,
+    .write-comment {
+      border-bottom: 1px solid $panel_border_color;
+      border-top: 1px solid $panel_border_color;
+      width: 50% !important;
+    }
+
+    .active-mode {
+      border-bottom: none;
+    }
+  }
+
+  .preamble-wrapper {
+    padding-left: 55px;
+    padding-top: 40px;
+
+    h3 {
+      font-size: 24px;
+      line-height: 30px;
+    }
+    h4 {
+      font-size: 19px;
+      line-height: 24px;
+
+      &.small-header {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  #preamble-read {
+    padding-left: 0;
+
+    .comment-period-dates {
+      margin-top: 20px;
+    }
+
+    .days-remaining {
+      display: none;
+    }
+
+    ol, ul {
+      padding-left: 0;
+    }
+
+    li {
+      h2, h3, h4, h5, h6, p {
+        width: 100%;
+      }
+      h4 {
+        margin-top: 0;
+      }
+    }
+
+    .node {
+      padding-right: 0;
+    }
+
+    .not-called-out {
+      .activate-write {
+        display: none;
+      }
+    }
+
+    .show-more-context {
+      font-size: 9px;
+
+      span {
+        font-size: 12px;
+        padding: 0 5px;
+      }
+    }
+
+    li > .show-more-context,
+    .section-title {
+      width: 100%;
+    }
+
+    .cfr-instructions {
+      width: 100%;
+    }
+  }
+
+  #preamble-write {
+    padding-left: 0;
+    width: 100%;
+
+    .comment-wrapper {
+      padding-left: 0;
+
+      .comment {
+        padding-bottom: 0;
+      }
+
+      .status {
+        text-align: left;
+      }
+    }
+
+    .comment-header-write,
+    .comment-context-wrapper {
+      display: none;
+    }
+
+    .comment-controls {
+      float: none;
+      padding-bottom: 0;
+      width: 100%;
+    }
+
+    .comment-upload-button {
+      width: 100%;
+    }
+
+    .comment-attachments-wrapper {
+      width: 100%;
+    }
+
+    .comment-submission {
+      width: 100%;
+      float: none;
+    }
+
+    .comment-button {
+      float: none;
+    }
+
+    .comment-index {
+      position: relative;
+      right: 0;
+      top: 0;
+      width: 100%;
+
+      ul {
+        padding-left: 0;
+      }
+    }
+
+    a.comment-index-review {
+      text-align: center;
+      width: 100%;
+    }
+  }
+
+  .comment-review {
+    padding-left: 0;
+
+    .comments ul {
+      margin: 0 0 1em 0;
+    }
+
+    .edit-comment {
+      position: relative;
+      right: 0;
+      top: 5px;
+    }
+
+    .download-comment .details {
+      float: none;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .additional-info {
+
+      .tabs {
+        margin-bottom: 0;
+      }
+
+      .tabs a {
+        margin-bottom: 5px;
+      }
+
+      .btn-group div {
+        margin-bottom: 5px;
+      }
+    }
+
+    .comment-disclaimer {
+      font-size: 16px;
+
+      input#agree {
+        float: left;
+      }
+
+      label {
+        float: left;
+        margin: -7px 0 25px 0;
+        width: 90%;
+      }
+
+      .required {
+        display: block;
+        margin: 0;
+      }
+    }
+
+  }
+
+  .section-nav .previous {
+    margin-left: -10px;
+  }
+}

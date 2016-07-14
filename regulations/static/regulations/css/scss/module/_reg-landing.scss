@@ -1,0 +1,175 @@
+/*
+Reg-Landing.scss
+==========================================================================
+reg-landing.scss contains styles specific to the regulation landing page
+*/
+
+.banner-text {
+  @include sans-font-regular;
+  font-size: 2em;
+  line-height: 1.3;
+  padding: 0 0 .5em 0;
+  margin-top: .6em;
+}
+
+.landing {
+  h4 {
+    @include sans-font-regular;
+    display: inline;
+    font-size: 1.125em;
+    text-transform: none;
+    margin: 0;
+    padding: 0;
+    line-height: 20px;
+  }
+
+  h5 {
+    color: $black;
+    text-transform: none;
+    margin-bottom: 0.5em;
+  }
+
+  p,
+  li {
+    @include sans-font-regular;
+  }
+
+  .effective-date {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .landing-contact-info {
+    margin-top: -1em;
+    margin-bottom: 40px;
+
+    ul {
+      margin-bottom: 0;
+    }
+
+    h4 {
+      @include sans-font-bold;
+    }
+  }
+}
+
+.landing-curent-link {
+  a {
+    @include sans-font-bold;
+    display: inline-block;
+    line-height: 20px;
+  }
+}
+
+.landing-curent-link:after {
+  padding-top: 2em;
+  height: 1px;
+  display: block;
+  border-bottom: 1px solid $gray_light;
+  content: '';
+}
+
+// Tags
+.reg-tags {
+  width: 50%;
+  padding-right: 30px;
+  float: left;
+  margin-bottom: 1em;
+}
+
+.tag-list {
+  margin-top: 0;
+
+  li {
+    margin-top: 0.5em;
+    list-style: square;
+  }
+}
+
+.list-header {
+  font-size: 1.125em;
+  margin-bottom: 0;
+}
+
+// Sidebar
+.secondary-content {
+
+  .landing-sidebar {
+
+    .regs-meta {
+      border-bottom: none;
+    }
+
+    h3 {
+      @include sans-font-regular;
+      font-size: 1.285714286em;
+      margin: 1.6em 0 1em 0;
+    }
+
+    h4 {
+      color: $black;
+      text-transform: none;
+      margin-bottom: 0.5em;
+      @include sans-font-bold;
+      letter-spacing: normal;
+    }
+
+    ul {
+      margin-bottom: 2em;
+    }
+
+    li {
+      margin-top: 0.5em;
+    }
+  }
+}
+
+// Main Content Area
+.disclaimer,
+.about-the-tool,
+.feedback {
+  p,
+  li {
+    font-size: 0.875em;
+  }
+
+  ul {
+    @include reset;
+  }
+}
+
+.disclaimer {
+  margin: 40px 0;
+}
+
+.effective-alert {
+  padding: 10px;
+}
+
+@media only screen and (min-width: 1000px) {
+  .alert_effective-date {
+    float: left;
+  }
+
+  .alert_view-link {
+    float: right;
+  }
+}
+
+.about-the-tool {
+  margin: 40px 0;
+}
+
+// Small screens
+@media only screen and (max-width: 780px) {
+  .reg-tags {
+    width: 100%;
+    padding-right: none;
+    float: none;
+  }
+
+  .secondary-content .landing-sidebar .alert {
+    margin-top: 0;
+    border-top: 1px solid $gray_light;
+  }
+}

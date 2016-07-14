@@ -34,20 +34,15 @@ module.exports = function(grunt) {
     },
 
     /**
-     * https://github.com/gruntjs/grunt-contrib-less
+     * https://github.com/gruntjs/grunt-contrib-sass
      */
-    less: {
+    sass: {
         dev: {
             options: {
-                paths: ['<%= env.frontEndPath %>/css/less'],
-                compress: false,
-                sourceMap: true,
-                sourceMapFilename: '<%= env.frontEndPath %>/css/style.css.map',
-                sourceMapBasepath: '<%= env.frontEndPath %>/css/less/',
-                sourceMapURL: 'style.css.map'
+              style: 'expanded'
             },
             files: {
-                '<%= env.frontEndPath %>/css/style.css': '<%= env.frontEndPath %>/css/less/main.less'
+                '<%= env.frontEndPath %>/css/style.css': '<%= env.frontEndPath %>/css/scss/main.scss'
             }
         }
     },
@@ -150,26 +145,6 @@ module.exports = function(grunt) {
             stderr: true
         }
       }
-    },
-
-    /**
-     * Watch: https://github.com/gruntjs/grunt-contrib-watch
-     *
-     * Run predefined tasks whenever watched file patterns are added, changed or deleted.
-     * Add files to monitor below.
-     */
-    watch: {
-      js: {
-        files: ['Gruntfile.js', '<%= env.frontEndPath %>/js/source/**/*.js'],
-        tasks: ['eslint', 'browserify:dev']
-      },
-      css: {
-        files: ['<%= env.frontEndPath %>/css/less/**/*.less'],
-        tasks: ['less:dev']
-      },
-      options: {
-        livereload: true
-      }
     }
   });
 
@@ -192,7 +167,7 @@ module.exports = function(grunt) {
   grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'less']);
-  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'less', 'cssmin']);
+  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'sass']);
+  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'sass', 'cssmin']);
   grunt.registerTask('default', ['build-dist']);
 };

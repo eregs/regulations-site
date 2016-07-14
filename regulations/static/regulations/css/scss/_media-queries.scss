@@ -1,0 +1,12 @@
+/*
+ Media Queries
+ ==========================================================================
+ media-queries.scss imports layout and typographic media queries
+ media-queries that are specific to modules/functionality may be located within the appropriate .scss file
+ */
+
+@import 'breakpoints/min-width-1100';
+@import 'breakpoints/max-width-1100';
+@import 'breakpoints/max-width-780';
+@import 'breakpoints/max-width-600';
+@import 'breakpoints/max-width-480';

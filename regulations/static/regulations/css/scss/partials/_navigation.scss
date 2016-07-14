@@ -1,0 +1,49 @@
+/*
+Navigation
+=========================
+navigation.scss contains styles for intra reg navigation
+*/
+
+
+/*
+Appendix Navigation
+=========================
+
+```
+<ol class="appendix-nav">
+  <li><a href="#">Link</a></li>
+  <li><a href="#">Link</a></li>
+  <li><a href="#">Link</a></li>
+</ol>
+```
+
+*/
+
+.appendix-nav {
+  margin-top: 2.5em; /*40px*/
+  list-style: none;
+
+  ol {
+    padding: 0;
+  }
+
+  li {
+    @include sans-font-bold;
+    margin: 0;
+    font-size: 0.875em; /*14px*/
+    line-height: 1.85714; /*26px*/
+  }
+}
+
+.appendix-nav a:link,
+.appendix-nav a:visited {
+  color: $black;
+  text-decoration: none;
+  border-bottom: 1px solid $action_color;
+}
+
+.appendix-nav a:hover,
+.appendix-nav a:active {
+  color: $black_dark;
+  border-bottom: 1px solid $action_color_dark;
+}

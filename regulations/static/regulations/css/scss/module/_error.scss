@@ -1,0 +1,36 @@
+/*
+Error.scss
+==========================================================================
+error.scss contains styles for the generic 404, history 404, and 500 pages
+*/
+
+.error {
+  ul {
+    padding: 0;
+  }
+
+  p,
+  li {
+    @include sans-font-regular;
+  }
+
+  h3 {
+    font-size: 1.75em;
+  }
+
+  .cf-icon-table-of-contents,
+  .cf-icon-history,
+  .cf-icon-search {
+    color: $gray_light;
+    margin-right: 10px;
+  }
+
+  .cf-icon-history,
+  .cf-icon-table-of-contents {
+    font-size: 1.1em;
+  }
+}
+
+.section-not-found {
+  margin: 40px 0 300px 0;
+}
