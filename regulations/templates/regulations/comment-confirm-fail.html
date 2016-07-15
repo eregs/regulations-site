@@ -1,12 +1,25 @@
+{% comment %}
+Screen presented to the user when we had an error queuing their comment
+submission. Alert text can be overwritten to indicate other sorts of failure.
+
+Blocks:
+* alert-text
+* other-options
+
+Note: these blocks currently contain EPA-specific text. This text will be
+migrated to the appropriate repository soon.
+{% endcomment %}
 
 <div class="comment-confirm">
 
   <div class="comment-confirm-alert fail-alert">
     <div class="fa fa-2x fa-exclamation-circle"></div>
+    {% block alert-text %}
     <div class="alert-text">
       <h3>Comment submission failed.</h3>
       <p>We're sorry, something went wrong with our system, and submitting your comment did not work.</p>
     </div>
+    {% endblock %}
   </div>
 
   <div class="return-to-draft">
@@ -28,6 +41,7 @@
     </p>
 -->
     <p>You can:</p>
+    {% block other-options %}
     <ul>
       <li>
         <strong>Come back here later and try submitting your comment again.</strong>
@@ -38,8 +52,9 @@
       </li>
       <li>
         <strong>Let us know about the problem.</strong>
-        You can email <a href="mailto:changeme@changeme.gov">something@changeme.gov <span class="cf-icon cf-icon-external-link"></span></a> to tell the team that built this tool about the problem — we'll look into this and try to fix it.</li>
+        You can email <a href="mailto:will.sullivan@gsa.gov">will.sullivan@gsa.gov <span class="cf-icon cf-icon-external-link"></span></a> to tell the team that built this tool about the problem — we'll look into this and try to fix it.</li>
     </ul>
+    {% endblock %}
   </section>
 
 </div>
