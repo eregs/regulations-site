@@ -1,45 +1,8 @@
+{% extends "regulations/comment-confirm-fail.html" %}
 
-<div class="comment-confirm">
-
-  <div class="comment-confirm-alert fail-alert">
-    <div class="fa fa-2x fa-exclamation-circle"></div>
-    <div class="alert-text">
-      <h3>Comment submission invalid.</h3>
-      <p>Your submission was invalid: {{ message }}</p>
-    </div>
-  </div>
-
-  <div class="return-to-draft">
-    <h4>
-      <a href="{% url 'comment_review' doc_number %}">
-        <span class="fa fa-chevron-left"></span>
-        Return to your draft comment</a> to try submitting again.
-    </h4>
-  </div>
-
-  <section class="problem-persist">
-    <h4>If this problem keeps happening</h4>
-    <p>
-      If you've already tried submitting your comment more than once, please save a copy of your draft comment for safekeeping.
-    </p>
-<!--
-    <p>
-      <a href=""><span class="fa fa-file-pdf-o"></span> Download draft comment (PDF)</a>
-    </p>
--->
-    <p>You can:</p>
-    <ul>
-      <li>
-        <strong>Come back here later and try submitting your comment again.</strong>
-      </li>
-      <li>
-        <strong>Use a different way to submit your comment.</strong>
-        You can <a href="{{regs_gov_url}}" target="_blank">go to this proposed rule on Regulations.gov and submit your comment there <span class="cf-icon cf-icon-external-link"></span></a>.
-      </li>
-      <li>
-        <strong>Let us know about the problem.</strong>
-        You can email <a href="mailto:changeme@changeme.gov">something@changeme.gov <span class="cf-icon cf-icon-external-link"></span></a> to tell the team that built this tool about the problem — we'll look into this and try to fix it.</li>
-    </ul>
-  </section>
-
+{% block alert-text %}
+<div class="alert-text">
+  <h3>Comment submission invalid.</h3>
+  <p>Your submission was invalid: {{ message }}</p>
 </div>
+{% endblock %}
