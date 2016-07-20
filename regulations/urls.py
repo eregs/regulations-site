@@ -1,7 +1,6 @@
-from django.conf import settings
 from django.conf.urls import url
-from django.views.decorators.cache import cache_page
 
+from regulations.url_caches import daily_cache, lt_cache
 from regulations.views.about import about
 from regulations.views.chrome_breakaway import ChromeSXSView
 from regulations.views.chrome import (
@@ -37,9 +36,6 @@ section_pattern = r'(?P<label_id>[\d]+[-][\w]+)'
 interp_pattern = r'(?P<label_id>[-\w]+[-]Interp)'
 paragraph_pattern = r'(?P<label_id>[-\w]+)'
 subterp_pattern = r'(?P<label_id>[\d]+-(Appendices|Subpart(-[A-Z]+)?)-Interp)'
-
-lt_cache = cache_page(settings.CACHES['eregs_longterm_cache']['TIMEOUT'],
-                      cache='eregs_longterm_cache')
 
 
 urlpatterns = [
@@ -84,9 +80,9 @@ urlpatterns = [
         name='chrome_section_diff_view'),
 
     url(r'^preamble/(?P<doc_number>[\w-]+)/cfr_changes/(?P<section>[\w-]+)$',
-        CFRChangesView.as_view(), name='cfr_changes'),
+        daily_cache(CFRChangesView.as_view()), name='cfr_changes'),
     url(r'^preamble/(?P<paragraphs>[-\w]+(/[-\w]+)*)$',
-        PreambleView.as_view(), name='chrome_preamble'),
+        daily_cache(PreambleView.as_view()), name='chrome_preamble'),
 
     # Redirect to version by date
     # Example: http://.../201-3-v/1999/11/8
