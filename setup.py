@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="regulations",
-    version="5.0.0",
+    version="master",
     packages=find_packages(),
     install_requires=[
         'boto3',

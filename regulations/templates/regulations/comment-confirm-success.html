@@ -1,12 +1,28 @@
+{% comment %}
+Screen presented to the user when we received their comment and there were no
+known errors.
+
+Blocks:
+* alert-text
+* tracking-number-explanation
+* regsgov-error-template
+* what-will-happen
+* feedback
+
+Note: these blocks currently contain EPA-specific text. This text will be
+migrated to the appropriate repository soon.
+{% endcomment %}
 
 <div class="comment-confirm">
 
   <div class="comment-confirm-alert success-alert">
     <div class="fa fa-2x fa-check-circle"></div>
+    {% block alert-text %}
     <div class="alert-text">
       <h3>Success!</h3>
       <p>Thank you for submitting your comment to EPA. You're done!</p>
     </div>
+    {% endblock %}
   </div>
   <div class="save-pdf">
     <script class="js-template" type="text/template">
@@ -19,10 +35,12 @@
   </div>
   <section class="tracking-number">
     <h4>Your comment tracking number</h4>
+    {% block tracking-number-explanation %}
     <p>
       The first step EPA takes is to assign your comment a tracking number.
       This page automatically displays that number when received:
     </p>
+    {% endblock %}
     <div class="status-container">
       <div class="status">
         <div class="fa fa-spinner fa-pulse fa-1x fa-fw"></div>
@@ -41,6 +59,7 @@
           If this is taking a long time, you don't have to wait for this, because you can also look up your comment later with keyword searches.
         </div>
       </div>
+      {% block regsgov-error-template %}
       <script class="js-regsgov-error" type="text/template">
         <div class="status">
           <div class="status-message">
@@ -61,11 +80,13 @@
           </div>
         </div>
       </script>
+      {% endblock %}
     </div>
     <p>
       Your comment tracking number can help you find and view your public comment later if you want to.
     </p>
   </section>
+  {% block what-will-happen %}
   <section class="what-will-happen">
 
     <h4>What will happen to your comment</h4>
@@ -81,7 +102,10 @@
       </li>
       <li>
         In most cases, EPA will post your comment to
+        {% comment %}TODO: Replace static text with this link
         <a href="#" target="_blank">the docket folder for this proposed rule <span class="cf-icon cf-icon-external-link"></span></a>.
+        {% endcomment %}
+        the docket folder for this proposed rule.
         Then you will be able to find your comment there or by searching
         <a href="https://www.regulations.gov" target="_blank">Regulations.gov <span class="cf-icon cf-icon-external-link"></span></a>
         for your comment tracking number or keywords from your comment.
@@ -105,7 +129,9 @@
     </ul>
 
   </section>
+  {% endblock %}
 
+  {% block feedback %}
   <section class="feedback">
 
     <h4>You can give feedback on this tool</h4>
@@ -114,10 +140,11 @@
       (part of the <a href="http://www.gsa.gov/" target="_blank">General Services Administration <span class="cf-icon cf-icon-external-link"></span></a>)
       in partnership with EPA. The designers and developers would like to hear
       your thoughts about this tool, including suggestions for improving it. To
-      give feedback <a href="https://github.com/eregs/notice-and-comment/issues" target="_blank">open a new issue in this repository <span class="cf-icon cf-icon-external-link"></span></a>
+      give feedback <a href="https://github.com/18F/epa-notice/issues" target="_blank">open a new issue in this repository <span class="cf-icon cf-icon-external-link"></span></a>
       (requires a free login).
     </div>
 
   </section>
+  {% endblock %}
 
 </div>
