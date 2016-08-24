@@ -1,6 +1,6 @@
 /*
 ==========================================================================
-variables.scss contains all theme variable / variable overrides
+variables.scss contains all theme variables and mixins
 */
 
 // Black and white
@@ -66,3 +66,36 @@ $body_font: "Merriweather", Georgia, serif;
 $closed_drawer_width: 40px;
 $mainhead_height: 56px; // Height of your .main-head element. Used to calculate the fixed offsets.
 $subhead_height: 34px;  // Height of your .sub-head element. Used to calculate the fixed offsets.
+
+
+// Mixins
+@mixin sans-font-light {
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@mixin sans-font-regular {
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@mixin sans-font-bold {
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+@mixin serif-font-italic {
+  font-family: "Merriweather", Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+@mixin serif-font-regular {
+  font-family: "Merriweather", Georgia, serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
