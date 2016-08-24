@@ -74,7 +74,7 @@ Selects
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .select-content {
-    background: $white url('../img/select$2x.png') no-repeat bottom right;
+    background: $white url('../img/select@2x.png') no-repeat bottom right;
     background-size: 32px 32px;
   }
 }
