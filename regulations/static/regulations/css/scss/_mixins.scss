@@ -1,38 +1,8 @@
 /*
 Sass Mixins
  ==========================================================================
-mixins.scss contains any mixins to be used throughout the Sass files
+mixins.scss contains complex mixins to be used throughout the Sass files
 */
-
-@mixin sans-font-light {
-  font-family: "Source Sans Pro", Arial, sans-serif;
-  font-weight: 300;
-  font-style: normal;
-}
-
-@mixin sans-font-regular {
-  font-family: "Source Sans Pro", Arial, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-@mixin sans-font-bold {
-  font-family: "Source Sans Pro", Arial, sans-serif;
-  font-weight: 600;
-  font-style: normal;
-}
-
-@mixin serif-font-italic {
-  font-family: "Merriweather", Georgia, serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-@mixin serif-font-regular {
-  font-family: "Merriweather", Georgia, serif;
-  font-weight: 400;
-  font-style: normal;
-}
 
 // Drawer font styles
 @mixin drawer-header-font {
