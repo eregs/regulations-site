@@ -42,8 +42,16 @@ def section(data):
     if len(data['index']) == 2 and data['index'][1][0].isdigit():
         element = {}
         element['is_section'] = True
-        element['label'] = '.'.join(data['index'])
         element['section_id'] = '-'.join(data['index'])
-        element['sub_label'] = re.search(
-            element['label'] + r'[^\w\[]*(.*)', data['title']).group(1)
+        if u"§§ " == data['title'][:3]:
+            element['is_section_span'] = True
+            match = re.match(
+                    r'([-.\w]*)' + r'[^\w\[]*(.*)', data['title'][3:])
+            element['label'] = match.group(1)
+            element['sub_label'] = match.group(2)
+        else:
+            element['is_section_span'] = False
+            element['label'] = '.'.join(data['index'])
+            element['sub_label'] = re.search(
+                element['label'] + r'[^\w\[]*(.*)', data['title']).group(1)
         return element

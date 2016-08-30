@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 from unittest import TestCase
 
 from regulations.generator.layers.toc_applier import (
@@ -24,6 +25,7 @@ class TableOfContentsLayerTest(TestCase):
         toc.section(el, {'index': ['1', '2'], 'title': '1.2 - Awesome'})
         self.assertEqual(el, {
             'is_section': True,
+            'is_section_span': False,
             'section_id': '1-2',
             'label': '1.2',
             'sub_label': 'Awesome'
@@ -32,9 +34,26 @@ class TableOfContentsLayerTest(TestCase):
         toc.section(el, {'index': ['2', '1'], 'title': '2.1Sauce'})
         self.assertEqual(el, {
             'is_section': True,
+            'is_section_span': False,
             'section_id': '2-1',
             'label': '2.1',
             'sub_label': 'Sauce'
+        })
+
+    def test_section_span(self):
+        toc = TableOfContentsLayer(None)
+        el = {}
+
+        toc.section(el, {
+            'index': ['1', '2'],
+            'title': u'§§ 1.2-6 - This is a span'
+        })
+        self.assertEqual(el, {
+            'is_section': True,
+            'is_section_span': True,
+            'section_id': '1-2',
+            'label': '1.2-6',
+            'sub_label': 'This is a span'
         })
 
     def test_appendix_supplement(self):
