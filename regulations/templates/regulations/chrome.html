@@ -87,7 +87,7 @@
 <div id="menu" class="panel" data-page-type="reg-section" data-doc-id="{{ reg_part }}" data-cfr-title-number="{{meta.cfr_title_number}}">
     {% block drawer-toc %}
         {%if TOC %}
-            {% with nav_class='toc-nav__base' toc_items=TOC top_toc=True %}
+            {% with nav_class='toc-nav__base toc-nav__cfr-viewer' toc_items=TOC top_toc=True %}
                 {% include "regulations/toc.html" %}
             {% endwith %}
         {%endif%}

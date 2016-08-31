@@ -49,7 +49,7 @@ var TOCView = Backbone.View.extend({
                     .parent()
                     .prevAll('li[data-subpart-heading]')
                     .first()
-                    .find('.subpart-heading')
+                    .find('.toc-nav__divider')
                     .attr('data-section-id');
 
         if (subpart && subpart.length > 0) {
