@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 from unittest import TestCase
 from regulations.generator import title_parsing
 
@@ -21,14 +22,14 @@ class RegTest(TestCase):
     def test_section(self):
         elements = title_parsing.section({
             'index': ['204', '4'],
-            'title': '204.4 Sauce'})
+            'title': u'§ 204.4 Sauce'})
 
         self.assertTrue(elements['is_section'])
         self.assertEquals('Sauce', elements['sub_label'])
 
         elements = title_parsing.section({
             'index': ['204', '4'],
-            'title': '204.4 [Reserved]'})
+            'title': u'§ 204.4 [Reserved]'})
 
         self.assertTrue(elements['is_section'])
         self.assertEquals('[Reserved]', elements['sub_label'])

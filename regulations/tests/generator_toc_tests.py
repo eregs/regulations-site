@@ -41,9 +41,9 @@ class TocTest(TestCase):
         self.assertTrue(result['is_appendix'])
 
     def test_toc_subpart(self):
-        layer = {'1001-Subpart-A': [{'title': '1001.1 - Content',
+        layer = {'1001-Subpart-A': [{'title': u'§ 1001.1 - Content',
                                      'index': ['1001', '1']},
-                                    {'title': '1001.2 - Other',
+                                    {'title': u'§ 1001.2 - Other',
                                      'index': ['1001', '2']}]}
         data = {'title': u'General', 'index': ['1001', 'Subpart', 'A']}
         result = toc.toc_subpart(data, [], layer)
@@ -61,9 +61,9 @@ class TocTest(TestCase):
         self.assertEqual(['1001', '2'], s2['index'])
 
     def test_toc_subpart_with_nondigits(self):
-        layer = {'1001-Subpart-A': [{'title': '1001.1a - Content',
+        layer = {'1001-Subpart-A': [{'title': u'§ 1001.1a - Content',
                                      'index': ['1001', '1a']},
-                                    {'title': '1001.2 - Other',
+                                    {'title': u'§ 1001.2 - Other',
                                      'index': ['1001', '2']}]}
         data = {'title': u'General', 'index': ['1001', 'Subpart', 'A']}
         result = toc.toc_subpart(data, [], layer)
