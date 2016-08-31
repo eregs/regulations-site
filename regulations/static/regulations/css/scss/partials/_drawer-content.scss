@@ -4,10 +4,11 @@ Table of Contents Drawer
 This contains all of the styles specific to the TOC
 */
 
-.regulation-nav {
+.toc-nav__base {
   padding-top: 40px;
 
-  &.preamble-nav {
+  // Used in Notice & Comment, which displays Federal Register Notices
+  &.toc-nav__fr-notice {
     padding: 62px 0 0 10px;
 
     .toc-item {
@@ -68,7 +69,8 @@ This contains all of the styles specific to the TOC
     }
   }
 
-  &.cfr-nav {
+  // Also used in N&C, specifically for displaying changes to the CFR
+  &.toc-nav__cfr-changes {
     .subpart-heading {
       @include border-top-light ($width: 1px);
     }
