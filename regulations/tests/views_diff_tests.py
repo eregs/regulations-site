@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 from unittest import TestCase
 
 from django.test import RequestFactory
@@ -54,7 +55,7 @@ class ChromeSectionDiffViewTests(TestCase):
                     'is_supplement':True}]
         diff = {
             '8888-2': {'op': 'added',
-                       'node': {'title': '8888.2', 'label': ['8888', '2']}},
+                       'node': {'title': u'§ 8888.2', 'label': ['8888', '2']}},
             '8888-C': {'op': 'added',
                        'node': {'title': 'App C', 'label': ['8888', 'C']}},
             '8888-1-a': {'op': 'modified'},

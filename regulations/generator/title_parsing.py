@@ -3,6 +3,13 @@ import re
 
 from regulations.generator import node_types
 
+# A section title comprises
+#   - one or more §
+#   - a section label like 11.45 or 11.45-50
+#   - one or more space or - separators
+#   - a section subject
+SECTION_TITLE_REGEX = re.compile(u'^§+ ([-.\w]*)[\s-]*(.*)', re.UNICODE)
+
 
 def appendix_supplement(data):
     """Handle items pointing to an appendix or supplement"""
@@ -42,8 +49,12 @@ def section(data):
     if len(data['index']) == 2 and data['index'][1][0].isdigit():
         element = {}
         element['is_section'] = True
-        element['label'] = '.'.join(data['index'])
         element['section_id'] = '-'.join(data['index'])
-        element['sub_label'] = re.search(
-            element['label'] + r'[^\w\[]*(.*)', data['title']).group(1)
+        if u"§§ " == data['title'][:3]:
+            element['is_section_span'] = True
+        else:
+            element['is_section_span'] = False
+        match = SECTION_TITLE_REGEX.match(data['title'])
+        element['label'] = match.group(1)
+        element['sub_label'] = match.group(2)
         return element

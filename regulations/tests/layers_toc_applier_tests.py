@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8
 from unittest import TestCase
 
 from regulations.generator.layers.toc_applier import (
@@ -21,20 +22,50 @@ class TableOfContentsLayerTest(TestCase):
         toc.section(el, {'index': ['1', 'Interpretations']})
         self.assertEqual({}, el)
 
-        toc.section(el, {'index': ['1', '2'], 'title': '1.2 - Awesome'})
+        toc.section(el, {'index': ['1', '2'], 'title': u'§ 1.2 - Awesome'})
         self.assertEqual(el, {
             'is_section': True,
+            'is_section_span': False,
             'section_id': '1-2',
             'label': '1.2',
             'sub_label': 'Awesome'
         })
 
-        toc.section(el, {'index': ['2', '1'], 'title': '2.1Sauce'})
+        toc.section(el, {'index': ['2', '1'], 'title': u'§ 2.1 Sauce'})
         self.assertEqual(el, {
             'is_section': True,
+            'is_section_span': False,
             'section_id': '2-1',
             'label': '2.1',
             'sub_label': 'Sauce'
+        })
+
+    def test_section_with_thin_space(self):
+        toc = TableOfContentsLayer(None)
+        el = {}
+        toc.section(el, {'index': ['1', '2'], 'title': u'§ 1.2 -  Awesome'})
+        self.assertEqual(el, {
+            'is_section': True,
+            'is_section_span': False,
+            'section_id': '1-2',
+            'label': '1.2',
+            'sub_label': 'Awesome'
+        })
+
+    def test_section_span(self):
+        toc = TableOfContentsLayer(None)
+        el = {}
+
+        toc.section(el, {
+            'index': ['1', '2'],
+            'title': u'§§ 1.2-6 - This is a span'
+        })
+        self.assertEqual(el, {
+            'is_section': True,
+            'is_section_span': True,
+            'section_id': '1-2',
+            'label': '1.2-6',
+            'sub_label': 'This is a span'
         })
 
     def test_appendix_supplement(self):
@@ -88,7 +119,7 @@ class TableOfContentsLayerTest(TestCase):
 
     def test_apply_layer_url(self):
         toc = TableOfContentsLayer({'100': [
-            {'title': '100.1 Intro', 'index': ['100', '1']}]})
+            {'title': u'§ 100.1 Intro', 'index': ['100', '1']}]})
 
         result = toc.apply_layer('100')
         self.assertEqual('#100-1', result[1][0]['url'])
@@ -100,7 +131,7 @@ class TableOfContentsLayerTest(TestCase):
 
     def test_apply_layer_compatibility(self):
         toc = TableOfContentsLayer({'100': [
-            {'title': '100.1 Intro', 'index': ['100', '1']},
+            {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
             {'title': 'Appendix A', 'index': ['100', 'A']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
         _, result = toc.apply_layer('100')
@@ -112,9 +143,9 @@ class TableOfContentsLayerTest(TestCase):
                 {'title': 'Appendix A', 'index': ['100', 'A']},
                 {'title': 'Supplement I', 'index': ['100', 'Interp']}],
             '100-Subpart-A': [
-                {'title': '100.1 Intro', 'index': ['100', '1']},
-                {'title': '100.2 Sec2', 'index': ['100', '2']},
-                {'title': '100.3 Sec3', 'index': ['100', '3']}]
+                {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
+                {'title': u'§ 100.2 Sec2', 'index': ['100', '2']},
+                {'title': u'§ 100.3 Sec3', 'index': ['100', '3']}]
             })
         _, result = toc.apply_layer('100')
         self.assertEqual(3, len(result))
@@ -142,8 +173,8 @@ class TableOfContentsLayerTest(TestCase):
 
     def test_apply_layer_interp_emptysubpart(self):
         toc = TableOfContentsLayer({'100': [
-            {'title': '100.1 Intro', 'index': ['100', '1']},
-            {'title': '100.2 Second', 'index': ['100', '2']},
+            {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
+            {'title': u'§ 100.2 Second', 'index': ['100', '2']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
         _, result = toc.apply_layer('100')
         self.assertEqual(3, len(result))
@@ -154,8 +185,8 @@ class TableOfContentsLayerTest(TestCase):
         self.assertEqual(['100', 'Subpart', 'Interp'], nosubpart['index'])
 
         toc = TableOfContentsLayer({'100': [
-            {'title': '100.1 Intro', 'index': ['100', '1']},
-            {'title': '100.2 Second', 'index': ['100', '2']},
+            {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
+            {'title': u'§ 100.2 Second', 'index': ['100', '2']},
             {'title': 'Appendix A', 'index': ['100', 'A']},
             {'title': 'Appendix C', 'index': ['100', 'C']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
@@ -175,8 +206,8 @@ class TableOfContentsLayerTest(TestCase):
                 {'title': 'Subpart A', 'index': ['100', 'Subpart', 'A']},
                 {'title': 'Supplement I', 'index': ['100', 'Interp']}],
             '100-Subpart-A': [
-                {'title': '100.1 Intro', 'index': ['100', '1']},
-                {'title': '100.2 Second', 'index': ['100', '2']}]})
+                {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
+                {'title': u'§ 100.2 Second', 'index': ['100', '2']}]})
         _, result = toc.apply_layer('100')
         self.assertEqual(2, len(result))
         subpartA, interp = result
@@ -193,8 +224,8 @@ class TableOfContentsLayerTest(TestCase):
                 {'title': 'Appendix C', 'index': ['100', 'C']},
                 {'title': 'Supplement I', 'index': ['100', 'Interp']}],
             '100-Subpart-A': [
-                {'title': '100.1 Intro', 'index': ['100', '1']},
-                {'title': '100.2 Second', 'index': ['100', '2']}]})
+                {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
+                {'title': u'§ 100.2 Second', 'index': ['100', '2']}]})
         _, result = toc.apply_layer('100')
         self.assertEqual(4, len(result))
         subpartA, appA, appC, interp = result

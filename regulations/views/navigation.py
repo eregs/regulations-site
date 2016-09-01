@@ -9,7 +9,9 @@ def get_labels(current):
 def _add_extra(el, version):
     """Add extra fields to a TOC element -- only added to elements we will
     use for prev/next"""
-    if el.get('is_section'):
+    if el.get('is_section_span'):
+        el['markup_prefix'] = '&sect;&sect;&nbsp;'
+    elif el.get('is_section'):
         el['markup_prefix'] = '&sect;&nbsp;'
     elif el.get('is_subterp'):
         el['markup_prefix'] = 'Interpretations For '
