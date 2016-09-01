@@ -160,7 +160,7 @@ This contains all of the styles specific to the TOC
   @include border-bottom-light ($width: 1px);
   font-size: 1em;
   text-transform: uppercase;
-  color: $gray_darkest;
+  color: $gray_dark;
 }
 
 // Highlight the History tab in diff view
