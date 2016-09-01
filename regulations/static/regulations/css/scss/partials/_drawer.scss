@@ -38,6 +38,14 @@ Regulation Drawer
     height: 33px;
   }
 
+  svg {
+    height: 15px;
+    fill: $gray_dark;
+
+    .current & {
+      fill: $blue;
+    }
+  }
 }
 
 /*
@@ -115,11 +123,11 @@ Panel Slide Button
   .close & {
     border-bottom: 1px solid $panel_border_color;
 
-    img:first-child {
+    svg:first-child {
       display: inline-block;
     }
 
-    img:last-child {
+    svg:last-child {
       display: none;
     }
 
@@ -131,19 +139,13 @@ Panel Slide Button
   }
 
   // use the icon font for the drawer toggle arrow in browsers that support it
-  img:first-child {
+  svg:first-child {
     display: none;
   }
 
-  img:last-child {
+  svg:last-child {
     display: inline-block;
   }
-}
-
-.drawer-toggle-icon {
-  height: 15px;
-  vertical-align: middle;
-  margin-bottom: 4px;
 }
 
 /*

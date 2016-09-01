@@ -39,24 +39,43 @@
     {% block sub-head-drawer-icons %}
     <div class="toc-head">
         {% block sidebar-drawer-icons %}
-        <a href="#" id="panel-link" class="toc-toggle panel-slide">
-          <img src="{%static "regulations/img/open-caret.svg" %}" class="drawer-toggle-icon" alt="Open navigation drawer" />
-          <img src="{%static "regulations/img/close-caret.svg" %}" class="drawer-toggle-icon" alt="Close navigation drawer"/>
+        <a href="#" id="panel-link" class="toc-toggle panel-slide"
+           title="Navigation drawer toggle">
+          {% include "regulations/svgs/open-caret.svg" %}
+          {% include "regulations/svgs/close-caret.svg" %}
         </a>
         {% endblock %}
         <ul class="drawer-toggles">
           {% block sidebar-icons %}
             {% block sidebar-toc-link %}
-            <li><a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents"><span class="icon-text">Table of Contents</span><img src="{%static "regulations/img/table-of-contents.svg" %}"
-       class="drawer-toggle-icon" alt="Table of Contents toggle" /></a></li>
+              {% spaceless %}
+                <li>
+                  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents">
+                    <span class="icon-text">Table of Contents</span>
+                    {% include "regulations/svgs/table-of-contents.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
             {% endblock %}
             {% block sidebar-history-link %}
-            <li><a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline"><span class="icon-text">Regulation Timeline</span><img src="{%static "regulations/img/timeline.svg" %}"
-       class="drawer-toggle-icon" alt="Regulation Timeline toggle"/></a></li>
+              {% spaceless %}
+                <li>
+                  <a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline">
+                    <span class="icon-text">Regulation Timeline</span>
+                    {% include "regulations/svgs/timeline.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
             {% endblock %}
             {% block sidebar-search-link %}
-            <li><a href="#search" id="search-link" class="toc-nav-link" title="Search"><span class="icon-text">Search</span><img src="{%static "regulations/img/search.svg" %}"
-       class="drawer-toggle-icon" alt="Search toggle"/></a></li>
+              {% spaceless %}
+                <li>
+                  <a href="#search" id="search-link" class="toc-nav-link" title="Search">
+                    <span class="icon-text">Search</span>
+                    {% include "regulations/svgs/search.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
             {% endblock %}
           {% endblock %}
         </ul>
