@@ -21,7 +21,7 @@ Regulation Drawer
 
   a:link,
   a:visited {
-    color: $panel_text_color;
+    color: $gray_darker;
     text-decoration: none;
     height: 33px;
   }
@@ -40,11 +40,10 @@ Regulation Drawer
 
   svg {
     height: 15px;
-    fill: $gray_dark;
-
-    .current & {
-      fill: $blue;
-    }
+    fill: $gray_darker;
+  }
+  .current svg {
+    fill: $primary_color;
   }
 }
 
