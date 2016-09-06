@@ -87,6 +87,7 @@ Drawer default state
     font-size: 0.875em;
     text-transform: uppercase;
     font-weight: bold;
+    @include sans-font-bold;
   }
 
   h3 {
