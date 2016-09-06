@@ -11,7 +11,7 @@ Regulation Drawer
   background-color: $panel_background_color;
   border-right: 2px solid $panel_border_color;
   @include sans-font-regular;
-  font-size: 1em;
+  font-size: 1em * $sans_font_scale_factor;
   overflow-y: scroll; // allow content to be scrollable
 }
 

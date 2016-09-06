@@ -61,6 +61,12 @@ $warning_color: $pink; // Used as background for warning messages
 
 // Type Variables
 $body_font: "Merriweather", Georgia, serif;
+// Different fonts have different x-heights. Use a scaling factor to modify
+// them. This variable is not used consistently yet, but whenever there's an
+// issue with font sizes looking too large or small, we likely need to
+// multiply by this variable.
+// See https://github.com/18F/eregs-platform/issues/54
+$sans_font_scale_factor: 1;
 
 // Layout Variables
 $closed_drawer_width: 40px;
