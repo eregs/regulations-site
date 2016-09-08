@@ -4,10 +4,11 @@ Table of Contents Drawer
 This contains all of the styles specific to the TOC
 */
 
-.regulation-nav {
+.toc-nav__base {
   padding-top: 40px;
 
-  &.preamble-nav {
+  // Used in Notice & Comment, which displays Federal Register Notices
+  &.toc-nav__fr-notice {
     padding: 62px 0 0 10px;
 
     .toc-item {
@@ -68,8 +69,9 @@ This contains all of the styles specific to the TOC
     }
   }
 
-  &.cfr-nav {
-    .subpart-heading {
+  // Also used in N&C, specifically for displaying changes to the CFR
+  &.toc-nav__cfr-changes {
+    .toc-nav__divider {
       @include border-top-light ($width: 1px);
     }
   }
@@ -144,6 +146,23 @@ This contains all of the styles specific to the TOC
   }
 }
 
+.toc-nav__cfr-viewer, .toc-nav__diffs {
+}
+
+// Non-clickable divider in the table of contents
+.toc-nav__divider {
+  // Negative margin, positive padding to extend borders full width
+  margin: 0 0 0 -100px;
+  padding: 10px 0 10px 105px;
+  display: block;
+  line-height: 1.4;
+  background-color: $panel_background_color;
+  @include border-bottom-light ($width: 1px);
+  font-size: 1em;
+  text-transform: uppercase;
+  color: $gray_dark;
+}
+
 // Highlight the History tab in diff view
 .active-tab a:link,
 .active-tab a:visited,
@@ -152,17 +171,6 @@ This contains all of the styles specific to the TOC
   color: #d14124;
 }
 
-
-// Negative margin, positive padding to extend borders full width
-.subpart-heading {
-  margin: 0 0 0 -100px;
-  padding: 10px 0 10px 105px;
-  display: block;
-  line-height: 1.4;
-  background-color: $panel_background_color;
-  @include border-bottom-light ($width: 1px);
-  @include regulation-nav-subpart-heading-font;
-}
 
 .subpart-subhead {
   @include sans-font-bold;

@@ -11,7 +11,7 @@ Regulation Drawer
   background-color: $panel_background_color;
   border-right: 2px solid $panel_border_color;
   @include sans-font-regular;
-  font-size: 1em;
+  font-size: 1em * $sans_font_scale_factor;
   overflow-y: scroll; // allow content to be scrollable
 }
 
@@ -21,7 +21,7 @@ Regulation Drawer
 
   a:link,
   a:visited {
-    color: $panel_text_color;
+    color: $gray_darker;
     text-decoration: none;
     height: 33px;
   }
@@ -38,6 +38,13 @@ Regulation Drawer
     height: 33px;
   }
 
+  svg {
+    height: 15px;
+    fill: $gray_darker;
+  }
+  .current svg {
+    fill: $primary_color;
+  }
 }
 
 /*
@@ -80,6 +87,7 @@ Drawer default state
     font-size: 0.875em;
     text-transform: uppercase;
     font-weight: bold;
+    @include sans-font-bold;
   }
 
   h3 {
@@ -103,7 +111,7 @@ Panel Slide Button
   float: right;
   cursor: pointer;
   text-align: center;
-  font-size: 0.875em;
+  font-size: 1.2em;
 
   // use an image for IE7 and browsers that don't support @font-face
   .lt-ie8 &,
@@ -115,11 +123,11 @@ Panel Slide Button
   .close & {
     border-bottom: 1px solid $panel_border_color;
 
-    img:first-child {
+    svg:first-child {
       display: inline-block;
     }
 
-    img:last-child {
+    svg:last-child {
       display: none;
     }
 
@@ -131,19 +139,13 @@ Panel Slide Button
   }
 
   // use the icon font for the drawer toggle arrow in browsers that support it
-  img:first-child {
+  svg:first-child {
     display: none;
   }
 
-  img:last-child {
+  svg:last-child {
     display: inline-block;
   }
-}
-
-.drawer-toggle-icon {
-  height: 15px;
-  vertical-align: middle;
-  margin-bottom: 4px;
 }
 
 /*

@@ -38,7 +38,7 @@
       <h2 class="toc-type">Table of Contents</h2>
       <h3 class="toc-subheader">Preamble</h3>
     </div><!-- /.drawer-header -->
-    <nav id="toc" class="regulation-nav drawer-content preamble-nav" role="navigation">
+    <nav id="toc" class="toc-nav__base drawer-content toc-nav__fr-notice" role="navigation">
       {% include "regulations/toc-preamble.html" %}
     </nav>
   </div>
@@ -48,12 +48,14 @@
       <h2 class="toc-type">Table of Contents</h2>
       <h3 class="toc-subheader">Amendments to the CFR</h3>
     </div>
-    <nav id="cfr-toc" class="regulation-nav drawer-content preamble-nav cfr-nav" role="navigation">
+    <nav id="cfr-toc" role="navigation"
+         class="toc-nav__base drawer-content toc-nav__fr-notice
+                toc-nav__cfr-changes"  >
       <ol>
         {% regroup cfr_change_toc by category as cfr_toc_by_category %}
         {% for category in cfr_toc_by_category %}
           <li>
-            <h3 class="subpart-heading">{{category.grouper}}</h3>
+            <h3 class="toc-nav__divider">{{category.grouper}}</h3>
           </li>
           {% for nav_item in category.list %}
             <li><a href="{{nav_item.url}}"

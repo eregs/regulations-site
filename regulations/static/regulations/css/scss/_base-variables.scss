@@ -53,7 +53,7 @@ $action_color_dark: $blue; // Darker version of action color often used for hove
 $panel_background_color: $gray_lightest; // Table of contents background, subhead color, drawer color
 $panel_border_color: $gray_light; // Colors the borders for panel_color
 $panel_highlight_color: $blue_lightest; // Highlight color for table of contents
-$panel_text_color: $gray_darker; // Text color for table of contents
+$panel_text_color: $black; // Text color for table of contents
 $text_highlight_color: $green_lightest; // Text highlight used for diffs
 $success_color: $green_lightest; // Used as background for success messages
 $notice_color: $blue_lightest; // Used as background for neutral notice messages
@@ -61,6 +61,12 @@ $warning_color: $pink; // Used as background for warning messages
 
 // Type Variables
 $body_font: "Merriweather", Georgia, serif;
+// Different fonts have different x-heights. Use a scaling factor to modify
+// them. This variable is not used consistently yet, but whenever there's an
+// issue with font sizes looking too large or small, we likely need to
+// multiply by this variable.
+// See https://github.com/18F/eregs-platform/issues/54
+$sans_font_scale_factor: 1;
 
 // Layout Variables
 $closed_drawer_width: 40px;

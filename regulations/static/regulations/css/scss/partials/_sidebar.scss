@@ -35,7 +35,9 @@ Sidebar
 
   // Headers within the sidebar should be <h4>
   h4 {
-    font-size: 0.857142857em;
+    padding: 0 10px;
+    font-size: 1em * $sans_font_scale_factor;
+    line-height: 40px;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -56,7 +58,7 @@ Sidebar Expandables
 -------------------
 */
 
-  .expandable {
+  .expandable, .open-definition .group {
     cursor: pointer;
     background-color: $gray_lightest;
     width: 100%;
@@ -91,6 +93,12 @@ Sidebar Expandables
     }
   }
 
+  .open-definition header a:before {
+    @extend .cf-icon;
+    content: '\e107';
+    color: $blue_light;
+  }
+
   /*
   Helpers
   -------------------
@@ -116,39 +124,15 @@ Sidebar Expandables
 Sidebar Headers
 ===============
 */
-.sidebar-header {
-  @extend .group;
-  background-color: $gray_lightest;
-
-  h4 {
-    color: $gray_light;
-    padding: 0.5em 0 0.5em 0.9375em;
-    @include sans-font-bold;
-    text-transform: uppercase;
-    padding-right: 25px;
-  }
-
-  .close-button {
-    margin-top: .2em;
-    text-indent: -9999px;
-    background: url('../img/close.png') no-repeat 0 0;
-    cursor: pointer;
-    z-index: 99999;
-    width: 13px;
-  }
+// @todo - this is used by definitions but _not_ by other sidebar headers.
+// Combine
+.open-definition {
 
   &.spinner {
     background: $gray_lightest url('../img/blue_spinner.gif') no-repeat center right;
     background-position-x: 92%;
-  }
 
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .close-button {
-      background: $gray_lightest url('../img/close@2x.png') no-repeat 0 0;
-      background-size: 13px 13px;
-    }
-
-    &.spinner {
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
       background: $gray_lightest url('../img/blue_spinner@2x.gif') no-repeat center right;
       background-position-x: 92%;
       background-size: 19px 19px;
@@ -170,8 +154,11 @@ Regs Meta contains the sub-content meta data found in the sidebar
 .regs-meta {
 
   h4 {
-    padding: 0.5em 1em;
     @include sans-font-bold;
+  }
+
+  h5 {
+    font-size: 16px * $sans_font_scale_factor;
   }
 
   /* We either use a subtitle + "What's this?" or an inline explanation
@@ -253,24 +240,6 @@ When open definitions appear in the right sidebar
 
 .open-definition {
 
-  .sidebar-header {
-    @include border-bottom-light;
-  }
-
-  .close-button {
-    cursor: pointer;
-
-    &:active,
-    &:focus {
-      position: relative;
-      left: 0;
-    }
-
-    &.tab-activated {
-      position: absolute;
-      left: -10000px;
-    }
-  }
 
   p {
     font-family: $body_font;
@@ -281,7 +250,7 @@ When open definitions appear in the right sidebar
     clear: left;
   }
 
-  .open-definition {
+  header {
     border-bottom: 1px solid $gray_light;
   }
 
@@ -295,7 +264,6 @@ When open definitions appear in the right sidebar
     }
 
     &.inactive,
-    &.inactive a.continue-link.internal,
     &.inactive a.citation.definition {
       color: $gray;
     }
@@ -340,15 +308,10 @@ When open definitions appear in the right sidebar
 
 /*
 continue links */
-.continue-link,
 .update-definition {
   @include sans-font-bold;
   display: inline-block;
   margin: 0 15px 0 0;
-}
-
-.continue-link:last-child {
-  margin-bottom: 100px;
 }
 
 /*
@@ -490,7 +453,6 @@ Small screens
       border-bottom: none;
     }
 
-    .sidebar-header,
     .definition-warning {
       border-bottom: 0;
     }
@@ -500,10 +462,6 @@ Small screens
     .definition-text {
       padding-bottom: 160px;
     }
-  }
-
-  .sidebar-header {
-    background-color: $gray_lightest;
   }
 }
 
@@ -519,20 +477,5 @@ Small screens
         margin-right: 10px;
       }
     }
-  }
-}
-
-@media only screen and (max-width: 1100px) {
-  .sidebar-header.spinner {
-    background-position-x: 93%;
-  }
-}
-
-/*
-Large screens
--------------- */
-@media only screen and (min-width: 1100px) {
-  .sidebar-header.spinner {
-    background-position-x: 94%;
   }
 }

@@ -19,12 +19,6 @@ mixins.scss contains complex mixins to be used throughout the Sass files
   font-size: 18px;
 }
 
-@mixin regulation-nav-subpart-heading-font {
-  font-size: 1em;
-  text-transform: uppercase;
-  color: $gray_darkest;
-}
-
 @mixin regulation-nav-interp-heading-font {
   @include sans-font-regular;
   text-transform: uppercase;

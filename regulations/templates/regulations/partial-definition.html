@@ -2,12 +2,12 @@
     Partial for definitions to be displayed inline in the sidebar
 {% endcomment %}
 <div id="{{node.markup_id}}" class="open-definition" tabindex="0">
-    <div class="sidebar-header group">
-        <h4>
-            Defined Term
-            <a class="right close-button" href="#">Close definition</a>
-        </h4>
-    </div>
+    <header class="group">
+       <h4 tabindex="0">Defined Term</h4>
+       <a href="#" tabindex="0" class="close-button">
+           <span class="icon-text">Close definition</span>
+       </a>
+    </header>
 
     {% comment %}
         Used to display scope warnings
@@ -30,7 +30,7 @@
         {% endif  %}
 
         <a  href="{% url 'chrome_section_view' node.section_id version %}#{{node.label_id}}"
-            class="continue-link full-def internal"
+            class="full-def internal"
             data-linked-section="{{node.label_id}}">{{formatted_label}}</a>
 
         {% if not node.children %}
@@ -39,12 +39,10 @@
                 <a  href="{% url 'chrome_subterp_view' interp.section_id version %}#{{ interp.label_id }}"
                     data-linked-subsection="{{ interp.label_id }}"
                     data-linked-section="{{ interp.section_id }}"
-                    class="internal interp continue-link">Official Interpretation</a>
+                    class="internal interp">Official Interpretation</a>
                 {% endwith %}
             {% endif %}
         {% endif %}
-
-        <a class="close-button tab-activated" href="#">Close definition</a>
     </div>
 
 </div>
