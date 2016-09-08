@@ -58,7 +58,7 @@ Sidebar Expandables
 -------------------
 */
 
-  .expandable {
+  .expandable, .open-definition .group {
     cursor: pointer;
     background-color: $gray_lightest;
     width: 100%;
@@ -93,6 +93,12 @@ Sidebar Expandables
     }
   }
 
+  .open-definition header a:before {
+    @extend .cf-icon;
+    content: '\e107';
+    color: $blue_light;
+  }
+
   /*
   Helpers
   -------------------
@@ -120,38 +126,13 @@ Sidebar Headers
 */
 // @todo - this is used by definitions but _not_ by other sidebar headers.
 // Combine
-.sidebar-header {
-  @extend .group;
-  background-color: $gray_lightest;
-
-  h4 {
-    @include sans-font-bold;
-    text-transform: uppercase;
-  }
-
-  .close-button {
-    margin-right: 15px;
-    margin-top: 13px;
-    text-indent: -9999px;
-    background: url('../img/close.png') no-repeat 0 0;
-    cursor: pointer;
-    z-index: 99999;
-    height: 13px;
-    width: 13px;
-  }
+.open-definition {
 
   &.spinner {
     background: $gray_lightest url('../img/blue_spinner.gif') no-repeat center right;
     background-position-x: 92%;
-  }
 
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .close-button {
-      background: $gray_lightest url('../img/close@2x.png') no-repeat 0 0;
-      background-size: 13px 13px;
-    }
-
-    &.spinner {
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
       background: $gray_lightest url('../img/blue_spinner@2x.gif') no-repeat center right;
       background-position-x: 92%;
       background-size: 19px 19px;
@@ -259,24 +240,6 @@ When open definitions appear in the right sidebar
 
 .open-definition {
 
-  .sidebar-header {
-    @include border-bottom-light;
-  }
-
-  .close-button {
-    cursor: pointer;
-
-    &:active,
-    &:focus {
-      position: relative;
-      left: 0;
-    }
-
-    &.tab-activated {
-      position: absolute;
-      left: -10000px;
-    }
-  }
 
   p {
     font-family: $body_font;
@@ -287,7 +250,7 @@ When open definitions appear in the right sidebar
     clear: left;
   }
 
-  .open-definition {
+  header {
     border-bottom: 1px solid $gray_light;
   }
 
@@ -301,7 +264,6 @@ When open definitions appear in the right sidebar
     }
 
     &.inactive,
-    &.inactive a.continue-link.internal,
     &.inactive a.citation.definition {
       color: $gray;
     }
@@ -346,15 +308,10 @@ When open definitions appear in the right sidebar
 
 /*
 continue links */
-.continue-link,
 .update-definition {
   @include sans-font-bold;
   display: inline-block;
   margin: 0 15px 0 0;
-}
-
-.continue-link:last-child {
-  margin-bottom: 100px;
 }
 
 /*
@@ -496,7 +453,6 @@ Small screens
       border-bottom: none;
     }
 
-    .sidebar-header,
     .definition-warning {
       border-bottom: 0;
     }
@@ -506,10 +462,6 @@ Small screens
     .definition-text {
       padding-bottom: 160px;
     }
-  }
-
-  .sidebar-header {
-    background-color: $gray_lightest;
   }
 }
 
@@ -525,20 +477,5 @@ Small screens
         margin-right: 10px;
       }
     }
-  }
-}
-
-@media only screen and (max-width: 1100px) {
-  .sidebar-header.spinner {
-    background-position-x: 93%;
-  }
-}
-
-/*
-Large screens
--------------- */
-@media only screen and (min-width: 1100px) {
-  .sidebar-header.spinner {
-    background-position-x: 94%;
   }
 }
