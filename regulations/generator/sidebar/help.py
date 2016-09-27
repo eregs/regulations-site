@@ -12,7 +12,7 @@ class Help(SidebarBase):
 
     def context(self, http_client, request):
         subtemplates = []
-        for layer_name in layer_names(request):
+        for layer_name in sorted(layer_names(request)):
             template_name = 'regulations/sidebar/help/{}.html'.format(
                 layer_name)
             try:
