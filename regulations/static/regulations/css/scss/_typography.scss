@@ -262,12 +262,12 @@ a:visited {
 .definition:visited {
   color: $black;
   text-decoration: none;
-  border-bottom: 1px solid $gray_light;
+  border-bottom: 1px solid $definition_border_color;
 }
 
 .definition:hover,
 .definition:active {
-  border-bottom: 1px solid $gray_light;
+  border-bottom: 1px solid $definition_border_color;
   background-color: $gray_lighter;
 }
 
@@ -278,7 +278,7 @@ a:visited {
 .inline-interpretation {
   .definition:link,
   .definition:visited {
-     border-bottom: 1px solid $gray_light;
+     border-bottom: 1px solid $definition_border_color;
   }
 }
 
