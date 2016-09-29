@@ -58,7 +58,8 @@ Sidebar Expandables
 -------------------
 */
 
-  .expandable, .open-definition .group {
+  // @todo generalize this so that the id isn't required
+  .expandable, #definition .group {
     cursor: pointer;
     background-color: $gray_lightest;
     width: 100%;

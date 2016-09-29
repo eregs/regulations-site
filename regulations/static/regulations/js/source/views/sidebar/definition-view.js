@@ -57,7 +57,7 @@ var DefinitionView = Backbone.View.extend({
 
     // temporary header w/spinner while definition is loading
     renderHeader: function() {
-        this.$el.html('<div class="sidebar-header group spinner"><h4>Defined Term</h4></div>');
+        this.$el.html('<header class="group spinner"><h4>Defined Term</h4></header>');
     },
 
     render: function(html) {
