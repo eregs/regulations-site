@@ -1,3 +1,4 @@
+from datetime import date
 import re
 
 from django.shortcuts import redirect
@@ -7,9 +8,10 @@ from regulations.generator.versions import fetch_grouped_history
 from regulations.views.error_handling import handle_generic_404
 
 
-def redirect_by_date(request, label_id, year, month, day):
+def redirect_by_date_str(request, label_id, date_str):
     """If a user requests a date as the version, find the version which was
-    current as of that date"""
+    current as of that date. date_str is an ISO date string, but may have a
+    2-digit year"""
     date_versions = []
     client = ApiReader()
     for struct in client.regversions(label_id.split('-')[0])['versions']:
@@ -18,7 +20,6 @@ def redirect_by_date(request, label_id, year, month, day):
 
     date_versions = sorted(date_versions)
     last_version = None
-    date_str = '%s-%s-%s' % (year, month, day)
     while date_versions and date_versions[0][0] <= date_str:
         last_version = date_versions[0][1]
         date_versions = date_versions[1:]
@@ -34,6 +35,18 @@ def redirect_by_date(request, label_id, year, month, day):
         return redirect('chrome_paragraph_view', label_id, last_version)
     else:
         return handle_generic_404(request)
+
+
+def redirect_by_date(request, label_id, year, month, day):
+    """If a user requests a date as the version, find the version which was
+    current as of that date"""
+    date_str = '%s-%s-%s' % (year, month, day)
+    return redirect_by_date_str(request, label_id, date_str)
+
+
+def redirect_by_current_date(request, label_id):
+    """Find the version which is valid for the current date"""
+    return redirect_by_date_str(request, label_id, date.today().isoformat())
 
 
 def redirect_by_date_get(request, label_id):

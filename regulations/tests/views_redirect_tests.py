@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from unittest import TestCase
 
 from django.test import RequestFactory
@@ -32,6 +33,21 @@ class ViewsRedirectTest(TestCase):
         response = redirect.redirect_by_date(None, '8888', '2010', '06', '08')
         self.assertEqual(302, response.status_code)
         self.assertTrue('ccc' in response['Location'])
+
+    @patch('regulations.views.redirect.ApiReader')
+    def test_redirect_by_current_date(self, ApiReader):
+        today = date.today()
+        last_week = (today - timedelta(7)).isoformat()
+        next_week = (today + timedelta(7)).isoformat()
+        ApiReader.return_value.regversions.return_value = {'versions': [
+            {'by_date': last_week, 'version': 'last_week'},
+            {'by_date': today.isoformat(), 'version': 'today'},
+            {'by_date': next_week, 'version': 'next_week'},
+        ]}
+
+        response = redirect.redirect_by_current_date(None, '8888')
+        self.assertEqual(302, response.status_code)
+        self.assertTrue('today' in response['Location'])
 
     @patch('regulations.views.redirect.redirect_by_date')
     def test_redirect_by_date_get(self, redirect_by_date):
