@@ -18,8 +18,12 @@ from regulations.views.partial_sxs import ParagraphSXSView
 from regulations.views.preamble import (
     CFRChangesView, PreambleView, PrepareCommentView,
     ChromePreambleSearchView)
-from regulations.views.redirect import diff_redirect, redirect_by_date
-from regulations.views.redirect import redirect_by_date_get
+from regulations.views.redirect import (
+    diff_redirect,
+    redirect_by_current_date,
+    redirect_by_date,
+    redirect_by_date_get
+)
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
 from regulations.views import comment
@@ -88,6 +92,10 @@ urlpatterns = [
     # Example: http://.../201-3-v/1999/11/8
     url(r'^%s/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})$'
         % paragraph_pattern, redirect_by_date, name='redirect_by_date'),
+    # Redirect to version by current date
+    # Example: http://.../201-3-v/CURRENT
+    url(r'^%s/CURRENT$' % paragraph_pattern,
+        redirect_by_current_date, name='redirect_by_current_date'),
     # A regulation section with chrome
     # Example: http://.../201-4/2013-10704
     url(r'^%s/%s$' % (section_pattern, version_pattern),
