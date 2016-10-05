@@ -28,14 +28,13 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         # term link should get active class
         self.assertIn('active', definition_link.get_attribute('class'))
 
-        definition = self.driver.find_element_by_xpath('//*[@id="1005-2-a-1"]')
-        definition_close_button = self.driver.find_element_by_xpath(
-            '//*[@id="1005-2-a-1"]/div[1]/h4/a')
+        definition = self.driver.find_element_by_id('1005-2-a-1')
+        definition_close_button = definition.find_element_by_class_name(
+            'close-button')
 
         # definition should appear in sidebar
         self.assertGreater(len(definition.text), 20)
-        definition_term = self.driver.find_element_by_xpath(
-            '//*[@id="1005-2-a-1"]/div[3]/p/dfn')
+        definition_term = definition.find_element_by_class_name('defined-term')
         self.assertIn(u'\u201cvoided tosser\u201d', definition_term.text)
 
         definition_close_button.click()
@@ -45,8 +44,9 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         definition_link.click()
 
         # continue link should load full def
-        definition_cont_link = self.driver.find_element_by_xpath(
-            '//*[@id="1005-2-a-1"]/div[3]/a[1]')
+        definition = self.driver.find_element_by_id('1005-2-a-1')
+        definition_cont_link = definition.find_element_by_class_name(
+            'full-def')
         definition_cont_link.click()
         WebDriverWait(self.driver, 30).until(
             lambda driver: driver.find_element_by_xpath('//*[@id="1005-2"]'))
@@ -74,16 +74,17 @@ class DefinitionTest(BaseTest, unittest.TestCase):
         self.driver.find_element_by_xpath('//*[@id="toc"]/ol/li[1]/a').click()
 
         # make sure that the scope notice displays
-        self.driver.find_element_by_xpath('//*[@id="1005-2-b-1"]/div[2]/div')
+        definition = self.driver.find_element_by_id('1005-2-b-1')
+        definition.find_element_by_class_name('definition-warning')
 
         # go to 1005-1-a
         toc_toggle.click()
         utils.scroll_to(self.driver, '#1005-1-a')
 
-        definition_update_link = self.driver.find_element_by_css_selector(
-            '.update-definition')
-        definition_text = self.driver.find_element_by_css_selector(
-            '.definition-text')
+        definition_update_link = self.driver.find_element_by_class_name(
+            'update-definition')
+        definition_text = self.driver.find_element_by_class_name(
+            'definition-text')
 
         # make sure text is grayed out
         self.assertIn('inactive', definition_text.get_attribute('class'))
