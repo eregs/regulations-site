@@ -117,6 +117,17 @@ class CFRChangeBuilderTests(TestCase):
                 section_id='')
         ])
 
+    def test_add_change_no_section_titles(self):
+        """If we don't have a section title for a change, we shouldn't
+        explode."""
+        builder = navigation.CFRChangeBuilder()
+        builder.cfr_title, builder.cfr_part = 11, 222
+        self.assertEqual(builder.section_titles, {})
+        builder.add_change('docnum', ('333', '444'))
+        self.assertEqual(len(builder.toc), 1)
+        self.assertEqual(builder.toc[0].title.full, '')
+        self.assertEqual(builder.toc[0].category, '11 CFR 222')
+
     def test_footer(self):
         toc = [
             navigation.NavItem(

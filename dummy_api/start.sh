@@ -11,11 +11,13 @@ do
     curl -X PUT http://localhost:8282/$TAIL -d @$TAIL
 done
 
+# Set-up and migrate parser database
+docker run --rm -it -v cache:/app/cache --entrypoint ./manage.py eregs/parser migrate
+PARSER="docker run --rm -it -v cache:/app/cache --link core:core eregs/parser"
 # Load a real notice
-mkdir cache
-docker run --rm -it -v $PWD/cache:/app/cache eregs/parser notice_preamble 2016-02749
-docker run --rm -it -v $PWD/cache:/app/cache eregs/parser layers
-docker run --rm -it -v $PWD/cache:/app/cache --link core:core eregs/parser write_to http://core:8080
+$PARSER notice_preamble 2016-02749
+$PARSER layers
+$PARSER write_to http://core:8080
 
 # Modify the close date
 curl http://localhost:8282/notice/2016-02749 | python -m json.tool > notice.json
