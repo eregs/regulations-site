@@ -126,7 +126,7 @@ class CFRChangeBuilder(object):
         related meta data, etc."""
         part = amendment['cfr_part']
         if part not in version_info:
-            logger.warning("No version info for %s", part)
+            logger.error("No version info for %s", part)
         elif self.cfr_part is None or self.cfr_part != amendment['cfr_part']:
             meta = utils.regulation_meta(part, version_info[part]['right'])
             flat_toc = fetch_toc(part, version_info[part]['right'],
@@ -151,7 +151,9 @@ class CFRChangeBuilder(object):
     _cfr_re = re.compile(r'(§ [\d.]+) (.*)')
 
     def _change_title(self, section):
-        title_str = self.section_titles.get(section)
+        if section not in self.section_titles:
+            logger.error("Could not find section title for %s", section)
+        title_str = self.section_titles.get(section, '')
         # Hack: Reconstitute node prefix and title
         # TODO: Emit these fields in a ToC layer in -parser instead
         match = self._cfr_re.search(title_str)
