@@ -132,6 +132,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
 ROOT_URLCONF = 'regulations.urls'
 
 INSTALLED_APPS = (
