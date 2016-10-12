@@ -135,6 +135,11 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'regulations.urls'
 
 INSTALLED_APPS = (
+    # Note: no admin
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'regulations.apps.RegulationsConfig',
 )
