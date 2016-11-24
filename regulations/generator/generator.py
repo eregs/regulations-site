@@ -1,6 +1,5 @@
 from importlib import import_module
 import logging
-import re
 from threading import Thread
 
 from django.conf import settings
@@ -107,25 +106,6 @@ class DiffLayerCreator(LayerCreator):
         layer_json = dict(newer_layer)  # copy
         layer_json.update(older_layer)  # older layer takes precedence
         return layer_json
-
-
-def get_regulation(regulation, version):
-    """ Get the regulation JSON tree. Manipulate the label a bit for easier
-    access in the templates."""
-    api = api_reader.ApiReader()
-    reg = api.regulation(regulation, version)
-
-    if reg:
-        title = reg['title']
-        # up till the paren
-        match = re.search('part \d+[^\w]*([^\(]*)', title, re.I)
-        if match:
-            reg['title_clean'] = match.group(1).strip()
-        match = re.search('\(regulation (\w+)\)', title, re.I)
-        if match:
-            reg['reg_letter'] = match.group(1)
-
-        return reg
 
 
 def get_tree_paragraph(paragraph_id, version):
