@@ -1,8 +1,29 @@
+import logging
+
+from django.conf import settings
 from django.core.cache import caches
-from regulations.generator import api_client
+import requests
 
 
 _cache_key = '-'.join
+logger = logging.getLogger(__name__)
+
+
+def _fetch(suffix, params=None):
+    """Return a JSON result from either a web API. If not configured
+    correctly, throw a warning, but proceed"""
+    if not settings.API_BASE:
+        logger.error("API_BASE not configured. We won't have data")
+        return None
+
+    response = requests.get(settings.API_BASE + suffix, params=params)
+    if response.status_code == requests.codes.ok:
+        return response.json()
+    elif response.status_code == 404:
+        logger.warning("404 when fetching %s", settings.API_BASE + suffix)
+        return None
+    else:
+        response.raise_for_status()
 
 
 class ApiReader(object):
@@ -11,7 +32,6 @@ class ApiReader(object):
 
     def __init__(self):
         self.cache = caches['api_cache']
-        self.client = api_client.ApiClient()
 
     def all_regulations_versions(self):
         """ Get all versions, for all regulations. """
@@ -41,7 +61,7 @@ class ApiReader(object):
         if cached is not None:
             return cached
         else:
-            regulation = self.client.get('regulation/%s/%s' % (label, version))
+            regulation = _fetch('regulation/{}/{}'.format(label, version))
             # Add the tree to the cache
             if regulation:
                 self.cache_root_and_interps(regulation, version)
@@ -59,7 +79,7 @@ class ApiReader(object):
         if cached is not None:
             return cached
         else:
-            element = self.client.get(api_suffix, api_params)
+            element = _fetch(api_suffix, api_params)
             self.cache.set(cache_key, element)
             return element
 
@@ -107,7 +127,7 @@ class ApiReader(object):
         if regulation:
             params['regulation'] = regulation
         params.update(kwargs)
-        return self.client.get('/'.join(['search', doc_type]), params)
+        return _fetch('search/{}'.format(doc_type), params)
 
     def preamble(self, doc_number):
         return self._get('preamble/{}'.format(doc_number))
