@@ -3,10 +3,6 @@ from unittest import TestCase
 from mock import patch
 
 from regulations.generator import generator
-from regulations.generator.layers.layers_applier import InlineLayersApplier
-from regulations.generator.layers.layers_applier import ParagraphLayersApplier
-from regulations.generator.layers.layers_applier\
-    import SearchReplaceLayersApplier
 
 
 class GeneratorTest(TestCase):
@@ -61,26 +57,13 @@ class GeneratorTest(TestCase):
             ('204', 'old', 'new'),
             get_diff_json.call_args[0])
 
-    def test_layercreator_getappliers(self):
-        creator = generator.LayerCreator()
-        appliers = creator.get_appliers()
-        self.assertEquals(len(appliers), 3)
-
-        i_applier, p_applier, s_applier = appliers
-
-        self.assertTrue(isinstance(i_applier, InlineLayersApplier))
-        self.assertTrue(isinstance(p_applier, ParagraphLayersApplier))
-        self.assertTrue(isinstance(s_applier, SearchReplaceLayersApplier))
-
-    @patch('regulations.generator.generator.LayerCreator.get_layer_json')
+    @patch('regulations.generator.generator._LayerCreator.get_layer_json')
     def test_add_layers(self, get_layer_json):
         get_layer_json.return_value = {'layer': 'layer'}
 
-        creator = generator.LayerCreator()
-        creator.add_layers(
+        i, p, s = generator.layer_appliers(
             ['meta', 'graphics', 'internal'], 'cfr', '205',
             sectional=True, version='verver')
-        i, p, s = creator.get_appliers()
         self.assertEquals(len(p.layers), 1)
         self.assertEquals(len(i.layers), 1)
         self.assertEquals(len(s.layers), 1)

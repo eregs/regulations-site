@@ -23,10 +23,11 @@ def _data_layers():
     return layers
 
 
-class LayerCreator(object):
-    """ This lets us dynamically load layers by shorthand. """
-    LAYERS = _data_layers()
+DATA_LAYERS = _data_layers()
 
+
+class _LayerCreator(object):
+    """ This lets us dynamically load layers by shorthand. """
     def __init__(self):
         self.appliers = {
             LayerBase.INLINE: InlineLayersApplier(),
@@ -46,13 +47,12 @@ class LayerCreator(object):
         concurrently."""
         # This doesn't deal with sectional interpretations yet.
         # we'll have to do that.
-        layer_names = set(l for l in layer_names
-                          if l.lower() in LayerCreator.LAYERS)
+        layer_names = set(l for l in layer_names if l.lower() in DATA_LAYERS)
         results = []
         procs = []
 
         def one_layer(layer_name):
-            layer_class = LayerCreator.LAYERS[layer_name]
+            layer_class = DATA_LAYERS[layer_name]
             api_name = layer_class.data_source
             applier_type = layer_class.layer_type
             layer_json = self.get_layer_json(api_name, doc_type, label_id,
@@ -90,9 +90,9 @@ class LayerCreator(object):
                 self.appliers[LayerBase.SEARCH_REPLACE])
 
 
-class DiffLayerCreator(LayerCreator):
+class _DiffLayerCreator(_LayerCreator):
     def __init__(self, newer_version):
-        super(DiffLayerCreator, self).__init__()
+        super(_DiffLayerCreator, self).__init__()
         self.newer_version = newer_version
 
     def get_layer_json(self, layer_name, doc_type, label_id, version):
@@ -106,6 +106,22 @@ class DiffLayerCreator(LayerCreator):
         layer_json = dict(newer_layer)  # copy
         layer_json.update(older_layer)  # older layer takes precedence
         return layer_json
+
+
+def layer_appliers(layer_names, doc_type, label_id, sectional=False,
+                   version=None):
+    creator = _LayerCreator()
+    creator.add_layers(layer_names, doc_type, label_id, sectional, version)
+    return creator.get_appliers()
+
+
+def diff_layer_appliers(versions, label_id):
+    creator = _DiffLayerCreator(versions.newer)
+    creator.add_layers(
+        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
+         'marker-hiding', 'marker-info'],
+        'cfr', label_id, version=versions.older)
+    return creator.get_appliers()
 
 
 def get_tree_paragraph(paragraph_id, version):

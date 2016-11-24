@@ -17,11 +17,9 @@ class PartialInterpView(PartialView):
     @staticmethod
     def mk_appliers(root_label, version):
         """Function to generate a shared set of appliers"""
-        layer_creator = generator.LayerCreator()
-        layer_creator.add_layers(
+        return generator.layer_appliers(
             ['terms', 'internal', 'keyterms', 'paragraph'], 'cfr', root_label,
             sectional=True, version=version)
-        return layer_creator.get_appliers()
 
     def determine_appliers(self, label_id, version):
         """Don't generate new appliers"""

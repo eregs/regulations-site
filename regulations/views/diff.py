@@ -1,5 +1,4 @@
-# vim: set encoding=utf-8
-
+# -*- coding: utf-8 -*-
 from collections import namedtuple
 
 import six
@@ -30,12 +29,7 @@ def get_appliers(label_id, versions):
     if diff is None:
         raise error_handling.MissingContentException()
 
-    layer_creator = generator.DiffLayerCreator(versions.newer)
-    layer_creator.add_layers(
-        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
-         'marker-hiding', 'marker-info'],
-        'cfr', label_id, version=versions.older)
-    return layer_creator.get_appliers() + (diff, )
+    return generator.diff_layer_appliers(versions, label_id) + (diff, )
 
 
 class PartialSectionDiffView(PartialView):

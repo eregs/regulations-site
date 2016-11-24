@@ -1,4 +1,4 @@
-# vim: set encoding=utf-8
+# -*- coding: utf-8 -*-
 from django.http import Http404
 from django.views.generic.base import TemplateView
 
@@ -24,10 +24,9 @@ class PartialView(TemplateView):
 
     def determine_appliers(self, label_id, version):
         """Figure out which layers to apply by checking the GET args"""
-        layer_creator = generator.LayerCreator()
-        layer_creator.add_layers(utils.layer_names(self.request), 'cfr',
-                                 label_id, self.sectional_links, version)
-        return layer_creator.get_appliers()
+        return generator.layer_appliers(
+            utils.layer_names(self.request), 'cfr', label_id,
+            self.sectional_links, version)
 
     def get_context_data(self, **kwargs):
         context = super(PartialView, self).get_context_data(**kwargs)

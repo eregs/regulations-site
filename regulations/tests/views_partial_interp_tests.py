@@ -48,8 +48,7 @@ class PartialSubterpViewTest(TestCase):
     @patch('regulations.views.partial.navigation')
     def test_get_context_data(self, nav, genhtml, filter_by_subterp,
                               interp_generator, partial_generator):
-        get_appliers = partial_generator.LayerCreator.return_value.get_appliers
-        get_appliers.return_value = (None, None, None)
+        partial_generator.layer_appliers.return_value = (None, None, None)
         interp_generator.get_tree_paragraph.return_value = None
         nav.nav_sections.return_value = None, None
 

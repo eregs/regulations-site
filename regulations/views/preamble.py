@@ -19,7 +19,7 @@ from django.views.generic.base import View
 from fr_notices import navigation
 from regulations import docket
 from regulations.generator.api_reader import ApiReader
-from regulations.generator.generator import LayerCreator
+from regulations.generator.generator import layer_appliers
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.utils import (
@@ -53,12 +53,11 @@ def find_subtree(root, label_parts):
 def generate_html_tree(subtree, request, id_prefix=None):
     """Use the HTMLBuilder to generate a version of this subtree with
     appropriate markup. Currently, includes no layers"""
-    layer_creator = LayerCreator()
     doc_id = '-'.join(subtree['label'])
-    layer_creator.add_layers(utils.layer_names(request), 'preamble',
-                             doc_id, sectional=True)
+    appliers = layer_appliers(utils.layer_names(request), 'preamble', doc_id,
+                              sectional=True)
     builder = PreambleHTMLBuilder(
-        *layer_creator.get_appliers(),
+        *appliers,
         id_prefix=id_prefix,
         index_prefix=[0, subtree.get('lft')]
     )
