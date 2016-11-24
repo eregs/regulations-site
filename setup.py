@@ -11,6 +11,7 @@ setup(
         'celery',
         'django>=1.8,<1.10',
         'enum34',
+        'futures',
         'requests',
         'six',
         'requests-toolbelt',

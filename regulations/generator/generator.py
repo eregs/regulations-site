@@ -1,6 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
 from importlib import import_module
-import logging
-from threading import Thread
 
 from django.conf import settings
 
@@ -48,8 +47,6 @@ class _LayerCreator(object):
         # This doesn't deal with sectional interpretations yet.
         # we'll have to do that.
         layer_names = set(l for l in layer_names if l.lower() in DATA_LAYERS)
-        results = []
-        procs = []
 
         def one_layer(layer_name):
             layer_class = DATA_LAYERS[layer_name]
@@ -57,23 +54,13 @@ class _LayerCreator(object):
             applier_type = layer_class.layer_type
             layer_json = self.get_layer_json(api_name, doc_type, label_id,
                                              version)
-            results.append((api_name, applier_type, layer_class, layer_json))
+            return (api_name, applier_type, layer_class, layer_json)
 
-        #   Spawn threads
-        for layer_name in layer_names:
-            proc = Thread(target=one_layer, args=(layer_name,))
-            procs.append(proc)
-            proc.start()
-
-        #   Join them (once their work is done)
-        for proc in procs:
-            proc.join()
+        with ThreadPoolExecutor(max_workers=len(layer_names)) as executor:
+            results = executor.map(one_layer, layer_names)
 
         for api_name, applier_type, layer_class, layer_json in results:
-            if layer_json is None:
-                logging.warning("No data for %s %s %s %s", api_name, doc_type,
-                                label_id, version)
-            else:
+            if layer_json is not None:
                 layer = layer_class(layer_json)
 
                 if sectional and hasattr(layer, 'sectional'):
