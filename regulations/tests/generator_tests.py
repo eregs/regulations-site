@@ -57,9 +57,9 @@ class GeneratorTest(TestCase):
             ('204', 'old', 'new'),
             get_diff_json.call_args[0])
 
-    @patch('regulations.generator.generator._LayerCreator.get_layer_json')
-    def test_add_layers(self, get_layer_json):
-        get_layer_json.return_value = {'layer': 'layer'}
+    @patch('regulations.generator.generator.api_reader.ApiReader')
+    def test_add_layers(self, ApiReader):
+        ApiReader.return_value.layer.return_value = {'layer': 'layer'}
 
         i, p, s = generator.layer_appliers(
             ['meta', 'graphics', 'internal'], 'cfr', '205',

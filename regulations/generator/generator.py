@@ -25,90 +25,69 @@ def _data_layers():
 DATA_LAYERS = _data_layers()
 
 
-class _LayerCreator(object):
-    """ This lets us dynamically load layers by shorthand. """
-    def __init__(self):
-        self.appliers = {
-            LayerBase.INLINE: InlineLayersApplier(),
-            LayerBase.PARAGRAPH: ParagraphLayersApplier(),
-            LayerBase.SEARCH_REPLACE: SearchReplaceLayersApplier()}
+def generate_layer_appliers(layer_names, fetch_fn, **layer_attrs):
+    """Return the three LayerApplier classes, populated with the appropriate
+    layer data. Fetches this data in parallel.
+    :param layer_names: list of layer short names
+    :param fetch_fn: a function, which, when given a layer short name, returns
+        the corresponding layer data
+    :param layer_attrs: any other attributes to set on the layer object
+    """
+    appliers = {
+        LayerBase.INLINE: InlineLayersApplier(),
+        LayerBase.PARAGRAPH: ParagraphLayersApplier(),
+        LayerBase.SEARCH_REPLACE: SearchReplaceLayersApplier()
+    }
+    layer_names = [l for l in layer_names if l in DATA_LAYERS]
 
-        self.api = api_reader.ApiReader()
+    with ThreadPoolExecutor(max_workers=len(layer_names)) as executor:
+        result_data = executor.map(fetch_fn, layer_names)
 
-    def get_layer_json(self, layer_name, doc_type, label_id, version=None):
-        """Hit the API to retrieve layer data"""
-        return self.api.layer(layer_name, doc_type, label_id, version)
-
-    def add_layers(self, layer_names, doc_type, label_id, sectional=False,
-                   version=None):
-        """Request a list of layers. As this might spawn multiple HTTP
-        requests, we wrap the requests in threads so they can proceed
-        concurrently."""
-        # This doesn't deal with sectional interpretations yet.
-        # we'll have to do that.
-        layer_names = set(l for l in layer_names if l.lower() in DATA_LAYERS)
-
-        def one_layer(layer_name):
+    for layer_name, layer_json in zip(layer_names, result_data):
+        if layer_json is not None:
             layer_class = DATA_LAYERS[layer_name]
-            api_name = layer_class.data_source
-            applier_type = layer_class.layer_type
-            layer_json = self.get_layer_json(api_name, doc_type, label_id,
-                                             version)
-            return (api_name, applier_type, layer_class, layer_json)
+            layer = layer_class(layer_json)
+            for attr_name, attr_val in layer_attrs.items():
+                setattr(layer, attr_name, attr_val)
 
-        with ThreadPoolExecutor(max_workers=len(layer_names)) as executor:
-            results = executor.map(one_layer, layer_names)
+            appliers[layer_class.layer_type].add_layer(layer)
 
-        for api_name, applier_type, layer_class, layer_json in results:
-            if layer_json is not None:
-                layer = layer_class(layer_json)
-
-                if sectional and hasattr(layer, 'sectional'):
-                    layer.sectional = sectional
-                if hasattr(layer, 'version'):
-                    layer.version = version
-
-                self.appliers[applier_type].add_layer(layer)
-
-    def get_appliers(self):
-        """ Return the appliers. """
-        return (self.appliers[LayerBase.INLINE],
-                self.appliers[LayerBase.PARAGRAPH],
-                self.appliers[LayerBase.SEARCH_REPLACE])
-
-
-class _DiffLayerCreator(_LayerCreator):
-    def __init__(self, newer_version):
-        super(_DiffLayerCreator, self).__init__()
-        self.newer_version = newer_version
-
-    def get_layer_json(self, layer_name, doc_type, label_id, version):
-        """Diffs contain layer data from _two_ documents, each corresponding
-        to one of the versions we're comparing. This data is then combined
-        before displaying"""
-        older_layer = self.api.layer(layer_name, doc_type, label_id, version)
-        newer_layer = self.api.layer(layer_name, doc_type, label_id,
-                                     self.newer_version)
-
-        layer_json = dict(newer_layer)  # copy
-        layer_json.update(older_layer)  # older layer takes precedence
-        return layer_json
+    return (appliers[LayerBase.INLINE],
+            appliers[LayerBase.PARAGRAPH],
+            appliers[LayerBase.SEARCH_REPLACE])
 
 
 def layer_appliers(layer_names, doc_type, label_id, sectional=False,
                    version=None):
-    creator = _LayerCreator()
-    creator.add_layers(layer_names, doc_type, label_id, sectional, version)
-    return creator.get_appliers()
+    """Generate the three layer appliers for most situations"""
+    def layer_fn(layer_name):
+        api_layer_name = DATA_LAYERS[layer_name].data_source
+        reader = api_reader.ApiReader()
+        return reader.layer(api_layer_name, doc_type, label_id, version)
+    return generate_layer_appliers(
+        layer_names, layer_fn, version=version, sectional=sectional)
 
 
 def diff_layer_appliers(versions, label_id):
-    creator = _DiffLayerCreator(versions.newer)
-    creator.add_layers(
-        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
-         'marker-hiding', 'marker-info'],
-        'cfr', label_id, version=versions.older)
-    return creator.get_appliers()
+    """Generate the three layer appliers for diffs, which combine two sources
+    of layer data"""
+    def layer_fn(layer_name):
+        api_layer_name = DATA_LAYERS[layer_name].data_source
+        reader = api_reader.ApiReader()
+        older_layer = reader.layer(api_layer_name, 'cfr', label_id,
+                                   versions.older)
+        newer_layer = reader.layer(api_layer_name, 'cfr', label_id,
+                                   versions.newer)
+
+        layer_json = dict(newer_layer)  # copy
+        layer_json.update(older_layer)  # older layer takes precedence
+        return layer_json
+    layer_names = [
+        'graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
+        'marker-hiding', 'marker-info'
+    ]
+    return generate_layer_appliers(
+        layer_names, layer_fn, version=versions.older)
 
 
 def get_tree_paragraph(paragraph_id, version):

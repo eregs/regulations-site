@@ -44,10 +44,9 @@ class PartialParagraphViewTests(TestCase):
 class PartialSectionViewTests(TestCase):
     @patch('regulations.generator.generator.get_tree_paragraph')
     @patch('regulations.views.partial.navigation')
-    @patch('regulations.generator.generator._LayerCreator.get_layer_json')
-    def test_get_context_data(self, get_layer_json, navigation,
-                              get_tree_paragraph):
-        get_layer_json.return_value = {'layer': 'layer'}
+    @patch('regulations.generator.generator.api_reader.ApiReader')
+    def test_get_context_data(self, ApiReader, navigation, get_tree_paragraph):
+        ApiReader.return_value.layer.return_value = {'layer': 'layer'}
         navigation.nav_sections.return_value = None, None
         get_tree_paragraph.return_value = {
             'text': 'Some Text',
