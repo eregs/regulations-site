@@ -71,7 +71,6 @@ class PartialSectionViewTests(TestCase):
 
 
 class PartialViewTest(TestCase):
-
     def test_generate_html(self):
         regulation_tree = {'text': '', 'children': [], 'label': ['8675'],
                            'title': 'Regulation R', 'node_type': REGTEXT}
@@ -81,6 +80,3 @@ class PartialViewTest(TestCase):
         appliers = (i_applier, p_applier, sr_applier)
         builder = partial.generate_html(regulation_tree, appliers)
         self.assertEquals(builder.tree, regulation_tree)
-        self.assertEquals(builder.inline_applier, i_applier)
-        self.assertEquals(builder.p_applier, p_applier)
-        self.assertEquals(builder.search_applier, sr_applier)

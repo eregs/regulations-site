@@ -1,17 +1,19 @@
 from django.template import loader, Context
 
-from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.base import InlineLayer
 
 
-# Does not extend InlineLayer as this retrieves its data in a different way
-class DefinedLayer(LayerBase):
+class DefinedLayer(InlineLayer):
     shorthand = 'defined'
     data_source = 'terms'
-    layer_type = LayerBase.INLINE
 
     def __init__(self, layer):
         self.layer = layer
         self.template = loader.get_template('regulations/layers/defining.html')
+
+    def replacement_for(self, original, data):
+        """Noop: never called"""
+        pass
 
     def apply_layer(self, text, text_index):
         """Catch all terms which are defined in this paragraph, replace them

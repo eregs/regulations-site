@@ -83,28 +83,18 @@ class LayersBase(object):
 
 class SearchReplaceLayersApplier(LayersBase):
     def get_layer_pairs(self, text_index):
-        elements = []
+        layer_elements = []
         for layer in self.layers.values():
-            elements += list(layer.apply_layer(text_index))
-        return elements
+            layer_elements.extend(layer.inline_replacements(text_index, None))
+        return layer_elements
 
 
 class InlineLayersApplier(LayersBase):
-    """ Apply multiple inline layers to given text (e.g. links,
-    highlighting, etc.) """
     def get_layer_pairs(self, text_index, original_text):
-        layer_pairs = []
-        for layer in self.layers.values():
-            layer_pairs += list(layer.apply_layer(original_text, text_index))
-
-        # convert from offset-based to a search and replace layer.
         layer_elements = []
-
-        for o, r, offset in layer_pairs:
-            offset_locations = LocationReplace.find_all_offsets(o,
-                                                                original_text)
-            locations = [offset_locations.index(offset)]
-            layer_elements.append((o, r, locations))
+        for layer in self.layers.values():
+            layer_elements.extend(layer.inline_replacements(
+                text_index, original_text))
         return layer_elements
 
 
@@ -114,7 +104,5 @@ class ParagraphLayersApplier(LayersBase):
 
     def apply_layers(self, node):
         for layer in self.layers.values():
-            pair = layer.apply_layer(node['markup_id'])
-            if pair:
-                node[pair[0]] = pair[1]
+            layer.attach_metadata(node)
         return node

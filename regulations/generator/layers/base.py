@@ -1,4 +1,7 @@
 import abc
+from collections import namedtuple
+
+from regulations.generator.layers.location_replace import LocationReplace
 
 
 class LayerBase(object):
@@ -31,6 +34,20 @@ class LayerBase(object):
         searching. Which type is this layer?"""
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def inline_replacements(self, text_index, original_text):
+        """Return triplets of (original text, replacement text, offsets)"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def attach_metadata(self, node):
+        """Attach metadata to the provided node"""
+        raise NotImplementedError
+
+
+Replacement = namedtuple('Replacement',
+                         ['original', 'replacement', 'locations'])
+
 
 class InlineLayer(LayerBase):
     """Represents a layer which replaces text by looking at offsets"""
@@ -55,6 +72,22 @@ class InlineLayer(LayerBase):
             replacement = self.replacement_for(original, data)
             yield (original, replacement, (start, end))
 
+    def inline_replacements(self, text_index, original_text):
+        """Apply multiple inline layers to given text (e.g. links,
+        highlighting, etc.)"""
+        layer_pairs = self.apply_layer(original_text, text_index)
+
+        # convert from offset-based to a search and replace layer.
+        for original, replacement, offset in layer_pairs:
+            offset_locations = LocationReplace.find_all_offsets(
+                original, original_text)
+            locations = [offset_locations.index(offset)]
+            yield Replacement(original, replacement, locations)
+
+    def attach_metadata(self, node):
+        """Noop"""
+        pass
+
 
 class SearchReplaceLayer(LayerBase):
     """Represents a layer which replaces text by searching for and replacing a
@@ -70,10 +103,23 @@ class SearchReplaceLayer(LayerBase):
         template. Returns a generator"""
         raise NotImplementedError
 
-    def apply_layer(self, label_id):
+    def inline_replacements(self, text_index, original_text):
         """Entry point when processing the regulation tree. Given the node's
         label_id, attempt to find relevant layer data in self.layer"""
-        for entry in self.layer.get(label_id, []):
+        for entry in self.layer.get(text_index, []):
             text = entry[self._text_field]
             for replacement in self.replacements_for(text, entry):
-                yield (text, replacement, entry['locations'])
+                yield Replacement(text, replacement, entry['locations'])
+
+    def attach_metadata(self, node):
+        """Noop"""
+        pass
+
+
+class ParagraphLayer(LayerBase):
+    """Represents a layer which applies meta data to nodes"""
+    layer_type = LayerBase.PARAGRAPH
+
+    def inline_replacements(self, text_index, original_text):
+        """Noop"""
+        return []
