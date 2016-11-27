@@ -4,9 +4,6 @@ from importlib import import_module
 from django.conf import settings
 
 from regulations.generator import api_reader
-from regulations.generator.layers.base import LayerBase
-from regulations.generator.layers.layers_applier import (
-    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from regulations.generator.layers.diff_applier import DiffApplier
 from regulations.generator import notices
 
@@ -25,7 +22,7 @@ def _data_layers():
 DATA_LAYERS = _data_layers()
 
 
-def generate_layer_appliers(layer_names, fetch_fn, **layer_attrs):
+def generate_layers(layer_names, fetch_fn, **layer_attrs):
     """Return the three LayerApplier classes, populated with the appropriate
     layer data. Fetches this data in parallel.
     :param layer_names: list of layer short names
@@ -33,11 +30,6 @@ def generate_layer_appliers(layer_names, fetch_fn, **layer_attrs):
         the corresponding layer data
     :param layer_attrs: any other attributes to set on the layer object
     """
-    appliers = {
-        LayerBase.INLINE: InlineLayersApplier(),
-        LayerBase.PARAGRAPH: ParagraphLayersApplier(),
-        LayerBase.SEARCH_REPLACE: SearchReplaceLayersApplier()
-    }
     layer_names = [l for l in layer_names if l in DATA_LAYERS]
 
     with ThreadPoolExecutor(max_workers=len(layer_names)) as executor:
@@ -50,25 +42,20 @@ def generate_layer_appliers(layer_names, fetch_fn, **layer_attrs):
             for attr_name, attr_val in layer_attrs.items():
                 setattr(layer, attr_name, attr_val)
 
-            appliers[layer_class.layer_type].add_layer(layer)
-
-    return (appliers[LayerBase.INLINE],
-            appliers[LayerBase.PARAGRAPH],
-            appliers[LayerBase.SEARCH_REPLACE])
+            yield layer
 
 
-def layer_appliers(layer_names, doc_type, label_id, sectional=False,
-                   version=None):
+def layers(layer_names, doc_type, label_id, sectional=False, version=None):
     """Generate the three layer appliers for most situations"""
     def layer_fn(layer_name):
         api_layer_name = DATA_LAYERS[layer_name].data_source
         reader = api_reader.ApiReader()
         return reader.layer(api_layer_name, doc_type, label_id, version)
-    return generate_layer_appliers(
-        layer_names, layer_fn, version=version, sectional=sectional)
+    return generate_layers(layer_names, layer_fn, version=version,
+                           sectional=sectional)
 
 
-def diff_layer_appliers(versions, label_id):
+def diff_layers(versions, label_id):
     """Generate the three layer appliers for diffs, which combine two sources
     of layer data"""
     def layer_fn(layer_name):
@@ -86,8 +73,7 @@ def diff_layer_appliers(versions, label_id):
         'graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
         'marker-hiding', 'marker-info'
     ]
-    return generate_layer_appliers(
-        layer_names, layer_fn, version=versions.older)
+    return generate_layers(layer_names, layer_fn, version=versions.older)
 
 
 def get_tree_paragraph(paragraph_id, version):

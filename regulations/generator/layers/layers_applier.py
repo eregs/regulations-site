@@ -70,39 +70,3 @@ class LayersApplier(object):
                 self.replace_at(original, replacement, locations)
 
         return self.text
-
-
-class LayersBase(object):
-    """ Base class which keeps track of multiple laeyrs. """
-    def __init__(self):
-        self.layers = {}
-
-    def add_layer(self, layer):
-        self.layers[layer.__class__.shorthand] = layer
-
-
-class SearchReplaceLayersApplier(LayersBase):
-    def get_layer_pairs(self, text_index):
-        layer_elements = []
-        for layer in self.layers.values():
-            layer_elements.extend(layer.inline_replacements(text_index, None))
-        return layer_elements
-
-
-class InlineLayersApplier(LayersBase):
-    def get_layer_pairs(self, text_index, original_text):
-        layer_elements = []
-        for layer in self.layers.values():
-            layer_elements.extend(layer.inline_replacements(
-                text_index, original_text))
-        return layer_elements
-
-
-class ParagraphLayersApplier(LayersBase):
-    """ Handle layers which apply to the whole paragraph. Layers include
-    interpretations, section-by-section analyses, table of contents, etc."""
-
-    def apply_layers(self, node):
-        for layer in self.layers.values():
-            layer.attach_metadata(node)
-        return node

@@ -56,18 +56,3 @@ class GeneratorTest(TestCase):
         self.assertEqual(
             ('204', 'old', 'new'),
             get_diff_json.call_args[0])
-
-    @patch('regulations.generator.generator.api_reader.ApiReader')
-    def test_add_layers(self, ApiReader):
-        ApiReader.return_value.layer.return_value = {'layer': 'layer'}
-
-        i, p, s = generator.layer_appliers(
-            ['meta', 'graphics', 'internal'], 'cfr', '205',
-            sectional=True, version='verver')
-        self.assertEquals(len(p.layers), 1)
-        self.assertEquals(len(i.layers), 1)
-        self.assertEquals(len(s.layers), 1)
-
-        internal_citation_layer = i.layers['internal']
-        self.assertTrue(internal_citation_layer.sectional)
-        self.assertEquals(internal_citation_layer.version, 'verver')

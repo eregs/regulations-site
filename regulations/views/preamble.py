@@ -18,9 +18,8 @@ from django.views.generic.base import View
 
 from fr_notices import navigation
 from regulations import docket
+from regulations.generator import generator
 from regulations.generator.api_reader import ApiReader
-from regulations.generator.generator import (
-    diff_layer_appliers, get_diff_applier, layer_appliers)
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.utils import (
@@ -54,10 +53,8 @@ def generate_html_tree(subtree, request, id_prefix=None):
     """Use the HTMLBuilder to generate a version of this subtree with
     appropriate markup. Currently, includes no layers"""
     doc_id = '-'.join(subtree['label'])
-    appliers = layer_appliers(utils.layer_names(request), 'preamble', doc_id,
-                              sectional=True)
-    layers = [layer for applier in appliers
-              for layer in applier.layers.values()]
+    layers = list(generator.layers(
+        utils.layer_names(request), 'preamble', doc_id, sectional=True))
     builder = PreambleHTMLBuilder(layers, id_prefix=id_prefix,
                                   index_prefix=[0, subtree.get('lft')])
     builder.tree = subtree
@@ -335,13 +332,12 @@ class CFRChangesView(View):
         versions = Versions(version_info[cfr_part]['left'],
                             version_info[cfr_part]['right'])
         left_tree = ApiReader().regulation(label_id, versions.older)
-        diff_applier = get_diff_applier(label_id, versions.older,
-                                        versions.newer)
+        diff_applier = generator.get_diff_applier(
+            label_id, versions.older, versions.newer)
         if diff_applier is None:
             raise error_handling.MissingContentException()
 
-        layers = [layer for applier in diff_layer_appliers(versions, label_id)
-                  for layer in applier.layers.values()]
+        layers = list(generator.diff_layers(versions, label_id))
 
         builder = CFRChangeHTMLBuilder(
             layers, diff_applier, id_prefix=[str(doc_number), 'cfr'],

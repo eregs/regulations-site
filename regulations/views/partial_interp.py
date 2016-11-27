@@ -12,18 +12,18 @@ class PartialInterpView(PartialView):
 
     template_name = "regulations/interpretations.html"
     inline = False
-    appliers = []
+    layers = []
 
     @staticmethod
-    def mk_appliers(root_label, version):
-        """Function to generate a shared set of appliers"""
-        return generator.layer_appliers(
+    def mk_layers(root_label, version):
+        """Function to generate a shared set of layers"""
+        return generator.layers(
             ['terms', 'internal', 'keyterms', 'paragraph'], 'cfr', root_label,
             sectional=True, version=version)
 
-    def determine_appliers(self, label_id, version):
+    def determine_layers(self, label_id, version):
         """Don't generate new appliers"""
-        return self.appliers
+        return self.layers
 
     def transform_context(self, context, builder):
         context['inline'] = self.inline
@@ -62,9 +62,7 @@ class PartialSubterpView(PartialSectionView):
         # appropriate markup ID, matching the rendered subterp and not
         # the parent node in the tree
         interp['label'] = label
-        appliers = self.determine_appliers(reg_part + '-Interp', version)
-        layers = [layer for applier in appliers
-                  for layer in applier.layers.values()]
+        layers = list(self.determine_layers(reg_part + '-Interp', version))
         builder = CFRHTMLBuilder(layers)
         builder.tree = interp
         builder.generate_html()

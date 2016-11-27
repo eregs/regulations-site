@@ -25,7 +25,7 @@ class InterpretationsLayer(ParagraphLayer):
         self.root_interp_label = '-'.join(root['label'] + ['Interp'])
         view_class = views.partial_interp.PartialInterpView
         self.partial_view = view_class.as_view(
-            inline=True, appliers=view_class.mk_appliers(
+            inline=True, layers=view_class.mk_layers(
                 self.root_interp_label, self.version))
 
     def attach_metadata(self, node):

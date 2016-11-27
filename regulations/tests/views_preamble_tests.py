@@ -9,7 +9,7 @@ from django.http import Http404
 from django.test import RequestFactory, override_settings
 
 from fr_notices.navigation import make_preamble_nav
-from regulations.generator.layers import diff_applier, layers_applier
+from regulations.generator.layers import diff_applier
 from regulations.views import preamble
 from regulations.views.preamble import CommentState
 
@@ -198,10 +198,8 @@ class PreambleViewTests(TestCase):
 
 class CFRChangesViewTests(TestCase):
     @patch('regulations.views.preamble.ApiReader')
-    @patch('regulations.views.preamble.diff_layer_appliers')
-    @patch('regulations.views.preamble.get_diff_applier')
-    def test_new_regtext_changes(self, get_diff_applier, diff_layer_appliers,
-                                 ApiReader):
+    @patch('regulations.views.preamble.generator')
+    def test_new_regtext_changes(self, generator, ApiReader):
         """We can add a whole new section without explosions"""
         amendments = [{'instruction': '3. Add subpart M',
                        'changes': [
@@ -222,13 +220,9 @@ class CFRChangesViewTests(TestCase):
         diff = {'111-44': {'op': 'added', 'node': {
             'text': 'New node text', 'node_type': 'regtext',
             'label': ['111', '44']}}}
-        get_diff_applier.return_value = diff_applier.DiffApplier(
+        generator.get_diff_applier.return_value = diff_applier.DiffApplier(
             diff, '111-44')
-        diff_layer_appliers.return_value = [
-            layers_applier.InlineLayersApplier(),
-            layers_applier.ParagraphLayersApplier(),
-            layers_applier.SearchReplaceLayersApplier()
-        ]
+        generator.diff_layer_appliers.return_value = []
 
         result = preamble.CFRChangesView.regtext_changes_context(
             amendments, version_info, '111-44', '8675-309', 0)

@@ -77,9 +77,7 @@ class PartialSectionDiffView(PartialView):
             label_id, versions.older, versions.newer)
         if diff_applier is None:
             raise error_handling.MissingContentException()
-        appliers = generator.diff_layer_appliers(versions, label_id)
-        layers = [layer for applier in appliers
-                  for layer in applier.layers.values()]
+        layers = list(generator.diff_layers(versions, label_id))
 
         builder = CFRHTMLBuilder(layers, diff_applier)
         builder.tree = tree

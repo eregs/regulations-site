@@ -15,9 +15,9 @@ class PartialView(TemplateView):
 
     sectional_links = True
 
-    def determine_appliers(self, label_id, version):
+    def determine_layers(self, label_id, version):
         """Figure out which layers to apply by checking the GET args"""
-        return generator.layer_appliers(
+        return generator.layers(
             utils.layer_names(self.request), 'cfr', label_id,
             self.sectional_links, version)
 
@@ -31,9 +31,7 @@ class PartialView(TemplateView):
         if tree is None:
             raise Http404
 
-        layers = [layer
-                  for applier in self.determine_appliers(label_id, version)
-                  for layer in applier.layers.values()]
+        layers = list(self.determine_layers(label_id, version))
         builder = CFRHTMLBuilder(layers)
         builder.tree = tree
         builder.generate_html()

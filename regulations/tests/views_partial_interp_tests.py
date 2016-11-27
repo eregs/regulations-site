@@ -4,8 +4,6 @@ from mock import patch
 from django.http import Http404
 from django.test import RequestFactory
 
-from regulations.generator.layers.layers_applier import (
-    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from regulations.generator.node_types import INTERP
 from regulations.views import partial_interp
 
@@ -20,9 +18,7 @@ class PartialInterpViewTest(TestCase):
             'node_type': INTERP
         }
         request = RequestFactory().get('/fake-path')
-        view = partial_interp.PartialInterpView.as_view(
-            appliers=(InlineLayersApplier(), ParagraphLayersApplier(),
-                      SearchReplaceLayersApplier()))
+        view = partial_interp.PartialInterpView.as_view(layers=[])
         response = view(request, label_id='lablab', version='verver')
         self.assertEqual(response.context_data['c']['node_type'], INTERP)
         self.assertEqual(response.context_data['c']['children'],
@@ -30,9 +26,7 @@ class PartialInterpViewTest(TestCase):
         self.assertFalse(response.context_data['inline'])
 
         view = partial_interp.PartialInterpView.as_view(
-            inline=True,
-            appliers=(InlineLayersApplier(), ParagraphLayersApplier(),
-                      SearchReplaceLayersApplier()))
+            inline=True, layers=[])
         response = view(request, label_id='lablab', version='verver')
         self.assertEqual(response.context_data['c']['node_type'], INTERP)
         self.assertEqual(response.context_data['c']['children'],
@@ -48,7 +42,7 @@ class PartialSubterpViewTest(TestCase):
     @patch('regulations.views.partial.navigation')
     def test_get_context_data(self, nav, CFRHTMLBuilder, filter_by_subterp,
                               interp_generator, partial_generator):
-        partial_generator.layer_appliers.return_value = []
+        partial_generator.layers.return_value = []
         interp_generator.get_tree_paragraph.return_value = None
         nav.nav_sections.return_value = None, None
 
