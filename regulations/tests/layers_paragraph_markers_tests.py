@@ -46,7 +46,7 @@ class MarkerInfoLayerTest(TestCase):
         })
         node = {'label_id': '1002-01-01'}
         mil.attach_metadata(node)
-        self.assertEqual(node.keys(), {'label_id'})
+        self.assertEqual(set(node.keys()), {'label_id'})
 
         node['label_id'] = '1001-12-a'
         mil.attach_metadata(node)

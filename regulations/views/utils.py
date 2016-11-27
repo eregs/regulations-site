@@ -20,7 +20,7 @@ def to_roman(number):
 
 def get_layer_list(names):
     requested = {name.lower() for name in names.split(',')}
-    available = DATA_LAYERS.keys()
+    available = set(DATA_LAYERS.keys())
     return requested & available
 
 
