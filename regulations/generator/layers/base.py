@@ -10,11 +10,6 @@ class LayerBase(object):
     keyterms, etc."""
     __metaclass__ = abc.ABCMeta
 
-    # @see layer_type
-    INLINE = 'inline'
-    PARAGRAPH = 'paragraph'
-    SEARCH_REPLACE = 'search_replace'
-
     @abc.abstractproperty
     def shorthand(self):
         """A short description for this layer. This is used in query strings
@@ -25,13 +20,6 @@ class LayerBase(object):
     def data_source(self):
         """Data is pulled from the API; this field indicates the name of the
         endpoint to pull data from"""
-        raise NotImplementedError
-
-    @abc.abstractproperty
-    def layer_type(self):
-        """Layer data can be applied in a few ways, attaching itself to a
-        node, replacing text based on offset, or replacing text based on
-        searching. Which type is this layer?"""
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -51,7 +39,6 @@ Replacement = namedtuple('Replacement',
 
 class InlineLayer(LayerBase):
     """Represents a layer which replaces text by looking at offsets"""
-    layer_type = LayerBase.INLINE
 
     @abc.abstractmethod
     def replacement_for(self, original, data):
@@ -93,7 +80,6 @@ class SearchReplaceLayer(LayerBase):
     """Represents a layer which replaces text by searching for and replacing a
     specific substring. Also accounts for the string appearing multiple times
     (via the 'locations' field)"""
-    layer_type = LayerBase.SEARCH_REPLACE
     _text_field = 'text'    # All but key terms follow this convention...
 
     @abc.abstractmethod
@@ -118,7 +104,6 @@ class SearchReplaceLayer(LayerBase):
 
 class ParagraphLayer(LayerBase):
     """Represents a layer which applies meta data to nodes"""
-    layer_type = LayerBase.PARAGRAPH
 
     def inline_replacements(self, text_index, original_text):
         """Noop"""
