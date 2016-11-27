@@ -1,22 +1,18 @@
-# vim: set encoding=utf-8
+# -*- coding: utf-8 -*-
 from unittest import TestCase
-from mock import Mock
 
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, CFRHTMLBuilder, HTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.diff_applier import DiffApplier
 from regulations.generator.layers.internal_citation import (
     InternalCitationLayer)
-from regulations.generator.layers.layers_applier import InlineLayersApplier
-from regulations.generator.layers.layers_applier import ParagraphLayersApplier
 from regulations.generator.node_types import REGTEXT, APPENDIX, INTERP
 from regulations.generator.layers import diff_applier
 
 
 class HTMLBuilderTest(TestCase):
     def test_process_node_header(self):
-        builder = HTMLBuilder(Mock(layers={}), ParagraphLayersApplier(),
-                              Mock(layers={}))
+        builder = HTMLBuilder()
         node = {'text': '', 'children': [], 'label': ['99', '22'],
                 'node_type': REGTEXT}
         builder.process_node(node)
@@ -34,8 +30,7 @@ class HTMLBuilderTest(TestCase):
         self.assertTrue('header' in node)
 
     def test_process_node_title_diff(self):
-        builder = HTMLBuilder(Mock(layers={}), Mock(layers={}),
-                              Mock(layers={}))
+        builder = HTMLBuilder()
         diff = {'204': {'title': [('delete', 0, 2), ('insert', 4, 'AAC')],
                         'text':  [('delete', 0, 2), ('insert', 4, 'AAB')],
                         'op': ''}}
@@ -50,8 +45,7 @@ class HTMLBuilderTest(TestCase):
         self.assertEqual('<del>ab</del>cd<ins>AAC</ins>', node['header'])
 
     def test_node_title_no_diff(self):
-        builder = HTMLBuilder(Mock(layers={}), Mock(layers={}),
-                              Mock(layers={}))
+        builder = HTMLBuilder()
         node = {
             "label_id": "204",
             "title": "abcd",
@@ -84,8 +78,7 @@ class HTMLBuilderTest(TestCase):
 
 class CFRHTMLBuilderTest(TestCase):
     def test_list_level_interpretations(self):
-        builder = CFRHTMLBuilder(Mock(layers={}), Mock(layers={}),
-                                 Mock(layers={}))
+        builder = CFRHTMLBuilder()
 
         parts = ['101', '12', 'a', 'Interp', '1']
         node_type = INTERP
@@ -102,8 +95,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEquals(result, 3)
 
     def test_list_level_appendices(self):
-        builder = CFRHTMLBuilder(Mock(layers={}), Mock(layers={}),
-                                 Mock(layers={}))
+        builder = CFRHTMLBuilder()
 
         parts = ['101', 'A', '1', 'a']
         node_type = APPENDIX
@@ -124,8 +116,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEquals(result, 4)
 
     def test_list_level_regulations(self):
-        builder = CFRHTMLBuilder(Mock(layers={}), Mock(layers={}),
-                                 Mock(layers={}))
+        builder = CFRHTMLBuilder()
 
         parts = ['101', '1', 'a']
         node_type = REGTEXT
@@ -146,8 +137,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEquals(result, 4)
 
     def test_list_level_regulations_no_level(self):
-        builder = CFRHTMLBuilder(Mock(layers={}), Mock(layers={}),
-                                 Mock(layers={}))
+        builder = CFRHTMLBuilder()
 
         parts = ['101', '1']
         node_type = REGTEXT
@@ -167,8 +157,7 @@ class CFRHTMLBuilderTest(TestCase):
                          {'label': ['872', '22', 'a', 'Interp']},
                          {'label': ['872', '22', 'b', 'Interp']}]
         }
-        builder = CFRHTMLBuilder(Mock(layers={}), Mock(layers={}),
-                                 Mock(layers={}))
+        builder = CFRHTMLBuilder()
         builder.modify_interp_node(node)
         self.assertTrue(node['section_header'])
         self.assertEqual(node['header_children'],
@@ -190,9 +179,7 @@ class CFRHTMLBuilderTest(TestCase):
         }
         icl = InternalCitationLayer(None)
         icl.sectional = True
-        ila = InlineLayersApplier()
-        ila.add_layer(icl)
-        builder = CFRHTMLBuilder(ila, Mock(layers={}), Mock(layers={}))
+        builder = CFRHTMLBuilder([icl])
 
         builder.modify_interp_node(node)
         self.assertEqual('This interprets '
@@ -205,8 +192,7 @@ class CFRHTMLBuilderTest(TestCase):
 
     def test_process_node_title_section_space_diff(self):
         """" Diffs and sections spaces need to place nicely together. """
-        builder = CFRHTMLBuilder(Mock(layers={}), Mock(layers={}),
-                                 Mock(layers={}))
+        builder = CFRHTMLBuilder()
         diff = {'204': {'title': [('delete', 7, 9), ('insert', 10, 'AAC')],
                         'text':  [('delete', 0, 2), ('insert', 4, 'AAB')],
                         'op': ''}}
@@ -231,8 +217,7 @@ class CFRHTMLBuilderTest(TestCase):
 
 class PreambleHTMLBuilderTest(TestCase):
     def setUp(self):
-        self.builder = PreambleHTMLBuilder(
-            Mock(layers={}), Mock(layers={}), Mock(layers={}))
+        self.builder = PreambleHTMLBuilder()
 
     def test_human_label(self):
         self.assertEqual(
@@ -272,8 +257,7 @@ class PreambleHTMLBuilderTest(TestCase):
 class CFRChangeHTMLBuilderTests(TestCase):
     def setUp(self):
         diffs = DiffApplier({'111-22-a': {'op': 'deleted'}}, '111-22')
-        self.builder = CFRChangeHTMLBuilder(
-            Mock(layers={}), Mock(layers={}), Mock(layers={}), diffs)
+        self.builder = CFRChangeHTMLBuilder([], diffs)
 
     def test_accepts_comment(self):
         """We can only comment on changed paragraphs"""
@@ -301,8 +285,7 @@ class CFRChangeHTMLBuilderTests(TestCase):
     def test_preprocess(self):
         diffs = DiffApplier({'111-22-a': {'op': 'deleted'},
                              '111-33-b-5-v': {'op': 'deleted'}}, '111-22')
-        builder = CFRChangeHTMLBuilder(
-            Mock(layers={}), Mock(layers={}), Mock(layers={}), diffs)
+        builder = CFRChangeHTMLBuilder([], diffs)
         self.assertEqual(
             builder.diff_paths,
             {('111',), ('111', '22'), ('111', '22', 'a'), ('111', '33'),

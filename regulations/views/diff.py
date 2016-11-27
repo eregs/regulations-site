@@ -23,15 +23,6 @@ class Versions(namedtuple('Versions', ['older', 'newer', 'return_to'])):
         return super(Versions, cls).__new__(cls, older, newer, return_to)
 
 
-def get_appliers(label_id, versions):
-    diff = generator.get_diff_applier(label_id, versions.older, versions.newer)
-
-    if diff is None:
-        raise error_handling.MissingContentException()
-
-    return generator.diff_layer_appliers(versions, label_id) + (diff, )
-
-
 class PartialSectionDiffView(PartialView):
     """ A diff view of a partial section. """
     template_name = 'regulations/regulation-content.html'
@@ -82,9 +73,15 @@ class PartialSectionDiffView(PartialView):
             # add the requested section. If not -> 404
             tree = {}
 
-        appliers = get_appliers(label_id, versions)
+        diff_applier = generator.get_diff_applier(
+            label_id, versions.older, versions.newer)
+        if diff_applier is None:
+            raise error_handling.MissingContentException()
+        appliers = generator.diff_layer_appliers(versions, label_id)
+        layers = [layer for applier in appliers
+                  for layer in applier.layers.values()]
 
-        builder = CFRHTMLBuilder(*appliers)
+        builder = CFRHTMLBuilder(layers, diff_applier)
         builder.tree = tree
         builder.generate_html()
 

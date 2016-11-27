@@ -3,8 +3,6 @@ from mock import Mock, patch
 
 from django.test import RequestFactory
 
-from regulations.generator.layers.layers_applier import (
-    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from regulations.generator.node_types import EMPTYPART, INTERP, REGTEXT
 from regulations.views import partial
 
@@ -68,15 +66,3 @@ class PartialSectionViewTests(TestCase):
         subpart = root['children'][0]
         self.assertEqual(subpart['children'][0],
                          get_tree_paragraph.return_value)
-
-
-class PartialViewTest(TestCase):
-    def test_generate_html(self):
-        regulation_tree = {'text': '', 'children': [], 'label': ['8675'],
-                           'title': 'Regulation R', 'node_type': REGTEXT}
-        i_applier = InlineLayersApplier()
-        p_applier = ParagraphLayersApplier()
-        sr_applier = SearchReplaceLayersApplier()
-        appliers = (i_applier, p_applier, sr_applier)
-        builder = partial.generate_html(regulation_tree, appliers)
-        self.assertEquals(builder.tree, regulation_tree)

@@ -19,14 +19,14 @@ from django.views.generic.base import View
 from fr_notices import navigation
 from regulations import docket
 from regulations.generator.api_reader import ApiReader
-from regulations.generator.generator import layer_appliers
+from regulations.generator.generator import (
+    diff_layer_appliers, get_diff_applier, layer_appliers)
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.utils import (
     convert_to_python, is_contained_in)
-from regulations.views import utils
-from regulations.views import chrome
-from regulations.views.diff import Versions, get_appliers
+from regulations.views import chrome, error_handling, utils
+from regulations.views.diff import Versions
 
 
 logger = logging.getLogger(__name__)
@@ -56,11 +56,10 @@ def generate_html_tree(subtree, request, id_prefix=None):
     doc_id = '-'.join(subtree['label'])
     appliers = layer_appliers(utils.layer_names(request), 'preamble', doc_id,
                               sectional=True)
-    builder = PreambleHTMLBuilder(
-        *appliers,
-        id_prefix=id_prefix,
-        index_prefix=[0, subtree.get('lft')]
-    )
+    layers = [layer for applier in appliers
+              for layer in applier.layers.values()]
+    builder = PreambleHTMLBuilder(layers, id_prefix=id_prefix,
+                                  index_prefix=[0, subtree.get('lft')])
     builder.tree = subtree
     builder.generate_html()
 
@@ -336,10 +335,16 @@ class CFRChangesView(View):
         versions = Versions(version_info[cfr_part]['left'],
                             version_info[cfr_part]['right'])
         left_tree = ApiReader().regulation(label_id, versions.older)
-        appliers = get_appliers(label_id, versions)
+        diff_applier = get_diff_applier(label_id, versions.older,
+                                        versions.newer)
+        if diff_applier is None:
+            raise error_handling.MissingContentException()
+
+        layers = [layer for applier in diff_layer_appliers(versions, label_id)
+                  for layer in applier.layers.values()]
 
         builder = CFRChangeHTMLBuilder(
-            *appliers, id_prefix=[str(doc_number), 'cfr'],
+            layers, diff_applier, id_prefix=[str(doc_number), 'cfr'],
             index_prefix=[1, toc_position]
         )
         builder.tree = left_tree or {}

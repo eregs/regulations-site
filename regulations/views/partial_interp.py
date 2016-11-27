@@ -1,9 +1,9 @@
 from django.http import Http404
 
 from regulations.generator import generator, node_types
+from regulations.generator.html_builder import CFRHTMLBuilder
 from regulations.generator.subterp import filter_by_subterp
-from regulations.views.partial import (
-    PartialSectionView, PartialView, generate_html)
+from regulations.views.partial import PartialSectionView, PartialView
 
 
 class PartialInterpView(PartialView):
@@ -62,9 +62,12 @@ class PartialSubterpView(PartialSectionView):
         # appropriate markup ID, matching the rendered subterp and not
         # the parent node in the tree
         interp['label'] = label
-        inline_applier, p_applier, s_applier = self.determine_appliers(
-            reg_part + '-Interp', version)
-        builder = generate_html(interp, (inline_applier, p_applier, s_applier))
+        appliers = self.determine_appliers(reg_part + '-Interp', version)
+        layers = [layer for applier in appliers
+                  for layer in applier.layers.values()]
+        builder = CFRHTMLBuilder(layers)
+        builder.tree = interp
+        builder.generate_html()
         interp = builder.tree
         interp['html_label'] = html_label
         context['tree'] = {'children': [interp]}

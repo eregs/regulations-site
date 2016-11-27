@@ -8,13 +8,6 @@ from regulations.generator.node_types import EMPTYPART, REGTEXT, label_to_text
 from regulations.views import navigation, utils
 
 
-def generate_html(regulation_tree, layer_appliers):
-    builder = CFRHTMLBuilder(*layer_appliers)
-    builder.tree = regulation_tree
-    builder.generate_html()
-    return builder
-
-
 class PartialView(TemplateView):
     """Base class of various partial markup views. sectional_links indicates
     whether this view should use section links (url to a path) or just hash
@@ -38,10 +31,12 @@ class PartialView(TemplateView):
         if tree is None:
             raise Http404
 
-        inline_applier, p_applier, s_applier = self.determine_appliers(
-            label_id, version)
-
-        builder = generate_html(tree, (inline_applier, p_applier, s_applier))
+        layers = [layer
+                  for applier in self.determine_appliers(label_id, version)
+                  for layer in applier.layers.values()]
+        builder = CFRHTMLBuilder(layers)
+        builder.tree = tree
+        builder.generate_html()
         return self.transform_context(context, builder)
 
 

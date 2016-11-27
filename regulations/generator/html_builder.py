@@ -16,13 +16,12 @@ from .link_flattener import flatten_links
 
 class HTMLBuilder(object):
     # @todo simplify this constructor
-    def __init__(self, inline_applier, p_applier, search_applier,
-                 diff_applier=None, id_prefix=None, index_prefix=None):
+    def __init__(self, layers=None, diff_applier=None, id_prefix=None,
+                 index_prefix=None):
+        if layers is None:
+            layers = []
+        self.layers = layers
         self.tree = None
-        self.layers = (
-            list(inline_applier.layers.values()) +
-            list(search_applier.layers.values()) +
-            list(p_applier.layers.values()))
         self.diff_applier = diff_applier
         self.id_prefix = id_prefix or []
         self.index_prefix = index_prefix or []

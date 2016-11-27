@@ -44,11 +44,11 @@ class PartialSubterpViewTest(TestCase):
     @patch('regulations.views.partial.generator')
     @patch('regulations.views.partial_interp.generator')
     @patch('regulations.views.partial_interp.filter_by_subterp')
-    @patch('regulations.views.partial_interp.generate_html')
+    @patch('regulations.views.partial_interp.CFRHTMLBuilder')
     @patch('regulations.views.partial.navigation')
-    def test_get_context_data(self, nav, genhtml, filter_by_subterp,
+    def test_get_context_data(self, nav, CFRHTMLBuilder, filter_by_subterp,
                               interp_generator, partial_generator):
-        partial_generator.layer_appliers.return_value = (None, None, None)
+        partial_generator.layer_appliers.return_value = []
         interp_generator.get_tree_paragraph.return_value = None
         nav.nav_sections.return_value = None, None
 
@@ -71,7 +71,8 @@ class PartialSubterpViewTest(TestCase):
 
         filter_by_subterp.return_value = ['sec1', 'sec2', 'sec3']
         view(request, label_id='lablab', version='verver')
-        self.assertTrue(genhtml.called)
-        args = genhtml.call_args[0]
-        self.assertEqual({'children': ['sec1', 'sec2', 'sec3'],
-                         'label': ['lablab']}, args[0])
+        self.assertEqual(
+            CFRHTMLBuilder.return_value.tree,
+            {'children': ['sec1', 'sec2', 'sec3'],
+             'html_label': ['lablab'],
+             'label': ['lablab']})
