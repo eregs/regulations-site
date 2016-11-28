@@ -65,6 +65,8 @@ def diff_layers(versions, label_id):
                                    versions.older)
         newer_layer = reader.layer(api_layer_name, 'cfr', label_id,
                                    versions.newer)
+        older_layer = older_layer or {}
+        newer_layer = newer_layer or {}
 
         layer_json = dict(newer_layer)  # copy
         layer_json.update(older_layer)  # older layer takes precedence
