@@ -148,7 +148,7 @@ $ ./bin/django runserver
 There are a number of tasks configured in [Gruntfile.js](https://github.com/eregs/regulations-site/blob/master/Gruntfile.js). On the last lines, you will find tasks that group subtasks into common goals. Running `grunt test` will run unit, functional and lint tests.
 
 ### Unit and Functional Tests
-The Grunt build will run a suite of Selenium tests written in Python and a small suite of [Mocha.js](http://visionmedia.github.io/mocha/) unit tests. All tests run in [Sauce Labs](https://saucelabs.com). These tests run as part of the `grunt test` task. To use these, a little extra environment setup is required.
+The Grunt build will run a suite of Selenium tests written in Python and a small suite of [Mocha.js](http://mochajs.org/) unit tests. All tests run in [Sauce Labs](https://saucelabs.com). These tests run as part of the `grunt test` task. To use these, a little extra environment setup is required.
 
 #### Sauce Labs Configuration
 After you create a [Sauce Labs](https://saucelabs.com) account:
