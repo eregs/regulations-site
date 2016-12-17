@@ -39,10 +39,10 @@ $(document).ready(function() {
 // tests for some accessibility misses
 // use in browser console with AccessibilityTest()
 window.AccessibilityTest = function() {
+    /* eslint-disable */
     // I think this will keep IE from crying?
     console = console || {error: function() {}};
 
-    /* eslint-disable */
     $('img').each(function() {
         if (typeof this.attributes.alt === 'undefined') {
             console.error('Image does not have alt text', this);

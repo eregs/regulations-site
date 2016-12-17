@@ -1,78 +1,51 @@
-ecmaFeatures:
-  ecmascript: 6
-
-env:
-  browser: true
-  node: true
+extends: airbnb
 
 globals:
-  jQuery: true
-  $: true
-  Backbone: true
-  _: true
-  console: true
-
+    document: true
+    localStorage: true
+    sessionStorage: true
+    window: true
+    XMLHttpRequest: true
+    $: true
+# i.e. fixmes
 rules:
-  # Possible errors
-  no-cond-assign: 0
-  comma-dangle: 2
-  no-console: 1
-  # no-extra-parens: 2
-  no-irregular-whitespace: 2
-  quote-props: [2, consistent]
-
-  # Best practices
-  block-scoped-var: 2
-  eqeqeq: [2, smart]
-  no-floating-decimal: 2
-  wrap-iife: [2, inside]
-  curly: 2
-  no-alert: 2
-  no-eval: 2
-  # no-extend-native: 2
-  no-with: 2
-
-  # Variables
-  no-use-before-define: 2
-  no-shadow-restricted-names: 2
-
-  # Strict Mode
-  strict: [2, "global"]
-
-  # Node.js
-  no-mixed-requires: 2
-
-
-  # Stylistic issues
-  # brace-style: 2
-  camelcase: 0
-  new-cap: 0
-  no-mixed-spaces-and-tabs: 2
-  # no-lonely-if: 2
-  semi-spacing: 2
-  no-underscore-dangle: 0
-  keyword-spacing: 2
-  no-trailing-spaces: 2
-  # space-infix-ops: 2
-  quotes: [2, single]
-  semi: [2, "always"]
-
-  # Outstanding issues. Correct values commented out above
-  no-unused-vars: 0
-  no-extend-native: 0
-  valid-typeof: 0
-  brace-style: 0
-  no-multi-spaces: 0
-  space-infix-ops: 0
-  no-return-assign: 0
-  comma-spacing: 0
-  eol-last: 0
-  key-spacing: 0
-  no-extra-parens: 0
-  space-unary-ops: 0
-  no-unused-expressions: 0
-  no-sequences: 0
-  dot-notation: 0
-  consistent-return: 0
-  no-redeclare: 0
-  no-lonely-if: 0
+    brace-style: off
+    comma-dangle: off
+    consistent-return: off
+    dot-notation: off
+    eol-last: off
+    func-names: off
+    import/newline-after-import: off
+    indent: off
+    lines-around-directive: off
+    max-len: off
+    no-bitwise: off
+    no-else-return: off
+    no-extend-native: off
+    no-extra-semi: off
+    no-lonely-if: off
+    no-param-reassign: off
+    no-plusplus: off
+    no-prototype-builtins: off
+    no-redeclare: off
+    no-restricted-syntax: off
+    no-shadow: off
+    no-underscore-dangle: off
+    no-unused-vars: off
+    no-var: off
+    object-curly-spacing: off
+    object-shorthand: off
+    one-var-declaration-per-line: off
+    one-var: off
+    operator-assignment: off
+    padded-blocks: off
+    prefer-arrow-callback: off
+    prefer-rest-params: off
+    prefer-template: off
+    quote-props: [error, consistent]
+    space-before-function-paren: off
+    space-in-parens: off
+    space-infix-ops: off
+    space-unary-ops: off
+    strict: off
+    vars-on-top: off
