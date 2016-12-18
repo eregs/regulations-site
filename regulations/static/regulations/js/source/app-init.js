@@ -17,7 +17,7 @@ module.exports = {
     // Purgatory for DOM event bindings that should happen in a View
   bindEvents: function bindEvents() {
         // disable/hide an alert
-    $('.disable-link').on( 'click', function click(e) {
+    $('.disable-link').on('click', function click(e) {
       e.preventDefault();
       $(this).closest('.displayed').addClass('disabled');
     });

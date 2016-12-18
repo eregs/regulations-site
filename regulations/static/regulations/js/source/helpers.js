@@ -12,8 +12,8 @@ if (!Array.prototype.indexOf) {
   /* eslint-disable no-extend-native,no-bitwise */
   Array.prototype.indexOf = function indexOf(searchElement, initialIndex) {
     var fromIndex = initialIndex;
-    if ( this === undefined || this === null ) {
-      throw new TypeError( '"this" is null or not defined' );
+    if (this === undefined || this === null) {
+      throw new TypeError('"this" is null or not defined');
     }
 
     var length = this.length >>> 0; // Hack to convert object.length to a UInt32
