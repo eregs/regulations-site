@@ -8,6 +8,7 @@ var app = require('./app-init');
 
 // A `bind()` polyfill
 if (!Function.prototype.bind) {
+  /* eslint-disable no-extend-native */
   Function.prototype.bind = function bind(oThis) {
     if (typeof this !== 'function') {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
@@ -28,6 +29,7 @@ if (!Function.prototype.bind) {
 
     return fBound;
   };
+  /* eslint-enable */
 }
 
 // a 'window.location.origin' polyfill for IE10

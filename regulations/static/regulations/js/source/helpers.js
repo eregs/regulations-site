@@ -11,14 +11,13 @@ var markerlessRE = /p\d+/;
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
 // TODO this may make sense to move elsewhere
 if (!Array.prototype.indexOf) {
+  /* eslint-disable no-extend-native,no-bitwise */
   Array.prototype.indexOf = function indexOf(searchElement, fromIndex) {
     if ( this === undefined || this === null ) {
       throw new TypeError( '"this" is null or not defined' );
     }
 
-    /* eslint-disable no-bitwise */
     var length = this.length >>> 0; // Hack to convert object.length to a UInt32
-    /* eslint-enable */
 
     fromIndex = +fromIndex || 0;
 
@@ -41,6 +40,7 @@ if (!Array.prototype.indexOf) {
 
     return -1;
   };
+  /* eslint-enable */
 }
 
 module.exports = {

@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-extend-native: off
     no-extra-semi: off
     no-lonely-if: off
     no-param-reassign: off
