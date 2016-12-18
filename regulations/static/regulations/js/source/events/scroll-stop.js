@@ -6,8 +6,8 @@ const $ = require('jquery');
 const dispatch = $.event.dispatch || $.event.handle;
 
 const special = $.event.special;
-const uid1 = 'D' + (+new Date());
-const uid2 = 'D' + (+new Date() + 1);
+const uid1 = `D${+new Date()}`;
+const uid2 = `D${+new Date() + 1}`;
 
 special.scrollstart = {
   setup: function setup(initialData) {

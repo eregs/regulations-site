@@ -31,7 +31,7 @@ const MAX_ATTACHMENTS = 9;
  */
 function getUploadUrl(file) {
   return $.getJSON(
-    window.APP_PREFIX + 'comments/attachment',
+    `${window.APP_PREFIX}comments/attachment`,
     { size: file.size, name: file.name, type: file.type || 'application/octet-stream' },
   ).then(resp => resp);
 }
@@ -112,7 +112,7 @@ const CommentView = Backbone.View.extend({
     if (options.$parent) {
       let label = options.label;
       const parsed = helpers.parsePreambleId(options.section);
-      const href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
+      const href = `${window.APP_PREFIX + parsed.path.join('/')}#${parsed.hash}`;
       // Splice section label and context title, if present
       // TODO: Build this upstream
       const $sectionHeader = options.$parent.find('.node:first :header');
@@ -120,7 +120,7 @@ const CommentView = Backbone.View.extend({
         label = [label, $sectionHeader.text().split('. ').slice(1)].join('. ');
         $sectionHeader.remove();
       }
-      this.$headerLink.html('<a href="' + href + '">' + label + '</a>');
+      this.$headerLink.html(`<a href="${href}">${label}</a>`);
 
       this.$contextSectionLabel.html(options.label);
 
@@ -157,7 +157,7 @@ const CommentView = Backbone.View.extend({
     this.$attachments.empty();
     this.attachmentViews = this.model.get('files').map(file => new AttachmentView(_.extend({ $parent: this.$attachments }, file)));
     this.setAttachmentCount();
-    this.$attachmentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
+    this.$attachmentLimit.html(`<strong>Limit</strong>: ${MAX_ATTACHMENTS} total attachments.`);
   },
 
   highlightDropzone: function highlightDropzone() {
@@ -228,7 +228,7 @@ const CommentView = Backbone.View.extend({
     count += this.attachmentViews.length;
     this.attachmentCount = count;
     const plural = this.attachmentCount !== 1 ? 's' : '';
-    this.$attachmentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
+    this.$attachmentCount.text(`You've uploaded ${this.attachmentCount} total attachment${plural}.`);
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
 

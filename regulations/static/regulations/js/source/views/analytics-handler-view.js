@@ -53,36 +53,36 @@ const AnalyticsHandler = Backbone.View.extend({
     }
 
     if (typeof context.regVersion !== 'undefined') {
-      objectParts.push('version:' + context.regVersion);
+      objectParts.push(`version:${context.regVersion}`);
     }
 
     if (typeof context.baseVersion !== 'undefined' && typeof context.newerVersion !== 'undefined') {
-      objectParts.push('comparing:' + context.baseVersion);
+      objectParts.push(`comparing:${context.baseVersion}`);
       objectParts.push(context.newerVersion);
     }
 
     if (typeof context.query !== 'undefined') {
-      objectParts.push('query:' + context.query);
+      objectParts.push(`query:${context.query}`);
     }
 
     if (typeof context.page !== 'undefined') {
-      objectParts.push('results page:' + context.page);
+      objectParts.push(`results page:${context.page}`);
     }
 
     if (typeof context.from !== 'undefined') {
-      objectParts.push('from:' + context.from);
+      objectParts.push(`from:${context.from}`);
     }
 
     if (typeof context.by !== 'undefined') {
-      objectParts.push('by:' + context.by);
+      objectParts.push(`by:${context.by}`);
     }
 
     if (typeof context.to !== 'undefined') {
-      objectParts.push('to:' + context.to);
+      objectParts.push(`to:${context.to}`);
     }
 
     if (typeof context.docNumber !== 'undefined') {
-      objectParts.push('doc:' + context.docNumber);
+      objectParts.push(`doc:${context.docNumber}`);
     }
 
     object = objectParts.join(' ');

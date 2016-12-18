@@ -38,7 +38,7 @@ const ChildView = Backbone.View.extend({
     }
 
     this.activeSection = this.options.id;
-    this.$activeSection = $('#' + this.activeSection);
+    this.$activeSection = $(`#${this.activeSection}`);
 
     this.loadImages();
   },
@@ -63,7 +63,7 @@ const ChildView = Backbone.View.extend({
     let offsetTop;
     let $scrollToId;
     if (this.options.scrollToId) {
-      $scrollToId = $('#' + this.options.scrollToId);
+      $scrollToId = $(`#${this.options.scrollToId}`);
       if ($scrollToId.length) {
         offsetTop = $scrollToId.offset().top;
       }
@@ -102,7 +102,7 @@ const ChildView = Backbone.View.extend({
             window.history.replaceState(
                 null,
                 null,
-                window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection,
+                `${window.location.origin + window.location.pathname + window.location.search}#${this.activeSection}`,
               );
           }
 
@@ -129,12 +129,12 @@ const ChildView = Backbone.View.extend({
 
             // if a hash has been passed in
       if (options && options.scrollToId) {
-        url += '#' + options.scrollToId;
+        url += `#${options.scrollToId}`;
         this.navigate(url);
-        $('html, body').scrollTop($('#' + options.scrollToId).offset().top);
+        $('html, body').scrollTop($(`#${options.scrollToId}`).offset().top);
       } else {
         if (['diff', 'search-results'].indexOf(options.type) === -1) {
-          url += '#' + options.id;
+          url += `#${options.id}`;
         }
         this.navigate(url);
       }

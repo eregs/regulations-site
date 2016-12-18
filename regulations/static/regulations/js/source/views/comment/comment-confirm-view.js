@@ -10,7 +10,7 @@ const comments = require('../../collections/comment-collection');
 
 const CommentConfirmView = Backbone.View.extend({
   initialize: function initialize(options) {
-    Backbone.View.prototype.setElement.call(this, '#' + options.id);
+    Backbone.View.prototype.setElement.call(this, `#${options.id}`);
 
     this.docId = this.$el.data('doc-id');
     this.metadataUrl = this.$el.data('metadata-url');

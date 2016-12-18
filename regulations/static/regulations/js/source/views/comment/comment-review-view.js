@@ -28,7 +28,7 @@ const CommentReviewView = Backbone.View.extend({
   },
 
   initialize: function initialize(options) {
-    Backbone.View.prototype.setElement.call(this, '#' + options.id);
+    Backbone.View.prototype.setElement.call(this, `#${options.id}`);
 
     this.$content = this.$el.find('.comment-review-items');
 
@@ -86,11 +86,11 @@ const CommentReviewView = Backbone.View.extend({
   initTabs: function initTabs() {
     const self = this;
     function updateTabs(tab, tabSet) {
-      const tabSelector = '[data-tab="' + tab + '"]';
-      const setSelector = '[data-tab-set="' + tabSet + '"]';
+      const tabSelector = `[data-tab="${tab}"]`;
+      const setSelector = `[data-tab-set="${tabSet}"]`;
       self.$el.find(setSelector).removeClass('current');
       self.$el.find(setSelector + tabSelector).addClass('current');
-      self.$el.find(setSelector + '[data-tabs]').each((idx, elm) => {
+      self.$el.find(`${setSelector}[data-tabs]`).each((idx, elm) => {
         const $elm = $(elm);
         const tabs = $elm.data('tabs');
         if (tabs.indexOf(tab) !== -1) {
@@ -123,9 +123,9 @@ const CommentReviewView = Backbone.View.extend({
     self.$el.find('[data-depends-on]').each((idx, elm) => {
       const $elm = $(elm);
       const $select = selfOrChild($elm, 'select');
-      const $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
+      const $dependsOn = self.$el.find(`[name="${$elm.data('depends-on')}"]`);
       const $options = $select.find('option[value]').detach().clone();
-      const $writeIn = self.$el.find('[data-writein-for="' + $select.prop('id') + '"]');
+      const $writeIn = self.$el.find(`[data-writein-for="${$select.prop('id')}"]`);
       function updateOptions(value) {
         $select.find('option[value]').remove();
         let optionsCount = 0;
@@ -156,7 +156,7 @@ const CommentReviewView = Backbone.View.extend({
 
     const $xhr = $.ajax({
       type: 'POST',
-      url: window.APP_PREFIX + 'comments/preview',
+      url: `${window.APP_PREFIX}comments/preview`,
       data: JSON.stringify({
         assembled_comment: comments.toJSON({ docId: this.docId }),
       }),

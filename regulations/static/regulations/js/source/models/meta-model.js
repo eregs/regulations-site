@@ -70,16 +70,16 @@ const MetaModel = Backbone.Model.extend({
   },
 
   getAJAXUrl: function getAJAXUrl(id) {
-    let url = window.APP_PREFIX + 'partial/';
+    let url = `${window.APP_PREFIX}partial/`;
 
     if (typeof this.supplementalPath !== 'undefined') {
-      url += this.supplementalPath + '/';
+      url += `${this.supplementalPath}/`;
     }
 
     url += id;
 
     if (id.indexOf('/') === -1) {
-      url += '/' + Helpers.findVersion(Resources.versionElements);
+      url += `/${Helpers.findVersion(Resources.versionElements)}`;
     }
 
     return url;

@@ -10,10 +10,10 @@ const searchModel = new Backbone.SearchModel({
   supplementalPath: 'search',
 
   getAJAXUrl: function getAJAXUrl(id, options) {
-    let url = window.APP_PREFIX + 'partial/';
+    let url = `${window.APP_PREFIX}partial/`;
 
     if (typeof this.supplementalPath !== 'undefined') {
-      url += this.supplementalPath + '/';
+      url += `${this.supplementalPath}/`;
     }
 
     return url + this.assembleSearchURL(options);

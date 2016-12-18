@@ -34,23 +34,23 @@ const HistoryView = Backbone.View.extend({
     if (typeof section !== 'undefined') {
       this.$el.find('.version-link').each(function perLink() {
         const $link = $(this);
-        $link.attr('href', prefix + section + '/' + $link.data('version'));
+        $link.attr('href', `${prefix + section}/${$link.data('version')}`);
       });
       this.$el.find('.stop-button').each(function perButton() {
         const $link = $(this);
         /* Interpretations are split into "subterps" outside of diff view -
          * link to the first */
         if (section.indexOf('Interp') !== -1) {
-          $link.attr('href', prefix + $link.data('first-subterp') + '/' + $link.data('version'));
+          $link.attr('href', `${prefix + $link.data('first-subterp')}/${$link.data('version')}`);
         } else {
-          $link.attr('href', prefix + section + '/' + $link.data('version'));
+          $link.attr('href', `${prefix + section}/${$link.data('version')}`);
         }
       });
 
       /* diffs of interpretations are not currently more granular than the
        * whole interpretation */
       if (section.indexOf('Interp') !== -1) {
-        section = section.split('-')[0] + '-Interp';
+        section = `${section.split('-')[0]}-Interp`;
       }
       // update diff dropdown
       this.$el.find('.select-content form').each(function perForm() {
@@ -61,7 +61,7 @@ const HistoryView = Backbone.View.extend({
 
         // remove section ID
         actionParts.splice(-2, 1, section);
-        actionPath = '/' + actionParts.join('/');
+        actionPath = `/${actionParts.join('/')}`;
         $form.attr('action', actionPath);
       });
     }

@@ -33,7 +33,7 @@ const PreambleHeadView = Backbone.View.extend({
   },
 
   handleRoute: function handleRoute(href) {
-    this.$readTab.find('a').attr('href', '/' + href);
+    this.$readTab.find('a').attr('href', `/${href}`);
   },
 
   readTabOpen: function readTabOpen() {

@@ -20,12 +20,12 @@ const BreakawayView = Backbone.View.extend({
 
   openSxS: function openSxS(initialContext) {
     const context = $.extend({}, initialContext);
-    context.url = context.regParagraph + '/' + context.docNumber + '?from_version=' + context.fromVersion;
+    context.url = `${context.regParagraph}/${context.docNumber}?from_version=${context.fromVersion}`;
 
     this.childViews.sxs = new SxS(context);
 
     if (Router.hasPushState) {
-      Router.navigate('sxs/' + context.url);
+      Router.navigate(`sxs/${context.url}`);
     }
 
     MainEvents.trigger('breakaway:open', _.bind(this.removeChild, this));

@@ -55,7 +55,7 @@ const SxSView = Backbone.View.extend({
         // remove existing highlight
     this.removeHighlight();
         // highlight the selected footnote
-    $('.footnotes ' + target).toggleClass('highlight');
+    $(`.footnotes ${target}`).toggleClass('highlight');
   },
 
   removeHighlight: function removeHighlight() {

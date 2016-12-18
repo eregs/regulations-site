@@ -9,5 +9,4 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    prefer-template: off  # need babel
     vars-on-top: off

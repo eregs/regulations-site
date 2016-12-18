@@ -33,9 +33,9 @@ const RegView = ChildView.extend({
     this.id = this.options.id;
     this.regVersion = this.options.regVersion;
     this.activeSection = this.options.id;
-    this.$activeSection = $('#' + this.activeSection);
+    this.$activeSection = $(`#${this.activeSection}`);
     this.$sections = {};
-    this.url = this.id + '/' + this.options.regVersion;
+    this.url = `${this.id}/${this.options.regVersion}`;
     this.docId = this.options.docId;
     this.cfrTitle = this.options.cfrTitle;
 
@@ -87,11 +87,11 @@ const RegView = ChildView.extend({
 
   assembleTitle: function assembleTitle() {
     if (this.options.subContentType === 'supplement') {
-      return 'Supplement I to Part ' + this.docId + ' | eRegulations';
+      return `Supplement I to Part ${this.docId} | eRegulations`;
     } else if (this.options.subContentType === 'appendix') {
-      return 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
+      return `Appendix ${this.id.substr(this.id.length - 1)} to Part ${this.docId} | eRegulations`;
     }
-    return this.cfrTitle + ' CFR ' + this.sectionLabel + ' | eRegulations';
+    return `${this.cfrTitle} CFR ${this.sectionLabel} | eRegulations`;
   },
 
   // if an inline definition is open, check the links here to see if the
@@ -140,7 +140,7 @@ const RegView = ChildView.extend({
     if (typeof this.defScopeExclusions !== 'undefined') {
       if (this.defScopeExclusions.indexOf(id) !== -1) {
         $newDefLink = this.$activeSection.find(
-                    '.definition[data-defined-term="' + $('#definition').data('definedTerm') + '"]',
+                    `.definition[data-defined-term="${$('#definition').data('definedTerm')}"]`,
                 ).first();
         newDefId = $newDefLink.data('definition');
         newDefHref = $newDefLink.attr('href');
@@ -251,7 +251,7 @@ const RegView = ChildView.extend({
     const subSectionId = $(e.currentTarget).data('linked-subsection');
     const version = $('section[data-base-version]').data('base-version');
 
-    Router.navigate(sectionId + '/' + version + '#' + subSectionId, { trigger: true });
+    Router.navigate(`${sectionId}/${version}#${subSectionId}`, { trigger: true });
 
     GAEvents.trigger('interp:followCitation', {
       id: subSectionId,

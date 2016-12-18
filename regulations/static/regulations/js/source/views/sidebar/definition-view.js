@@ -68,7 +68,7 @@ const DefinitionView = Backbone.View.extend({
     this.$el.html('');
     this.renderHeader();
     this.$el.children().removeClass('spinner');
-    this.$el.append('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>' + error + '</div>');
+    this.$el.append(`<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>${error}</div>`);
   },
 
   close: function close(e) {
@@ -101,7 +101,7 @@ const DefinitionView = Backbone.View.extend({
     // whole open section
   displayScopeMsg: function displayScopeMsg(id) {
     let msg = '<p>This term has a different definition for some portions of ';
-    msg += id ? $('#' + id).data('label') + '.' : 'this section.';
+    msg += id ? `${$(`#${id}`).data('label')}.` : 'this section.';
     msg += '</p>';
 
     this.$warningContainer = this.$warningContainer || this.$el.find('.definition-warning');
@@ -130,9 +130,9 @@ const DefinitionView = Backbone.View.extend({
       this.displayScopeMsg(Helpers.findBaseSection(activeSectionId));
     }
 
-    linkText += (defId) ? $('#' + activeSectionId).data('label') : 'this section';
-    link = '<a href="' + href + '" class="update-definition inactive internal" data-definition="' + defId + '">';
-    link += linkText + '</a>';
+    linkText += (defId) ? $(`#${activeSectionId}`).data('label') : 'this section';
+    link = `<a href="${href}" class="update-definition inactive internal" data-definition="${defId}">`;
+    link += `${linkText}</a>`;
 
         // remove duplicates
     $msg.find('a').remove();

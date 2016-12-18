@@ -32,14 +32,14 @@ const SubHeadView = Backbone.View.extend({
   },
 
   displayCount: function displayCount(resultCount) {
-    this.$activeTitle.html('<span class="subpart">Search results</span> ' + resultCount);
+    this.$activeTitle.html(`<span class="subpart">Search results</span> ${resultCount}`);
   },
 
   changeDate: function changeDate() {
     this.version = $('section[data-base-version]').data('base-version');
     if (this.version) {
-      this.displayDate = $('select[name="version"] option[value="' + this.version + '"]').text();
-      $('.effective-date').html('<strong>Effective date:</strong> ' + this.displayDate);
+      this.displayDate = $(`select[name="version"] option[value="${this.version}"]`).text();
+      $('.effective-date').html(`<strong>Effective date:</strong> ${this.displayDate}`);
     } else {
       $('.effective-date').html('');
     }

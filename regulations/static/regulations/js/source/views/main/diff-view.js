@@ -21,7 +21,7 @@ const DiffView = ChildView.extend({
         // we preserve the section id as is in config obj because
     this.options.sectionId = this.id;
 
-    this.url = 'diff/' + this.model.assembleDiffURL(this.options);
+    this.url = `diff/${this.model.assembleDiffURL(this.options)}`;
     ChildView.prototype.initialize.apply(this, [options].concat(args));
 
     if (typeof this.options.render === 'undefined') {

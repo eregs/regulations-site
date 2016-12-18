@@ -90,7 +90,7 @@ const PreambleView = ChildView.extend({
   },
 
   handleWriteTab: function handleWriteTab() {
-    const $section = $('#' + this.section);
+    const $section = $(`#${this.section}`);
 
     this.write(
       $section.find('.activate-write').data('section'),
@@ -177,7 +177,7 @@ const PreambleView = ChildView.extend({
     });
 
     if (this.options.mode === 'write') {
-      const $parent = $('#' + this.options.scrollToId);
+      const $parent = $(`#${this.options.scrollToId}`);
       const indexes = $parent.data('indexes');
 
       this.write(this.options.section, this.options.tocId, indexes, this.options.label, $parent);

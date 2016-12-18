@@ -23,7 +23,7 @@ const SearchResultsView = ChildView.extend({
     // because the user can select a different version to pull search results from
     this.resultsRegVersion = this.options.regVersion;
     this.page = parseInt(this.options.page, 10) || 0;
-    this.title = 'Search of ' + this.options.docId + ' for ' + this.query + ' | eRegulations';
+    this.title = `Search of ${this.options.docId} for ${this.query} | eRegulations`;
 
     // if the browser doesn't support pushState, don't
     // trigger click events for links
@@ -35,7 +35,7 @@ const SearchResultsView = ChildView.extend({
 
         // if the site wasn't loaded on the search results page
     if (this.options.render) {
-      this.url = 'search/' + this.model.assembleSearchURL(this.options);
+      this.url = `search/${this.model.assembleSearchURL(this.options)}`;
       ChildView.prototype.initialize.apply(this, [options].concat(args));
     } else {
       this.options.docType = this.$el.data('doc-type');

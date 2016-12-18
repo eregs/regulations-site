@@ -86,7 +86,7 @@ module.exports = {
     // catches:
     // 123-4-*
     // 123-A-*
-    return parts[0] + '-' + parts[1];
+    return `${parts[0]}-${parts[1]}`;
   },
 
     // Unpaired this function from the DOM to make
