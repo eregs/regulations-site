@@ -18,7 +18,9 @@ if (!Function.prototype.bind) {
       fToBind = this,
       FNOP = function FNOP() {},
       fBound = function fBound() {
-        return fToBind.apply(this instanceof FNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
+        var arg1 = this instanceof FNOP && oThis ? this : oThis;
+        var arg2 = aArgs.concat(Array.prototype.slice.call(arguments));
+        return fToBind.apply(arg1, arg2);
       };
 
     FNOP.prototype = this.prototype;

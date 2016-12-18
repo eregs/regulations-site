@@ -37,7 +37,8 @@ var HistoryView = Backbone.View.extend({
       });
       this.$el.find('.stop-button').each(function perButton() {
         var $link = $(this);
-                //  Interpretations are split into "subterps" outside of diff view - link to the first
+        /* Interpretations are split into "subterps" outside of diff view -
+         * link to the first */
         if (section.indexOf('Interp') !== -1) {
           $link.attr('href', prefix + $link.data('first-subterp') + '/' + $link.data('version'));
         } else {
@@ -45,7 +46,8 @@ var HistoryView = Backbone.View.extend({
         }
       });
 
-            // diffs of interpretations are not currently more granular than the whole interpretation
+      /* diffs of interpretations are not currently more granular than the
+       * whole interpretation */
       if (section.indexOf('Interp') !== -1) {
         section = section.split('-')[0] + '-Interp';
       }

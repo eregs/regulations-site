@@ -18,7 +18,8 @@ var DiffView = ChildView.extend({
     this.options = options;
     this.id = this.options.id;
     this.baseVersion = this.options.baseVersion;
-    this.newerVersion = this.options.newerVersion || Helpers.findDiffVersion(Resources.versionElements, this.baseVersion);
+    this.newerVersion = this.options.newerVersion || Helpers.findDiffVersion(
+      Resources.versionElements, this.baseVersion);
     this.fromVersion = this.options.fromVersion || this.newerVersion;
         // we preserve the section id as is in config obj because
     this.options.sectionId = this.id;

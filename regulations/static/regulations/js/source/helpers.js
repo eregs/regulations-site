@@ -218,9 +218,10 @@ module.exports = {
      * @param {string} type - expecting 'preamble-section' from preamble-view.js options.type
      *
      * Example internal citation link:
-     * <a href="#0000_0000-III-D-4" class="citation internal" data-section-id="0000_0000-III">III.D.4</a>
-     * take href link and create a string "0000_0000-preamble-0000_0000-III-D-4"
-     * to pass to 'section:open' event to load the linked section
+     * <a href="#0000_0000-III-D-4" class="citation internal"
+     *    data-section-id="0000_0000-III">III.D.4</a> take href link and
+     * create a string "0000_0000-preamble-0000_0000-III-D-4" to pass to
+     * 'section:open' event to load the linked section
      *
      * @see unittests
      */

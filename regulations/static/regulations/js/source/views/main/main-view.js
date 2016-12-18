@@ -206,7 +206,8 @@ var MainView = Backbone.View.extend({
 
       // Diffs need some more version context
     if (this.contentType === 'diff') {
-      this.childOptions.baseVersion = this.regVersion || Helpers.findVersion(Resources.versionElements);
+      this.childOptions.baseVersion = this.regVersion || Helpers.findVersion(
+        Resources.versionElements);
       this.childOptions.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
       if (typeof options.fromVersion === 'undefined') {
         this.childOptions.fromVersion = $('#table-of-contents').data('from-version');

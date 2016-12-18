@@ -93,7 +93,13 @@ var CommentView = Backbone.View.extend({
     if (this.model) {
       this.stopListening(this.model);
     }
-    var options = {id: section, tocId: tocId, indexes: indexes, label: label, docId: this.options.docId};
+    var options = {
+      id: section,
+      tocId: tocId,
+      indexes: indexes,
+      label: label,
+      docId: this.options.docId,
+    };
     this.model = blank ?
       new CommentModel(options) :
       comments.get(section) || new CommentModel(options);
