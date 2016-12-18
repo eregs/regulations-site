@@ -85,7 +85,7 @@ module.exports = function(grunt) {
           '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js','<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
-          transform: ['browserify-shim'],
+          transform: ['babelify', 'browserify-shim'],
           browserifyOptions: {
             debug: true
           }
@@ -96,7 +96,7 @@ module.exports = function(grunt) {
           '<%= env.frontEndPath %>/js/built/regulations.min.js': ['<%= env.frontEndPath %>/js/source/regulations.js']
         },
         options: {
-          transform: ['browserify-shim'],
+          transform: ['babelify', 'browserify-shim'],
           browserifyOptions: {
             debug: true
           },
