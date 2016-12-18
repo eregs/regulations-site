@@ -17,7 +17,7 @@ var commentModel = Backbone.Model.extend({
 var indexComparator = function indexComparator(first, second) {
   var maxLength = Math.max(first.length, second.length);
 
-  for (var i = 0; i < maxLength; i++) {
+  for (var i = 0; i < maxLength; i += 1) {
     if (first[i] === undefined) {
       return -1;
     } else if (second[i] === undefined) {

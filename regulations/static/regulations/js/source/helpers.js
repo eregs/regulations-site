@@ -33,7 +33,7 @@ if (!Array.prototype.indexOf) {
       }
     }
 
-    for (;fromIndex < length; fromIndex++) {
+    for (;fromIndex < length; fromIndex += 1) {
       if (this[fromIndex] === searchElement) {
         return fromIndex;
       }

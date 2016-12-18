@@ -134,7 +134,7 @@ var CommentReviewView = Backbone.View.extend({
         $options.each(function perOption(idx, elm) {
           var depVal = elm.getAttribute('data-dependency');
           if (depVal === value) {
-            optionsCount++;
+            optionsCount += 1;
           }
           if (depVal === value || depVal === '_all') {
             optionsToShow.push(elm);

@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-plusplus: off
     no-prototype-builtins: off
     no-redeclare: off
     no-restricted-syntax: off
