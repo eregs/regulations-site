@@ -69,7 +69,7 @@ var MetaModel = Backbone.Model.extend({
     });
   },
 
-  getAJAXUrl: function getAJAXUrl(id, options) {
+  getAJAXUrl: function getAJAXUrl(id) {
     var url = window.APP_PREFIX + 'partial/';
 
     if (typeof this.supplementalPath !== 'undefined') {

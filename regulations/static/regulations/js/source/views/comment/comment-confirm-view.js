@@ -1,14 +1,11 @@
 'use strict';
 
 var $ = require('jquery');
-var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var MainEvents = require('../../events/main-events');
-var CommentEvents = require('../../events/comment-events');
 var comments = require('../../collections/comment-collection');
 
 var CommentConfirmView = Backbone.View.extend({

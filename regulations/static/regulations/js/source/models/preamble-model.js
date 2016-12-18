@@ -1,7 +1,6 @@
 'use strict';
 
 var URI = require('urijs');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var MetaModel = require('./meta-model');
 var helpers = require('../helpers');

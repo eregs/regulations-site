@@ -1,16 +1,12 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var RegModel = require('../../models/reg-model');
 var SxSList = require('./sxs-list-view');
 var SidebarModel = require('../../models/sidebar-model');
 var DefinitionModel = require('../../models/definition-model');
-var Breakaway = require('../breakaway/breakaway-view');
 var SidebarEvents = require('../../events/sidebar-events');
 var Definition = require('./definition-view');
-var MetaModel = require('../../models/meta-model');
 var MainEvents = require('../../events/main-events');
 var Helpers = require('../../helpers.js');
 
@@ -144,7 +140,7 @@ var SidebarView = Backbone.View.extend({
 
   removeChildren: function removeChildren(except) {
     var self = this;
-    $.each(this.childViews, function perProperty(key, value) {
+    $.each(this.childViews, function perProperty(key) {
       if (!except || except !== key) {
         self.childViews[key].remove();
       }

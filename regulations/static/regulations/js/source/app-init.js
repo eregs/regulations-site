@@ -3,7 +3,6 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var MainView = require('./views/main/main-view');
 var Router = require('./router');
@@ -29,11 +28,14 @@ module.exports = {
 
     Router.start();
     this.bindEvents();
-    var gaview = new AnalyticsHandler();
-    var header = new HeaderView();  // Header before Drawer as Drawer sends Header events
-    var drawer = new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
-    var main = new MainView();
-    var sidebar = new SidebarView();
+    // Can we avoid `new`s here?
+    /* eslint-disable no-new */
+    new AnalyticsHandler();
+    new HeaderView();  // Header before Drawer as Drawer sends Header events
+    new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
+    new MainView();
+    new SidebarView();
+    /* eslint-enable */
     setTimeout(function seleniumStart() {
       $('html').addClass('selenium-start');
     }, 5000);

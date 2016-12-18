@@ -1,13 +1,9 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 require('../../events/scroll-stop.js');
-var LazyLoad = require('jquery-lazyload');
-var DefinitionView = require('../sidebar/definition-view');
-var RegModel = require('../../models/reg-model');
-var SectionFooterView = require('./section-footer-view');
+require('jquery-lazyload');
 var Router = require('../../router');
 var MainEvents = require('../../events/main-events');
 var HeaderEvents = require('../../events/header-events');

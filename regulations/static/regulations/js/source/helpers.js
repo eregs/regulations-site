@@ -5,8 +5,6 @@
 var $ = require('jquery');
 var _ = require('underscore');
 
-var markerlessRE = /p\d+/;
-
 // indexOf polyfill
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
 // TODO this may make sense to move elsewhere

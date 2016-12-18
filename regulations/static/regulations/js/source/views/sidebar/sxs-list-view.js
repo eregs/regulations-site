@@ -3,11 +3,9 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var SxSList = require('./sxs-list-view');
 var Router = require('../../router');
 var BreakawayEvents = require('../../events/breakaway-events');
 var GAEvents = require('../../events/ga-events');
-var Helpers = require('../../helpers.js');
 
 Backbone.$ = $;
 

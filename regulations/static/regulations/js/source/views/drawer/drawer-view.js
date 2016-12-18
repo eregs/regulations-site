@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var TOCView = require('./toc-view');
 var HistoryView = require('./history-view');

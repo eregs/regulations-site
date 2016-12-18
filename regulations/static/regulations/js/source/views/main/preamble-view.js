@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 
 Backbone.$ = $;
@@ -26,7 +25,6 @@ var PreambleView = ChildView.extend({
     this.options = options;
 
     var parsed = helpers.parsePreambleId(this.options.id);
-    var type = parsed.type;
 
     this.options.scrollToId = parsed.hash;
 

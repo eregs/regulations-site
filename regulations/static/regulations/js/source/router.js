@@ -1,8 +1,6 @@
 'use strict';
 
-var _ = require('underscore');
 var Backbone = require('backbone');
-var MainView = require('./views/main/main-view');
 var MainEvents = require('./events/main-events');
 var BreakawayEvents = require('./events/breakaway-events');
 require('backbone-query-parameters');

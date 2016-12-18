@@ -7,7 +7,6 @@ require('../../events/scroll-stop.js');
 var Router = require('../../router');
 var HeaderEvents = require('../../events/header-events');
 var DrawerEvents = require('../../events/drawer-events');
-var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var GAEvents = require('../../events/ga-events');
 

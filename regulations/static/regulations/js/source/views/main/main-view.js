@@ -3,15 +3,13 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var URI = require('urijs');
-var DataTable = require('datatables.net')();
+require('datatables.net')();
 var Clipboard = require('clipboard');
-var QueryCommand = require('query-command-supported');
 var Backbone = require('backbone');
 var SearchResultsView = require('./search-results-view');
 var RegView = require('./reg-view');
 var RegModel = require('../../models/reg-model');
 var SearchModel = require('../../models/search-model');
-var SubHeadView = require('../header/sub-head-view');
 var SectionFooter = require('./section-footer-view');
 var MainEvents = require('../../events/main-events');
 var SidebarEvents = require('../../events/sidebar-events');
@@ -319,11 +317,14 @@ var MainView = Backbone.View.extend({
           id: '#copyable-' + index,
           href: '#copyable-' + index,
         });
-        var copylink = new Clipboard(link[0], {
-          target: function target(trigger) {
+        // Can we avoid `new` here?
+        /* eslint-disable no-new */
+        new Clipboard(link[0], {
+          target: function target() {
             return copyable;
           },
         });
+        /* eslint-enable */
         $(copyable).before(link);
       });
     }

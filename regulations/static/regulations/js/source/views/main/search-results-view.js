@@ -1,10 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-var URI = require('urijs');
-var _ = require('underscore');
 var Backbone = require('backbone');
-var SearchModel = require('../../models/search-model.js');
 var Router = require('../../router');
 var HeaderEvents = require('../../events/header-events');
 var MainEvents = require('../../events/main-events');

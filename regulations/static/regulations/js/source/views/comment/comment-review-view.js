@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = require('jquery');
-var URI = require('urijs');
 var _ = require('underscore');
 var Backbone = require('backbone');
 
@@ -176,7 +175,7 @@ var CommentReviewView = Backbone.View.extend({
     this.render();
   },
 
-  previewError: function previewError(resp, status, error) {
+  previewError: function previewError() {
     this.previewLoading = false;
     this.render();
 

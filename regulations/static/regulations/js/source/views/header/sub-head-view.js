@@ -1,7 +1,6 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
 var Backbone = require('backbone');
 var HeaderEvents = require('../../events/header-events');
 
