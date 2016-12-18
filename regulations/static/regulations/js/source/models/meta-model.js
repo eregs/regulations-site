@@ -14,7 +14,7 @@ const MetaModel = Backbone.Model.extend({
     const self = this;
 
     if (typeof properties !== 'undefined') {
-      $.each(properties, function perProp(key, value) {
+      $.each(properties, (key, value) => {
         self[key] = value;
       });
     }

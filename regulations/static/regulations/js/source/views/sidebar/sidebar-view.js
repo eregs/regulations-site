@@ -31,7 +31,7 @@ const SidebarView = Backbone.View.extend({
     this.definitionModel = DefinitionModel;
     this.model = SidebarModel;
         /* Cache the initial sidebar */
-    this.$el.find('[data-cache-key=sidebar]').each(function perSidebar(idx, el) {
+    this.$el.find('[data-cache-key=sidebar]').each((idx, el) => {
       const $el = $(el);
       SidebarModel.set($el.data('cache-value'), $el.html());
     });
@@ -43,13 +43,13 @@ const SidebarView = Backbone.View.extend({
       term: config.term,
     });
 
-    this.definitionModel.get(config.id, {}).then(function handleResponse(resp) {
+    this.definitionModel.get(config.id, {}).then((resp) => {
       this.childViews.definition.render(resp);
-    }.bind(this)).fail(function fail() {
+    }).fail(() => {
       let errorMsg = 'We tried to load that definition, but something went wrong. ';
       errorMsg += '<a href="#" class="update-definition inactive internal" data-definition="' + this.childViews.definition.id + '">Try again?</a>';
       this.childViews.definition.renderError(errorMsg);
-    }.bind(this));
+    });
   },
 
   closeDefinition: function closeDefinition() {
@@ -118,12 +118,12 @@ const SidebarView = Backbone.View.extend({
   },
 
   closeExpandables: function closeExpandables() {
-    this.$el.find('.expandable').each(function perEl(i, folder) {
+    this.$el.find('.expandable').each((i, folder) => {
       const $folder = $(folder);
       if ($folder.hasClass('open')) {
         this.toggleExpandable($folder);
       }
-    }.bind(this));
+    });
   },
 
   toggleExpandable: function toggleExpandable(e) {
@@ -140,7 +140,7 @@ const SidebarView = Backbone.View.extend({
 
   removeChildren: function removeChildren(except) {
     const self = this;
-    $.each(this.childViews, function perProperty(key) {
+    $.each(this.childViews, (key) => {
       if (!except || except !== key) {
         self.childViews[key].remove();
       }

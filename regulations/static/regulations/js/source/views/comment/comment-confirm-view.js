@@ -17,7 +17,7 @@ const CommentConfirmView = Backbone.View.extend({
 
     if (this.metadataUrl) {
       this.poll(this.metadataUrl);
-      comments.filter(this.docId).forEach(function perComment(comment) {
+      comments.filter(this.docId).forEach((comment) => {
         comment.destroy();
       });
     }
@@ -25,8 +25,8 @@ const CommentConfirmView = Backbone.View.extend({
 
   poll: function poll(url) {
     this.interval = window.setInterval(
-      function atInterval() {
-        $.getJSON(url).then(function handleResponse(resp) {
+      () => {
+        $.getJSON(url).then((resp) => {
           if (resp.error) {
             this.setRegsGovError();
           } else {
@@ -34,8 +34,8 @@ const CommentConfirmView = Backbone.View.extend({
             this.setTrackingNumber(resp.trackingNumber);
           }
           window.clearInterval(this.interval);
-        }.bind(this));
-      }.bind(this),
+        });
+      },
       5000,
     );
   },
@@ -45,7 +45,7 @@ const CommentConfirmView = Backbone.View.extend({
    * provided
    **/
   replaceTemplate: function replaceTemplate(selector, ctx, tplSelector = '.js-template') {
-    this.$el.find(selector).each(function perSelector(idx, elt) {
+    this.$el.find(selector).each((idx, elt) => {
       const $elt = $(elt);
       const $tplElt = $elt.find(tplSelector);
       const result = _.template($tplElt.prop('innerHTML'))(ctx);

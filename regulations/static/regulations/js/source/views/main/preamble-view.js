@@ -189,7 +189,7 @@ const PreambleView = ChildView.extend({
 
   collapseStars: function collapseStars() {
     let $expander;
-    this.$el.find('li[data-stars]').each(function perEl(idx, elt) {
+    this.$el.find('li[data-stars]').each((idx, elt) => {
       const $li = $(elt);
       const starType = $li.data('stars');
       $expander = starsHelpers[starType]($li, $expander);

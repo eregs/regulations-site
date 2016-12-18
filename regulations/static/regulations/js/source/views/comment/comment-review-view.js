@@ -90,7 +90,7 @@ const CommentReviewView = Backbone.View.extend({
       const setSelector = '[data-tab-set="' + tabSet + '"]';
       self.$el.find(setSelector).removeClass('current');
       self.$el.find(setSelector + tabSelector).addClass('current');
-      self.$el.find(setSelector + '[data-tabs]').each(function perEl(idx, elm) {
+      self.$el.find(setSelector + '[data-tabs]').each((idx, elm) => {
         const $elm = $(elm);
         const tabs = $elm.data('tabs');
         if (tabs.indexOf(tab) !== -1) {
@@ -120,7 +120,7 @@ const CommentReviewView = Backbone.View.extend({
    **/
   initDependencies: function initDependencies() {
     const self = this;
-    self.$el.find('[data-depends-on]').each(function perEl(idx, elm) {
+    self.$el.find('[data-depends-on]').each((idx, elm) => {
       const $elm = $(elm);
       const $select = selfOrChild($elm, 'select');
       const $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
@@ -130,7 +130,7 @@ const CommentReviewView = Backbone.View.extend({
         $select.find('option[value]').remove();
         let optionsCount = 0;
         const optionsToShow = [];
-        $options.each(function perOption(innerIdx, option) {
+        $options.each((innerIdx, option) => {
           const depVal = option.getAttribute('data-dependency');
           if (depVal === value) {
             optionsCount += 1;

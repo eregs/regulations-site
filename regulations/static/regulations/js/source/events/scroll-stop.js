@@ -29,7 +29,7 @@ special.scrollstart = {
         dispatch.apply(self, args);
       }
 
-      timer = setTimeout(function timedOut() {
+      timer = setTimeout(() => {
         timer = null;
       }, data.latency);
     };
@@ -57,7 +57,7 @@ special.scrollstop = {
         clearTimeout(timer);
       }
 
-      timer = setTimeout(function timedOut() {
+      timer = setTimeout(() => {
         timer = null;
         const modifiedEvent = $.Event(null, evt);
         args[0] = modifiedEvent;

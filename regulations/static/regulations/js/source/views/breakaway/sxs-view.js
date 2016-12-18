@@ -26,13 +26,13 @@ const SxSView = Backbone.View.extend({
       // give it a state of `progress` until content loads
     this.changeState('inprogress');
 
-    SxSModel.get(this.options.url, {}).then(function handleResponse(resp) {
+    SxSModel.get(this.options.url, {}).then((resp) => {
       this.$el.html(resp);
-    }.bind(this)).fail(function failed() {
+    }).fail(() => {
       this.$el.html('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>');
-    }.bind(this)).always(function always() {
+    }).always(() => {
       this.changeState('completed');
-    }.bind(this));
+    });
 
     this.listenTo(BreakawayEvents, 'sxs:close', this.remove);
 

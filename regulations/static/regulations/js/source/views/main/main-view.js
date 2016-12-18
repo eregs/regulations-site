@@ -309,7 +309,7 @@ const MainView = Backbone.View.extend({
   applyClipboardPlugin: function applyClipboardPlugin() {
     // Create anchor tag for copy to clipboard
     if (document.queryCommandSupported('copy')) {
-      this.$el.find('*[data-copyable="true"]').each(function perCopyable(index, copyable) {
+      this.$el.find('*[data-copyable="true"]').each((index, copyable) => {
         const link = $('<a>', {
           class: 'clipboard-link',
           text: 'Copy this text to your clipboard',

@@ -33,9 +33,7 @@ function getUploadUrl(file) {
   return $.getJSON(
     window.APP_PREFIX + 'comments/attachment',
     { size: file.size, name: file.name, type: file.type || 'application/octet-stream' },
-  ).then(function handleResponse(resp) {
-    return resp;
-  });
+  ).then(resp => resp);
 }
 
 const CommentView = Backbone.View.extend({
@@ -157,9 +155,7 @@ const CommentView = Backbone.View.extend({
   render: function render() {
     this.editor.setContent(this.model.get('comment'), 'markdown');
     this.$attachments.empty();
-    this.attachmentViews = this.model.get('files').map(function perFile(file) {
-      return new AttachmentView(_.extend({ $parent: this.$attachments }, file));
-    }.bind(this));
+    this.attachmentViews = this.model.get('files').map(file => new AttachmentView(_.extend({ $parent: this.$attachments }, file)));
     this.setAttachmentCount();
     this.$attachmentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
   },
@@ -177,9 +173,9 @@ const CommentView = Backbone.View.extend({
       this.$status.text('Too many attachments');
       return;
     }
-    _.each(e.target.files, function perFile(file) {
+    _.each(e.target.files, (file) => {
       this.addAttachment(file);
-    }.bind(this));
+    });
     this.$input.val(null);
     this.unhighlightDropzone();
   },
@@ -191,7 +187,7 @@ const CommentView = Backbone.View.extend({
    * @param {File} file File to upload
    */
   addAttachment: function addAttachment(file) {
-    getUploadUrl(file).then(function handleResponse(resp) {
+    getUploadUrl(file).then((resp) => {
       const xhr = new XMLHttpRequest();
       this.attachmentViews.push(
         new AttachmentView({
@@ -210,13 +206,11 @@ const CommentView = Backbone.View.extend({
       // in the meta data fields with x-amz-meta- prefixes
       xhr.setRequestHeader('x-amz-meta-name', file.name);
       xhr.send(file);
-    }.bind(this));
+    });
   },
 
   clearAttachment: function clearAttachment(key) {
-    const index = _.findIndex(this.attachmentViews, function perView(view) {
-      return view.options.key === key;
-    });
+    const index = _.findIndex(this.attachmentViews, view => view.options.key === key);
     this.attachmentViews[index].remove();
     this.attachmentViews.splice(index, 1);
     this.setAttachmentCount();
@@ -225,12 +219,12 @@ const CommentView = Backbone.View.extend({
   setAttachmentCount: function setAttachmentCount() {
     // Count saved attachments on other comments and pending attachments on the
     // current comment
-    let count = comments.filter(this.options.docId).reduce(function perComment(total, comment) {
+    let count = comments.filter(this.options.docId).reduce((total, comment) => {
       const incr = comment.id !== this.model.id ?
         comment.get('files').length :
         0;
       return total + incr;
-    }.bind(this), 0);
+    }, 0);
     count += this.attachmentViews.length;
     this.attachmentCount = count;
     const plural = this.attachmentCount !== 1 ? 's' : '';
@@ -256,14 +250,12 @@ const CommentView = Backbone.View.extend({
     this.model.set({
       comment: this.editor.getContent('markdown'),
       commentHtml: this.editor.getContent('html'),
-      files: _.map(this.attachmentViews, function perView(view) {
-        return {
-          key: view.options.key,
-          name: view.options.name,
-          size: view.options.size,
-          previewUrl: view.options.previewUrl,
-        };
-      }),
+      files: _.map(this.attachmentViews, view => ({
+        key: view.options.key,
+        name: view.options.name,
+        size: view.options.size,
+        previewUrl: view.options.previewUrl,
+      })),
     });
 
     comments.add(this.model);

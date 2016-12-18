@@ -107,7 +107,7 @@ const RegView = ChildView.extend({
       this.defScopeExclusions = this.defScopeExclusions || [];
       $termLinks = this.$el.find('a.definition');
 
-      $termLinks.each(function perLink(i, link) {
+      $termLinks.each((i, link) => {
         const $link = $(link);
 
         if ($link.data('defined-term') === defTerm && $link.data('definition') !== defId) {
@@ -121,7 +121,7 @@ const RegView = ChildView.extend({
 
           this.defScopeExclusions.push($link.closest('li[data-permalink-section]').attr('id'));
         }
-      }.bind(this));
+      });
 
       if (this.defScopeExclusions.length === 0) {
         SidebarEvents.trigger('definition:inScope');

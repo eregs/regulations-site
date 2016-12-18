@@ -18,7 +18,7 @@ module.exports = {
     const $expander = $(starContent).insertBefore($toShow);
     const $paragraph = $expander.parent();
 
-    $expander.click(function click() {
+    $expander.click(() => {
       $expander.remove();
       $toShow.show();
     });
@@ -30,7 +30,7 @@ module.exports = {
      */
     if ($paragraph.hasClass('collapsed')) {
       $paragraph.removeClass('collapsed');
-      $expander.click(function click() { $paragraph.addClass('collapsed'); });
+      $expander.click(() => { $paragraph.addClass('collapsed'); });
     }
     return $expander;
   },
@@ -43,10 +43,10 @@ module.exports = {
     } else {
       $toShow = $li.children().hide();
       $expander = $(starContent).insertBefore($toShow);
-      $expander.click(function click() { $expander.remove(); });
+      $expander.click(() => { $expander.remove(); });
     }
 
-    $expander.click(function click() { $toShow.show(); });
+    $expander.click(() => { $toShow.show(); });
     return $expander;
   },
 };

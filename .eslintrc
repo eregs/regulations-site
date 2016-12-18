@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    prefer-arrow-callback: off  # need babel
     prefer-rest-params: off   # need babel
     prefer-template: off  # need babel
     vars-on-top: off

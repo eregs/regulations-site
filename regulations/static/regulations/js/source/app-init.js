@@ -35,7 +35,7 @@ module.exports = {
     new MainView();
     new SidebarView();
     /* eslint-enable */
-    setTimeout(function seleniumStart() {
+    setTimeout(() => {
       $('html').addClass('selenium-start');
     }, 5000);
   },

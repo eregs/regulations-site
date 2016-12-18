@@ -22,9 +22,9 @@ const AnalyticsHandler = Backbone.View.extend({
     GAEvents.on('drawer:switchTab', this.sendEvent, 'switch tab');
 
         // not sure if this works
-    $('#timeline .stop-button').on('click', function click() {
+    $('#timeline .stop-button').on('click', () => {
       this.sendEvent({ type: 'diff' }).bind('click stop comparing');
-    }.bind(this));
+    });
   },
 
   sendEvent: function sendEvent(context) {
