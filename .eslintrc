@@ -7,6 +7,3 @@ globals:
     window: true
     XMLHttpRequest: true
     $: true
-# i.e. fixmes
-rules:
-    vars-on-top: off
