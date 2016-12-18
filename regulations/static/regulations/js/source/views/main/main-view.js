@@ -22,7 +22,6 @@ var Router = require('../../router');
 var HeaderEvents = require('../../events/header-events');
 var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
-var MainEvents = require('../../events/main-events');
 var CommentReviewView = require('../comment/comment-review-view');
 var CommentConfirmView = require('../comment/comment-confirm-view');
 var PreambleView = require('./preamble-view');

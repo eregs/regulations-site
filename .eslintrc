@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-redeclare: off
     no-restricted-syntax: off
     no-shadow: off
     no-underscore-dangle: off
