@@ -38,9 +38,9 @@ var DrawerView = Backbone.View.extend({
     // semantic reasons, so we need to associate page types
     // with the drawer panes they should be associated with
   pageTypeMap: {
-    'diff': 'timeline',
+    diff: 'timeline',
     'reg-section': 'table-of-contents',
-    'error': 'table-of-contents',
+    error: 'table-of-contents',
     'search-results': 'search',
   },
 

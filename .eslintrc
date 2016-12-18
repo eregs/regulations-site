@@ -11,10 +11,9 @@ globals:
 rules:
     no-var: off     # need babel before we can remove this
     object-shorthand: off   # need babel before we can remove this
-    prefer-arrow-callback: off
-    prefer-rest-params: off
-    prefer-template: off
-    quote-props: [error, consistent]
+    prefer-arrow-callback: off  # need babel
+    prefer-rest-params: off   # need babel
+    prefer-template: off  # need babel
     space-before-function-paren: off
     space-in-parens: off
     space-infix-ops: off

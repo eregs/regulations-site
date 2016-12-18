@@ -11,7 +11,7 @@ var SearchView = Backbone.View.extend({
   el: '#search',
 
   events: {
-    'submit': 'openSearchResults',
+    submit: 'openSearchResults',
   },
 
   initialize: function initialize() {

@@ -35,9 +35,9 @@ var SxSListView = Backbone.View.extend({
     var version = $('section[data-base-version]').data('base-version');
 
     BreakawayEvents.trigger('sxs:open', {
-      'regParagraph': id,
-      'docNumber': docNumber,
-      'fromVersion': version,
+      regParagraph: id,
+      docNumber: docNumber,
+      fromVersion: version,
     });
 
     GAEvents.trigger('sxs:open', {

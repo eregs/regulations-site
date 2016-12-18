@@ -23,7 +23,7 @@ var HeaderView = Backbone.View.extend({
   },
 
   contextMap: {
-    'changeSubHeadText': '_updateSubHead',
+    changeSubHeadText: '_updateSubHead',
   },
 
   ask: function ask(message, context) {

@@ -74,7 +74,7 @@ var CommentView = Backbone.View.extend({
         'code:toggle': { menu: null },
         'code_block:make': { menu: null },
         'image:insert': { menu: null },
-        'selectParentNode': { menu: null },
+        selectParentNode: { menu: null },
       }),
       place: this.$container.get(0),
       docFormat: 'markdown',
