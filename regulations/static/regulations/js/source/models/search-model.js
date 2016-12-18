@@ -22,7 +22,7 @@ var searchModel = new Backbone.SearchModel({
   assembleSearchURL: function assembleSearchURL(options) {
     var docType = options.docType || 'cfr';
     var path = [docType, options.docId].join('/');
-    var query = {q: options.query};
+    var query = { q: options.query };
     if (options.regVersion) {
       query.version = options.regVersion;
     }

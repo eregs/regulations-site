@@ -9,8 +9,7 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-var: off
-    object-curly-spacing: off
+    no-var: off     # need babel before we can remove this
     object-shorthand: off
     one-var-declaration-per-line: off
     one-var: off

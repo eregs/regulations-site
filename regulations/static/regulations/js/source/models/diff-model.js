@@ -14,7 +14,7 @@ var diffModel = new Backbone.DiffModel({
   // ex: diff/1005-1/2011-12121/2012-11111/?from_version=2012-11111
   assembleDiffURL: function assembleDiffURL(options) {
     return URI([options.id, options.baseVersion, options.newerVersion].join('/'))
-      .query({from_version: options.fromVersion})
+      .query({ from_version: options.fromVersion })
       .toString();
   },
 });

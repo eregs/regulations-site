@@ -32,7 +32,7 @@ var MAX_ATTACHMENTS = 9;
 function getUploadUrl(file) {
   return $.getJSON(
     window.APP_PREFIX + 'comments/attachment',
-    {size: file.size, name: file.name, type: file.type || 'application/octet-stream'},
+    { size: file.size, name: file.name, type: file.type || 'application/octet-stream' },
   ).then(function handleResponse(resp) {
     return resp;
   });
@@ -69,12 +69,12 @@ var CommentView = Backbone.View.extend({
       label: 'Heading', displayActive: true,
     }, [new menu.MenuCommandGroup('textblock'), new menu.MenuCommandGroup('textblockHeading')]);
     this.editor = new edit.ProseMirror({
-      menuBar: {content: [menu.inlineGroup, headingMenu, menu.blockGroup, hrGroup]},
+      menuBar: { content: [menu.inlineGroup, headingMenu, menu.blockGroup, hrGroup] },
       commands: edit.CommandSet.default.update({
-        'code:toggle': {menu: null},
-        'code_block:make': {menu: null},
-        'image:insert': {menu: null},
-        'selectParentNode': {menu: null},
+        'code:toggle': { menu: null },
+        'code_block:make': { menu: null },
+        'image:insert': { menu: null },
+        'selectParentNode': { menu: null },
       }),
       place: this.$container.get(0),
       docFormat: 'markdown',
@@ -158,7 +158,7 @@ var CommentView = Backbone.View.extend({
     this.editor.setContent(this.model.get('comment'), 'markdown');
     this.$attachments.empty();
     this.attachmentViews = this.model.get('files').map(function perFile(file) {
-      return new AttachmentView(_.extend({$parent: this.$attachments}, file));
+      return new AttachmentView(_.extend({ $parent: this.$attachments }, file));
     }.bind(this));
     this.setAttachmentCount();
     this.$attachmentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');

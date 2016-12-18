@@ -249,7 +249,7 @@ var RegView = ChildView.extend({
       subSectionId = $(e.currentTarget).data('linked-subsection'),
       version = $('section[data-base-version]').data('base-version');
 
-    Router.navigate(sectionId + '/' + version + '#' + subSectionId, {trigger: true});
+    Router.navigate(sectionId + '/' + version + '#' + subSectionId, { trigger: true });
 
     GAEvents.trigger('interp:followCitation', {
       id: subSectionId,

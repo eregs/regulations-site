@@ -70,7 +70,7 @@ var DrawerTabsView = Backbone.View.extend({
   },
 
   openDrawer: function openDrawer(e) {
-    var context = {type: 'drawer'};
+    var context = { type: 'drawer' };
 
     if (e) {
       e.preventDefault();

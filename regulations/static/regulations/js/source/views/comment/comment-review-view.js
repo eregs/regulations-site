@@ -51,7 +51,7 @@ var CommentReviewView = Backbone.View.extend({
   editComment: function editComment(e) {
     var section = $(e.target).closest('li').data('section');
     var label = $(e.target).closest('li').find('.comment-section-label').text();
-    var options = {id: section, section: section, label: label, mode: 'write'};
+    var options = { id: section, section: section, label: label, mode: 'write' };
 
     $('#content-body').removeClass('comment-review-wrapper');
 
@@ -60,7 +60,7 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   render: function render() {
-    var commentData = comments.toJSON({docId: this.docId});
+    var commentData = comments.toJSON({ docId: this.docId });
     var html = this.template({
       comments: commentData,
       previewLoading: this.previewLoading,
@@ -159,7 +159,7 @@ var CommentReviewView = Backbone.View.extend({
       type: 'POST',
       url: window.APP_PREFIX + 'comments/preview',
       data: JSON.stringify({
-        assembled_comment: comments.toJSON({docId: this.docId}),
+        assembled_comment: comments.toJSON({ docId: this.docId }),
       }),
       contentType: 'application/json',
       dataType: 'json',

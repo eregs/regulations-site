@@ -24,11 +24,11 @@ var DrawerView = Backbone.View.extend({
     this.childViews['table-of-contents'] = new TOCView();
     this.childViews.timeline = new HistoryView();
     this.childViews.search = new SearchView();
-    this.childViews['drawer-tabs'] = new DrawerTabs({forceOpen: options.forceOpen});
+    this.childViews['drawer-tabs'] = new DrawerTabs({ forceOpen: options.forceOpen });
 
     var $tocSecondary = $('#table-of-contents-secondary');
     if ($tocSecondary.length) {
-      this.childViews['table-of-contents-secondary'] = new TOCView({el: $tocSecondary});
+      this.childViews['table-of-contents-secondary'] = new TOCView({ el: $tocSecondary });
     }
 
     this.setActivePane('table-of-contents');

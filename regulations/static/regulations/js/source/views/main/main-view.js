@@ -184,7 +184,7 @@ var MainView = Backbone.View.extend({
     SidebarEvents.trigger('section:loading');
 
     this.childModel = this.modelmap[this.contentType];
-    this.setChildOptions(_.extend({render: true}, options));
+    this.setChildOptions(_.extend({ render: true }, options));
 
     this.childModel.get(id, this.childOptions)
         .then(this.renderSection.bind(this))
@@ -234,7 +234,7 @@ var MainView = Backbone.View.extend({
     }
     var $footer = this.$el.find('.section-nav');
     if ($footer) {
-      this.sectionFooter = new SectionFooter({el: $footer});
+      this.sectionFooter = new SectionFooter({ el: $footer });
     }
 
     SidebarEvents.trigger('update', {

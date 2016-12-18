@@ -32,7 +32,7 @@ module.exports = {
     /* eslint-disable no-new */
     new AnalyticsHandler();
     new HeaderView();  // Header before Drawer as Drawer sends Header events
-    new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
+    new DrawerView({ forceOpen: regs.drawer && regs.drawer.forceOpen });
     new MainView();
     new SidebarView();
     /* eslint-enable */
