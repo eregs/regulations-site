@@ -60,7 +60,8 @@ var ChildView = Backbone.View.extend({
   },
 
   scroll: function scroll() {
-    var offsetTop, $scrollToId;
+    var offsetTop,
+      $scrollToId;
     if (this.options.scrollToId) {
       $scrollToId = $('#' + this.options.scrollToId);
       if ($scrollToId.length) {
@@ -75,7 +76,8 @@ var ChildView = Backbone.View.extend({
   },
 
   assembleTitle: function assembleTitle() {
-    var titleParts, newTitle;
+    var titleParts,
+      newTitle;
     titleParts = _.compact(document.title.split(' '));
     newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
     return newTitle.join(' ');

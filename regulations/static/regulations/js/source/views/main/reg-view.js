@@ -131,7 +131,9 @@ var RegView = ChildView.extend({
 
     // id = active paragraph
   newActiveParagraph: function newActiveParagraph(id) {
-    var $newDefLink, newDefId, newDefHref;
+    var $newDefLink,
+      newDefId,
+      newDefHref;
         // if there are paragraphs where the open definition is
         // out of scope, display message
         // else be sure there's no out of scope message displayed

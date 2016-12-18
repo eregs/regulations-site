@@ -45,7 +45,8 @@ if (!Array.prototype.indexOf) {
 module.exports = {
     // Finds parent-most reg paragraph
   findBaseSection: function findBaseSection(id) {
-    var parts, interpIndex;
+    var parts,
+      interpIndex;
 
     if (id.indexOf('-') !== -1) {
       parts = id.split('-');
