@@ -38,10 +38,10 @@ var TOCView = Backbone.View.extend({
     }
   },
 
-    // update active classes, find new active based on the reg entity id in the anchor
+  // update active classes, find new active based on the reg entity id in the anchor
   setActive: function setActive(tocId) {
-    var newActiveLink,
-      subpart;
+    var newActiveLink;
+    var subpart;
 
     newActiveLink = this.$el.find('a[data-section-id="' + tocId + '"]');
 
@@ -77,9 +77,9 @@ var TOCView = Backbone.View.extend({
   sendDiffClickEvent: function sendDiffClickEvent(e) {
     e.preventDefault();
 
-    var $link = $(e.currentTarget),
-      sectionId = $link.data('section-id'),
-      config = {};
+    var $link = $(e.currentTarget);
+    var sectionId = $link.data('section-id');
+    var config = {};
 
     config.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
     config.baseVersion = Helpers.findVersion(Resources.versionElements);

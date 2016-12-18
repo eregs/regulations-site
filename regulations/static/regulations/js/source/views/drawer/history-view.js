@@ -52,15 +52,15 @@ var HistoryView = Backbone.View.extend({
       if (section.indexOf('Interp') !== -1) {
         section = section.split('-')[0] + '-Interp';
       }
-            // update diff dropdown
+      // update diff dropdown
       this.$el.find('.select-content form').each(function perForm() {
-        var $form = $(this),
-          actionParts,
-          actionPath;
+        var $form = $(this);
+        var actionParts;
+        var actionPath;
 
-                // form action = diff_redirect/section/version
+        // form action = diff_redirect/section/version
         actionParts = _.compact($form.attr('action').split('/'));
-                // remove section ID
+        // remove section ID
         actionParts.splice(-2, 1, section);
         actionPath = '/' + actionParts.join('/');
         $form.attr('action', actionPath);

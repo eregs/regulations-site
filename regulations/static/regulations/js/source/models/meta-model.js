@@ -32,8 +32,8 @@ var MetaModel = Backbone.Model.extend({
   },
 
   set: function set(sectionId, sectionValue) {
-    var cached = this.has(sectionId),
-      section;
+    var cached = this.has(sectionId);
+    var section;
 
     if (typeof sectionId !== 'undefined' && !(_.isEmpty(sectionId))) {
       if (!(cached)) {

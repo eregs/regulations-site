@@ -29,10 +29,10 @@ var DiffView = ChildView.extend({
     }
   },
 
-    // "12 CFR Comparison of §1005.1 | eRegulations"
+  // "12 CFR Comparison of §1005.1 | eRegulations"
   assembleTitle: function assembleTitle() {
-    var titleParts,
-      newTitle;
+    var titleParts;
+    var newTitle;
     titleParts = _.compact(document.title.split(' '));
     newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
     return newTitle.join(' ');

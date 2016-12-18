@@ -29,10 +29,10 @@ var SxSListView = Backbone.View.extend({
   openSxS: function openSxS(e) {
     e.preventDefault();
 
-    var $sxsLink = $(e.target),
-      id = $sxsLink.data('sxs-paragraph-id'),
-      docNumber = $sxsLink.data('doc-number'),
-      version = $('section[data-base-version]').data('base-version');
+    var $sxsLink = $(e.target);
+    var id = $sxsLink.data('sxs-paragraph-id');
+    var docNumber = $sxsLink.data('doc-number');
+    var version = $('section[data-base-version]').data('base-version');
 
     BreakawayEvents.trigger('sxs:open', {
       'regParagraph': id,
@@ -49,8 +49,8 @@ var SxSListView = Backbone.View.extend({
   },
 
   render: function render(html) {
-    var $html = $(html),
-      list = $html.find('#sxs-list').html();
+    var $html = $(html);
+    var list = $html.find('#sxs-list').html();
     this.$el.html(list);
   },
 });

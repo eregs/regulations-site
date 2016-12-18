@@ -119,12 +119,12 @@ var DefinitionView = Backbone.View.extend({
     this.unGrayDefinition();
   },
 
-    // for when the definition does not apply to the active section
+  // for when the definition does not apply to the active section
   grayOutDefinition: function grayOutDefinition(defId, href, activeSectionId) {
-    var $text = this.$el.find('.definition-text'),
-      linkText = 'Load the correct definition for ',
-      link,
-      $msg;
+    var $text = this.$el.find('.definition-text');
+    var linkText = 'Load the correct definition for ';
+    var link;
+    var $msg;
 
     if (typeof this.$warningContainer === 'undefined') {
       this.displayScopeMsg(Helpers.findBaseSection(activeSectionId));
@@ -156,8 +156,8 @@ var DefinitionView = Backbone.View.extend({
 
   openFullDefinition: function openFullDefinition(e) {
     e.preventDefault();
-    var id = $(e.target).data('linked-section') || $(e.target).data('definition'),
-      parentId = Helpers.findBaseSection(id);
+    var id = $(e.target).data('linked-section') || $(e.target).data('definition');
+    var parentId = Helpers.findBaseSection(id);
 
     MainEvents.trigger('section:open', parentId, {
       scrollToId: id,
@@ -171,9 +171,9 @@ var DefinitionView = Backbone.View.extend({
 
   openInterpretation: function openInterpretation(e) {
     e.preventDefault();
-    var $e = $(e.target),
-      id = $e.data('linked-section'),
-      pid = $e.data('linked-subsection');
+    var $e = $(e.target);
+    var id = $e.data('linked-section');
+    var pid = $e.data('linked-subsection');
 
     MainEvents.trigger('section:open', id, {
       scrollToId: pid,

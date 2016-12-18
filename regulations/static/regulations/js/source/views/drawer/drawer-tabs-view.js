@@ -105,8 +105,8 @@ var DrawerTabsView = Backbone.View.extend({
   updatePaneTabs: function updatePaneTabs(e) {
     e.preventDefault();
 
-    var $target = $(e.target),
-      linkValue = _.last($target.closest('a').attr('href').split('#'));
+    var $target = $(e.target);
+    var linkValue = _.last($target.closest('a').attr('href').split('#'));
     this.activePane = linkValue;
 
     if ($('.panel').css('left') === '-200px') {

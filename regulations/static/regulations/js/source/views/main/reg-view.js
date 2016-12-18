@@ -94,14 +94,14 @@ var RegView = ChildView.extend({
     return this.cfrTitle + ' CFR ' + this.sectionLabel + ' | eRegulations';
   },
 
-    // if an inline definition is open, check the links here to see
-    // if the definition is still in scope in this section
+  // if an inline definition is open, check the links here to see if the
+  // definition is still in scope in this section
   checkDefinitionScope: function checkDefinitionScope() {
-    var $def = $('#definition'),
-      defTerm = $def.data('defined-term'),
-      defId = $def.find('.open-definition').attr('id'),
-      $termLinks,
-      eventTriggered = false;
+    var $def = $('#definition');
+    var defTerm = $def.data('defined-term');
+    var defId = $def.find('.open-definition').attr('id');
+    var eventTriggered = false;
+    var $termLinks;
 
     if (defTerm && defId && $def.length > 0) {
       this.defScopeExclusions = this.defScopeExclusions || [];
@@ -129,14 +129,14 @@ var RegView = ChildView.extend({
     }
   },
 
-    // id = active paragraph
+  // id = active paragraph
   newActiveParagraph: function newActiveParagraph(id) {
-    var $newDefLink,
-      newDefId,
-      newDefHref;
-        // if there are paragraphs where the open definition is
-        // out of scope, display message
-        // else be sure there's no out of scope message displayed
+    var $newDefLink;
+    var newDefId;
+    var newDefHref;
+    // if there are paragraphs where the open definition is
+    // out of scope, display message
+    // else be sure there's no out of scope message displayed
     if (typeof this.defScopeExclusions !== 'undefined') {
       if (this.defScopeExclusions.indexOf(id) !== -1) {
         $newDefLink = this.$activeSection.find(
@@ -158,15 +158,15 @@ var RegView = ChildView.extend({
     this.checkDefinitionScope();
   },
 
-    // content section key term link click handler
+  // content section key term link click handler
   termLinkHandler: function termLinkHandler(e) {
     e.preventDefault();
 
-    var $link = $(e.target),
-      defId = $link.data('definition'),
-      term = $link.data('defined-term');
+    var $link = $(e.target);
+    var defId = $link.data('definition');
+    var term = $link.data('defined-term');
 
-        // if this link is already active, toggle def shut
+    // if this link is already active, toggle def shut
     if ($link.data('active')) {
       SidebarEvents.trigger('definition:close');
       GAEvents.trigger('definition:close', {
@@ -207,15 +207,15 @@ var RegView = ChildView.extend({
         // for an open interp, they can click "hide" button or header
     e.stopImmediatePropagation();
     e.preventDefault();
-    var header = $(e.currentTarget),
-      section = header.parent(),
-      button = header.find('.expand-button'),
-      buttonText = header.find('.expand-text'),
-      context = {
-        id: section.data('interp-id'),
-        to: section.data('interp-for'),
-        type: 'inline-interp',
-      };
+    var header = $(e.currentTarget);
+    var section = header.parent();
+    var button = header.find('.expand-button');
+    var buttonText = header.find('.expand-text');
+    var context = {
+      id: section.data('interp-id'),
+      to: section.data('interp-for'),
+      type: 'inline-interp',
+    };
 
     section.toggleClass('open');
         //  may include multiple sections
@@ -247,9 +247,9 @@ var RegView = ChildView.extend({
   openInterp: function openInterp(e) {
     e.preventDefault();
 
-    var sectionId = $(e.currentTarget).data('linked-section'),
-      subSectionId = $(e.currentTarget).data('linked-subsection'),
-      version = $('section[data-base-version]').data('base-version');
+    var sectionId = $(e.currentTarget).data('linked-section');
+    var subSectionId = $(e.currentTarget).data('linked-subsection');
+    var version = $('section[data-base-version]').data('base-version');
 
     Router.navigate(sectionId + '/' + version + '#' + subSectionId, { trigger: true });
 

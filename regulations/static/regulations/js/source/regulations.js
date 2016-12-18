@@ -15,14 +15,14 @@ if (!Function.prototype.bind) {
       throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
     }
 
-    var aArgs = Array.prototype.slice.call(arguments, 1),
-      fToBind = this,
-      FNOP = function FNOP() {},
-      fBound = function fBound() {
-        var arg1 = this instanceof FNOP && oThis ? this : oThis;
-        var arg2 = aArgs.concat(Array.prototype.slice.call(arguments));
-        return fToBind.apply(arg1, arg2);
-      };
+    var aArgs = Array.prototype.slice.call(arguments, 1);
+    var fToBind = this;
+    var FNOP = function FNOP() {};
+    var fBound = function fBound() {
+      var arg1 = this instanceof FNOP && oThis ? this : oThis;
+      var arg2 = aArgs.concat(Array.prototype.slice.call(arguments));
+      return fToBind.apply(arg1, arg2);
+    };
 
     FNOP.prototype = this.prototype;
     fBound.prototype = new FNOP();

@@ -6,9 +6,9 @@ var $ = require('jquery');
 
 var dispatch = $.event.dispatch || $.event.handle;
 
-var special = $.event.special,
-  uid1 = 'D' + (+new Date()),
-  uid2 = 'D' + (+new Date() + 1);
+var special = $.event.special;
+var uid1 = 'D' + (+new Date());
+var uid2 = 'D' + (+new Date() + 1);
 
 special.scrollstart = {
   setup: function setup(initialData) {
@@ -16,24 +16,24 @@ special.scrollstart = {
       latency: special.scrollstop.latency,
     }, initialData);
 
-    var timer,
-      handler = function handler(evt) {
-        var self = this;
-        var args = [...arguments];
+    var timer;
+    var handler = function handler(evt) {
+      var self = this;
+      var args = [...arguments];
 
-        if (timer) {
-          clearTimeout(timer);
-        } else {
-          var modifiedEvent = $.Event(null, evt);
-          args[0] = modifiedEvent;
-          modifiedEvent.type = 'scrollstart';
-          dispatch.apply(self, args);
-        }
+      if (timer) {
+        clearTimeout(timer);
+      } else {
+        var modifiedEvent = $.Event(null, evt);
+        args[0] = modifiedEvent;
+        modifiedEvent.type = 'scrollstart';
+        dispatch.apply(self, args);
+      }
 
-        timer = setTimeout(function timedOut() {
-          timer = null;
-        }, data.latency);
-      };
+      timer = setTimeout(function timedOut() {
+        timer = null;
+      }, data.latency);
+    };
 
     $(this).bind('scroll', handler).data(uid1, handler);
   },
@@ -49,24 +49,23 @@ special.scrollstop = {
       latency: special.scrollstop.latency,
     }, initialData);
 
-    var timer,
-      handler = function handler(evt) {
-        var self = this;
-        var args = [...arguments];
+    var timer;
+    var handler = function handler(evt) {
+      var self = this;
+      var args = [...arguments];
 
-        if (timer) {
-          clearTimeout(timer);
-        }
+      if (timer) {
+        clearTimeout(timer);
+      }
 
-        timer = setTimeout(function timedOut() {
-          timer = null;
-          var modifiedEvent = $.Event(null, evt);
-          args[0] = modifiedEvent;
-          modifiedEvent.type = 'scrollstop';
-          dispatch.apply(self, args);
-        }, data.latency);
-      };
-
+      timer = setTimeout(function timedOut() {
+        timer = null;
+        var modifiedEvent = $.Event(null, evt);
+        args[0] = modifiedEvent;
+        modifiedEvent.type = 'scrollstop';
+        dispatch.apply(self, args);
+      }, data.latency);
+    };
     $(this).bind('scroll', handler).data(uid2, handler);
   },
   teardown: function teardown() {

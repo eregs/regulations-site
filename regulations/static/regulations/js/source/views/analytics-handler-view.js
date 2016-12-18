@@ -28,8 +28,8 @@ var AnalyticsHandler = Backbone.View.extend({
   },
 
   sendEvent: function sendEvent(context) {
-    var object,
-      objectParts = [];
+    var objectParts = [];
+    var object;
 
     if (typeof window.ga === 'undefined') {
       return;
