@@ -16,17 +16,17 @@ const SearchResultsView = ChildView.extend({
     'click h3 .internal': 'openResult',
   },
 
-  initialize: function initialize(options) {
+  initialize: function initialize(options, ...args) {
     this.options = options;
     this.query = this.options.query;
-        // the TOC may link to a different reg version than this.options.resultsRegVersion
-        // because the user can select a different version to pull search results from
+    // the TOC may link to a different reg version than this.options.resultsRegVersion
+    // because the user can select a different version to pull search results from
     this.resultsRegVersion = this.options.regVersion;
     this.page = parseInt(this.options.page, 10) || 0;
     this.title = 'Search of ' + this.options.docId + ' for ' + this.query + ' | eRegulations';
 
-        // if the browser doesn't support pushState, don't
-        // trigger click events for links
+    // if the browser doesn't support pushState, don't
+    // trigger click events for links
     if (Router.hasPushState === false) {
       this.events = {};
     }
@@ -36,7 +36,7 @@ const SearchResultsView = ChildView.extend({
         // if the site wasn't loaded on the search results page
     if (this.options.render) {
       this.url = 'search/' + this.model.assembleSearchURL(this.options);
-      ChildView.prototype.initialize.apply(this, arguments);
+      ChildView.prototype.initialize.apply(this, [options].concat(args));
     } else {
       this.options.docType = this.$el.data('doc-type');
     }

@@ -16,17 +16,15 @@ special.scrollstart = {
     }, initialData);
 
     let timer;
-    const handler = function handler(evt) {
+    const handler = function handler(evt, ...args) {
       const self = this;
-      const args = [...arguments];
 
       if (timer) {
         clearTimeout(timer);
       } else {
         const modifiedEvent = $.Event(null, evt);
-        args[0] = modifiedEvent;
         modifiedEvent.type = 'scrollstart';
-        dispatch.apply(self, args);
+        dispatch.apply(self, [modifiedEvent].concat(args));
       }
 
       timer = setTimeout(() => {
@@ -49,9 +47,8 @@ special.scrollstop = {
     }, initialData);
 
     let timer;
-    const handler = function handler(evt) {
+    const handler = function handler(evt, ...args) {
       const self = this;
-      const args = [...arguments];
 
       if (timer) {
         clearTimeout(timer);
@@ -60,9 +57,8 @@ special.scrollstop = {
       timer = setTimeout(() => {
         timer = null;
         const modifiedEvent = $.Event(null, evt);
-        args[0] = modifiedEvent;
         modifiedEvent.type = 'scrollstop';
-        dispatch.apply(self, args);
+        dispatch.apply(self, [modifiedEvent].concat(args));
       }, data.latency);
     };
     $(this).bind('scroll', handler).data(uid2, handler);

@@ -21,7 +21,7 @@ const RegView = ChildView.extend({
     'click .inline-interp-header': 'expandInterp',
   },
 
-  initialize: function initialize(options) {
+  initialize: function initialize(options, ...args) {
     this.options = options;
 
     this.listenTo(MainEvents, 'definition:close', this.closeDefinition);
@@ -46,7 +46,7 @@ const RegView = ChildView.extend({
       this.delegateEvents();
     }
 
-    ChildView.prototype.initialize.apply(this, arguments);
+    ChildView.prototype.initialize.apply(this, [options].concat(args));
     HeaderEvents.trigger('section:open', this.sectionLabel);
   },
 
@@ -152,8 +152,8 @@ const RegView = ChildView.extend({
     }
   },
 
-  render: function render() {
-    ChildView.prototype.render.apply(this, arguments);
+  render: function render(...args) {
+    ChildView.prototype.render.apply(this, args);
 
     this.checkDefinitionScope();
   },

@@ -10,7 +10,7 @@ Backbone.$ = $;
 
 const MetaModel = Backbone.Model.extend({
 
-  constructor: function constructor(properties) {
+  constructor: function constructor(properties, ...args) {
     const self = this;
 
     if (typeof properties !== 'undefined') {
@@ -28,7 +28,7 @@ const MetaModel = Backbone.Model.extend({
         // loaded into the browser (rendered or not)
     this.structure = this.structure || [];
 
-    Backbone.Model.apply(this, arguments);
+    Backbone.Model.apply(this, [properties].concat(args));
   },
 
   set: function set(sectionId, sectionValue) {

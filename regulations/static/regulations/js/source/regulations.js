@@ -8,18 +8,17 @@ const app = require('./app-init');
 // A `bind()` polyfill
 if (!Function.prototype.bind) {
   /* eslint-disable no-extend-native */
-  Function.prototype.bind = function bind(oThis) {
+  Function.prototype.bind = function bind(oThis, ...aArgs) {
     if (typeof this !== 'function') {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
       throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
     }
 
-    const aArgs = Array.prototype.slice.call(arguments, 1);
     const fToBind = this;
     const FNOP = function FNOP() {};
-    const fBound = function fBound() {
+    const fBound = function fBound(...args) {
       const arg1 = this instanceof FNOP && oThis ? this : oThis;
-      const arg2 = aArgs.concat(Array.prototype.slice.call(arguments));
+      const arg2 = aArgs.concat(args);
       return fToBind.apply(arg1, arg2);
     };
 

@@ -11,7 +11,7 @@ const ChildView = require('./child-view');
 Backbone.$ = $;
 
 const DiffView = ChildView.extend({
-  initialize: function initialize(options) {
+  initialize: function initialize(options, ...args) {
     this.options = options;
     this.id = this.options.id;
     this.baseVersion = this.options.baseVersion;
@@ -22,7 +22,7 @@ const DiffView = ChildView.extend({
     this.options.sectionId = this.id;
 
     this.url = 'diff/' + this.model.assembleDiffURL(this.options);
-    ChildView.prototype.initialize.apply(this, arguments);
+    ChildView.prototype.initialize.apply(this, [options].concat(args));
 
     if (typeof this.options.render === 'undefined') {
       DrawerEvents.trigger('pane:change', 'timeline');

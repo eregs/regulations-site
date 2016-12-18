@@ -21,7 +21,7 @@ const PreambleView = ChildView.extend({
     'click .citation.internal': 'openCitation',
   },
 
-  initialize: function initialize(options) {
+  initialize: function initialize(options, ...args) {
     this.options = options;
 
     const parsed = helpers.parsePreambleId(this.options.id);
@@ -30,7 +30,7 @@ const PreambleView = ChildView.extend({
 
     this.url = parsed.path.join('/');
 
-    ChildView.prototype.initialize.apply(this, arguments);
+    ChildView.prototype.initialize.apply(this, [options].concat(args));
     this.renderComments();
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
