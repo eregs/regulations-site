@@ -26,6 +26,7 @@ var CommentReviewView = require('../comment/comment-review-view');
 var CommentConfirmView = require('../comment/comment-confirm-view');
 var PreambleView = require('./preamble-view');
 var Resources = require('../../resources');
+
 Backbone.$ = $;
 
 var MainView = Backbone.View.extend({

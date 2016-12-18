@@ -9,6 +9,7 @@ var DrawerEvents = require('../../events/drawer-events');
 var Helpers = require('../../helpers');
 var MainEvents = require('../../events/main-events');
 var GAEvents = require('../../events/ga-events');
+
 Backbone.$ = $;
 
 // Adjust the offset of how far past the section top before the wayfinder

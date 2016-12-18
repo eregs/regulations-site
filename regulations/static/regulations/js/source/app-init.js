@@ -10,6 +10,7 @@ var SidebarView = require('./views/sidebar/sidebar-view');
 var HeaderView = require('./views/header/header-view');
 var DrawerView = require('./views/drawer/drawer-view');
 var AnalyticsHandler = require('./views/analytics-handler-view');
+
 Backbone.$ = $;
 
  module.exports = {

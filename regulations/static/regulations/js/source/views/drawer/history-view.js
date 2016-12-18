@@ -3,6 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var MainEvents = require('../../events/main-events');
+
 Backbone.$ = $;
 
 var HistoryView = Backbone.View.extend({

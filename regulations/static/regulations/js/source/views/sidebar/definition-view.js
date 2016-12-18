@@ -2,12 +2,12 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
-var RegModel = ('../../models/reg-model.js');
 var Helpers = require('../../helpers');
 var Router = require('../../router');
 var MainEvents = require('../../events/main-events');
 var SidebarEvents = require('../../events/sidebar-events');
 var GAEvents = require('../../events/ga-events');
+
 Backbone.$ = $;
 
 // **Constructor**

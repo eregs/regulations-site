@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Router = require('../../router');
 var MainEvents = require('../../events/main-events');
+
 Backbone.$ = $;
 
 var SearchView = Backbone.View.extend({

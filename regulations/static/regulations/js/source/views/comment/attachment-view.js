@@ -3,6 +3,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+
 Backbone.$ = $;
 
 var CommentEvents = require('../../events/comment-events');

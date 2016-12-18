@@ -5,6 +5,7 @@ var Backbone = require('backbone');
 var DrawerEvents = require('../../events/drawer-events');
 var GAEvents = require('../../events/ga-events');
 var MainEvents = require('../../events/main-events');
+
 Backbone.$ = $;
 
 var DrawerTabsView = Backbone.View.extend({

@@ -8,6 +8,7 @@ var MainEvents = require('../../events/main-events');
 var DrawerEvents = require('../../events/drawer-events');
 var HeaderEvents = require('../../events/header-events');
 var Resources = require('../../resources.js');
+
 Backbone.$ = $;
 
 var TOCView = Backbone.View.extend({

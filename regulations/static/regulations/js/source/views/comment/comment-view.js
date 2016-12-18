@@ -4,6 +4,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var filesize = require('filesize');
+
 Backbone.$ = $;
 
 var edit = require('prosemirror/dist/edit');

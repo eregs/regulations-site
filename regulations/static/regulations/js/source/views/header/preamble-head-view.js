@@ -11,6 +11,7 @@
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
+
 Backbone.$ = $;
 
 var MainEvents = require('../../events/main-events');

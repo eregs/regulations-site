@@ -2,6 +2,7 @@
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
+
 var markerlessRE = /p\d+/;
 
 // indexOf polyfill

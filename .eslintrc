@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    import/newline-after-import: off
     indent: off
     lines-around-directive: off
     max-len: off

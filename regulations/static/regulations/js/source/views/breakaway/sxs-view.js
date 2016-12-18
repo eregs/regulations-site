@@ -7,6 +7,7 @@ var Router = require('../../router');
 var SxSModel = require('../../models/sxs-model');
 var BreakawayEvents = require('../../events/breakaway-events');
 var MainEvents = require('../../events/main-events');
+
 Backbone.$ = $;
 
 var SxSView = Backbone.View.extend({

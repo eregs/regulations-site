@@ -7,6 +7,7 @@ var Router = require('../../router');
 var BreakawayEvents = require('../../events/breakaway-events');
 var MainEvents = require('../../events/main-events');
 var SidebarEvents = require('../../events/sidebar-events');
+
 Backbone.$ = $;
 
 var BreakawayView = Backbone.View.extend({

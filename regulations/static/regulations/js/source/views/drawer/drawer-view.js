@@ -7,6 +7,7 @@ var HistoryView = require('./history-view');
 var SearchView = require('./search-view');
 var DrawerTabs = require('./drawer-tabs-view');
 var DrawerEvents = require('../../events/drawer-events');
+
 Backbone.$ = $;
 
 var DrawerView = Backbone.View.extend({

@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var Helpers = require('../helpers');
 var Resources = require('../resources');
+
 Backbone.$ = $;
 
 var MetaModel = Backbone.Model.extend({

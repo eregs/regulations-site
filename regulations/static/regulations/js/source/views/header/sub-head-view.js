@@ -3,6 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var HeaderEvents = require('../../events/header-events');
+
 Backbone.$ = $;
 
 var SubHeadView = Backbone.View.extend({

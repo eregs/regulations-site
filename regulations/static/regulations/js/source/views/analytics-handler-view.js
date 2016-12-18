@@ -3,6 +3,7 @@ var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var GAEvents = require('../events/ga-events');
+
 Backbone.$ = $;
 
 var AnalyticsHandler = Backbone.View.extend({

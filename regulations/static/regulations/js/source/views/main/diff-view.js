@@ -9,6 +9,7 @@ var Helpers = require('../../helpers');
 var Resources = require('../../resources');
 var MainEvents = require('../../events/main-events');
 var ChildView = require('./child-view');
+
 Backbone.$ = $;
 
 var DiffView = ChildView.extend({
