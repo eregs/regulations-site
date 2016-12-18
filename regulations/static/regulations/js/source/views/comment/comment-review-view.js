@@ -51,7 +51,7 @@ const CommentReviewView = Backbone.View.extend({
   editComment: function editComment(e) {
     const section = $(e.target).closest('li').data('section');
     const label = $(e.target).closest('li').find('.comment-section-label').text();
-    const options = { id: section, section: section, label: label, mode: 'write' };
+    const options = { id: section, section, label, mode: 'write' };
 
     $('#content-body').removeClass('comment-review-wrapper');
 

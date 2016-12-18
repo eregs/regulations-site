@@ -163,7 +163,7 @@ const DefinitionView = Backbone.View.extend({
     }, 'reg-section');
 
     GAEvents.trigger('definition:followCitation', {
-      id: id,
+      id,
       type: 'definition',
     });
   },
@@ -179,7 +179,7 @@ const DefinitionView = Backbone.View.extend({
     }, 'interpretation');
 
     GAEvents.trigger('definition:followCitation', {
-      id: id,
+      id,
       type: 'definition',
     });
   },

@@ -95,9 +95,9 @@ const CommentView = Backbone.View.extend({
     }
     const options = {
       id: section,
-      tocId: tocId,
-      indexes: indexes,
-      label: label,
+      tocId,
+      indexes,
+      label,
       docId: this.options.docId,
     };
     this.model = blank ?
@@ -200,7 +200,7 @@ const CommentView = Backbone.View.extend({
           name: file.name,
           size: filesize(file.size),
           key: resp.key,
-          xhr: xhr,
+          xhr,
         }),
       );
       this.setAttachmentCount();

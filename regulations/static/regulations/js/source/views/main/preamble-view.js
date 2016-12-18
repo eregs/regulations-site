@@ -140,11 +140,11 @@ const PreambleView = ChildView.extend({
 
     if (section) {
       CommentEvents.trigger('comment:target', {
-        section: section,
-        tocId: tocId,
-        indexes: indexes,
-        label: label,
-        $parent: $parent,
+        section,
+        tocId,
+        indexes,
+        label,
+        $parent,
       });
     }
 

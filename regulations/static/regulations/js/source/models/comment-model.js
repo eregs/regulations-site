@@ -36,5 +36,5 @@ const commentComparator = function commentComparator(first, second) {
 
 module.exports = {
   CommentModel: commentModel,
-  commentComparator: commentComparator,
+  commentComparator,
 };

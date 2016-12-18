@@ -41,7 +41,7 @@ if (typeof window.history.pushState === 'undefined') {
 
     openSection: function openSection(id, type) {
       const options = {
-        id: id,
+        id,
         scrollToId: Backbone.history.getHash(),
         noRoute: true,
       };
@@ -72,7 +72,7 @@ if (typeof window.history.pushState === 'undefined') {
       const config = {
         query: params.q,
         regVersion: params.regVersion,
-        docType: docType,
+        docType,
       };
 
             // if there is a page number for the query string
@@ -89,7 +89,7 @@ if (typeof window.history.pushState === 'undefined') {
       Backbone.history.start({
         pushState: 'pushState' in window.history,
         silent: true,
-        root: root,
+        root,
       });
     },
 

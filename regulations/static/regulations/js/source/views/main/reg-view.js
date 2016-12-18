@@ -189,7 +189,7 @@ const RegView = ChildView.extend({
       this.setActiveTerm($link);
       SidebarEvents.trigger('definition:open', {
         id: defId,
-        term: term,
+        term,
       });
       GAEvents.trigger('definition:open', {
         id: defId,

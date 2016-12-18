@@ -36,13 +36,13 @@ const SxSListView = Backbone.View.extend({
 
     BreakawayEvents.trigger('sxs:open', {
       regParagraph: id,
-      docNumber: docNumber,
+      docNumber,
       fromVersion: version,
     });
 
     GAEvents.trigger('sxs:open', {
-      id: id,
-      docNumber: docNumber,
+      id,
+      docNumber,
       regVersion: version,
       type: 'sxs',
     });

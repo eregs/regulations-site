@@ -56,12 +56,12 @@ const CommentConfirmView = Backbone.View.extend({
   },
 
   setPdfUrl: function setPdfUrl(url) {
-    this.replaceTemplate('.save-pdf', { url: url });
+    this.replaceTemplate('.save-pdf', { url });
   },
 
   // Changes text and color of background when tracking number is received, hides wait message
   setTrackingNumber: function setTrackingNumber(number) {
-    this.replaceTemplate('.tracking-number .status', { number: number });
+    this.replaceTemplate('.tracking-number .status', { number });
     this.$el.find('.status').addClass('tracking-number-retrieved');
     this.$el.find('.status-waiting').hide();
   },
