@@ -103,7 +103,7 @@ module.exports = {
     // at that time, this should be removed
   findVersion: function findVersion(versionElements) {
     return $(versionElements.toc).attr('data-toc-version') ||
-                  $(versionElements.regLandingPage).attr('data-base-version')||
+                  $(versionElements.regLandingPage).attr('data-base-version') ||
                   $(versionElements.timelineList).find('.stop-button').attr('data-version');
                     // includes .stop-button to be sure its not
                     // the comparison version in diff mode
