@@ -1,6 +1,5 @@
 // Launches app
 
-'use strict';
 
 // make jQuery globally accessible for plugins and analytics
 window.$ = window.jQuery = require('jquery');

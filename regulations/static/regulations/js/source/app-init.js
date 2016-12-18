@@ -1,6 +1,5 @@
 // Module called on app load, once doc.ready
 
-'use strict';
 
 var $ = require('jquery');
 var Backbone = require('backbone');

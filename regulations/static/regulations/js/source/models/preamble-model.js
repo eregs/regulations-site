@@ -1,4 +1,4 @@
-'use strict';
+
 
 var URI = require('urijs');
 var Backbone = require('backbone');

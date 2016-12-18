@@ -1,7 +1,6 @@
 // Resources.js pulls out pieces tied to the DOM
 // for easier testing.
 
-'use strict';
 
 module.exports = {
   // These are elements for the findVersion and findBaseVersion

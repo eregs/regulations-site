@@ -1,4 +1,4 @@
-'use strict';
+
 
 var Backbone = require('backbone');
 var MainEvents = require('./events/main-events');

@@ -14,5 +14,4 @@ rules:
     prefer-arrow-callback: off  # need babel
     prefer-rest-params: off   # need babel
     prefer-template: off  # need babel
-    strict: off
     vars-on-top: off
