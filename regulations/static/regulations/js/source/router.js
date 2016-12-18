@@ -10,7 +10,7 @@ require('backbone-query-parameters');
 var RegsRouter;
 
 if (typeof window.history.pushState === 'undefined') {
-  RegsRouter = function RegsRouter() {
+  RegsRouter = function router() {
     this.start = function start() {};
     this.navigate = function navigate() {};
     this.hasPushState = false;

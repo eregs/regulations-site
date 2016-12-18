@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-shadow: off
     no-underscore-dangle: off
     no-unused-vars: off
     no-var: off

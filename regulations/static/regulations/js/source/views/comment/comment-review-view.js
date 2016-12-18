@@ -131,13 +131,13 @@ var CommentReviewView = Backbone.View.extend({
         $select.find('option[value]').remove();
         var optionsCount = 0;
         var optionsToShow = [];
-        $options.each(function perOption(idx, elm) {
-          var depVal = elm.getAttribute('data-dependency');
+        $options.each(function perOption(innerIdx, option) {
+          var depVal = option.getAttribute('data-dependency');
           if (depVal === value) {
             optionsCount += 1;
           }
           if (depVal === value || depVal === '_all') {
-            optionsToShow.push(elm);
+            optionsToShow.push(option);
           }
         });
         toggleInput($writeIn, optionsCount === 0);
