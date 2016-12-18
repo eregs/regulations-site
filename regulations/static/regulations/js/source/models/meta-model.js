@@ -11,18 +11,16 @@ Backbone.$ = $;
 var MetaModel = Backbone.Model.extend({
 
   constructor: function constructor(properties) {
-    var k;
+    var _this = this;
 
     if (typeof properties !== 'undefined') {
-      for (k in properties) {
-        if (Object.prototype.hasOwnProperty.call(properties, k)) {
-          this[k] = properties[k];
-        }
-      }
+      $.each(properties, function perProp(key, value) {
+        _this[key] = value;
+      });
     }
 
-        // in the case of reg-model
-        // an index of all of the entities in the reg, whether or not they've been loaded
+    // in the case of reg-model
+    // an index of all of the entities in the reg, whether or not they've been loaded
     this.content = this.content || {};
 
         // in the case of reg-model
