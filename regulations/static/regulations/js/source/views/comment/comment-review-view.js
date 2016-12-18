@@ -152,7 +152,6 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   preview: function preview(e) {
-
     e.preventDefault();
 
     var $xhr = $.ajax({
