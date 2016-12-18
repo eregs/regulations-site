@@ -143,10 +143,10 @@ var SidebarView = Backbone.View.extend({
   },
 
   removeChildren: function removeChildren(except) {
-    var _this = this;
+    var self = this;
     $.each(this.childViews, function perProperty(key, value) {
       if (!except || except !== key) {
-        _this.childViews[key].remove();
+        self.childViews[key].remove();
       }
     });
     /* Also remove any components of the sidebar which don't have a Backbone

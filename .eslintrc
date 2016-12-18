@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-underscore-dangle: off
     no-unused-vars: off
     no-var: off
     object-curly-spacing: off

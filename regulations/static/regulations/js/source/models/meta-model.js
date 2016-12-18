@@ -11,11 +11,11 @@ Backbone.$ = $;
 var MetaModel = Backbone.Model.extend({
 
   constructor: function constructor(properties) {
-    var _this = this;
+    var self = this;
 
     if (typeof properties !== 'undefined') {
       $.each(properties, function perProp(key, value) {
-        _this[key] = value;
+        self[key] = value;
       });
     }
 

@@ -11,28 +11,28 @@ var special = $.event.special,
   uid2 = 'D' + (+new Date() + 1);
 
 special.scrollstart = {
-  setup: function setup(data) {
-    var _data = $.extend({
+  setup: function setup(initialData) {
+    var data = $.extend({
       latency: special.scrollstop.latency,
-    }, data);
+    }, initialData);
 
     var timer,
       handler = function handler(evt) {
-        var _self = this;
-        var _args = [...arguments];
+        var self = this;
+        var args = [...arguments];
 
         if (timer) {
           clearTimeout(timer);
         } else {
           var modifiedEvent = $.Event(null, evt);
-          _args[0] = modifiedEvent;
+          args[0] = modifiedEvent;
           modifiedEvent.type = 'scrollstart';
-          dispatch.apply(_self, _args);
+          dispatch.apply(self, args);
         }
 
         timer = setTimeout(function timedOut() {
           timer = null;
-        }, _data.latency);
+        }, data.latency);
       };
 
     $(this).bind('scroll', handler).data(uid1, handler);
@@ -44,15 +44,15 @@ special.scrollstart = {
 
 special.scrollstop = {
   latency: 250,
-  setup: function setup(data) {
-    var _data = $.extend({
+  setup: function setup(initialData) {
+    var data = $.extend({
       latency: special.scrollstop.latency,
-    }, data);
+    }, initialData);
 
     var timer,
       handler = function handler(evt) {
-        var _self = this;
-        var _args = [...arguments];
+        var self = this;
+        var args = [...arguments];
 
         if (timer) {
           clearTimeout(timer);
@@ -61,10 +61,10 @@ special.scrollstop = {
         timer = setTimeout(function timedOut() {
           timer = null;
           var modifiedEvent = $.Event(null, evt);
-          _args[0] = modifiedEvent;
+          args[0] = modifiedEvent;
           modifiedEvent.type = 'scrollstop';
-          dispatch.apply(_self, _args);
-        }, _data.latency);
+          dispatch.apply(self, args);
+        }, data.latency);
       };
 
     $(this).bind('scroll', handler).data(uid2, handler);
