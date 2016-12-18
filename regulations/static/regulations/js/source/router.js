@@ -14,8 +14,7 @@ if (typeof window.history.pushState === 'undefined') {
         this.navigate = function() {};
         this.hasPushState = false;
     };
-}
-else {
+} else {
     RegsRouter = Backbone.Router.extend({
         routes: {
             'sxs/:section/:version': 'loadSxS',

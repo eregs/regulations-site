@@ -147,8 +147,7 @@ var RegView = ChildView.extend({
                 newDefHref = $newDefLink.attr('href');
 
                 SidebarEvents.trigger('definition:deactivate', newDefId, newDefHref, this.activeSection);
-            }
-            else {
+            } else {
                 SidebarEvents.trigger('definition:activate');
             }
         }
@@ -176,13 +175,11 @@ var RegView = ChildView.extend({
                 by: 'toggling term link'
             });
             this.clearActiveTerms();
-        }
-        else {
+        } else {
             // if its the same definition, diff term link
             if ($('.open-definition').attr('id') === defId) {
                 this.toggleDefinition($link);
-            }
-            else {
+            } else {
                 // close old definition, if there is one
                 SidebarEvents.trigger('definition:close');
                 GAEvents.trigger('definition:close', {
@@ -231,8 +228,7 @@ var RegView = ChildView.extend({
 
         if (section.hasClass('open')) {
             GAEvents.trigger('interp:expand', context);
-        }
-        else {
+        } else {
             GAEvents.trigger('interp:collapse', context);
         }
 

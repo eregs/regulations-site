@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    brace-style: off
     comma-dangle: off
     consistent-return: off
     dot-notation: off

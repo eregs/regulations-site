@@ -65,17 +65,16 @@ module.exports = {
             // catches 123-Interp-h1
             if (parts[1] === 'Interp') {
                 return id;
-            }
-            // catches:
-            // 123-4-Interp
-            // 123-4-Interp-5
-            // 123-Subpart-Interp
-            // 123-Subpart-A-Interp
-            // 123-Subpart-Interp-4
-            // 123-Subpart-A-Interp-4
-            // 123-Appendices-Interp
-            // 123-Appendices-Interp-4
-            else {
+            } else {
+                // catches:
+                // 123-4-Interp
+                // 123-4-Interp-5
+                // 123-Subpart-Interp
+                // 123-Subpart-A-Interp
+                // 123-Subpart-Interp-4
+                // 123-Subpart-A-Interp-4
+                // 123-Appendices-Interp
+                // 123-Appendices-Interp-4
                 return parts.slice(0, interpIndex + 1).join('-');
             }
         }
@@ -230,8 +229,7 @@ module.exports = {
 
       if (type === 'preamble-section') {
         type = 'preamble';
-      }
-      else {
+      } else {
         type = 'cfr';
       }
 

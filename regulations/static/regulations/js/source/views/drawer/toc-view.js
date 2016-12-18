@@ -54,8 +54,7 @@ var TOCView = Backbone.View.extend({
 
         if (subpart && subpart.length > 0) {
             HeaderEvents.trigger('subpart:present', Helpers.formatSubpartLabel(subpart));
-        }
-        else {
+        } else {
             HeaderEvents.trigger('subpart:absent');
         }
 

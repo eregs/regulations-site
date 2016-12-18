@@ -72,8 +72,7 @@ var MainView = Backbone.View.extend({
         $toggleButtonOpen.attr('aria-hidden', false);
         $toggleButtonClose.hide();
         $toggleButtonClose.attr('aria-hidden', true);
-      }
-      else {
+      } else {
         $collapsibleEl.show();
         $collapsibleEl.attr('aria-hidden', false);
 
@@ -253,8 +252,7 @@ var MainView = Backbone.View.extend({
     isAppendixOrSupplement: function() {
         if (Helpers.isAppendix(this.sectionId)) {
             return 'appendix';
-        }
-        else if (Helpers.isSupplement(this.sectionId)) {
+        } else if (Helpers.isSupplement(this.sectionId)) {
             return 'supplement';
         }
         return false;

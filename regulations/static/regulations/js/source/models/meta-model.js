@@ -43,8 +43,7 @@ var MetaModel = Backbone.Model.extend({
                 if (_.indexOf(this.structure, sectionId) === -1) {
                     this.structure.push(sectionId);
                 }
-            }
-            else {
+            } else {
                 section = cached;
             }
         }

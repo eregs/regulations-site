@@ -80,8 +80,7 @@ var DrawerTabsView = Backbone.View.extend({
         if (e) {
             if ($(e.target).hasClass('open')) {
                 GAEvents.trigger('drawer:open', context);
-            }
-            else {
+            } else {
                 GAEvents.trigger('drawer:close', context);
             }
             MainEvents.trigger('section:resize', context);

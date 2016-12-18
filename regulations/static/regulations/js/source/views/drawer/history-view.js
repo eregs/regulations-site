@@ -38,8 +38,7 @@ var HistoryView = Backbone.View.extend({
                 //  Interpretations are split into "subterps" outside of diff view - link to the first
                 if (section.indexOf('Interp') !== -1) {
                     $link.attr('href', prefix + $link.data('first-subterp') + '/' + $link.data('version'));
-                }
-                else {
+                } else {
                     $link.attr('href', prefix + section + '/' + $link.data('version'));
                 }
             });
