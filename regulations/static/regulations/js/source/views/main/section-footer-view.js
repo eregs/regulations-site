@@ -11,7 +11,7 @@ var SectionFooterView = Backbone.View.extend({
         'click .navigation-link': 'sendNavEvent',
     },
 
-    initialize: function() {
+    initialize: function initialize() {
         // if the browser doesn't support pushState, don't
         // trigger click events for links
         if (Router.hasPushState === false || $('#table-of-contents').hasClass('diff-toc')) {
@@ -19,7 +19,7 @@ var SectionFooterView = Backbone.View.extend({
         }
     },
 
-    sendNavEvent: function(e) {
+    sendNavEvent: function sendNavEvent(e) {
         var $target = $(e.currentTarget);
         var sectionId = $target.data('linked-section');
         var pageType = $target.data('page-type') || 'reg-section';
@@ -30,7 +30,7 @@ var SectionFooterView = Backbone.View.extend({
         }
     },
 
-    remove: function() {
+    remove: function render() {
         this.stopListening();
         return this;
     },

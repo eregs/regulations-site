@@ -52,7 +52,7 @@ var MainView = Backbone.View.extend({
    * </div>
    *
    */
-    toggleElement: function(e) {
+    toggleElement: function toggleElement(e) {
       var $target = $(e.target);
       var $toggleEl = $target.closest('.toggle');
       var $collapsibleEl = $toggleEl.find('.collapsible');
@@ -85,7 +85,7 @@ var MainView = Backbone.View.extend({
       }
     },
 
-    initialize: function() {
+    initialize: function initialize() {
       this.dataTables = null;
 
       if (Router.hasPushState) {
@@ -162,7 +162,7 @@ var MainView = Backbone.View.extend({
         'preamble-section': PreambleView,
     },
 
-    openSection: function(id, options, type) {
+    openSection: function openSection(id, options, type) {
       // Close breakaway if open
       if (typeof this.breakawayCallback !== 'undefined') {
         this.breakawayCallback();
@@ -192,7 +192,7 @@ var MainView = Backbone.View.extend({
         .fail(this.renderError.bind(this));
     },
 
-    setChildOptions: function(options) {
+    setChildOptions: function setChildOptions(options) {
       this.childOptions = _.extend({
         id: this.sectionId,
         type: this.contentType,
@@ -217,7 +217,7 @@ var MainView = Backbone.View.extend({
       }
     },
 
-    renderSection: function(html) {
+    renderSection: function renderSection(html) {
       if (html) {
         this.$el.html(html);
       }
@@ -245,11 +245,11 @@ var MainView = Backbone.View.extend({
       this.loaded();
     },
 
-    renderError: function() {
+    renderError: function renderError() {
       MainEvents.trigger('section:error');
     },
 
-    isAppendixOrSupplement: function() {
+    isAppendixOrSupplement: function isAppendixOrSupplement() {
         if (Helpers.isAppendix(this.sectionId)) {
             return 'appendix';
         } else if (Helpers.isSupplement(this.sectionId)) {
@@ -258,12 +258,12 @@ var MainView = Backbone.View.extend({
         return false;
     },
 
-    breakawayOpen: function(cb) {
+    breakawayOpen: function breakawayOpen(cb) {
         this.breakawayCallback = cb;
         this.loading();
     },
 
-    displayError: function(message) {
+    displayError: function displayError(message) {
         if (!message) {
           message = 'Due to a network error, we were unable to retrieve the requested information.';
         }
@@ -293,26 +293,26 @@ var MainView = Backbone.View.extend({
         window.scrollTo($error.offset().top, 0);
     },
 
-    loading: function() {
+    loading: function loading() {
         // visually indicate that a new section is loading
         $('.main-content').addClass('loading');
     },
 
-    loaded: function() {
+    loaded: function loaded() {
         // change focus to main content area when new sections are loaded
         $('.main-content').removeClass('loading').focus();
         this.setHandlers();
     },
 
-    setHandlers: function() {
+    setHandlers: function setHandlers() {
         this.applyTablePlugin();
         this.applyClipboardPlugin();
     },
 
-    applyClipboardPlugin: function() {
+    applyClipboardPlugin: function applyClipboardPlugin() {
     // Create anchor tag for copy to clipboard
         if (document.queryCommandSupported('copy')) {
-            this.$el.find('*[data-copyable="true"]').each(function(index, copyable) {
+            this.$el.find('*[data-copyable="true"]').each(function perCopyable(index, copyable) {
                 var link = $('<a>', {
                     class: 'clipboard-link',
                     text: 'Copy this text to your clipboard',
@@ -321,7 +321,7 @@ var MainView = Backbone.View.extend({
                     href: '#copyable-' + index,
                 });
                 var copylink = new Clipboard(link[0], {
-                    target: function(trigger) {
+                    target: function target(trigger) {
                         return copyable;
                     },
                 });
@@ -330,7 +330,7 @@ var MainView = Backbone.View.extend({
         }
     },
 
-    applyTablePlugin: function() {
+    applyTablePlugin: function applyTablePlugin() {
         if (this.dataTables) {
             this.dataTables.destroy();
         }

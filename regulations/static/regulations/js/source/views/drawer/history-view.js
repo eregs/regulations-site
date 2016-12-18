@@ -13,27 +13,27 @@ var HistoryView = Backbone.View.extend({
         'click .version-link': 'setStorageItem',
     },
 
-    initialize: function() {
+    initialize: function initialize() {
         this.listenTo(MainEvents, 'section:open', this.updateLinks);
         this.listenTo(MainEvents, 'diff:open', this.updateLinks);
     },
 
-    setStorageItem: function() {
+    setStorageItem: function setStorageItem() {
         sessionStorage.setItem('drawerDefault', 'timeline');
     },
 
-    updateLinks: function(section) {
+    updateLinks: function updateLinks(section) {
         var prefix = window.APP_PREFIX;
         if (typeof prefix !== 'undefined' && prefix.substr(prefix.length - 1) !== '/') {
             prefix = prefix + '/';
         }
         // section may not be defined (e.g. on the landing page)
         if (typeof section !== 'undefined') {
-            this.$el.find('.version-link').each(function() {
+            this.$el.find('.version-link').each(function perLink() {
                 var $link = $(this);
                 $link.attr('href', prefix + section + '/' + $link.data('version'));
             });
-            this.$el.find('.stop-button').each(function() {
+            this.$el.find('.stop-button').each(function perButton() {
                 var $link = $(this);
                 //  Interpretations are split into "subterps" outside of diff view - link to the first
                 if (section.indexOf('Interp') !== -1) {
@@ -48,7 +48,7 @@ var HistoryView = Backbone.View.extend({
                 section = section.split('-')[0] + '-Interp';
             }
             // update diff dropdown
-            this.$el.find('.select-content form').each(function() {
+            this.$el.find('.select-content form').each(function perForm() {
                 var $form = $(this),
                     actionParts,
                     actionPath;

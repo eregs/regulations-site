@@ -12,7 +12,7 @@ Backbone.$ = $;
 var DrawerView = Backbone.View.extend({
     el: '#menu',
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.listenTo(DrawerEvents, 'pane:change', this.setActivePane);
         this.listenTo(DrawerEvents, 'pane:init', this.setActivePane);
 
@@ -44,7 +44,7 @@ var DrawerView = Backbone.View.extend({
     },
 
     // activeId = page type or child view type
-    setActivePane: function(activeId) {
+    setActivePane: function setActivePane(activeId) {
         if (typeof this.childViews[activeId] === 'undefined') {
             activeId = this.pageTypeMap[activeId];
         }

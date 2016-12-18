@@ -6,7 +6,7 @@ var app = require('./app-init');
 
 // A `bind()` polyfill
 if (!Function.prototype.bind) {
-    Function.prototype.bind = function (oThis) {
+    Function.prototype.bind = function bind(oThis) {
         if (typeof this !== 'function') {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
             throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
@@ -14,8 +14,8 @@ if (!Function.prototype.bind) {
 
       var aArgs = Array.prototype.slice.call(arguments, 1),
           fToBind = this,
-          FNOP = function () {},
-          fBound = function () {
+          FNOP = function FNOP() {},
+          fBound = function fBound() {
             return fToBind.apply(this instanceof FNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
           };
 
@@ -32,13 +32,13 @@ if (!window.location.origin) {
   window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
 }
 
-$(document).ready(function() {
+$(document).ready(function ready() {
     app.init();
 });
 
 // tests for some accessibility misses
 // use in browser console with AccessibilityTest()
-window.AccessibilityTest = function() {
+window.AccessibilityTest = function AccessibilityTest() {
     /* eslint-disable */
     // I think this will keep IE from crying?
     console = console || {error: function() {}};

@@ -8,7 +8,7 @@ var markerlessRE = /p\d+/;
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
 // TODO this may make sense to move elsewhere
 if (!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function (searchElement, fromIndex) {
+  Array.prototype.indexOf = function indexOf(searchElement, fromIndex) {
     if ( this === undefined || this === null ) {
       throw new TypeError( '"this" is null or not defined' );
     }
@@ -40,7 +40,7 @@ if (!Array.prototype.indexOf) {
 
 module.exports = {
     // Finds parent-most reg paragraph
-    findBaseSection: function(id) {
+    findBaseSection: function findBaseSection(id) {
         var parts, interpIndex;
 
         if (id.indexOf('-') !== -1) {
@@ -96,7 +96,7 @@ module.exports = {
     // interesting things, is to introduce the concept of reg
     // version and maybe effective dates to the architecture
     // at that time, this should be removed
-    findVersion: function(versionElements) {
+    findVersion: function findVersion(versionElements) {
       return $(versionElements.toc).attr('data-toc-version') ||
                   $(versionElements.regLandingPage).attr('data-base-version')||
                   $(versionElements.timelineList).find('.stop-button').attr('data-version');
@@ -105,7 +105,7 @@ module.exports = {
     },
 
     // returns newer version. findVersion will return base version
-    findDiffVersion: function(versionElements, currentVersion) {
+    findDiffVersion: function findDiffVersion(versionElements, currentVersion) {
         var version;
         currentVersion = currentVersion || this.findVersion(versionElements);
         version = $(versionElements.diffToc).attr('data-from-version');
@@ -118,7 +118,7 @@ module.exports = {
         return version;
     },
 
-    isSupplement: function(id) {
+    isSupplement: function isSupplement(id) {
         var parts;
 
         if (typeof id !== 'undefined') {
@@ -135,7 +135,7 @@ module.exports = {
         return false;
     },
 
-    isAppendix: function(id) {
+    isAppendix: function isAppendix(id) {
         var parts;
 
         if (typeof id !== 'undefined') {
@@ -152,7 +152,7 @@ module.exports = {
         return false;
     },
 
-    formatSubpartLabel: function(id) {
+    formatSubpartLabel: function formatSubpartLabel(id) {
         // accepts 123-Subpart-C
         var parts = id.split('-'),
             label = 'Subpart ';
@@ -166,7 +166,7 @@ module.exports = {
     // accepts to params:
     // element to be expanded
     // animation duration
-    toggleExpandable: function($expandable, dur) {
+    toggleExpandable: function toggleExpandable($expandable, dur) {
         $expandable.toggleClass('open')
           .next('.chunk').slideToggle(dur);
     },
@@ -176,7 +176,7 @@ module.exports = {
      * @param {string} id Preamble section ID
      * @see unittests for example usage
      */
-    parsePreambleId: function(id) {
+    parsePreambleId: function parsePreambleId(id) {
       var parts = id.split('-');
       var docId = parts.shift();
       var type = parts.shift();
@@ -221,7 +221,7 @@ module.exports = {
      *
      * @see unittests
      */
-    parsePreambleCitationId: function(hash, type) {
+    parsePreambleCitationId: function parsePreambleCitationId(hash, type) {
       // only grab the section info after #
       var section = hash.substring(hash.indexOf('#') + 1);
       var parts = section.split('-');

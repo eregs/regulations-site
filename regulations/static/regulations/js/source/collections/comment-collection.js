@@ -11,15 +11,15 @@ var CommentCollection = Backbone.Collection.extend({
   model: commentModel.CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
 
-  filter: function(docId) {
-    return _.filter(this.models, function(model) {
+  filter: function filter(docId) {
+    return _.filter(this.models, function modelFilter(model) {
       return model.get('docId') === docId;
     });
   },
 
-  toJSON: function(options) {
+  toJSON: function toJSON(options) {
     var models = (options || {}).docId ? this.filter(options.docId) : this.models;
-    return _.map(models, function(model) {
+    return _.map(models, function modelFilter(model) {
       return model.toJSON(options);
     });
   },

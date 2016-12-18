@@ -14,15 +14,15 @@ Backbone.$ = $;
 
  module.exports = {
     // Purgatory for DOM event bindings that should happen in a View
-    bindEvents: function() {
+    bindEvents: function bindEvents() {
         // disable/hide an alert
-        $('.disable-link').on( 'click', function(e) {
+        $('.disable-link').on( 'click', function click(e) {
             e.preventDefault();
             $(this).closest('.displayed').addClass('disabled');
         });
     },
 
-    init: function() {
+    init: function init() {
         var regs = window.regs || {};
 
         Router.start();
@@ -32,7 +32,7 @@ Backbone.$ = $;
         var drawer = new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
         var main = new MainView();
         var sidebar = new SidebarView();
-        setTimeout(function() {
+        setTimeout(function seleniumStart() {
             $('html').addClass('selenium-start');
         }, 5000);
     },

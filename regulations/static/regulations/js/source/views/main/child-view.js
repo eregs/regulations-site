@@ -18,7 +18,7 @@ var WAYFINDER_SCROLL_OFFSET = window.WAYFINDER_SCROLL_OFFSET || 64;
 var ChildView = Backbone.View.extend({
     el: '#content-wrapper',
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.options = options;
         this.$topSection = this.$el.find('[data-page-type]');
         this.sectionLabel = this.$topSection.data('label');
@@ -42,7 +42,7 @@ var ChildView = Backbone.View.extend({
         this.loadImages();
     },
 
-    attachWayfinding: function() {
+    attachWayfinding: function attachWayfinding() {
         this.updateWayfinding();
         // * when a scroll event completes, check what the active secion is
         // we can't scope the scroll to this.$el because there's no localized
@@ -50,7 +50,7 @@ var ChildView = Backbone.View.extend({
         $(window).on('scrollstop', (_.bind(this.checkActiveSection, this)));
     },
 
-    render: function() {
+    render: function render() {
         this.updateWayfinding();
         this.loadImages();
         this.scroll();
@@ -58,7 +58,7 @@ var ChildView = Backbone.View.extend({
         DrawerEvents.trigger('section:open', this.id);
     },
 
-    scroll: function() {
+    scroll: function scroll() {
       var offsetTop, $scrollToId;
       if (this.options.scrollToId) {
         $scrollToId = $('#' + this.options.scrollToId);
@@ -69,11 +69,11 @@ var ChildView = Backbone.View.extend({
       }
     },
 
-    changeFocus: function(id) {
+    changeFocus: function changeFocus(id) {
         $(id).focus();
     },
 
-    assembleTitle: function() {
+    assembleTitle: function assembleTitle() {
         var titleParts, newTitle;
         titleParts = _.compact(document.title.split(' '));
         newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
@@ -85,8 +85,8 @@ var ChildView = Backbone.View.extend({
     // the first one whose offset is greater than the window scroll position, accounting
     // for the fixed position header (via margin/border offsets), is deemed the
     // active section
-    checkActiveSection: function() {
-      $.each(this.$sections, function(idx, $section) {
+    checkActiveSection: function checkActiveSection() {
+      $.each(this.$sections, function perSection(idx, $section) {
         if ($section.offset().top + WAYFINDER_SCROLL_OFFSET >= $(window).scrollTop()) {
           if (_.isEmpty(this.activeSection) || (this.activeSection !== $section.id)) {
             this.activeSection = $section[0].id;
@@ -112,19 +112,19 @@ var ChildView = Backbone.View.extend({
       }.bind(this));
     },
 
-    updateWayfinding: function() {
+    updateWayfinding: function updateWayfinding() {
       // cache all sections in the DOM eligible to be the active section
       // also cache some jQobjs that we will refer to frequently.
       //
       // Sections that are eligible for being the active section.
       this.$sections = this.$el
         .find('li[id], .reg-section, .appendix-section, .supplement-section')
-        .map(function(idx, elm) {
+        .map(function perEl(idx, elm) {
           return $(elm);
         });
     },
 
-    route: function(options) {
+    route: function route(options) {
         if (Router.hasPushState && typeof options.noRoute === 'undefined') {
             var url = this.url;
 
@@ -142,13 +142,13 @@ var ChildView = Backbone.View.extend({
         }
     },
 
-    navigate: function(url) {
+    navigate: function navigate(url) {
         Router.navigate(url);
         MainEvents.trigger('route', url);
         document.title = this.title;
     },
 
-    remove: function() {
+    remove: function remove() {
         $(window).off('scrollstop');
         this.stopListening();
         this.off();
@@ -156,7 +156,7 @@ var ChildView = Backbone.View.extend({
     },
 
     // lazy load images as the user scrolls
-    loadImages: function() {
+    loadImages: function loadImages() {
         $('.reg-image').lazyload();
     },
 });

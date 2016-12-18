@@ -18,7 +18,7 @@ var TOCView = Backbone.View.extend({
         'click a[data-section-id]:not(.diff)': 'sendClickEvent',
     },
 
-    initialize: function() {
+    initialize: function initialize() {
         var openSection = $('section[data-page-type]').attr('id');
 
         this.listenTo(DrawerEvents, 'section:open', this.setActive);
@@ -38,7 +38,7 @@ var TOCView = Backbone.View.extend({
     },
 
     // update active classes, find new active based on the reg entity id in the anchor
-    setActive: function(tocId) {
+    setActive: function setActive(tocId) {
         var newActiveLink, subpart;
 
         newActiveLink = this.$el.find('a[data-section-id="' + tocId + '"]');
@@ -63,7 +63,7 @@ var TOCView = Backbone.View.extend({
 
     // **Event trigger**
     // when a TOC link is clicked, send an event along with the href of the clicked link
-    sendClickEvent: function(e) {
+    sendClickEvent: function sendClickEvent(e) {
         e.preventDefault();
 
         var sectionId = $(e.currentTarget).data('section-id');
@@ -72,7 +72,7 @@ var TOCView = Backbone.View.extend({
         MainEvents.trigger('section:open', sectionId, {}, type);
     },
 
-    sendDiffClickEvent: function(e) {
+    sendDiffClickEvent: function sendDiffClickEvent(e) {
         e.preventDefault();
 
         var $link = $(e.currentTarget),
@@ -87,7 +87,7 @@ var TOCView = Backbone.View.extend({
 
     // **Inactive**
     // Intended to keep the active link in view as the user moves around the doc
-    scrollToActive: function() {
+    scrollToActive: function scrollToActive() {
         var activeLink = document.querySelectorAll('#table-of-contents .current');
 
         if (activeLink[0]) {

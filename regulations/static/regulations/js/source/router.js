@@ -9,9 +9,9 @@ require('backbone-query-parameters');
 var RegsRouter;
 
 if (typeof window.history.pushState === 'undefined') {
-    RegsRouter = function() {
-        this.start = function() {};
-        this.navigate = function() {};
+    RegsRouter = function RegsRouter() {
+        this.start = function start() {};
+        this.navigate = function navigate() {};
         this.hasPushState = false;
     };
 } else {
@@ -26,21 +26,21 @@ if (typeof window.history.pushState === 'undefined') {
             'preamble/:docId/cfr_changes/:section': 'loadCfrChanges',
         },
 
-        loadSection: function(section) {
+        loadSection: function loadSection(section) {
           this.openSection(section, 'reg-section');
         },
 
-        loadPreamble: function(docId, section) {
+        loadPreamble: function loadPreamble(docId, section) {
           var parts = [docId, 'preamble', docId, section];
           this.openSection(parts.join('-'), 'preamble-section');
         },
 
-        loadCfrChanges: function(docId, section) {
+        loadCfrChanges: function loadCfrChanges(docId, section) {
           var parts = [docId, 'cfr', section];
           this.openSection(parts.join('-'), 'preamble-section');
         },
 
-        openSection: function(id, type) {
+        openSection: function openSection(id, type) {
           var options = {
             id: id,
             scrollToId: Backbone.history.getHash(),
@@ -49,7 +49,7 @@ if (typeof window.history.pushState === 'undefined') {
           MainEvents.trigger('section:open', id, options, type);
         },
 
-        loadDiffSection: function(section, baseVersion, newerVersion, params) {
+        loadDiffSection: function loadDiffSection(section, baseVersion, newerVersion, params) {
             var options = {};
 
             options.id = section;
@@ -61,7 +61,7 @@ if (typeof window.history.pushState === 'undefined') {
             MainEvents.trigger('diff:open', section, options, 'diff');
         },
 
-        loadSxS: function(section, version, params) {
+        loadSxS: function loadSxS(section, version, params) {
             BreakawayEvents.trigger('sxs:open', {
                 regParagraph: section,
                 docNumber: version,
@@ -69,7 +69,7 @@ if (typeof window.history.pushState === 'undefined') {
             });
         },
 
-        loadSearchResults: function(docType, reg, params) {
+        loadSearchResults: function loadSearchResults(docType, reg, params) {
             var config = {
                 query: params.q,
                 regVersion: params.regVersion,
@@ -84,7 +84,7 @@ if (typeof window.history.pushState === 'undefined') {
             MainEvents.trigger('search-results:open', null, config, 'search-results');
         },
 
-        start: function() {
+        start: function start() {
             var root = window.APP_PREFIX || '';
 
             Backbone.history.start({

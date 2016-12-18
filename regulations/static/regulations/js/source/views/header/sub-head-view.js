@@ -8,7 +8,7 @@ Backbone.$ = $;
 var SubHeadView = Backbone.View.extend({
     el: '#content-header',
 
-    initialize: function() {
+    initialize: function initialize() {
         this.listenTo(HeaderEvents, 'section:open', this.changeTitle);
         this.listenTo(HeaderEvents, 'search-results:open', this.displayCount);
         this.listenTo(HeaderEvents, 'search-results:open', this.changeDate);
@@ -26,15 +26,15 @@ var SubHeadView = Backbone.View.extend({
 
     // populates subhead (.header-label) with new title depending on viewport location
     // ex: §478.1(a) to §478.1(b)
-    changeTitle: function(label) {
+    changeTitle: function changeTitle(label) {
       this.$activeTitle.html(label);
     },
 
-    displayCount: function(resultCount) {
+    displayCount: function displayCount(resultCount) {
         this.$activeTitle.html('<span class="subpart">Search results</span> ' + resultCount);
     },
 
-    changeDate: function() {
+    changeDate: function changeDate() {
         this.version = $('section[data-base-version]').data('base-version');
         if (this.version) {
           this.displayDate = $('select[name="version"] option[value="' + this.version + '"]').text();
@@ -44,17 +44,17 @@ var SubHeadView = Backbone.View.extend({
         }
     },
 
-    renderSubpart: function(label) {
+    renderSubpart: function renderSubpart(label) {
         this.$subpartLabel.text(label).show();
         this.$activeTitle.addClass('with-subpart');
     },
 
-    removeSubpart: function() {
+    removeSubpart: function removeSubpart() {
         this.$subpartLabel.text('').hide();
         this.$activeTitle.removeClass('with-subpart');
     },
 
-    reset: function() {
+    reset: function reset() {
         this.$activeTitle.html('');
     },
 });

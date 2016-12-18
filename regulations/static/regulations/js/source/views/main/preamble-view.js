@@ -21,7 +21,7 @@ var PreambleView = ChildView.extend({
     'click .citation.internal': 'openCitation',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.options = options;
 
     var parsed = helpers.parsePreambleId(this.options.id);
@@ -48,7 +48,7 @@ var PreambleView = ChildView.extend({
     );
   },
 
-  openCitation: function(e) {
+  openCitation: function openCitation(e) {
     var $target = $(e.currentTarget);
     var hash = $target.attr('href');
     var id = $target.attr('data-section-id');
@@ -63,18 +63,18 @@ var PreambleView = ChildView.extend({
     }
   },
 
-  handleRead: function() {
+  handleRead: function handleRead() {
     this.mode = 'read';
     this.$write.hide();
     this.$read.show();
   },
 
-  handleParagraphActive: function(id) {
+  handleParagraphActive: function handleParagraphActive(id) {
     // update current Section ID as active paragraph changes
     this.section = id;
   },
 
-  handleWriteLink: function(e) {
+  handleWriteLink: function handleWriteLink(e) {
     var $target = $(e.target);
     var $dataTarget = $target.closest('.activate-write');
     var $section = $target.closest('[data-permalink-section]');
@@ -90,7 +90,7 @@ var PreambleView = ChildView.extend({
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  handleWriteTab: function() {
+  handleWriteTab: function handleWriteTab() {
     var $section = $('#' + this.section);
 
     this.write(
@@ -113,7 +113,7 @@ var PreambleView = ChildView.extend({
    * We rely on localStorage for commenting at the moment. If it's not
    * available, let the user know. TODO: replace with Modernizr/similar
    **/
-  checkCanWrite: function() {
+  checkCanWrite: function checkCanWrite() {
     try {
       localStorage.setItem('_test', 'value');
       if (localStorage.getItem('_test') !== 'value') {
@@ -124,7 +124,7 @@ var PreambleView = ChildView.extend({
     };
   },
 
-  write: function(section, tocId, indexes, label, $parent) {
+  write: function write(section, tocId, indexes, label, $parent) {
     this.mode = 'write';
     this.checkCanWrite();
 
@@ -155,7 +155,7 @@ var PreambleView = ChildView.extend({
     $('body').scrollTop(0);
   },
 
-  renderComments: function() {
+  renderComments: function renderComments() {
     this.mode = 'read';
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
@@ -187,16 +187,16 @@ var PreambleView = ChildView.extend({
     this.collapseStars();
   },
 
-  collapseStars: function() {
+  collapseStars: function collapseStars() {
     var $expander;
-    this.$el.find('li[data-stars]').each(function(idx, elt) {
+    this.$el.find('li[data-stars]').each(function perEl(idx, elt) {
       var $li = $(elt);
       var starType = $li.data('stars');
       $expander = starsHelpers[starType]($li, $expander);
     });
   },
 
-  remove: function() {
+  remove: function remove() {
     this.commentView.remove();
     this.commentIndex.remove();
     Backbone.View.prototype.remove.call(this);
@@ -205,7 +205,7 @@ var PreambleView = ChildView.extend({
   /**
    * Update section in viewport if in read mode.
    */
-  checkActiveSection: function() {
+  checkActiveSection: function checkActiveSection() {
     if (this.mode === 'read') {
       ChildView.prototype.checkActiveSection.call(this);
     }

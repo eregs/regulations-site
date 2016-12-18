@@ -12,7 +12,7 @@ var ChildView = require('./child-view');
 Backbone.$ = $;
 
 var DiffView = ChildView.extend({
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.options = options;
         this.id = this.options.id;
         this.baseVersion = this.options.baseVersion;
@@ -30,7 +30,7 @@ var DiffView = ChildView.extend({
     },
 
     // "12 CFR Comparison of §1005.1 | eRegulations"
-    assembleTitle: function() {
+    assembleTitle: function assembleTitle() {
         var titleParts, newTitle;
         titleParts = _.compact(document.title.split(' '));
         newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];

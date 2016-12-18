@@ -17,7 +17,7 @@ var SearchResultsView = ChildView.extend({
         'click h3 .internal': 'openResult',
     },
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.options = options;
         this.query = this.options.query;
         // the TOC may link to a different reg version than this.options.resultsRegVersion
@@ -43,11 +43,11 @@ var SearchResultsView = ChildView.extend({
         }
     },
 
-    setElement: function() {
+    setElement: function setElement() {
         Backbone.View.prototype.setElement.call(this, '#content-wrapper.search-results');
     },
 
-    render: function() {
+    render: function render() {
         var $results = this.$el.find('#result-count');
 
         // if the results were ajaxed in, update header
@@ -63,7 +63,7 @@ var SearchResultsView = ChildView.extend({
         }
     },
 
-    paginate: function(e) {
+    paginate: function paginate(e) {
         e.preventDefault();
 
         var options = {
@@ -76,7 +76,7 @@ var SearchResultsView = ChildView.extend({
         MainEvents.trigger('search-results:open', null, options, 'search-results');
     },
 
-    openResult: function(e) {
+    openResult: function openResult(e) {
         // TOC version retains the version the reg was loaded on whereas the content base section
         // changes to match the search results
         // page should reload if the TOC version doesn't match the searched version

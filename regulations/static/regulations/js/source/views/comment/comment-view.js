@@ -32,7 +32,7 @@ function getUploadUrl(file) {
   return $.getJSON(
     window.APP_PREFIX + 'comments/attachment',
     {size: file.size, name: file.name, type: file.type || 'application/octet-stream'},
-  ).then(function(resp) {
+  ).then(function handleResponse(resp) {
     return resp;
   });
 }
@@ -48,7 +48,7 @@ var CommentView = Backbone.View.extend({
     'submit form': 'save',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.options = options;
 
     this.$context = this.$el.find('.comment-context');
@@ -88,7 +88,7 @@ var CommentView = Backbone.View.extend({
     this.setSection(options.section, options.tocId, options.indexes, options.label);
   },
 
-  setSection: function(section, tocId, indexes, label, blank) {
+  setSection: function setSection(section, tocId, indexes, label, blank) {
     if (this.model) {
       this.stopListening(this.model);
     }
@@ -101,7 +101,7 @@ var CommentView = Backbone.View.extend({
     this.render();
   },
 
-  target: function(options) {
+  target: function target(options) {
     this.setSection(options.section, options.tocId, options.indexes, options.label);
     this.$context.empty();
     if (options.$parent) {
@@ -125,7 +125,7 @@ var CommentView = Backbone.View.extend({
     }
   },
 
-  openComment: function(e) {
+  openComment: function openComment(e) {
     e.preventDefault();
     var options = {
       section: this.model.get('id'),
@@ -139,7 +139,7 @@ var CommentView = Backbone.View.extend({
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
   },
 
-  toggleCommentExcerpt: function() {
+  toggleCommentExcerpt: function toggleCommentExcerpt() {
     $('.comment-context-text-show').toggle();
     $('.comment-context-text-hide').toggle();
     $('.fa-plus-circle').toggle();
@@ -147,30 +147,30 @@ var CommentView = Backbone.View.extend({
     $('.comment-context').toggle();
   },
 
-  render: function() {
+  render: function render() {
     this.editor.setContent(this.model.get('comment'), 'markdown');
     this.$attachments.empty();
-    this.attachmentViews = this.model.get('files').map(function(file) {
+    this.attachmentViews = this.model.get('files').map(function perFile(file) {
       return new AttachmentView(_.extend({$parent: this.$attachments}, file));
     }.bind(this));
     this.setAttachmentCount();
     this.$attachmentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
   },
 
-  highlightDropzone: function() {
+  highlightDropzone: function highlightDropzone() {
     this.$input.addClass('highlight');
   },
 
-  unhighlightDropzone: function() {
+  unhighlightDropzone: function unhighlightDropzone() {
     this.$input.removeClass('highlight');
   },
 
-  addAttachments: function(e) {
+  addAttachments: function addAttachments(e) {
     if (this.attachmentCount + e.target.files.length > MAX_ATTACHMENTS) {
       this.$status.text('Too many attachments');
       return;
     }
-    _.each(e.target.files, function(file) {
+    _.each(e.target.files, function perFile(file) {
       this.addAttachment(file);
     }.bind(this));
     this.$input.val(null);
@@ -183,8 +183,8 @@ var CommentView = Backbone.View.extend({
    *
    * @param {File} file File to upload
    */
-  addAttachment: function(file) {
-    getUploadUrl(file).then(function(resp) {
+  addAttachment: function addAttachment(file) {
+    getUploadUrl(file).then(function handleResponse(resp) {
       var xhr = new XMLHttpRequest();
       this.attachmentViews.push(
         new AttachmentView({
@@ -206,8 +206,8 @@ var CommentView = Backbone.View.extend({
     }.bind(this));
   },
 
-  clearAttachment: function(key) {
-    var index = _.findIndex(this.attachmentViews, function(view) {
+  clearAttachment: function clearAttachment(key) {
+    var index = _.findIndex(this.attachmentViews, function perView(view) {
       return view.options.key === key;
     });
     this.attachmentViews[index].remove();
@@ -215,10 +215,10 @@ var CommentView = Backbone.View.extend({
     this.setAttachmentCount();
   },
 
-  setAttachmentCount: function() {
+  setAttachmentCount: function setAttachmentCount() {
     // Count saved attachments on other comments and pending attachments on the
     // current comment
-    var count = comments.filter(this.options.docId).reduce(function(total, comment) {
+    var count = comments.filter(this.options.docId).reduce(function perComment(total, comment) {
       var incr = comment.id !== this.model.id ?
         comment.get('files').length :
         0;
@@ -231,7 +231,7 @@ var CommentView = Backbone.View.extend({
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
 
-  deleteComment: function(e) {
+  deleteComment: function deleteComment(e) {
     e.preventDefault();
 
     var comment = comments.get($(e.target).data('section'));
@@ -243,13 +243,13 @@ var CommentView = Backbone.View.extend({
     }
   },
 
-  save: function(e) {
+  save: function save(e) {
     e.preventDefault();
 
     this.model.set({
       comment: this.editor.getContent('markdown'),
       commentHtml: this.editor.getContent('html'),
-      files: _.map(this.attachmentViews, function(view) {
+      files: _.map(this.attachmentViews, function perView(view) {
         return {
           key: view.options.key,
           name: view.options.name,

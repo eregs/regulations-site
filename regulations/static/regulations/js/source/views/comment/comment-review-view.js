@@ -27,7 +27,7 @@ var CommentReviewView = Backbone.View.extend({
     'change #agree': 'toggleSubmit',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
 
     this.$content = this.$el.find('.comment-review-items');
@@ -42,13 +42,13 @@ var CommentReviewView = Backbone.View.extend({
     this.render();
   },
 
-  findElms: function() {
+  findElms: function findElms() {
     this.$form = this.$el.find('form');
     this.$submit = this.$el.find('.submit-button');
     this.$agree = this.$el.find('#agree');
   },
 
-  editComment: function(e) {
+  editComment: function editComment(e) {
     var section = $(e.target).closest('li').data('section');
     var label = $(e.target).closest('li').find('.comment-section-label').text();
     var options = {id: section, section: section, label: label, mode: 'write'};
@@ -59,7 +59,7 @@ var CommentReviewView = Backbone.View.extend({
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  render: function() {
+  render: function render() {
     var commentData = comments.toJSON({docId: this.docId});
     var html = this.template({
       comments: commentData,
@@ -83,14 +83,14 @@ var CommentReviewView = Backbone.View.extend({
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  initTabs: function() {
+  initTabs: function initTabs() {
     var self = this;
     function updateTabs(tab, tabSet) {
       var tabSelector = '[data-tab="' + tab + '"]';
       var setSelector = '[data-tab-set="' + tabSet + '"]';
       self.$el.find(setSelector).removeClass('current');
       self.$el.find(setSelector + tabSelector).addClass('current');
-      self.$el.find(setSelector + '[data-tabs]').each(function(idx, elm) {
+      self.$el.find(setSelector + '[data-tabs]').each(function perEl(idx, elm) {
         var $elm = $(elm);
         var tabs = $elm.data('tabs');
         if (tabs.indexOf(tab) !== -1) {
@@ -104,7 +104,7 @@ var CommentReviewView = Backbone.View.extend({
     var $tabs = self.$el.find('[data-tab]');
     updateTabs($tabs.data('tab'), $tabs.data('tab-set'));
 
-    $tabs.on('click', function(e) {
+    $tabs.on('click', function click(e) {
       var $tab = $(this);
 
       e.preventDefault();
@@ -118,9 +118,9 @@ var CommentReviewView = Backbone.View.extend({
    * one select filters the options of another. When the first select leads to
    * _no_ options available in the second, we need to display a "write-in".
    **/
-  initDependencies: function() {
+  initDependencies: function initDependencies() {
     var self = this;
-    self.$el.find('[data-depends-on]').each(function(idx, elm) {
+    self.$el.find('[data-depends-on]').each(function perEl(idx, elm) {
       var $elm = $(elm);
       var $select = selfOrChild($elm, 'select');
       var $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
@@ -130,7 +130,7 @@ var CommentReviewView = Backbone.View.extend({
         $select.find('option[value]').remove();
         var optionsCount = 0;
         var optionsToShow = [];
-        $options.each(function(idx, elm) {
+        $options.each(function perOption(idx, elm) {
           var depVal = elm.getAttribute('data-dependency');
           if (depVal === value) {
             optionsCount++;
@@ -145,13 +145,13 @@ var CommentReviewView = Backbone.View.extend({
         $select.val(null);
       }
       updateOptions($dependsOn.val());
-      $dependsOn.on('change', function() {
+      $dependsOn.on('change', function change() {
         updateOptions($(this).val());
       });
     });
   },
 
-  preview: function(e) {
+  preview: function preview(e) {
 
     e.preventDefault();
 
@@ -169,20 +169,20 @@ var CommentReviewView = Backbone.View.extend({
     this.render();
   },
 
-  previewSuccess: function(resp) {
+  previewSuccess: function previewSuccess(resp) {
     window.location = resp.url;
     this.previewLoading = false;
     this.render();
   },
 
-  previewError: function(resp, status, error) {
+  previewError: function previewError(resp, status, error) {
     this.previewLoading = false;
     this.render();
 
     this.$el.find('.download-comment').find('.details').after('<div class="error">There was an error in building the PDF.</div>');
   },
 
-  toggleSubmit: function() {
+  toggleSubmit: function toggleSubmit() {
     if (this.$agree.length) {
       this.$submit.prop('disabled', !this.$agree.prop('checked'));
     }

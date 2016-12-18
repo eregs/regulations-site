@@ -24,7 +24,7 @@ var PreambleHeadView = Backbone.View.extend({
     'click .write-comment': 'writeComment',
   },
 
-  initialize: function() {
+  initialize: function initialize() {
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
@@ -33,16 +33,16 @@ var PreambleHeadView = Backbone.View.extend({
     this.listenTo(MainEvents, 'route', this.handleRoute);
   },
 
-  handleRoute: function(href) {
+  handleRoute: function handleRoute(href) {
     this.$readTab.find('a').attr('href', '/' + href);
   },
 
-  readTabOpen: function () {
+  readTabOpen: function readTabOpen() {
     this.$readTab.addClass('active-mode');
     this.$writeTab.removeClass('active-mode');
   },
 
-  readProposal: function(e) {
+  readProposal: function readProposal(e) {
     // yeah... need a better way to manage this. - xtine
     e.preventDefault();
     if ($('#preamble-write').is(':visible') || $('#comment-review').length) {
@@ -52,12 +52,12 @@ var PreambleHeadView = Backbone.View.extend({
     }
   },
 
-  writeTabOpen: function() {
+  writeTabOpen: function writeTabOpen() {
     this.$writeTab.addClass('active-mode');
     this.$readTab.removeClass('active-mode');
   },
 
-  writeComment: function() {
+  writeComment: function writeComment() {
     if ($('#preamble-read').is(':visible')) {
       this.writeTabOpen();
 

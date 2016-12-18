@@ -9,7 +9,7 @@ Backbone.SearchModel = MetaModel.extend({});
 var searchModel = new Backbone.SearchModel({
     supplementalPath: 'search',
 
-    getAJAXUrl: function(id, options) {
+    getAJAXUrl: function getAJAXUrl(id, options) {
       var url = window.APP_PREFIX + 'partial/';
 
       if (typeof this.supplementalPath !== 'undefined') {
@@ -19,7 +19,7 @@ var searchModel = new Backbone.SearchModel({
       return url + this.assembleSearchURL(options);
     },
 
-    assembleSearchURL: function(options) {
+    assembleSearchURL: function assembleSearchURL(options) {
       var docType = options.docType || 'cfr';
       var path = [docType, options.docId].join('/');
       var query = {q: options.query};

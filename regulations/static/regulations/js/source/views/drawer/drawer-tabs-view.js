@@ -22,7 +22,7 @@ var DrawerTabsView = Backbone.View.extend({
         'search': '#search-link',
     },
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.listenTo(DrawerEvents, 'pane:change', this.changeActiveTab);
         this.listenTo(DrawerEvents, 'pane:init', this.setStartingTab);
         this.$activeEls = $('#menu, #site-header, #content-body, #primary-footer, #content-header');
@@ -44,11 +44,11 @@ var DrawerTabsView = Backbone.View.extend({
         this.$activeEls.addClass(this.drawerState);
     },
 
-    setStartingTab: function(tab) {
+    setStartingTab: function setStartingTab(tab) {
         $(this.idMap[tab]).addClass('current');
     },
 
-    changeActiveTab: function(tab) {
+    changeActiveTab: function changeActiveTab(tab) {
         this.$tocLinks.removeClass('current');
         $(this.idMap[tab]).addClass('current');
 
@@ -61,13 +61,13 @@ var DrawerTabsView = Backbone.View.extend({
     // this.$activeEls are structural els that need to have
     // CSS applied to work with the drawer conditionally based
     // on its state
-    updateDOMState: function() {
+    updateDOMState: function updateDOMState() {
         if (typeof this.$activeEls !== 'undefined') {
             this.$activeEls.toggleClass(this.drawerState);
         }
     },
 
-    openDrawer: function(e) {
+    openDrawer: function openDrawer(e) {
         var context = {type: 'drawer'};
 
         if (e) {
@@ -91,7 +91,7 @@ var DrawerTabsView = Backbone.View.extend({
     // tell surrounding elements to update accordingly
     // update the open/close arrow
     // set state
-    toggleDrawerState: function() {
+    toggleDrawerState: function toggleDrawerState() {
         var state = (this.drawerState === 'open') ? 'close' : 'open';
         this.updateDOMState();
         this.$toggleArrow.toggleClass('open');
@@ -100,7 +100,7 @@ var DrawerTabsView = Backbone.View.extend({
     },
 
     // update active pane based on click or external input
-    updatePaneTabs: function(e) {
+    updatePaneTabs: function updatePaneTabs(e) {
         e.preventDefault();
 
         var $target = $(e.target),

@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    func-names: off
     import/newline-after-import: off
     indent: off
     lines-around-directive: off

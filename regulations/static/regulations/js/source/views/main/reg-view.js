@@ -23,7 +23,7 @@ var RegView = ChildView.extend({
         'click .inline-interp-header': 'expandInterp',
     },
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.options = options;
 
         this.listenTo(MainEvents, 'definition:close', this.closeDefinition);
@@ -54,17 +54,17 @@ var RegView = ChildView.extend({
 
     // only concerned with resetting DOM, no matter
     // what way the definition was closed
-    closeDefinition: function() {
+    closeDefinition: function closeDefinition() {
         this.clearActiveTerms();
     },
 
-    toggleDefinition: function($link) {
+    toggleDefinition: function toggleDefinition($link) {
         this.setActiveTerm($link);
 
         return this;
     },
 
-    openSection: function(e) {
+    openSection: function openSection(e) {
       var $target = $(e.currentTarget);
       var id = $target.attr('data-section-id') || $target.attr('data-linked-section');
       var href = $target.attr('href');
@@ -87,7 +87,7 @@ var RegView = ChildView.extend({
       }
     },
 
-    assembleTitle: function() {
+    assembleTitle: function assembleTitle() {
       if (this.options.subContentType === 'supplement') {
         return 'Supplement I to Part ' + this.docId + ' | eRegulations';
       } else if (this.options.subContentType === 'appendix') {
@@ -99,7 +99,7 @@ var RegView = ChildView.extend({
 
     // if an inline definition is open, check the links here to see
     // if the definition is still in scope in this section
-    checkDefinitionScope: function() {
+    checkDefinitionScope: function checkDefinitionScope() {
         var $def = $('#definition'),
             defTerm = $def.data('defined-term'),
             defId = $def.find('.open-definition').attr('id'),
@@ -110,7 +110,7 @@ var RegView = ChildView.extend({
             this.defScopeExclusions = this.defScopeExclusions || [];
             $termLinks = this.$el.find('a.definition');
 
-            $termLinks.each(function(i, link) {
+            $termLinks.each(function perLink(i, link) {
                 var $link = $(link);
 
                 if ($link.data('defined-term') === defTerm && $link.data('definition') !== defId) {
@@ -133,7 +133,7 @@ var RegView = ChildView.extend({
     },
 
     // id = active paragraph
-    newActiveParagraph: function(id) {
+    newActiveParagraph: function newActiveParagraph(id) {
         var $newDefLink, newDefId, newDefHref;
         // if there are paragraphs where the open definition is
         // out of scope, display message
@@ -153,14 +153,14 @@ var RegView = ChildView.extend({
         }
     },
 
-    render: function() {
+    render: function render() {
         ChildView.prototype.render.apply(this, arguments);
 
         this.checkDefinitionScope();
     },
 
     // content section key term link click handler
-    termLinkHandler: function(e) {
+    termLinkHandler: function termLinkHandler(e) {
         e.preventDefault();
 
         var $link = $(e.target),
@@ -205,7 +205,7 @@ var RegView = ChildView.extend({
     },
 
     // handler for when inline interpretation is clicked
-    expandInterp: function(e) {
+    expandInterp: function expandInterp(e) {
         // user can click anywhere in the header of a closed interp
         // for an open interp, they can click "hide" button or header
         e.stopImmediatePropagation();
@@ -236,18 +236,18 @@ var RegView = ChildView.extend({
     },
 
     // Sets DOM back to neutral state
-    clearActiveTerms: function() {
+    clearActiveTerms: function checkActiveTerms() {
         this.$el.find('.active.definition')
             .removeClass('active')
             .removeData('active');
     },
 
-    setActiveTerm: function($link) {
+    setActiveTerm: function setActiveTerm($link) {
         this.clearActiveTerms();
         $link.addClass('active').data('active', 1);
     },
 
-    openInterp: function(e) {
+    openInterp: function openInterp(e) {
         e.preventDefault();
 
         var sectionId = $(e.currentTarget).data('linked-section'),

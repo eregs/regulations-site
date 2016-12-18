@@ -12,11 +12,11 @@ Backbone.$ = $;
 var BreakawayView = Backbone.View.extend({
     childViews: {},
 
-    initialize: function() {
+    initialize: function initialize() {
         this.listenTo(BreakawayEvents, 'sxs:open', this.openSxS);
     },
 
-    openSxS: function(context) {
+    openSxS: function openSxS(context) {
         context.url = context.regParagraph + '/' + context.docNumber + '?from_version=' + context.fromVersion;
 
         this.childViews.sxs = new SxS(context);
@@ -29,7 +29,7 @@ var BreakawayView = Backbone.View.extend({
         SidebarEvents.trigger('breakaway:open');
     },
 
-    removeChild: function() {
+    removeChild: function removeChild() {
         this.childViews.sxs.remove();
         delete(this.childViews.sxs);
     },

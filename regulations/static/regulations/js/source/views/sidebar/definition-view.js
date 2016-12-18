@@ -25,7 +25,7 @@ var DefinitionView = Backbone.View.extend({
         'click .update-definition': 'updateDefinition',
     },
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
         this.options = options;
         this.listenTo(SidebarEvents, 'definition:outOfScope', this.displayScopeMsg);
         this.listenTo(SidebarEvents, 'definition:inScope', this.removeScopeMsg);
@@ -56,22 +56,22 @@ var DefinitionView = Backbone.View.extend({
     },
 
     // temporary header w/spinner while definition is loading
-    renderHeader: function() {
+    renderHeader: function renderHeader() {
         this.$el.html('<header class="group spinner"><h4>Defined Term</h4></header>');
     },
 
-    render: function(html) {
+    render: function render(html) {
         this.$el.html(html);
     },
 
-    renderError: function(error) {
+    renderError: function renderError(error) {
         this.$el.html('');
         this.renderHeader();
         this.$el.children().removeClass('spinner');
         this.$el.append('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>' + error + '</div>');
     },
 
-    close: function(e) {
+    close: function close(e) {
         e.preventDefault();
         // return focus to the definition link once the definition is removed
         $('.definition.active').focus();
@@ -84,13 +84,13 @@ var DefinitionView = Backbone.View.extend({
         this.remove();
     },
 
-    updateDefinition: function(e) {
+    updateDefinition: function updateDefinition(e) {
         e.preventDefault(e);
 
         SidebarEvents.trigger('definition:open', {
             id: $(e.target).data('definition'),
             term: this.term,
-            cb: function() {
+            cb: function cb() {
                 // update list of out of scope paragraphs for new definition
                 MainEvents.trigger('definition:carriedOver');
             },
@@ -99,7 +99,7 @@ var DefinitionView = Backbone.View.extend({
 
     // displayed when an open definition doesn't apply to the
     // whole open section
-    displayScopeMsg: function(id) {
+    displayScopeMsg: function displayScopeMsg(id) {
         var msg = '<p>This term has a different definition for some portions of ';
         msg += id ? $('#' + id).data('label') + '.' : 'this section.';
         msg += '</p>';
@@ -111,7 +111,7 @@ var DefinitionView = Backbone.View.extend({
     },
 
     // when a definition is fully applicable to the section
-    removeScopeMsg: function() {
+    removeScopeMsg: function removeScopeMsg() {
         if (typeof this.$warningContainer !== 'undefined' && this.$warningContainer.length > 0) {
             this.$warningContainer.addClass('hidden').find('.msg').html('');
         }
@@ -120,7 +120,7 @@ var DefinitionView = Backbone.View.extend({
     },
 
     // for when the definition does not apply to the active section
-    grayOutDefinition: function(defId, href, activeSectionId) {
+    grayOutDefinition: function grayOutDefinition(defId, href, activeSectionId) {
         var $text = this.$el.find('.definition-text'),
             linkText = 'Load the correct definition for ',
             link,
@@ -147,14 +147,14 @@ var DefinitionView = Backbone.View.extend({
 
     // for when a definition is not in conflict for the active section,
     // but doesn't apply to the entire section, either
-    unGrayDefinition: function() {
+    unGrayDefinition: function unGrayDefinition() {
         var $text = this.$el.find('.definition-text');
         $text.removeClass('inactive');
 
         this.$el.find('.definition-warning a').remove();
     },
 
-    openFullDefinition: function(e) {
+    openFullDefinition: function openFullDefinition(e) {
         e.preventDefault();
         var id = $(e.target).data('linked-section') || $(e.target).data('definition'),
             parentId = Helpers.findBaseSection(id);
@@ -169,7 +169,7 @@ var DefinitionView = Backbone.View.extend({
         });
     },
 
-    openInterpretation: function(e) {
+    openInterpretation: function openInterpretation(e) {
         e.preventDefault();
         var $e = $(e.target),
             id = $e.data('linked-section'),
@@ -185,7 +185,7 @@ var DefinitionView = Backbone.View.extend({
         });
     },
 
-    remove: function() {
+    remove: function remove() {
         this.stopListening();
         this.off();
         this.$el.html('');

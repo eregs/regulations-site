@@ -13,7 +13,7 @@ var SearchView = Backbone.View.extend({
         'submit': 'openSearchResults',
     },
 
-    initialize: function() {
+    initialize: function initialize() {
         // if the browser doesn't support pushState, don't
         // trigger click events for links
         if (Router.hasPushState === false) {
@@ -21,7 +21,7 @@ var SearchView = Backbone.View.extend({
         }
     },
 
-    openSearchResults: function(e) {
+    openSearchResults: function openSearchResults(e) {
         sessionStorage.setItem('drawerDefault', 'search');
 
         e.preventDefault();

@@ -8,7 +8,7 @@ Backbone.$ = $;
 
 var MetaModel = Backbone.Model.extend({
 
-    constructor: function(properties) {
+    constructor: function constructor(properties) {
         var k;
 
         if (typeof properties !== 'undefined') {
@@ -31,7 +31,7 @@ var MetaModel = Backbone.Model.extend({
         Backbone.Model.apply(this, arguments);
     },
 
-    set: function(sectionId, sectionValue) {
+    set: function set(sectionId, sectionValue) {
         var cached = this.has(sectionId),
             section;
 
@@ -50,26 +50,26 @@ var MetaModel = Backbone.Model.extend({
         return section;
     },
 
-    has: function(id) {
+    has: function has(id) {
       return !!this.content[id];
     },
 
-    get: function(id, options) {
+    get: function get(id, options) {
       return this.has(id) ?
         $.when(this.content[id]) :
         this.request(id, options);
     },
 
-    request: function(id, options) {
+    request: function request(id, options) {
       return $.ajax({
         url: this.getAJAXUrl(id, options),
-        success: function(data) {
+        success: function success(data) {
           this.set(id, data);
         }.bind(this),
       });
     },
 
-    getAJAXUrl: function(id, options) {
+    getAJAXUrl: function getAJAXUrl(id, options) {
         var url = window.APP_PREFIX + 'partial/';
 
         if (typeof this.supplementalPath !== 'undefined') {

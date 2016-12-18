@@ -25,7 +25,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     'click .comment-index-clear': 'clearComment',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.docId = options.docId;
     this.template = _.template($('#comment-index-template').html());
     this.$index = this.$el.find('.comment-index-items');
@@ -36,7 +36,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     this.render();
   },
 
-  render: function() {
+  render: function render() {
     var commentData = comments.toJSON({docId: this.docId});
 
     var html = this.template({comments: commentData});
@@ -49,7 +49,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     }
   },
 
-  editComment: function(e) {
+  editComment: function editComment(e) {
     var options = _.extend({mode: 'write'}, getOptions(e.target));
     var type = options.section.split('-')[1];
     DrawerEvents.trigger('section:open', options.tocId);
@@ -58,7 +58,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  clearComment: function(e) {
+  clearComment: function clearComment(e) {
     var options = getOptions(e.target);
     var comment = comments.get(options.section);
     if (comment) {

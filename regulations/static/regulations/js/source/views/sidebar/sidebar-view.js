@@ -22,7 +22,7 @@ var SidebarView = Backbone.View.extend({
         'click .expandable': 'toggleExpandable',
     },
 
-    initialize: function() {
+    initialize: function initialize() {
         this.listenTo(SidebarEvents, 'update', this.updateChildViews);
         this.listenTo(SidebarEvents, 'definition:open', this.openDefinition);
         this.listenTo(SidebarEvents, 'definition:close', this.closeDefinition);
@@ -34,34 +34,34 @@ var SidebarView = Backbone.View.extend({
         this.definitionModel = DefinitionModel;
         this.model = SidebarModel;
         /* Cache the initial sidebar */
-        this.$el.find('[data-cache-key=sidebar]').each(function(idx, el) {
+        this.$el.find('[data-cache-key=sidebar]').each(function perSidebar(idx, el) {
             var $el = $(el);
             SidebarModel.set($el.data('cache-value'), $el.html());
         });
     },
 
-    openDefinition: function(config) {
+    openDefinition: function openDefinition(config) {
       this.childViews.definition = new Definition({
         id: config.id,
         term: config.term,
       });
 
-      this.definitionModel.get(config.id, {}).then(function(resp) {
+      this.definitionModel.get(config.id, {}).then(function handleResponse(resp) {
         this.childViews.definition.render(resp);
-      }.bind(this)).fail(function() {
+      }.bind(this)).fail(function fail() {
         var errorMsg = 'We tried to load that definition, but something went wrong. ';
         errorMsg += '<a href="#" class="update-definition inactive internal" data-definition="' + this.childViews.definition.id + '">Try again?</a>';
         this.childViews.definition.renderError(errorMsg);
       }.bind(this));
     },
 
-    closeDefinition: function() {
+    closeDefinition: function closeDefinition() {
         if (typeof this.childViews.definition !== 'undefined') {
             this.childViews.definition.remove();
         }
     },
 
-    updateChildViews: function(context) {
+    updateChildViews: function updateChildViews(context) {
       this.$definition = this.$definition || this.$el.find('#definition');
       switch (context.type) {
         case 'reg-section':
@@ -91,7 +91,7 @@ var SidebarView = Backbone.View.extend({
 
     /* AJAX retrieved a sidebar. Replace the relevant portions of the
      * existing sidebar */
-    openRegFolders: function(html) {
+    openRegFolders: function openRegFolders(html) {
         // remove all except definition
         this.removeChildren('definition');
 
@@ -103,11 +103,11 @@ var SidebarView = Backbone.View.extend({
         this.loaded();
     },
 
-    removeLandingSidebar: function() {
+    removeLandingSidebar: function removeLandingSidebar() {
         $('.landing-sidebar').hide();
     },
 
-    insertDefinition: function(el) {
+    insertDefinition: function insertDefinition(el) {
         this.closeExpandables();
 
         if (this.$el.definition.length === 0) {
@@ -120,8 +120,8 @@ var SidebarView = Backbone.View.extend({
         this.$el.definition.html(el);
     },
 
-    closeExpandables: function() {
-        this.$el.find('.expandable').each(function(i, folder) {
+    closeExpandables: function closeExpandables() {
+        this.$el.find('.expandable').each(function perEl(i, folder) {
             var $folder = $(folder);
             if ($folder.hasClass('open')) {
                 this.toggleExpandable($folder);
@@ -129,7 +129,7 @@ var SidebarView = Backbone.View.extend({
         }.bind(this));
     },
 
-    toggleExpandable: function(e) {
+    toggleExpandable: function toggleExpandable(e) {
       var $expandable;
 
         if (typeof e.stopPropagation !== 'undefined') {
@@ -141,7 +141,7 @@ var SidebarView = Backbone.View.extend({
         Helpers.toggleExpandable($expandable, 400);
     },
 
-    removeChildren: function(except) {
+    removeChildren: function removeChildren(except) {
         var k;
         for (k in this.childViews) {
             if (this.childViews.hasOwnProperty(k)) {
@@ -155,16 +155,16 @@ var SidebarView = Backbone.View.extend({
         this.$el.find('.regs-meta').remove();
     },
 
-    loading: function() {
+    loading: function loading() {
         this.$el.addClass('loading');
     },
 
-    loaded: function() {
+    loaded: function loaded() {
         this.$el.removeClass('loading');
     },
 
     // when breakaway view loads
-    hideChildren: function() {
+    hideChildren: function hideChildren() {
         this.loading();
     },
 });

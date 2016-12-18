@@ -18,7 +18,7 @@ var SxSView = Backbone.View.extend({
         'click .return-link': 'removeHighlight',
     },
 
-    initialize: function(options) {
+    initialize: function initialize(options) {
       this.options = options;
 
       // visibly open the SxS panel immediately
@@ -27,11 +27,11 @@ var SxSView = Backbone.View.extend({
       // give it a state of `progress` until content loads
       this.changeState('inprogress');
 
-      SxSModel.get(this.options.url, {}).then(function(resp) {
+      SxSModel.get(this.options.url, {}).then(function handleResponse(resp) {
         this.$el.html(resp);
-      }.bind(this)).fail(function() {
+      }.bind(this)).fail(function failed() {
         this.$el.html('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>Due to a network error, we were unable to retrieve the requested information.</div>');
-      }.bind(this)).always(function() {
+      }.bind(this)).always(function always() {
         this.changeState('completed');
       }.bind(this));
 
@@ -44,14 +44,14 @@ var SxSView = Backbone.View.extend({
       }
     },
 
-    changeState: function(state) {
+    changeState: function changeState(state) {
         // if a previous state exists remove the class before updating
         this.$el.removeClass(this.loadingState);
         this.loadingState = state;
         this.$el.addClass(state);
     },
 
-    footnoteHighlight: function(e) {
+    footnoteHighlight: function footnoteHighlight(e) {
         var target = $(e.target).attr('href');
         // remove existing highlight
         this.removeHighlight();
@@ -59,11 +59,11 @@ var SxSView = Backbone.View.extend({
         $('.footnotes ' + target).toggleClass('highlight');
     },
 
-    removeHighlight: function() {
+    removeHighlight: function removeHighlight() {
         $('.footnotes li').removeClass('highlight');
     },
 
-    remove: function(e) {
+    remove: function remove(e) {
         if (typeof e !== 'undefined') {
             e.preventDefault();
             window.history.back();

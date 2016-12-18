@@ -12,7 +12,7 @@ var AttachmentView = Backbone.View.extend({
     'click .attachment-remove': 'handleRemove',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.template = _.template(document.querySelector('#comment-attachment-template').innerHTML);
     this.options = options;
 
@@ -25,22 +25,22 @@ var AttachmentView = Backbone.View.extend({
     this.$progress = this.$el.find('.attachment-progress');
   },
 
-  render: function() {
+  render: function render() {
     var $el = $(this.template(this.options));
     this.options.$parent.append($el);
     this.setElement($el);
   },
 
-  handleProgress: function(e) {
+  handleProgress: function handleProgress(e) {
     var percent = e.loaded / e.total;
     this.$progress.text(Math.round(percent * 1000) / 10);
   },
 
-  handleLoad: function() {
+  handleLoad: function handleLoad() {
     this.$progress.empty();
   },
 
-  handleRemove: function() {
+  handleRemove: function handleRemove() {
     CommentEvents.trigger('attachment:remove', this.options.key);
     if (this.options.xhr) {
       this.options.xhr.abort();

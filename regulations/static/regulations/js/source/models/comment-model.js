@@ -14,7 +14,7 @@ var commentModel = Backbone.Model.extend({
   },
 });
 
-var indexComparator = function(first, second) {
+var indexComparator = function indexComparator(first, second) {
     var maxLength = Math.max(first.length, second.length);
 
     for (var i = 0; i < maxLength; i++) {
@@ -31,7 +31,7 @@ var indexComparator = function(first, second) {
     return 0;
 };
 
-var commentComparator = function(first, second) {
+var commentComparator = function commentComparator(first, second) {
     return indexComparator(first.get('indexes'), second.get('indexes'));
 };
 

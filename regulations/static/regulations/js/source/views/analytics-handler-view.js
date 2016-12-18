@@ -6,7 +6,7 @@ var GAEvents = require('../events/ga-events');
 Backbone.$ = $;
 
 var AnalyticsHandler = Backbone.View.extend({
-    initialize: function() {
+    initialize: function initialize() {
         GAEvents.on('section:open', this.sendEvent, 'open');
         GAEvents.on('definition:open', this.sendEvent, 'open');
         GAEvents.on('definition:close', this.sendEvent, 'close');
@@ -20,12 +20,12 @@ var AnalyticsHandler = Backbone.View.extend({
         GAEvents.on('drawer:switchTab', this.sendEvent, 'switch tab');
 
         // not sure if this works
-        $('#timeline .stop-button').on('click', function() {
+        $('#timeline .stop-button').on('click', function click() {
             this.sendEvent({type: 'diff'}).bind('click stop comparing');
         }.bind(this));
     },
 
-    sendEvent: function(context) {
+    sendEvent: function sendEvent(context) {
         var object, objectParts = [];
 
         if (typeof window.ga === 'undefined') {

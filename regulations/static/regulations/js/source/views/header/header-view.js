@@ -8,7 +8,7 @@ Backbone.$ = $;
 var HeaderView = Backbone.View.extend({
     el: '.reg-header',
 
-    initialize: function() {
+    initialize: function initialize() {
         this.subHeadView = new SubHead();
     },
 
@@ -16,7 +16,7 @@ var HeaderView = Backbone.View.extend({
         'click .mobile-nav-trigger': 'toggleNav',
     },
 
-    toggleNav: function(e) {
+    toggleNav: function toggleNav(e) {
         e.preventDefault();
         $('.app-nav-list, .mobile-nav-trigger').toggleClass('open');
     },
@@ -25,7 +25,7 @@ var HeaderView = Backbone.View.extend({
         'changeSubHeadText': '_updateSubHead',
     },
 
-    ask: function(message, context) {
+    ask: function ask(message, context) {
         if (typeof this.contextMap[message] !== 'undefined') {
             this.contextMap[message].apply(context);
         }
@@ -33,7 +33,7 @@ var HeaderView = Backbone.View.extend({
 
     // type = wayfinding or search
     // content = new content
-    _updateSubHead: function(context) {
+    _updateSubHead: function _updateSubHead(context) {
         this.subHeadView.change(
             context.type,
             context.content,

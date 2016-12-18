@@ -7,7 +7,7 @@ var MetaModel = require('./meta-model');
 var helpers = require('../helpers');
 
 Backbone.PreambleModel = MetaModel.extend({
-  getAJAXUrl: function(id) {
+  getAJAXUrl: function getAJAXUrl(id) {
     var path = helpers.parsePreambleId(id).path;
     path[0] = window.APP_PREFIX + path[0];
     return URI()
