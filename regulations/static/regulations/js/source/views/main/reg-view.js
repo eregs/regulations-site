@@ -94,9 +94,8 @@ var RegView = ChildView.extend({
       return 'Supplement I to Part ' + this.docId + ' | eRegulations';
     } else if (this.options.subContentType === 'appendix') {
       return 'Appendix ' + this.id.substr(this.id.length - 1) + ' to Part ' + this.docId + ' | eRegulations';
-    } else {
-      return this.cfrTitle + ' CFR ' + this.sectionLabel + ' | eRegulations';
     }
+    return this.cfrTitle + ' CFR ' + this.sectionLabel + ' | eRegulations';
   },
 
     // if an inline definition is open, check the links here to see

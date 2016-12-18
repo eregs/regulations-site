@@ -70,23 +70,23 @@ module.exports = {
             // catches 123-Interp-h1
       if (parts[1] === 'Interp') {
         return id;
-      } else {
-                // catches:
-                // 123-4-Interp
-                // 123-4-Interp-5
-                // 123-Subpart-Interp
-                // 123-Subpart-A-Interp
-                // 123-Subpart-Interp-4
-                // 123-Subpart-A-Interp-4
-                // 123-Appendices-Interp
-                // 123-Appendices-Interp-4
-        return parts.slice(0, interpIndex + 1).join('-');
       }
+
+      // catches:
+      // 123-4-Interp
+      // 123-4-Interp-5
+      // 123-Subpart-Interp
+      // 123-Subpart-A-Interp
+      // 123-Subpart-Interp-4
+      // 123-Subpart-A-Interp-4
+      // 123-Appendices-Interp
+      // 123-Appendices-Interp-4
+      return parts.slice(0, interpIndex + 1).join('-');
     }
 
-        // catches:
-        // 123-4-*
-        // 123-A-*
+    // catches:
+    // 123-4-*
+    // 123-A-*
     return parts[0] + '-' + parts[1];
   },
 
