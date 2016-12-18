@@ -47,7 +47,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^1.0.1",
     "grunt-contrib-sass": "^1.0.0",
-    "grunt-eslint": "^18.0.0",
+    "grunt-eslint": "^19.0.0",
     "grunt-mocha-istanbul": "^3.0.1",
     "grunt-shell": "^1.2.1",
     "istanbul": "^0.4.2",
