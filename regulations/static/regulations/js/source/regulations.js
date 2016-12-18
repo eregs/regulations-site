@@ -6,24 +6,24 @@ var app = require('./app-init');
 
 // A `bind()` polyfill
 if (!Function.prototype.bind) {
-    Function.prototype.bind = function bind(oThis) {
-        if (typeof this !== 'function') {
+  Function.prototype.bind = function bind(oThis) {
+    if (typeof this !== 'function') {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
-            throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-        }
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
 
-      var aArgs = Array.prototype.slice.call(arguments, 1),
-          fToBind = this,
-          FNOP = function FNOP() {},
-          fBound = function fBound() {
-            return fToBind.apply(this instanceof FNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
-          };
+    var aArgs = Array.prototype.slice.call(arguments, 1),
+      fToBind = this,
+      FNOP = function FNOP() {},
+      fBound = function fBound() {
+        return fToBind.apply(this instanceof FNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
+      };
 
-      FNOP.prototype = this.prototype;
-      fBound.prototype = new FNOP();
+    FNOP.prototype = this.prototype;
+    fBound.prototype = new FNOP();
 
-      return fBound;
-    };
+    return fBound;
+  };
 }
 
 // a 'window.location.origin' polyfill for IE10
@@ -33,7 +33,7 @@ if (!window.location.origin) {
 }
 
 $(document).ready(function ready() {
-    app.init();
+  app.init();
 });
 
 // tests for some accessibility misses

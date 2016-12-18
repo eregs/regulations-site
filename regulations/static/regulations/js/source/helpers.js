@@ -41,14 +41,14 @@ if (!Array.prototype.indexOf) {
 
 module.exports = {
     // Finds parent-most reg paragraph
-    findBaseSection: function findBaseSection(id) {
-        var parts, interpIndex;
+  findBaseSection: function findBaseSection(id) {
+    var parts, interpIndex;
 
-        if (id.indexOf('-') !== -1) {
-            parts = id.split('-');
-        } else {
-            return id;
-        }
+    if (id.indexOf('-') !== -1) {
+      parts = id.split('-');
+    } else {
+      return id;
+    }
 
         // if what has been passed in is a base section already
         // catches:
@@ -56,17 +56,17 @@ module.exports = {
         // 123-1
         // 123-A
         // 123-Interp
-        if (parts.length <= 2) {
-            return id;
-        }
+    if (parts.length <= 2) {
+      return id;
+    }
 
-        interpIndex = parts.indexOf('Interp');
+    interpIndex = parts.indexOf('Interp');
 
-        if (interpIndex !== -1) {
+    if (interpIndex !== -1) {
             // catches 123-Interp-h1
-            if (parts[1] === 'Interp') {
-                return id;
-            } else {
+      if (parts[1] === 'Interp') {
+        return id;
+      } else {
                 // catches:
                 // 123-4-Interp
                 // 123-4-Interp-5
@@ -76,15 +76,15 @@ module.exports = {
                 // 123-Subpart-A-Interp-4
                 // 123-Appendices-Interp
                 // 123-Appendices-Interp-4
-                return parts.slice(0, interpIndex + 1).join('-');
-            }
-        }
+        return parts.slice(0, interpIndex + 1).join('-');
+      }
+    }
 
         // catches:
         // 123-4-*
         // 123-A-*
-        return parts[0] + '-' + parts[1];
-    },
+    return parts[0] + '-' + parts[1];
+  },
 
     // Unpaired this function from the DOM to make
     // it more testable and flexible. Look at resources.js
@@ -97,118 +97,118 @@ module.exports = {
     // interesting things, is to introduce the concept of reg
     // version and maybe effective dates to the architecture
     // at that time, this should be removed
-    findVersion: function findVersion(versionElements) {
-      return $(versionElements.toc).attr('data-toc-version') ||
+  findVersion: function findVersion(versionElements) {
+    return $(versionElements.toc).attr('data-toc-version') ||
                   $(versionElements.regLandingPage).attr('data-base-version')||
                   $(versionElements.timelineList).find('.stop-button').attr('data-version');
                     // includes .stop-button to be sure its not
                     // the comparison version in diff mode
-    },
+  },
 
     // returns newer version. findVersion will return base version
-    findDiffVersion: function findDiffVersion(versionElements, currentVersion) {
-        var version;
-        currentVersion = currentVersion || this.findVersion(versionElements);
-        version = $(versionElements.diffToc).attr('data-from-version');
-        if (!version || version === currentVersion) {
-            if ($(versionElements.timelineList).find('.version-link').attr('data-version') !== currentVersion) {
-                version = $(versionElements.timelineList).find('.version-link').attr('data-version');
-            }
-        }
+  findDiffVersion: function findDiffVersion(versionElements, currentVersion) {
+    var version;
+    currentVersion = currentVersion || this.findVersion(versionElements);
+    version = $(versionElements.diffToc).attr('data-from-version');
+    if (!version || version === currentVersion) {
+      if ($(versionElements.timelineList).find('.version-link').attr('data-version') !== currentVersion) {
+        version = $(versionElements.timelineList).find('.version-link').attr('data-version');
+      }
+    }
 
-        return version;
-    },
+    return version;
+  },
 
-    isSupplement: function isSupplement(id) {
-        var parts;
+  isSupplement: function isSupplement(id) {
+    var parts;
 
-        if (typeof id !== 'undefined') {
-            parts = _.compact(id.split('-'));
-            if (parts.length < 2) {
-                return false;
-            }
-
-            if (parts[1].toLowerCase() === 'interp') {
-                return true;
-            }
-        }
-
+    if (typeof id !== 'undefined') {
+      parts = _.compact(id.split('-'));
+      if (parts.length < 2) {
         return false;
-    },
+      }
 
-    isAppendix: function isAppendix(id) {
-        var parts;
+      if (parts[1].toLowerCase() === 'interp') {
+        return true;
+      }
+    }
 
-        if (typeof id !== 'undefined') {
-            parts = _.compact(id.split('-'));
-            if (parts.length < 2) {
-                return false;
-            }
+    return false;
+  },
 
-            if (isNaN(parts[1].substr(0, 1)) && parts[1].toLowerCase() !== 'interp') {
-                return true;
-            }
-        }
+  isAppendix: function isAppendix(id) {
+    var parts;
 
+    if (typeof id !== 'undefined') {
+      parts = _.compact(id.split('-'));
+      if (parts.length < 2) {
         return false;
-    },
+      }
 
-    formatSubpartLabel: function formatSubpartLabel(id) {
+      if (isNaN(parts[1].substr(0, 1)) && parts[1].toLowerCase() !== 'interp') {
+        return true;
+      }
+    }
+
+    return false;
+  },
+
+  formatSubpartLabel: function formatSubpartLabel(id) {
         // accepts 123-Subpart-C
-        var parts = id.split('-'),
-            label = 'Subpart ';
-        if (isNaN(parts[0]) === false && parts[1] === 'Subpart') {
-            label += parts[2];
-        }
+    var parts = id.split('-'),
+      label = 'Subpart ';
+    if (isNaN(parts[0]) === false && parts[1] === 'Subpart') {
+      label += parts[2];
+    }
 
-        return label;
-    },
+    return label;
+  },
 
     // accepts to params:
     // element to be expanded
     // animation duration
-    toggleExpandable: function toggleExpandable($expandable, dur) {
-        $expandable.toggleClass('open')
+  toggleExpandable: function toggleExpandable($expandable, dur) {
+    $expandable.toggleClass('open')
           .next('.chunk').slideToggle(dur);
-    },
+  },
 
     /**
      * Parse a preamble section ID.
      * @param {string} id Preamble section ID
      * @see unittests for example usage
      */
-    parsePreambleId: function parsePreambleId(id) {
-      var parts = id.split('-');
-      var docId = parts.shift();
-      var type = parts.shift();
-      var path = ['preamble', docId];
-      var section;
-      if (type === 'preamble') {
+  parsePreambleId: function parsePreambleId(id) {
+    var parts = id.split('-');
+    var docId = parts.shift();
+    var type = parts.shift();
+    var path = ['preamble', docId];
+    var section;
+    if (type === 'preamble') {
         // Note: Document ID appears twice in preamble IDs
         // TODO: Standardize IDs and drop the `slice`
-        path = path.concat(parts.slice(1, 2));
-        section = [docId].concat(parts.slice(1, 2));
-      } else if (type === 'cfr') {
+      path = path.concat(parts.slice(1, 2));
+      section = [docId].concat(parts.slice(1, 2));
+    } else if (type === 'cfr') {
         // Sections for CFR changes include the two first parts; the ID
         // 478-32-p243 maps to the section 478-32
-        path = path.concat(['cfr_changes', parts.slice(0, 2).join('-')]);
-        section = parts.slice(0, 2);
-      }
-      var parsed = {
-        path: path,
-        type: type,
-        docId: docId,
-        section: section,
-      };
+      path = path.concat(['cfr_changes', parts.slice(0, 2).join('-')]);
+      section = parts.slice(0, 2);
+    }
+    var parsed = {
+      path: path,
+      type: type,
+      docId: docId,
+      section: section,
+    };
       /**
        * If linking to the top-level, we don't need a hash. Otherwise, link to
        * the beginning of the associated subsection
        **/
-      if (parts.length > 2) {
-        parsed.hash = parts.join('-');
-      }
-      return parsed;
-    },
+    if (parts.length > 2) {
+      parsed.hash = parts.join('-');
+    }
+    return parsed;
+  },
 
     /**
      * Parse the citation link hash to open the correct section.
@@ -222,18 +222,18 @@ module.exports = {
      *
      * @see unittests
      */
-    parsePreambleCitationId: function parsePreambleCitationId(hash, type) {
+  parsePreambleCitationId: function parsePreambleCitationId(hash, type) {
       // only grab the section info after #
-      var section = hash.substring(hash.indexOf('#') + 1);
-      var parts = section.split('-');
-      var docId = parts.shift();
+    var section = hash.substring(hash.indexOf('#') + 1);
+    var parts = section.split('-');
+    var docId = parts.shift();
 
-      if (type === 'preamble-section') {
-        type = 'preamble';
-      } else {
-        type = 'cfr';
-      }
+    if (type === 'preamble-section') {
+      type = 'preamble';
+    } else {
+      type = 'cfr';
+    }
 
-      return [docId, type, section].join('-');
-    },
+    return [docId, type, section].join('-');
+  },
 };

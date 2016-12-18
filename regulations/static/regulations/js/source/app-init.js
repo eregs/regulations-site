@@ -13,28 +13,28 @@ var AnalyticsHandler = require('./views/analytics-handler-view');
 
 Backbone.$ = $;
 
- module.exports = {
+module.exports = {
     // Purgatory for DOM event bindings that should happen in a View
-    bindEvents: function bindEvents() {
+  bindEvents: function bindEvents() {
         // disable/hide an alert
-        $('.disable-link').on( 'click', function click(e) {
-            e.preventDefault();
-            $(this).closest('.displayed').addClass('disabled');
-        });
-    },
+    $('.disable-link').on( 'click', function click(e) {
+      e.preventDefault();
+      $(this).closest('.displayed').addClass('disabled');
+    });
+  },
 
-    init: function init() {
-        var regs = window.regs || {};
+  init: function init() {
+    var regs = window.regs || {};
 
-        Router.start();
-        this.bindEvents();
-        var gaview = new AnalyticsHandler();
-        var header = new HeaderView();  // Header before Drawer as Drawer sends Header events
-        var drawer = new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
-        var main = new MainView();
-        var sidebar = new SidebarView();
-        setTimeout(function seleniumStart() {
-            $('html').addClass('selenium-start');
-        }, 5000);
-    },
+    Router.start();
+    this.bindEvents();
+    var gaview = new AnalyticsHandler();
+    var header = new HeaderView();  // Header before Drawer as Drawer sends Header events
+    var drawer = new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
+    var main = new MainView();
+    var sidebar = new SidebarView();
+    setTimeout(function seleniumStart() {
+      $('html').addClass('selenium-start');
+    }, 5000);
+  },
 };

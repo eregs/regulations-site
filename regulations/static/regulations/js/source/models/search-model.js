@@ -7,30 +7,30 @@ var MetaModel = require('./meta-model');
 Backbone.SearchModel = MetaModel.extend({});
 
 var searchModel = new Backbone.SearchModel({
-    supplementalPath: 'search',
+  supplementalPath: 'search',
 
-    getAJAXUrl: function getAJAXUrl(id, options) {
-      var url = window.APP_PREFIX + 'partial/';
+  getAJAXUrl: function getAJAXUrl(id, options) {
+    var url = window.APP_PREFIX + 'partial/';
 
-      if (typeof this.supplementalPath !== 'undefined') {
-        url += this.supplementalPath + '/';
-      }
+    if (typeof this.supplementalPath !== 'undefined') {
+      url += this.supplementalPath + '/';
+    }
 
-      return url + this.assembleSearchURL(options);
-    },
+    return url + this.assembleSearchURL(options);
+  },
 
-    assembleSearchURL: function assembleSearchURL(options) {
-      var docType = options.docType || 'cfr';
-      var path = [docType, options.docId].join('/');
-      var query = {q: options.query};
-      if (options.regVersion) {
-        query.version = options.regVersion;
-      }
-      if (typeof options.page !== 'undefined') {
-        query.page = options.page;
-      }
-      return URI(path).query(query).toString();
-    },
+  assembleSearchURL: function assembleSearchURL(options) {
+    var docType = options.docType || 'cfr';
+    var path = [docType, options.docId].join('/');
+    var query = {q: options.query};
+    if (options.regVersion) {
+      query.version = options.regVersion;
+    }
+    if (typeof options.page !== 'undefined') {
+      query.page = options.page;
+    }
+    return URI(path).query(query).toString();
+  },
 });
 
 module.exports = searchModel;

@@ -15,27 +15,27 @@ var commentModel = Backbone.Model.extend({
 });
 
 var indexComparator = function indexComparator(first, second) {
-    var maxLength = Math.max(first.length, second.length);
+  var maxLength = Math.max(first.length, second.length);
 
-    for (var i = 0; i < maxLength; i++) {
-        if (first[i] === undefined) {
-            return -1;
-        } else if (second[i] === undefined) {
-            return 1;
-        } else if (first[i] < second[i]) {
-            return -1;
-        } else if (first[i] > second[i]) {
-            return 1;
-        }
+  for (var i = 0; i < maxLength; i++) {
+    if (first[i] === undefined) {
+      return -1;
+    } else if (second[i] === undefined) {
+      return 1;
+    } else if (first[i] < second[i]) {
+      return -1;
+    } else if (first[i] > second[i]) {
+      return 1;
     }
-    return 0;
+  }
+  return 0;
 };
 
 var commentComparator = function commentComparator(first, second) {
-    return indexComparator(first.get('indexes'), second.get('indexes'));
+  return indexComparator(first.get('indexes'), second.get('indexes'));
 };
 
 module.exports = {
-    CommentModel: commentModel,
-    commentComparator: commentComparator,
+  CommentModel: commentModel,
+  commentComparator: commentComparator,
 };

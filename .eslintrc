@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    indent: off
     lines-around-directive: off
     max-len: off
     no-bitwise: off

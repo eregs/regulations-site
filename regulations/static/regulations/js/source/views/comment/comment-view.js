@@ -97,7 +97,7 @@ var CommentView = Backbone.View.extend({
     this.model = blank ?
       new CommentModel(options) :
       comments.get(section) || new CommentModel(options);
-      this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, tocId, indexes, label, true));
+    this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, tocId, indexes, label, true));
 
     this.render();
   },

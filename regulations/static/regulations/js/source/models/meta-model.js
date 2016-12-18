@@ -9,82 +9,82 @@ Backbone.$ = $;
 
 var MetaModel = Backbone.Model.extend({
 
-    constructor: function constructor(properties) {
-        var k;
+  constructor: function constructor(properties) {
+    var k;
 
-        if (typeof properties !== 'undefined') {
-            for (k in properties) {
-                if (properties.hasOwnProperty(k)) {
-                    this[k] = properties[k];
-                }
-            }
+    if (typeof properties !== 'undefined') {
+      for (k in properties) {
+        if (properties.hasOwnProperty(k)) {
+          this[k] = properties[k];
         }
+      }
+    }
 
         // in the case of reg-model
         // an index of all of the entities in the reg, whether or not they've been loaded
-        this.content = this.content || {};
+    this.content = this.content || {};
 
         // in the case of reg-model
         // content = markup to string representations of each reg paragraph/entity
         // loaded into the browser (rendered or not)
-        this.structure = this.structure || [];
+    this.structure = this.structure || [];
 
-        Backbone.Model.apply(this, arguments);
-    },
+    Backbone.Model.apply(this, arguments);
+  },
 
-    set: function set(sectionId, sectionValue) {
-        var cached = this.has(sectionId),
-            section;
+  set: function set(sectionId, sectionValue) {
+    var cached = this.has(sectionId),
+      section;
 
-        if (typeof sectionId !== 'undefined' && !(_.isEmpty(sectionId))) {
-            if (!(cached)) {
-                this.content[sectionId] = sectionValue;
-                section = sectionValue;
+    if (typeof sectionId !== 'undefined' && !(_.isEmpty(sectionId))) {
+      if (!(cached)) {
+        this.content[sectionId] = sectionValue;
+        section = sectionValue;
 
-                if (_.indexOf(this.structure, sectionId) === -1) {
-                    this.structure.push(sectionId);
-                }
-            } else {
-                section = cached;
-            }
+        if (_.indexOf(this.structure, sectionId) === -1) {
+          this.structure.push(sectionId);
         }
-        return section;
-    },
+      } else {
+        section = cached;
+      }
+    }
+    return section;
+  },
 
-    has: function has(id) {
-      return !!this.content[id];
-    },
+  has: function has(id) {
+    return !!this.content[id];
+  },
 
-    get: function get(id, options) {
-      return this.has(id) ?
+  get: function get(id, options) {
+    return this.has(id) ?
         $.when(this.content[id]) :
         this.request(id, options);
-    },
+  },
 
-    request: function request(id, options) {
-      return $.ajax({
-        url: this.getAJAXUrl(id, options),
-        success: function success(data) {
-          this.set(id, data);
-        }.bind(this),
-      });
-    },
+  request: function request(id, options) {
+    return $.ajax({
+      url: this.getAJAXUrl(id, options),
+      success: function success(data) {
+        this.set(id, data);
+      }.bind(this),
+    });
+  },
 
-    getAJAXUrl: function getAJAXUrl(id, options) {
-        var url = window.APP_PREFIX + 'partial/';
+  getAJAXUrl: function getAJAXUrl(id, options) {
+    var url = window.APP_PREFIX + 'partial/';
 
-        if (typeof this.supplementalPath !== 'undefined') {
-            url += this.supplementalPath + '/';
-        }
+    if (typeof this.supplementalPath !== 'undefined') {
+      url += this.supplementalPath + '/';
+    }
 
-        url += id;
+    url += id;
 
-        if (id.indexOf('/') === -1) {
-            url += '/' + Helpers.findVersion(Resources.versionElements);
-        }
+    if (id.indexOf('/') === -1) {
+      url += '/' + Helpers.findVersion(Resources.versionElements);
+    }
 
-        return url;
-    },
+    return url;
+  },
 });
 
 module.exports = MetaModel;

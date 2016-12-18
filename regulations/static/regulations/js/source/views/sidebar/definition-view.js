@@ -18,180 +18,180 @@ Backbone.$ = $;
 //
 // this.options turns into this.model
 var DefinitionView = Backbone.View.extend({
-    el: '#definition',
+  el: '#definition',
 
-    events: {
-        'click .close-button': 'close',
-        'click .update-definition': 'updateDefinition',
-    },
+  events: {
+    'click .close-button': 'close',
+    'click .update-definition': 'updateDefinition',
+  },
 
-    initialize: function initialize(options) {
-        this.options = options;
-        this.listenTo(SidebarEvents, 'definition:outOfScope', this.displayScopeMsg);
-        this.listenTo(SidebarEvents, 'definition:inScope', this.removeScopeMsg);
-        this.listenTo(SidebarEvents, 'definition:activate', this.unGrayDefinition);
-        this.listenTo(SidebarEvents, 'definition:deactivate', this.grayOutDefinition);
+  initialize: function initialize(options) {
+    this.options = options;
+    this.listenTo(SidebarEvents, 'definition:outOfScope', this.displayScopeMsg);
+    this.listenTo(SidebarEvents, 'definition:inScope', this.removeScopeMsg);
+    this.listenTo(SidebarEvents, 'definition:activate', this.unGrayDefinition);
+    this.listenTo(SidebarEvents, 'definition:deactivate', this.grayOutDefinition);
 
-        if (typeof this.options.id !== 'undefined') {
-            this.id = this.options.id;
-        }
+    if (typeof this.options.id !== 'undefined') {
+      this.id = this.options.id;
+    }
 
-        if (typeof this.options.term !== 'undefined') {
-            this.term = this.options.term;
-            this.$el.data('defined-term', this.term);
-        }
+    if (typeof this.options.term !== 'undefined') {
+      this.term = this.options.term;
+      this.$el.data('defined-term', this.term);
+    }
 
         // insert the spinner header to be replaced
         // by the full def once it loads
-        this.renderHeader();
+    this.renderHeader();
 
         // if pushState is supported, attach the
         // appropriate event handlers
-        if (Router.hasPushState) {
-            this.events['click .continue-link.interp'] = 'openInterpretation';
-            this.events['click .continue-link.full-def'] = 'openFullDefinition';
-            this.events['click .definition'] = 'openFullDefinition';
-            this.delegateEvents(this.events);
-        }
-    },
+    if (Router.hasPushState) {
+      this.events['click .continue-link.interp'] = 'openInterpretation';
+      this.events['click .continue-link.full-def'] = 'openFullDefinition';
+      this.events['click .definition'] = 'openFullDefinition';
+      this.delegateEvents(this.events);
+    }
+  },
 
     // temporary header w/spinner while definition is loading
-    renderHeader: function renderHeader() {
-        this.$el.html('<header class="group spinner"><h4>Defined Term</h4></header>');
-    },
+  renderHeader: function renderHeader() {
+    this.$el.html('<header class="group spinner"><h4>Defined Term</h4></header>');
+  },
 
-    render: function render(html) {
-        this.$el.html(html);
-    },
+  render: function render(html) {
+    this.$el.html(html);
+  },
 
-    renderError: function renderError(error) {
-        this.$el.html('');
-        this.renderHeader();
-        this.$el.children().removeClass('spinner');
-        this.$el.append('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>' + error + '</div>');
-    },
+  renderError: function renderError(error) {
+    this.$el.html('');
+    this.renderHeader();
+    this.$el.children().removeClass('spinner');
+    this.$el.append('<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>' + error + '</div>');
+  },
 
-    close: function close(e) {
-        e.preventDefault();
+  close: function close(e) {
+    e.preventDefault();
         // return focus to the definition link once the definition is removed
-        $('.definition.active').focus();
+    $('.definition.active').focus();
 
-        MainEvents.trigger('definition:close');
-        GAEvents.trigger('definition:close', {
-            type: 'definition',
-            by: 'header close button',
-        });
-        this.remove();
-    },
+    MainEvents.trigger('definition:close');
+    GAEvents.trigger('definition:close', {
+      type: 'definition',
+      by: 'header close button',
+    });
+    this.remove();
+  },
 
-    updateDefinition: function updateDefinition(e) {
-        e.preventDefault(e);
+  updateDefinition: function updateDefinition(e) {
+    e.preventDefault(e);
 
-        SidebarEvents.trigger('definition:open', {
-            id: $(e.target).data('definition'),
-            term: this.term,
-            cb: function cb() {
+    SidebarEvents.trigger('definition:open', {
+      id: $(e.target).data('definition'),
+      term: this.term,
+      cb: function cb() {
                 // update list of out of scope paragraphs for new definition
-                MainEvents.trigger('definition:carriedOver');
-            },
-        });
-    },
+        MainEvents.trigger('definition:carriedOver');
+      },
+    });
+  },
 
     // displayed when an open definition doesn't apply to the
     // whole open section
-    displayScopeMsg: function displayScopeMsg(id) {
-        var msg = '<p>This term has a different definition for some portions of ';
-        msg += id ? $('#' + id).data('label') + '.' : 'this section.';
-        msg += '</p>';
+  displayScopeMsg: function displayScopeMsg(id) {
+    var msg = '<p>This term has a different definition for some portions of ';
+    msg += id ? $('#' + id).data('label') + '.' : 'this section.';
+    msg += '</p>';
 
-        this.$warningContainer = this.$warningContainer || this.$el.find('.definition-warning');
+    this.$warningContainer = this.$warningContainer || this.$el.find('.definition-warning');
 
-        this.$warningContainer.removeClass('hidden')
+    this.$warningContainer.removeClass('hidden')
                               .find('.msg').html(msg);
-    },
+  },
 
     // when a definition is fully applicable to the section
-    removeScopeMsg: function removeScopeMsg() {
-        if (typeof this.$warningContainer !== 'undefined' && this.$warningContainer.length > 0) {
-            this.$warningContainer.addClass('hidden').find('.msg').html('');
-        }
+  removeScopeMsg: function removeScopeMsg() {
+    if (typeof this.$warningContainer !== 'undefined' && this.$warningContainer.length > 0) {
+      this.$warningContainer.addClass('hidden').find('.msg').html('');
+    }
 
-        this.unGrayDefinition();
-    },
+    this.unGrayDefinition();
+  },
 
     // for when the definition does not apply to the active section
-    grayOutDefinition: function grayOutDefinition(defId, href, activeSectionId) {
-        var $text = this.$el.find('.definition-text'),
-            linkText = 'Load the correct definition for ',
-            link,
-            $msg;
+  grayOutDefinition: function grayOutDefinition(defId, href, activeSectionId) {
+    var $text = this.$el.find('.definition-text'),
+      linkText = 'Load the correct definition for ',
+      link,
+      $msg;
 
-        if (typeof this.$warningContainer === 'undefined') {
-            this.displayScopeMsg(Helpers.findBaseSection(activeSectionId));
-        }
+    if (typeof this.$warningContainer === 'undefined') {
+      this.displayScopeMsg(Helpers.findBaseSection(activeSectionId));
+    }
 
-        $msg = this.$warningContainer.find('.msg');
-        linkText += (defId) ? $('#' + activeSectionId).data('label') : 'this section';
-        link = '<a href="' + href + '" class="update-definition inactive internal" data-definition="' + defId + '">';
-        link += linkText + '</a>';
+    $msg = this.$warningContainer.find('.msg');
+    linkText += (defId) ? $('#' + activeSectionId).data('label') : 'this section';
+    link = '<a href="' + href + '" class="update-definition inactive internal" data-definition="' + defId + '">';
+    link += linkText + '</a>';
 
         // remove duplicates
-        $msg.find('a').remove();
+    $msg.find('a').remove();
 
         // insert link to load applicable definition
-        $msg.append(link);
+    $msg.append(link);
 
         // gray out definition text
-        $text.addClass('inactive');
-    },
+    $text.addClass('inactive');
+  },
 
     // for when a definition is not in conflict for the active section,
     // but doesn't apply to the entire section, either
-    unGrayDefinition: function unGrayDefinition() {
-        var $text = this.$el.find('.definition-text');
-        $text.removeClass('inactive');
+  unGrayDefinition: function unGrayDefinition() {
+    var $text = this.$el.find('.definition-text');
+    $text.removeClass('inactive');
 
-        this.$el.find('.definition-warning a').remove();
-    },
+    this.$el.find('.definition-warning a').remove();
+  },
 
-    openFullDefinition: function openFullDefinition(e) {
-        e.preventDefault();
-        var id = $(e.target).data('linked-section') || $(e.target).data('definition'),
-            parentId = Helpers.findBaseSection(id);
+  openFullDefinition: function openFullDefinition(e) {
+    e.preventDefault();
+    var id = $(e.target).data('linked-section') || $(e.target).data('definition'),
+      parentId = Helpers.findBaseSection(id);
 
-        MainEvents.trigger('section:open', parentId, {
-            scrollToId: id,
-        }, 'reg-section');
+    MainEvents.trigger('section:open', parentId, {
+      scrollToId: id,
+    }, 'reg-section');
 
-        GAEvents.trigger('definition:followCitation', {
-            id: id,
-            type: 'definition',
-        });
-    },
+    GAEvents.trigger('definition:followCitation', {
+      id: id,
+      type: 'definition',
+    });
+  },
 
-    openInterpretation: function openInterpretation(e) {
-        e.preventDefault();
-        var $e = $(e.target),
-            id = $e.data('linked-section'),
-            pid = $e.data('linked-subsection');
+  openInterpretation: function openInterpretation(e) {
+    e.preventDefault();
+    var $e = $(e.target),
+      id = $e.data('linked-section'),
+      pid = $e.data('linked-subsection');
 
-        MainEvents.trigger('section:open', id, {
-            scrollToId: pid,
-        }, 'interpretation');
+    MainEvents.trigger('section:open', id, {
+      scrollToId: pid,
+    }, 'interpretation');
 
-        GAEvents.trigger('definition:followCitation', {
-            id: id,
-            type: 'definition',
-        });
-    },
+    GAEvents.trigger('definition:followCitation', {
+      id: id,
+      type: 'definition',
+    });
+  },
 
-    remove: function remove() {
-        this.stopListening();
-        this.off();
-        this.$el.html('');
+  remove: function remove() {
+    this.stopListening();
+    this.off();
+    this.$el.html('');
 
-        return this;
-    },
+    return this;
+  },
 });
 
 module.exports = DefinitionView;
