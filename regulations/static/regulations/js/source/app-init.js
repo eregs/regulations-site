@@ -35,5 +35,5 @@ Backbone.$ = $;
         setTimeout(function() {
             $('html').addClass('selenium-start');
         }, 5000);
-    }
+    },
 };

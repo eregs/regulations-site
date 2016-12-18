@@ -35,7 +35,7 @@ var DiffView = ChildView.extend({
         titleParts = _.compact(document.title.split(' '));
         newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
         return newTitle.join(' ');
-    }
+    },
 });
 
 module.exports = DiffView;

@@ -30,7 +30,7 @@ var searchModel = new Backbone.SearchModel({
         query.page = options.page;
       }
       return URI(path).query(query).toString();
-    }
+    },
 });
 
 module.exports = searchModel;

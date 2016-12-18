@@ -14,7 +14,7 @@ Backbone.PreambleModel = MetaModel.extend({
       .path(path.join('/'))
       .addQuery({partial: 'true'})
       .toString();
-  }
+  },
 });
 
 module.exports = new Backbone.PreambleModel({});

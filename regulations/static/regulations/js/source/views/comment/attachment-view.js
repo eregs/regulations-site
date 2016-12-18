@@ -9,7 +9,7 @@ var CommentEvents = require('../../events/comment-events');
 
 var AttachmentView = Backbone.View.extend({
   events: {
-    'click .attachment-remove': 'handleRemove'
+    'click .attachment-remove': 'handleRemove',
   },
 
   initialize: function(options) {
@@ -45,7 +45,7 @@ var AttachmentView = Backbone.View.extend({
     if (this.options.xhr) {
       this.options.xhr.abort();
     }
-  }
+  },
 });
 
 module.exports = AttachmentView;

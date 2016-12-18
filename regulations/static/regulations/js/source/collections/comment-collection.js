@@ -24,7 +24,7 @@ var CommentCollection = Backbone.Collection.extend({
     });
   },
 
-  comparator: commentModel.commentComparator
+  comparator: commentModel.commentComparator,
 });
 
 var comments = new CommentCollection();

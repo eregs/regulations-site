@@ -65,7 +65,7 @@ var MetaModel = Backbone.Model.extend({
         url: this.getAJAXUrl(id, options),
         success: function(data) {
           this.set(id, data);
-        }.bind(this)
+        }.bind(this),
       });
     },
 
@@ -83,7 +83,7 @@ var MetaModel = Backbone.Model.extend({
         }
 
         return url;
-    }
+    },
 });
 
 module.exports = MetaModel;

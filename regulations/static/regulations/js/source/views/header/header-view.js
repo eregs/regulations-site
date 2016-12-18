@@ -13,7 +13,7 @@ var HeaderView = Backbone.View.extend({
     },
 
     events: {
-        'click .mobile-nav-trigger': 'toggleNav'
+        'click .mobile-nav-trigger': 'toggleNav',
     },
 
     toggleNav: function(e) {
@@ -22,7 +22,7 @@ var HeaderView = Backbone.View.extend({
     },
 
     contextMap: {
-        'changeSubHeadText': '_updateSubHead'
+        'changeSubHeadText': '_updateSubHead',
     },
 
     ask: function(message, context) {
@@ -36,9 +36,9 @@ var HeaderView = Backbone.View.extend({
     _updateSubHead: function(context) {
         this.subHeadView.change(
             context.type,
-            context.content
+            context.content,
         );
-    }
+    },
 });
 
 module.exports = HeaderView;

@@ -56,7 +56,7 @@ var SubHeadView = Backbone.View.extend({
 
     reset: function() {
         this.$activeTitle.html('');
-    }
+    },
 });
 
 module.exports = SubHeadView;

@@ -14,7 +14,7 @@ var SxSListView = Backbone.View.extend({
     el: '#sxs-list',
 
     events: {
-        'click .sxs-link': 'openSxS'
+        'click .sxs-link': 'openSxS',
     },
 
     initialize: function() {
@@ -38,14 +38,14 @@ var SxSListView = Backbone.View.extend({
         BreakawayEvents.trigger('sxs:open', {
             'regParagraph': id,
             'docNumber': docNumber,
-            'fromVersion': version
+            'fromVersion': version,
         });
 
         GAEvents.trigger('sxs:open', {
             id: id,
             docNumber: docNumber,
             regVersion: version,
-            type: 'sxs'
+            type: 'sxs',
         });
     },
 
@@ -53,7 +53,7 @@ var SxSListView = Backbone.View.extend({
         var $html = $(html),
             list = $html.find('#sxs-list').html();
         this.$el.html(list);
-    }
+    },
 });
 
 module.exports = SxSListView;

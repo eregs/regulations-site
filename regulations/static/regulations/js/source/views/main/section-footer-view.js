@@ -8,7 +8,7 @@ Backbone.$ = $;
 
 var SectionFooterView = Backbone.View.extend({
     events: {
-        'click .navigation-link': 'sendNavEvent'
+        'click .navigation-link': 'sendNavEvent',
     },
 
     initialize: function() {
@@ -33,7 +33,7 @@ var SectionFooterView = Backbone.View.extend({
     remove: function() {
         this.stopListening();
         return this;
-    }
+    },
 });
 
 module.exports = SectionFooterView;

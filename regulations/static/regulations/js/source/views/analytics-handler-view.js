@@ -85,7 +85,7 @@ var AnalyticsHandler = Backbone.View.extend({
         object = objectParts.join(' ');
 
         window.ga('send', 'event', object, this);
-    }
+    },
 });
 
 module.exports = AnalyticsHandler;

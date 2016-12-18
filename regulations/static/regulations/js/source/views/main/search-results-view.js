@@ -14,7 +14,7 @@ Backbone.$ = $;
 var SearchResultsView = ChildView.extend({
     events: {
         'click .search-nav a': 'paginate',
-        'click h3 .internal': 'openResult'
+        'click h3 .internal': 'openResult',
     },
 
     initialize: function(options) {
@@ -70,7 +70,7 @@ var SearchResultsView = ChildView.extend({
           query: this.options.query,
           docType: this.options.docType,
           regVersion: this.options.regVersion,
-          page: this.page + ($(e.target).hasClass('previous') ? -1 : 1)
+          page: this.page + ($(e.target).hasClass('previous') ? -1 : 1),
         };
 
         MainEvents.trigger('search-results:open', null, options, 'search-results');
@@ -86,13 +86,13 @@ var SearchResultsView = ChildView.extend({
             var pageType = this.options.docType === 'cfr' ? 'reg-section' : 'preamble-section';
             var options = {
               regVersion: $resultLink.data('linked-version'),
-              scrollToId: $resultLink.data('linked-subsection')
+              scrollToId: $resultLink.data('linked-subsection'),
             };
 
             DrawerEvents.trigger('pane:change', 'table-of-contents');
             MainEvents.trigger('section:open', $resultLink.data('linked-section'), options, pageType);
         }
-    }
+    },
 });
 
 module.exports = SearchResultsView;

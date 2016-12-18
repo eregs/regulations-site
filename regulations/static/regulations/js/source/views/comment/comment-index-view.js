@@ -15,14 +15,14 @@ function getOptions(elm) {
   return {
     section: $elm.data('comment-section'),
     tocId: $elm.data('comment-toc-section'),
-    label: $elm.data('comment-label')
+    label: $elm.data('comment-label'),
   };
 }
 
 module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   events: {
     'click .comment-index-edit': 'editComment',
-    'click .comment-index-clear': 'clearComment'
+    'click .comment-index-clear': 'clearComment',
   },
 
   initialize: function(options) {
@@ -64,5 +64,5 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     if (comment) {
       comment.destroy();
     }
-  }
+  },
 });

@@ -47,5 +47,5 @@ module.exports = {
 
     $expander.click(function() { $toShow.show(); });
     return $expander;
-  }
+  },
 };

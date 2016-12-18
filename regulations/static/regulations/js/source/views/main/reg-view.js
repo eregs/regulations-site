@@ -20,7 +20,7 @@ Backbone.$ = $;
 var RegView = ChildView.extend({
     events: {
         'click .definition': 'termLinkHandler',
-        'click .inline-interp-header': 'expandInterp'
+        'click .inline-interp-header': 'expandInterp',
     },
 
     initialize: function(options) {
@@ -141,7 +141,7 @@ var RegView = ChildView.extend({
         if (typeof this.defScopeExclusions !== 'undefined') {
             if (this.defScopeExclusions.indexOf(id) !== -1) {
                 $newDefLink = this.$activeSection.find(
-                    '.definition[data-defined-term="' + $('#definition').data('definedTerm') + '"]'
+                    '.definition[data-defined-term="' + $('#definition').data('definedTerm') + '"]',
                 ).first();
                 newDefId = $newDefLink.data('definition');
                 newDefHref = $newDefLink.attr('href');
@@ -172,7 +172,7 @@ var RegView = ChildView.extend({
             SidebarEvents.trigger('definition:close');
             GAEvents.trigger('definition:close', {
                 type: 'defintion',
-                by: 'toggling term link'
+                by: 'toggling term link',
             });
             this.clearActiveTerms();
         } else {
@@ -184,19 +184,19 @@ var RegView = ChildView.extend({
                 SidebarEvents.trigger('definition:close');
                 GAEvents.trigger('definition:close', {
                     type: 'defintion',
-                    by: 'opening new definition'
+                    by: 'opening new definition',
                 });
 
                 // open new definition
                 this.setActiveTerm($link);
                 SidebarEvents.trigger('definition:open', {
                     'id': defId,
-                    'term': term
+                    'term': term,
                 });
                 GAEvents.trigger('definition:open', {
                     id: defId,
                     from: this.activeSection,
-                    type: 'definition'
+                    type: 'definition',
                 });
             }
         }
@@ -217,7 +217,7 @@ var RegView = ChildView.extend({
             context = {
                 id: section.data('interp-id'),
                 to: section.data('interp-for'),
-                type: 'inline-interp'
+                type: 'inline-interp',
             };
 
         section.toggleClass('open');
@@ -259,9 +259,9 @@ var RegView = ChildView.extend({
         GAEvents.trigger('interp:followCitation', {
             id: subSectionId,
             regVersion: version,
-            type: 'inline-interp'
+            type: 'inline-interp',
         });
-    }
+    },
 });
 
 module.exports = RegView;

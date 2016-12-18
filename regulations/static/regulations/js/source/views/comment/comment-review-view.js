@@ -24,7 +24,7 @@ var CommentReviewView = Backbone.View.extend({
   events: {
     'click .edit-comment': 'editComment',
     'click .preview-button': 'preview',
-    'change #agree': 'toggleSubmit'
+    'change #agree': 'toggleSubmit',
   },
 
   initialize: function(options) {
@@ -63,7 +63,7 @@ var CommentReviewView = Backbone.View.extend({
     var commentData = comments.toJSON({docId: this.docId});
     var html = this.template({
       comments: commentData,
-      previewLoading: this.previewLoading
+      previewLoading: this.previewLoading,
     });
 
     this.$content.html(html);
@@ -159,10 +159,10 @@ var CommentReviewView = Backbone.View.extend({
       type: 'POST',
       url: window.APP_PREFIX + 'comments/preview',
       data: JSON.stringify({
-        assembled_comment: comments.toJSON({docId: this.docId})
+        assembled_comment: comments.toJSON({docId: this.docId}),
       }),
       contentType: 'application/json',
-      dataType: 'json'
+      dataType: 'json',
     });
     $xhr.then(this.previewSuccess.bind(this), this.previewError.bind(this));
     this.previewLoading = true;
@@ -186,7 +186,7 @@ var CommentReviewView = Backbone.View.extend({
     if (this.$agree.length) {
       this.$submit.prop('disabled', !this.$agree.prop('checked'));
     }
-  }
+  },
 });
 
 module.exports = CommentReviewView;

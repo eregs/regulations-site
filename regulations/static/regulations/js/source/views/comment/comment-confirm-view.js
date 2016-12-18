@@ -38,7 +38,7 @@ var CommentConfirmView = Backbone.View.extend({
           window.clearInterval(this.interval);
         }.bind(this));
       }.bind(this),
-      5000
+      5000,
     );
   },
 
@@ -73,7 +73,7 @@ var CommentConfirmView = Backbone.View.extend({
 
   setRegsGovError: function() {
     this.replaceTemplate('.status-container', {}, '.js-regsgov-error');
-  }
+  },
 });
 
 module.exports = CommentConfirmView;

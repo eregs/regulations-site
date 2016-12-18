@@ -15,7 +15,7 @@ var TOCView = Backbone.View.extend({
 
     events: {
         'click a.diff[data-section-id]': 'sendDiffClickEvent',
-        'click a[data-section-id]:not(.diff)': 'sendClickEvent'
+        'click a[data-section-id]:not(.diff)': 'sendClickEvent',
     },
 
     initialize: function() {
@@ -93,7 +93,7 @@ var TOCView = Backbone.View.extend({
         if (activeLink[0]) {
             activeLink[0].scrollIntoView();
         }
-    }
+    },
 });
 
 module.exports = TOCView;

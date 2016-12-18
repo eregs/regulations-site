@@ -19,7 +19,7 @@ var SidebarView = Backbone.View.extend({
     el: '#sidebar-content',
 
     events: {
-        'click .expandable': 'toggleExpandable'
+        'click .expandable': 'toggleExpandable',
     },
 
     initialize: function() {
@@ -43,7 +43,7 @@ var SidebarView = Backbone.View.extend({
     openDefinition: function(config) {
       this.childViews.definition = new Definition({
         id: config.id,
-        term: config.term
+        term: config.term,
       });
 
       this.definitionModel.get(config.id, {}).then(function(resp) {
@@ -166,7 +166,7 @@ var SidebarView = Backbone.View.extend({
     // when breakaway view loads
     hideChildren: function() {
         this.loading();
-    }
+    },
 });
 
 module.exports = SidebarView;

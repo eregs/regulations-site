@@ -31,7 +31,7 @@ var MAX_ATTACHMENTS = 9;
 function getUploadUrl(file) {
   return $.getJSON(
     window.APP_PREFIX + 'comments/attachment',
-    {size: file.size, name: file.name, type: file.type || 'application/octet-stream'}
+    {size: file.size, name: file.name, type: file.type || 'application/octet-stream'},
   ).then(function(resp) {
     return resp;
   });
@@ -45,7 +45,7 @@ var CommentView = Backbone.View.extend({
     'click .comment-header': 'openComment',
     'click .comment-context-toggle': 'toggleCommentExcerpt',
     'click .comment-delete-response': 'deleteComment',
-    'submit form': 'save'
+    'submit form': 'save',
   },
 
   initialize: function(options) {
@@ -65,7 +65,7 @@ var CommentView = Backbone.View.extend({
 
     var hrGroup = new menu.MenuCommandGroup('insert');
     var headingMenu = new menu.Dropdown({
-      label: 'Heading', displayActive: true
+      label: 'Heading', displayActive: true,
     }, [new menu.MenuCommandGroup('textblock'), new menu.MenuCommandGroup('textblockHeading')]);
     this.editor = new edit.ProseMirror({
       menuBar: {content: [menu.inlineGroup, headingMenu, menu.blockGroup, hrGroup]},
@@ -73,11 +73,11 @@ var CommentView = Backbone.View.extend({
         'code:toggle': {menu: null},
         'code_block:make': {menu: null},
         'image:insert': {menu: null},
-        'selectParentNode': {menu: null}
+        'selectParentNode': {menu: null},
       }),
       place: this.$container.get(0),
       docFormat: 'markdown',
-      doc: ''
+      doc: '',
     });
 
     this.attachmentViews = [];
@@ -130,7 +130,7 @@ var CommentView = Backbone.View.extend({
     var options = {
       section: this.model.get('id'),
       tocId: this.model.get('tocId'),
-      label: this.model.get('label')
+      label: this.model.get('label'),
     };
     // TODO: Push this logic into `PreambleView`
     var type = options.section.split('-')[1];
@@ -193,8 +193,8 @@ var CommentView = Backbone.View.extend({
           name: file.name,
           size: filesize(file.size),
           key: resp.key,
-          xhr: xhr
-        })
+          xhr: xhr,
+        }),
       );
       this.setAttachmentCount();
       xhr.open('PUT', resp.urls.put);
@@ -254,15 +254,15 @@ var CommentView = Backbone.View.extend({
           key: view.options.key,
           name: view.options.name,
           size: view.options.size,
-          previewUrl: view.options.previewUrl
+          previewUrl: view.options.previewUrl,
         };
-      })
+      }),
     });
 
     comments.add(this.model);
     this.model.save();
     this.$status.hide().html('Your comment was saved.').fadeIn();
-  }
+  },
 });
 
 module.exports = CommentView;

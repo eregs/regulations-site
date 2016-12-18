@@ -10,8 +10,8 @@ var commentModel = Backbone.Model.extend({
     comment: '',
     commentHtml: '',
     files: [],
-    indexes: []
-  }
+    indexes: [],
+  },
 });
 
 var indexComparator = function(first, second) {
@@ -37,5 +37,5 @@ var commentComparator = function(first, second) {
 
 module.exports = {
     CommentModel: commentModel,
-    commentComparator: commentComparator
+    commentComparator: commentComparator,
 };

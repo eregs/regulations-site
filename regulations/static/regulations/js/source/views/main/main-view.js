@@ -32,7 +32,7 @@ var MainView = Backbone.View.extend({
     el: '#content-body',
 
     events: {
-      'click .toggle .button': 'toggleElement'
+      'click .toggle .button': 'toggleElement',
     },
 
   /**
@@ -119,7 +119,7 @@ var MainView = Backbone.View.extend({
 
       var options = {
         subContentType: this.isAppendixOrSupplement(),
-        render: false
+        render: false,
       };
 
       if (this.contentType === 'search-results') {
@@ -147,7 +147,7 @@ var MainView = Backbone.View.extend({
         'diff': DiffModel,
         'appendix': RegModel,
         'interpretation': RegModel,
-        'preamble-section': PreambleModel
+        'preamble-section': PreambleModel,
     },
 
     viewmap: {
@@ -159,7 +159,7 @@ var MainView = Backbone.View.extend({
         'interpretation': RegView,
         'comment-review': CommentReviewView,
         'comment-confirm': CommentConfirmView,
-        'preamble-section': PreambleView
+        'preamble-section': PreambleView,
     },
 
     openSection: function(id, options, type) {
@@ -199,7 +199,7 @@ var MainView = Backbone.View.extend({
         regVersion: this.regVersion,
         docId: this.docId,
         model: this.childModel,
-        cfrTitle: this.cfrTitle
+        cfrTitle: this.cfrTitle,
       }, options);
 
       // Diffs need some more version context
@@ -239,7 +239,7 @@ var MainView = Backbone.View.extend({
 
       SidebarEvents.trigger('update', {
         type: this.contentType,
-        id: this.sectionId
+        id: this.sectionId,
       });
 
       this.loaded();
@@ -279,7 +279,7 @@ var MainView = Backbone.View.extend({
             '<div class="error error-network">' +
               '<span class="cf-icon cf-icon-error icon-warning"></span>' +
               message +
-            '</div>'
+            '</div>',
           )
           .hide()
           .fadeIn('slow');
@@ -318,12 +318,12 @@ var MainView = Backbone.View.extend({
                     text: 'Copy this text to your clipboard',
                     title: 'Copy this text to your clipboard',
                     id: '#copyable-' + index,
-                    href: '#copyable-' + index
+                    href: '#copyable-' + index,
                 });
                 var copylink = new Clipboard(link[0], {
                     target: function(trigger) {
                         return copyable;
-                    }
+                    },
                 });
                 $(copyable).before(link);
             });
@@ -342,9 +342,9 @@ var MainView = Backbone.View.extend({
                 scrollY: 400,
                 scrollCollapse: true,
                 scrollX: true,
-                info: false
+                info: false,
             });
         }
-    }
+    },
 });
 module.exports = MainView;

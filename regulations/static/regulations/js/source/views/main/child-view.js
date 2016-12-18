@@ -101,7 +101,7 @@ var ChildView = Backbone.View.extend({
               window.history.replaceState(
                 null,
                 null,
-                window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection
+                window.location.origin + window.location.pathname + window.location.search + '#' + this.activeSection,
               );
             }
 
@@ -157,7 +157,7 @@ var ChildView = Backbone.View.extend({
     // lazy load images as the user scrolls
     loadImages: function() {
         $('.reg-image').lazyload();
-    }
+    },
 });
 
 module.exports = ChildView;

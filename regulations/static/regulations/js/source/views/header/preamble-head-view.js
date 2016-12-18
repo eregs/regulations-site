@@ -21,7 +21,7 @@ var PreambleHeadView = Backbone.View.extend({
 
   events: {
     'click .read-proposal': 'readProposal',
-    'click .write-comment': 'writeComment'
+    'click .write-comment': 'writeComment',
   },
 
   initialize: function() {
@@ -63,7 +63,7 @@ var PreambleHeadView = Backbone.View.extend({
 
       CommentEvents.trigger('comment:write');
     }
-  }
+  },
 });
 
 module.exports = PreambleHeadView;

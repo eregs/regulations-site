@@ -12,14 +12,14 @@ var DrawerTabsView = Backbone.View.extend({
 
     events: {
         'click .toc-toggle': 'openDrawer',
-        'click .toc-nav-link': 'updatePaneTabs'
+        'click .toc-nav-link': 'updatePaneTabs',
     },
 
     idMap: {
         'table-of-contents': '#menu-link',
         'table-of-contents-secondary': '#table-of-contents-secondary-link',
         'timeline': '#timeline-link',
-        'search': '#search-link'
+        'search': '#search-link',
     },
 
     initialize: function(options) {
@@ -54,7 +54,7 @@ var DrawerTabsView = Backbone.View.extend({
 
         GAEvents.trigger('drawer:switchTab', {
             id: tab,
-            type: 'drawer'
+            type: 'drawer',
         });
     },
 
@@ -112,7 +112,7 @@ var DrawerTabsView = Backbone.View.extend({
         }
 
         DrawerEvents.trigger('pane:change', linkValue);
-    }
+    },
 });
 
 module.exports = DrawerTabsView;

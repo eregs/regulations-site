@@ -10,7 +10,7 @@ var SearchView = Backbone.View.extend({
     el: '#search',
 
     events: {
-        'submit': 'openSearchResults'
+        'submit': 'openSearchResults',
     },
 
     initialize: function() {
@@ -29,11 +29,11 @@ var SearchView = Backbone.View.extend({
         var options = {
           docType: $form.data('doc-type'),
           query: $form.find('input[name="q"]').val(),
-          searchVersion: $form.find('select[name=version]').val()
+          searchVersion: $form.find('select[name=version]').val(),
         };
 
         MainEvents.trigger('search-results:open', null, options, 'search-results');
-    }
+    },
 
 });
 

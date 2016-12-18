@@ -197,7 +197,7 @@ module.exports = {
         path: path,
         type: type,
         docId: docId,
-        section: section
+        section: section,
       };
       /**
        * If linking to the top-level, we don't need a hash. Otherwise, link to
@@ -234,5 +234,5 @@ module.exports = {
       }
 
       return [docId, type, section].join('-');
-    }
+    },
 };

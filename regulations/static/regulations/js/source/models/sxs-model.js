@@ -6,7 +6,7 @@ var MetaModel = require('./meta-model');
 Backbone.SxSModel = MetaModel.extend({});
 
 var sxsModel = new Backbone.SxSModel({
-    supplementalPath: 'sxs'
+    supplementalPath: 'sxs',
 });
 
 module.exports = sxsModel;

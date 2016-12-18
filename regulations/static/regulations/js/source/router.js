@@ -23,7 +23,7 @@ if (typeof window.history.pushState === 'undefined') {
             ':section/:version': 'loadSection',
             ':section': 'loadSection',
             'preamble/:docId/:section': 'loadPreamble',
-            'preamble/:docId/cfr_changes/:section': 'loadCfrChanges'
+            'preamble/:docId/cfr_changes/:section': 'loadCfrChanges',
         },
 
         loadSection: function(section) {
@@ -44,7 +44,7 @@ if (typeof window.history.pushState === 'undefined') {
           var options = {
             id: id,
             scrollToId: Backbone.history.getHash(),
-            noRoute: true
+            noRoute: true,
           };
           MainEvents.trigger('section:open', id, options, type);
         },
@@ -65,7 +65,7 @@ if (typeof window.history.pushState === 'undefined') {
             BreakawayEvents.trigger('sxs:open', {
                 regParagraph: section,
                 docNumber: version,
-                fromVersion: params.from_version
+                fromVersion: params.from_version,
             });
         },
 
@@ -73,7 +73,7 @@ if (typeof window.history.pushState === 'undefined') {
             var config = {
                 query: params.q,
                 regVersion: params.regVersion,
-                docType: docType
+                docType: docType,
             };
 
             // if there is a page number for the query string
@@ -90,11 +90,11 @@ if (typeof window.history.pushState === 'undefined') {
             Backbone.history.start({
                 pushState: 'pushState' in window.history,
                 silent: true,
-                root: root
+                root: root,
             });
         },
 
-        hasPushState: true
+        hasPushState: true,
     });
 }
 

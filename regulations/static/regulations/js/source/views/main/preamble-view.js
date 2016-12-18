@@ -18,7 +18,7 @@ var helpers = require('../../helpers');
 var PreambleView = ChildView.extend({
   events: {
     'click .activate-write': 'handleWriteLink',
-    'click .citation.internal': 'openCitation'
+    'click .citation.internal': 'openCitation',
   },
 
   initialize: function(options) {
@@ -44,7 +44,7 @@ var PreambleView = ChildView.extend({
       'pane:init',
       parsed.type === 'preamble' ?
         'table-of-contents' :
-        'table-of-contents-secondary'
+        'table-of-contents-secondary',
     );
   },
 
@@ -84,7 +84,7 @@ var PreambleView = ChildView.extend({
       $section.data('toc-id'),
       $dataTarget.data('indexes'),
       $dataTarget.data('label'),
-      $section
+      $section,
     );
 
     CommentEvents.trigger('comment:writeTabOpen');
@@ -98,7 +98,7 @@ var PreambleView = ChildView.extend({
       $section.data('toc-id'),
       $section.data('indexes'),
       $section.find('.activate-write').data('label'),
-      $section
+      $section,
     );
   },
 
@@ -107,7 +107,7 @@ var PreambleView = ChildView.extend({
     'to <em>submit</em> comments through this system. To find alternative',
     'comment submission methods, please read the agency instructions as',
     'listed in the preamble. We apologize for the inconvenience, but hope to',
-    'remove this limitation soon.'
+    'remove this limitation soon.',
   ].join(' '),
   /**
    * We rely on localStorage for commenting at the moment. If it's not
@@ -144,7 +144,7 @@ var PreambleView = ChildView.extend({
         tocId: tocId,
         indexes: indexes,
         label: label,
-        $parent: $parent
+        $parent: $parent,
       });
     }
 
@@ -168,12 +168,12 @@ var PreambleView = ChildView.extend({
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
       section: this.section,
-      docId: this.docId
+      docId: this.docId,
     });
 
     this.commentIndex = new CommentIndexView({
       el: this.$write.find('.comment-index'),
-      docId: this.docId
+      docId: this.docId,
     });
 
     if (this.options.mode === 'write') {
@@ -209,7 +209,7 @@ var PreambleView = ChildView.extend({
     if (this.mode === 'read') {
       ChildView.prototype.checkActiveSection.call(this);
     }
-  }
+  },
 });
 
 module.exports = PreambleView;

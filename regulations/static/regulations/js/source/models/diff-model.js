@@ -16,7 +16,7 @@ var diffModel = new Backbone.DiffModel({
     return URI([options.id, options.baseVersion, options.newerVersion].join('/'))
       .query({from_version: options.fromVersion})
       .toString();
-  }
+  },
 });
 
 module.exports = diffModel;

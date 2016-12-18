@@ -32,7 +32,7 @@ var BreakawayView = Backbone.View.extend({
     removeChild: function() {
         this.childViews.sxs.remove();
         delete(this.childViews.sxs);
-    }
+    },
 });
 
 var breakaway = new BreakawayView();

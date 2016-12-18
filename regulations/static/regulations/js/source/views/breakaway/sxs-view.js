@@ -15,7 +15,7 @@ var SxSView = Backbone.View.extend({
     events: {
         'click .sxs-back-button': 'remove',
         'click .footnote-jump-link': 'footnoteHighlight',
-        'click .return-link': 'removeHighlight'
+        'click .return-link': 'removeHighlight',
     },
 
     initialize: function(options) {
@@ -74,7 +74,7 @@ var SxSView = Backbone.View.extend({
         this.stopListening();
         this.$el.off();
         return this;
-    }
+    },
 });
 
 module.exports = SxSView;

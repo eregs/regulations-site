@@ -11,7 +11,7 @@ var dispatch = $.event.dispatch || $.event.handle;
   special.scrollstart = {
     setup: function(data) {
       var _data = $.extend({
-        latency: special.scrollstop.latency
+        latency: special.scrollstop.latency,
       }, data);
 
       var timer,
@@ -35,14 +35,14 @@ var dispatch = $.event.dispatch || $.event.handle;
     },
     teardown: function() {
       $(this).unbind('scroll', $(this).data(uid1));
-    }
+    },
   };
 
   special.scrollstop = {
     latency: 250,
     setup: function(data) {
       var _data = $.extend({
-        latency: special.scrollstop.latency
+        latency: special.scrollstop.latency,
       }, data);
 
       var timer,
@@ -65,5 +65,5 @@ var dispatch = $.event.dispatch || $.event.handle;
     },
     teardown: function() {
       $(this).unbind('scroll', $(this).data(uid2));
-    }
+    },
   };

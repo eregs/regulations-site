@@ -10,7 +10,7 @@ var HistoryView = Backbone.View.extend({
     el: '#timeline',
 
     events: {
-        'click .version-link': 'setStorageItem'
+        'click .version-link': 'setStorageItem',
     },
 
     initialize: function() {
@@ -61,7 +61,7 @@ var HistoryView = Backbone.View.extend({
                 $form.attr('action', actionPath);
             });
         }
-    }
+    },
 });
 
 module.exports = HistoryView;

@@ -22,7 +22,7 @@ var DefinitionView = Backbone.View.extend({
 
     events: {
         'click .close-button': 'close',
-        'click .update-definition': 'updateDefinition'
+        'click .update-definition': 'updateDefinition',
     },
 
     initialize: function(options) {
@@ -79,7 +79,7 @@ var DefinitionView = Backbone.View.extend({
         MainEvents.trigger('definition:close');
         GAEvents.trigger('definition:close', {
             type: 'definition',
-            by: 'header close button'
+            by: 'header close button',
         });
         this.remove();
     },
@@ -93,7 +93,7 @@ var DefinitionView = Backbone.View.extend({
             cb: function() {
                 // update list of out of scope paragraphs for new definition
                 MainEvents.trigger('definition:carriedOver');
-            }
+            },
         });
     },
 
@@ -160,12 +160,12 @@ var DefinitionView = Backbone.View.extend({
             parentId = Helpers.findBaseSection(id);
 
         MainEvents.trigger('section:open', parentId, {
-            scrollToId: id
+            scrollToId: id,
         }, 'reg-section');
 
         GAEvents.trigger('definition:followCitation', {
             id: id,
-            type: 'definition'
+            type: 'definition',
         });
     },
 
@@ -176,12 +176,12 @@ var DefinitionView = Backbone.View.extend({
             pid = $e.data('linked-subsection');
 
         MainEvents.trigger('section:open', id, {
-            scrollToId: pid
+            scrollToId: pid,
         }, 'interpretation');
 
         GAEvents.trigger('definition:followCitation', {
             id: id,
-            type: 'definition'
+            type: 'definition',
         });
     },
 
@@ -191,7 +191,7 @@ var DefinitionView = Backbone.View.extend({
         this.$el.html('');
 
         return this;
-    }
+    },
 });
 
 module.exports = DefinitionView;

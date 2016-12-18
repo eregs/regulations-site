@@ -40,7 +40,7 @@ var DrawerView = Backbone.View.extend({
         'diff': 'timeline',
         'reg-section': 'table-of-contents',
         'error': 'table-of-contents',
-        'search-results': 'search'
+        'search-results': 'search',
     },
 
     // activeId = page type or child view type
@@ -54,7 +54,7 @@ var DrawerView = Backbone.View.extend({
 
         // remove the 'hidden' class from the active drawer section
         this.childViews[activeId].$el.removeClass('hidden');
-    }
+    },
 
 });
 
