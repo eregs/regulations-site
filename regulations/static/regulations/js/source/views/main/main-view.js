@@ -165,7 +165,7 @@ var MainView = Backbone.View.extend({
       // Close breakaway if open
     if (typeof this.breakawayCallback !== 'undefined') {
       this.breakawayCallback();
-      delete(this.breakawayCallback);
+      delete (this.breakawayCallback);
     }
 
     this.contentType = type;
@@ -177,7 +177,7 @@ var MainView = Backbone.View.extend({
 
     if (this.childView) {
       this.childView.remove();
-      delete(this.childView);
+      delete (this.childView);
     }
 
     this.loading();
