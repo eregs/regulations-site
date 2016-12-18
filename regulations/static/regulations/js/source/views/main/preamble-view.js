@@ -122,7 +122,7 @@ var PreambleView = ChildView.extend({
       }
     } catch (e) {   // unfortunately, localStorage exception varies by browser
       MainEvents.trigger('section:error', this.cantWriteMessage);
-    };
+    }
   },
 
   write: function write(section, tocId, indexes, label, $parent) {
