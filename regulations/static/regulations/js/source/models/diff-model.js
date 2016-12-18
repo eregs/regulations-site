@@ -1,12 +1,12 @@
 
 
-var URI = require('urijs');
-var Backbone = require('backbone');
-var MetaModel = require('./meta-model');
+const URI = require('urijs');
+const Backbone = require('backbone');
+const MetaModel = require('./meta-model');
 
 Backbone.DiffModel = MetaModel.extend({});
 
-var diffModel = new Backbone.DiffModel({
+const diffModel = new Backbone.DiffModel({
   getAJAXUrl: function getAJAXUrl(id, options) {
     return window.APP_PREFIX + 'partial/diff/' + this.assembleDiffURL(options);
   },

@@ -1,17 +1,17 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var Helpers = require('../../helpers');
-var Router = require('../../router');
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var HeaderEvents = require('../../events/header-events');
-var Resources = require('../../resources.js');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Helpers = require('../../helpers');
+const Router = require('../../router');
+const MainEvents = require('../../events/main-events');
+const DrawerEvents = require('../../events/drawer-events');
+const HeaderEvents = require('../../events/header-events');
+const Resources = require('../../resources.js');
 
 Backbone.$ = $;
 
-var TOCView = Backbone.View.extend({
+const TOCView = Backbone.View.extend({
   el: '#table-of-contents',
 
   events: {
@@ -20,7 +20,7 @@ var TOCView = Backbone.View.extend({
   },
 
   initialize: function initialize() {
-    var openSection = $('section[data-page-type]').attr('id');
+    const openSection = $('section[data-page-type]').attr('id');
 
     this.listenTo(DrawerEvents, 'section:open', this.setActive);
 
@@ -40,19 +40,16 @@ var TOCView = Backbone.View.extend({
 
   // update active classes, find new active based on the reg entity id in the anchor
   setActive: function setActive(tocId) {
-    var newActiveLink;
-    var subpart;
-
-    newActiveLink = this.$el.find('a[data-section-id="' + tocId + '"]');
-
-    this.$el.find('.current').removeClass('current');
-    newActiveLink.addClass('current');
-    subpart = newActiveLink
+    const newActiveLink = this.$el.find('a[data-section-id="' + tocId + '"]');
+    const subpart = newActiveLink
                     .parent()
                     .prevAll('li[data-subpart-heading]')
                     .first()
                     .find('.toc-nav__divider')
                     .attr('data-section-id');
+
+    this.$el.find('.current').removeClass('current');
+    newActiveLink.addClass('current');
 
     if (subpart && subpart.length > 0) {
       HeaderEvents.trigger('subpart:present', Helpers.formatSubpartLabel(subpart));
@@ -68,8 +65,8 @@ var TOCView = Backbone.View.extend({
   sendClickEvent: function sendClickEvent(e) {
     e.preventDefault();
 
-    var sectionId = $(e.currentTarget).data('section-id');
-    var type = this.$el.closest('.panel').data('page-type');
+    const sectionId = $(e.currentTarget).data('section-id');
+    const type = this.$el.closest('.panel').data('page-type');
     DrawerEvents.trigger('section:open', sectionId);
     MainEvents.trigger('section:open', sectionId, {}, type);
   },
@@ -77,9 +74,9 @@ var TOCView = Backbone.View.extend({
   sendDiffClickEvent: function sendDiffClickEvent(e) {
     e.preventDefault();
 
-    var $link = $(e.currentTarget);
-    var sectionId = $link.data('section-id');
-    var config = {};
+    const $link = $(e.currentTarget);
+    const sectionId = $link.data('section-id');
+    const config = {};
 
     config.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
     config.baseVersion = Helpers.findVersion(Resources.versionElements);
@@ -90,7 +87,7 @@ var TOCView = Backbone.View.extend({
     // **Inactive**
     // Intended to keep the active link in view as the user moves around the doc
   scrollToActive: function scrollToActive() {
-    var activeLink = document.querySelectorAll('#table-of-contents .current');
+    const activeLink = document.querySelectorAll('#table-of-contents .current');
 
     if (activeLink[0]) {
       activeLink[0].scrollIntoView();

@@ -1,22 +1,22 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 require('../../events/scroll-stop.js');
-var Router = require('../../router');
-var HeaderEvents = require('../../events/header-events');
-var DrawerEvents = require('../../events/drawer-events');
-var MainEvents = require('../../events/main-events');
-var GAEvents = require('../../events/ga-events');
+const Router = require('../../router');
+const HeaderEvents = require('../../events/header-events');
+const DrawerEvents = require('../../events/drawer-events');
+const MainEvents = require('../../events/main-events');
+const GAEvents = require('../../events/ga-events');
 
 Backbone.$ = $;
 
 // Adjust the offset of how far past the section top before the wayfinder
 // changes. Based on 2 * line-height + padding-top.
-var WAYFINDER_SCROLL_OFFSET = window.WAYFINDER_SCROLL_OFFSET || 64;
+const WAYFINDER_SCROLL_OFFSET = window.WAYFINDER_SCROLL_OFFSET || 64;
 
-var ChildView = Backbone.View.extend({
+const ChildView = Backbone.View.extend({
   el: '#content-wrapper',
 
   initialize: function initialize(options) {
@@ -60,8 +60,8 @@ var ChildView = Backbone.View.extend({
   },
 
   scroll: function scroll() {
-    var offsetTop;
-    var $scrollToId;
+    let offsetTop;
+    let $scrollToId;
     if (this.options.scrollToId) {
       $scrollToId = $('#' + this.options.scrollToId);
       if ($scrollToId.length) {
@@ -76,10 +76,8 @@ var ChildView = Backbone.View.extend({
   },
 
   assembleTitle: function assembleTitle() {
-    var titleParts;
-    var newTitle;
-    titleParts = _.compact(document.title.split(' '));
-    newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
+    const titleParts = _.compact(document.title.split(' '));
+    const newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
     return newTitle.join(' ');
   },
 
@@ -129,7 +127,7 @@ var ChildView = Backbone.View.extend({
 
   route: function route(options) {
     if (Router.hasPushState && typeof options.noRoute === 'undefined') {
-      var url = this.url;
+      let url = this.url;
 
             // if a hash has been passed in
       if (options && options.scrollToId) {

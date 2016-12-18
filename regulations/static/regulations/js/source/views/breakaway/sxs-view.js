@@ -1,14 +1,14 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var Router = require('../../router');
-var SxSModel = require('../../models/sxs-model');
-var BreakawayEvents = require('../../events/breakaway-events');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Router = require('../../router');
+const SxSModel = require('../../models/sxs-model');
+const BreakawayEvents = require('../../events/breakaway-events');
 
 Backbone.$ = $;
 
-var SxSView = Backbone.View.extend({
+const SxSView = Backbone.View.extend({
   el: '#breakaway-view',
 
   events: {
@@ -51,7 +51,7 @@ var SxSView = Backbone.View.extend({
   },
 
   footnoteHighlight: function footnoteHighlight(e) {
-    var target = $(e.target).attr('href');
+    const target = $(e.target).attr('href');
         // remove existing highlight
     this.removeHighlight();
         // highlight the selected footnote

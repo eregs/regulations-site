@@ -1,13 +1,13 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var Router = require('../../router');
-var MainEvents = require('../../events/main-events');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Router = require('../../router');
+const MainEvents = require('../../events/main-events');
 
 Backbone.$ = $;
 
-var SectionFooterView = Backbone.View.extend({
+const SectionFooterView = Backbone.View.extend({
   events: {
     'click .navigation-link': 'sendNavEvent',
   },
@@ -21,9 +21,9 @@ var SectionFooterView = Backbone.View.extend({
   },
 
   sendNavEvent: function sendNavEvent(e) {
-    var $target = $(e.currentTarget);
-    var sectionId = $target.data('linked-section');
-    var pageType = $target.data('page-type') || 'reg-section';
+    const $target = $(e.currentTarget);
+    const sectionId = $target.data('linked-section');
+    const pageType = $target.data('page-type') || 'reg-section';
 
     if (sectionId) {
       e.preventDefault();

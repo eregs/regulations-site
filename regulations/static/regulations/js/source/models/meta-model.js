@@ -1,17 +1,17 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var Helpers = require('../helpers');
-var Resources = require('../resources');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const Helpers = require('../helpers');
+const Resources = require('../resources');
 
 Backbone.$ = $;
 
-var MetaModel = Backbone.Model.extend({
+const MetaModel = Backbone.Model.extend({
 
   constructor: function constructor(properties) {
-    var self = this;
+    const self = this;
 
     if (typeof properties !== 'undefined') {
       $.each(properties, function perProp(key, value) {
@@ -32,8 +32,8 @@ var MetaModel = Backbone.Model.extend({
   },
 
   set: function set(sectionId, sectionValue) {
-    var cached = this.has(sectionId);
-    var section;
+    const cached = this.has(sectionId);
+    let section;
 
     if (typeof sectionId !== 'undefined' && !(_.isEmpty(sectionId))) {
       if (!(cached)) {
@@ -70,7 +70,7 @@ var MetaModel = Backbone.Model.extend({
   },
 
   getAJAXUrl: function getAJAXUrl(id) {
-    var url = window.APP_PREFIX + 'partial/';
+    let url = window.APP_PREFIX + 'partial/';
 
     if (typeof this.supplementalPath !== 'undefined') {
       url += this.supplementalPath + '/';

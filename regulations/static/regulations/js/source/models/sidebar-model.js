@@ -1,7 +1,7 @@
 
 
-var Backbone = require('backbone');
-var MetaModel = require('./meta-model');
+const Backbone = require('backbone');
+const MetaModel = require('./meta-model');
 
 Backbone.SidebarModel = MetaModel.extend({});
 

@@ -1,21 +1,21 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var ChildView = require('./child-view');
-var MainEvents = require('../../events/main-events');
-var PreambleHeadView = require('../header/preamble-head-view');
-var CommentView = require('../comment/comment-view');
-var CommentIndexView = require('../comment/comment-index-view');
-var CommentEvents = require('../../events/comment-events');
-var DrawerEvents = require('../../events/drawer-events');
-var starsHelpers = require('./stars-helpers');
-var helpers = require('../../helpers');
+const ChildView = require('./child-view');
+const MainEvents = require('../../events/main-events');
+const PreambleHeadView = require('../header/preamble-head-view');
+const CommentView = require('../comment/comment-view');
+const CommentIndexView = require('../comment/comment-index-view');
+const CommentEvents = require('../../events/comment-events');
+const DrawerEvents = require('../../events/drawer-events');
+const starsHelpers = require('./stars-helpers');
+const helpers = require('../../helpers');
 
-var PreambleView = ChildView.extend({
+const PreambleView = ChildView.extend({
   events: {
     'click .activate-write': 'handleWriteLink',
     'click .citation.internal': 'openCitation',
@@ -24,7 +24,7 @@ var PreambleView = ChildView.extend({
   initialize: function initialize(options) {
     this.options = options;
 
-    var parsed = helpers.parsePreambleId(this.options.id);
+    const parsed = helpers.parsePreambleId(this.options.id);
 
     this.options.scrollToId = parsed.hash;
 
@@ -48,12 +48,12 @@ var PreambleView = ChildView.extend({
   },
 
   openCitation: function openCitation(e) {
-    var $target = $(e.currentTarget);
-    var hash = $target.attr('href');
-    var id = $target.attr('data-section-id');
-    var options = {};
-    var type = this.options.type;
-    var section = helpers.parsePreambleCitationId(hash, type);
+    const $target = $(e.currentTarget);
+    const hash = $target.attr('href');
+    const id = $target.attr('data-section-id');
+    const options = {};
+    const type = this.options.type;
+    const section = helpers.parsePreambleCitationId(hash, type);
 
     if (id) {
       e.preventDefault();
@@ -74,9 +74,9 @@ var PreambleView = ChildView.extend({
   },
 
   handleWriteLink: function handleWriteLink(e) {
-    var $target = $(e.target);
-    var $dataTarget = $target.closest('.activate-write');
-    var $section = $target.closest('[data-permalink-section]');
+    const $target = $(e.target);
+    const $dataTarget = $target.closest('.activate-write');
+    const $section = $target.closest('[data-permalink-section]');
 
     this.write(
       $dataTarget.data('section'),
@@ -90,7 +90,7 @@ var PreambleView = ChildView.extend({
   },
 
   handleWriteTab: function handleWriteTab() {
-    var $section = $('#' + this.section);
+    const $section = $('#' + this.section);
 
     this.write(
       $section.find('.activate-write').data('section'),
@@ -124,7 +124,7 @@ var PreambleView = ChildView.extend({
   },
 
   write: function write(section, tocId, indexes, label, parentEl) {
-    var $parent = parentEl;
+    let $parent = parentEl;
     this.mode = 'write';
     this.checkCanWrite();
 
@@ -177,8 +177,8 @@ var PreambleView = ChildView.extend({
     });
 
     if (this.options.mode === 'write') {
-      var $parent = $('#' + this.options.scrollToId);
-      var indexes = $parent.data('indexes');
+      const $parent = $('#' + this.options.scrollToId);
+      const indexes = $parent.data('indexes');
 
       this.write(this.options.section, this.options.tocId, indexes, this.options.label, $parent);
     } else {
@@ -188,10 +188,10 @@ var PreambleView = ChildView.extend({
   },
 
   collapseStars: function collapseStars() {
-    var $expander;
+    let $expander;
     this.$el.find('li[data-stars]').each(function perEl(idx, elt) {
-      var $li = $(elt);
-      var starType = $li.data('stars');
+      const $li = $(elt);
+      const starType = $li.data('stars');
       $expander = starsHelpers[starType]($li, $expander);
     });
   },

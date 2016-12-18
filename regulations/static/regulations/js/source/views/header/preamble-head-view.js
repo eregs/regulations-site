@@ -7,15 +7,15 @@
  */
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var MainEvents = require('../../events/main-events');
-var CommentEvents = require('../../events/comment-events');
+const MainEvents = require('../../events/main-events');
+const CommentEvents = require('../../events/comment-events');
 
-var PreambleHeadView = Backbone.View.extend({
+const PreambleHeadView = Backbone.View.extend({
   el: '.preamble-header',
 
   events: {

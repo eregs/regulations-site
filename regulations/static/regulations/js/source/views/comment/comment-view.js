@@ -1,26 +1,26 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var filesize = require('filesize');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const filesize = require('filesize');
 
 Backbone.$ = $;
 
-var edit = require('prosemirror/dist/edit');
-var menu = require('prosemirror/dist/menu/menu');
+const edit = require('prosemirror/dist/edit');
+const menu = require('prosemirror/dist/menu/menu');
 require('prosemirror/dist/menu/menubar');
 require('prosemirror/dist/markdown');
 
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var CommentModel = require('../../models/comment-model').CommentModel;
-var CommentEvents = require('../../events/comment-events');
-var AttachmentView = require('../../views/comment/attachment-view');
-var comments = require('../../collections/comment-collection');
-var helpers = require('../../helpers');
+const MainEvents = require('../../events/main-events');
+const DrawerEvents = require('../../events/drawer-events');
+const CommentModel = require('../../models/comment-model').CommentModel;
+const CommentEvents = require('../../events/comment-events');
+const AttachmentView = require('../../views/comment/attachment-view');
+const comments = require('../../collections/comment-collection');
+const helpers = require('../../helpers');
 
-var MAX_ATTACHMENTS = 9;
+const MAX_ATTACHMENTS = 9;
 
 /**
  * Get a presigned upload URL.
@@ -38,7 +38,7 @@ function getUploadUrl(file) {
   });
 }
 
-var CommentView = Backbone.View.extend({
+const CommentView = Backbone.View.extend({
   events: {
     'change input[type="file"]': 'addAttachments',
     'dragenter input[type="file"]': 'highlightDropzone',
@@ -64,8 +64,8 @@ var CommentView = Backbone.View.extend({
     this.$attachments = this.$el.find('.comment-attachments');
     this.$status = this.$el.find('.status');
 
-    var hrGroup = new menu.MenuCommandGroup('insert');
-    var headingMenu = new menu.Dropdown({
+    const hrGroup = new menu.MenuCommandGroup('insert');
+    const headingMenu = new menu.Dropdown({
       label: 'Heading', displayActive: true,
     }, [new menu.MenuCommandGroup('textblock'), new menu.MenuCommandGroup('textblockHeading')]);
     this.editor = new edit.ProseMirror({
@@ -93,7 +93,7 @@ var CommentView = Backbone.View.extend({
     if (this.model) {
       this.stopListening(this.model);
     }
-    var options = {
+    const options = {
       id: section,
       tocId: tocId,
       indexes: indexes,
@@ -112,12 +112,12 @@ var CommentView = Backbone.View.extend({
     this.setSection(options.section, options.tocId, options.indexes, options.label);
     this.$context.empty();
     if (options.$parent) {
-      var label = options.label;
-      var parsed = helpers.parsePreambleId(options.section);
-      var href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
+      let label = options.label;
+      const parsed = helpers.parsePreambleId(options.section);
+      const href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
       // Splice section label and context title, if present
       // TODO: Build this upstream
-      var $sectionHeader = options.$parent.find('.node:first :header');
+      const $sectionHeader = options.$parent.find('.node:first :header');
       if ($sectionHeader.length) {
         label = [label, $sectionHeader.text().split('. ').slice(1)].join('. ');
         $sectionHeader.remove();
@@ -134,13 +134,13 @@ var CommentView = Backbone.View.extend({
 
   openComment: function openComment(e) {
     e.preventDefault();
-    var options = {
+    const options = {
       section: this.model.get('id'),
       tocId: this.model.get('tocId'),
       label: this.model.get('label'),
     };
     // TODO: Push this logic into `PreambleView`
-    var type = options.section.split('-')[1];
+    const type = options.section.split('-')[1];
     DrawerEvents.trigger('section:open', options.tocId);
     DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
@@ -192,7 +192,7 @@ var CommentView = Backbone.View.extend({
    */
   addAttachment: function addAttachment(file) {
     getUploadUrl(file).then(function handleResponse(resp) {
-      var xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       this.attachmentViews.push(
         new AttachmentView({
           $parent: this.$attachments,
@@ -214,7 +214,7 @@ var CommentView = Backbone.View.extend({
   },
 
   clearAttachment: function clearAttachment(key) {
-    var index = _.findIndex(this.attachmentViews, function perView(view) {
+    const index = _.findIndex(this.attachmentViews, function perView(view) {
       return view.options.key === key;
     });
     this.attachmentViews[index].remove();
@@ -225,15 +225,15 @@ var CommentView = Backbone.View.extend({
   setAttachmentCount: function setAttachmentCount() {
     // Count saved attachments on other comments and pending attachments on the
     // current comment
-    var count = comments.filter(this.options.docId).reduce(function perComment(total, comment) {
-      var incr = comment.id !== this.model.id ?
+    let count = comments.filter(this.options.docId).reduce(function perComment(total, comment) {
+      const incr = comment.id !== this.model.id ?
         comment.get('files').length :
         0;
       return total + incr;
     }.bind(this), 0);
     count += this.attachmentViews.length;
     this.attachmentCount = count;
-    var plural = this.attachmentCount !== 1 ? 's' : '';
+    const plural = this.attachmentCount !== 1 ? 's' : '';
     this.$attachmentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
@@ -241,7 +241,7 @@ var CommentView = Backbone.View.extend({
   deleteComment: function deleteComment(e) {
     e.preventDefault();
 
-    var comment = comments.get($(e.target).data('section'));
+    const comment = comments.get($(e.target).data('section'));
     if (comment) {
       comment.destroy();
 

@@ -1,16 +1,16 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var DrawerEvents = require('../../events/drawer-events');
-var Helpers = require('../../helpers');
-var Resources = require('../../resources');
-var ChildView = require('./child-view');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const DrawerEvents = require('../../events/drawer-events');
+const Helpers = require('../../helpers');
+const Resources = require('../../resources');
+const ChildView = require('./child-view');
 
 Backbone.$ = $;
 
-var DiffView = ChildView.extend({
+const DiffView = ChildView.extend({
   initialize: function initialize(options) {
     this.options = options;
     this.id = this.options.id;
@@ -31,10 +31,8 @@ var DiffView = ChildView.extend({
 
   // "12 CFR Comparison of §1005.1 | eRegulations"
   assembleTitle: function assembleTitle() {
-    var titleParts;
-    var newTitle;
-    titleParts = _.compact(document.title.split(' '));
-    newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
+    const titleParts = _.compact(document.title.split(' '));
+    const newTitle = [titleParts[0], titleParts[1], this.sectionLabel, '|', 'eRegulations'];
     return newTitle.join(' ');
   },
 });

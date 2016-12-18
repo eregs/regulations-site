@@ -1,13 +1,13 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var Router = require('../../router');
-var MainEvents = require('../../events/main-events');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Router = require('../../router');
+const MainEvents = require('../../events/main-events');
 
 Backbone.$ = $;
 
-var SearchView = Backbone.View.extend({
+const SearchView = Backbone.View.extend({
   el: '#search',
 
   events: {
@@ -26,8 +26,8 @@ var SearchView = Backbone.View.extend({
     sessionStorage.setItem('drawerDefault', 'search');
 
     e.preventDefault();
-    var $form = $(e.target);
-    var options = {
+    const $form = $(e.target);
+    const options = {
       docType: $form.data('doc-type'),
       query: $form.find('input[name="q"]').val(),
       searchVersion: $form.find('select[name=version]').val(),

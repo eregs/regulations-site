@@ -1,13 +1,13 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var GAEvents = require('../events/ga-events');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const GAEvents = require('../events/ga-events');
 
 Backbone.$ = $;
 
-var AnalyticsHandler = Backbone.View.extend({
+const AnalyticsHandler = Backbone.View.extend({
   initialize: function initialize() {
     GAEvents.on('section:open', this.sendEvent, 'open');
     GAEvents.on('definition:open', this.sendEvent, 'open');
@@ -28,8 +28,8 @@ var AnalyticsHandler = Backbone.View.extend({
   },
 
   sendEvent: function sendEvent(context) {
-    var objectParts = [];
-    var object;
+    const objectParts = [];
+    let object = '';
 
     if (typeof window.ga === 'undefined') {
       return;
@@ -45,9 +45,9 @@ var AnalyticsHandler = Backbone.View.extend({
       }
     }
 
-        // diffs preserve ids in sectionId because
-        // id has the url in order to keep a unique
-        // instance cached in the model
+    // diffs preserve ids in sectionId because
+    // id has the url in order to keep a unique
+    // instance cached in the model
     if (typeof context.sectionId !== 'undefined') {
       objectParts.push(context.sectionId);
     }

@@ -1,16 +1,16 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var Router = require('../../router');
-var HeaderEvents = require('../../events/header-events');
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var ChildView = require('./child-view');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Router = require('../../router');
+const HeaderEvents = require('../../events/header-events');
+const MainEvents = require('../../events/main-events');
+const DrawerEvents = require('../../events/drawer-events');
+const ChildView = require('./child-view');
 
 Backbone.$ = $;
 
-var SearchResultsView = ChildView.extend({
+const SearchResultsView = ChildView.extend({
   events: {
     'click .search-nav a': 'paginate',
     'click h3 .internal': 'openResult',
@@ -47,7 +47,7 @@ var SearchResultsView = ChildView.extend({
   },
 
   render: function render() {
-    var $results = this.$el.find('#result-count');
+    const $results = this.$el.find('#result-count');
 
         // if the results were ajaxed in, update header
     if ($results.text().length > 0) {
@@ -65,7 +65,7 @@ var SearchResultsView = ChildView.extend({
   paginate: function paginate(e) {
     e.preventDefault();
 
-    var options = {
+    const options = {
       query: this.options.query,
       docType: this.options.docType,
       regVersion: this.options.regVersion,
@@ -81,9 +81,9 @@ var SearchResultsView = ChildView.extend({
         // page should reload if the TOC version doesn't match the searched version
     if (!this.resultsRegVersion || this.resultsRegVersion === $('nav#toc').attr('data-toc-version')) {
       e.preventDefault();
-      var $resultLink = $(e.target);
-      var pageType = this.options.docType === 'cfr' ? 'reg-section' : 'preamble-section';
-      var options = {
+      const $resultLink = $(e.target);
+      const pageType = this.options.docType === 'cfr' ? 'reg-section' : 'preamble-section';
+      const options = {
         regVersion: $resultLink.data('linked-version'),
         scrollToId: $resultLink.data('linked-subsection'),
       };

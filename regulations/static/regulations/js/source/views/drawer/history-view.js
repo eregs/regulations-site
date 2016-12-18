@@ -1,13 +1,13 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var MainEvents = require('../../events/main-events');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const MainEvents = require('../../events/main-events');
 
 Backbone.$ = $;
 
-var HistoryView = Backbone.View.extend({
+const HistoryView = Backbone.View.extend({
 
   el: '#timeline',
 
@@ -25,19 +25,19 @@ var HistoryView = Backbone.View.extend({
   },
 
   updateLinks: function updateLinks(initialSection) {
-    var section = initialSection;
-    var prefix = window.APP_PREFIX;
+    let section = initialSection;
+    let prefix = window.APP_PREFIX;
     if (typeof prefix !== 'undefined' && prefix.substr(prefix.length - 1) !== '/') {
       prefix += '/';
     }
     // section may not be defined (e.g. on the landing page)
     if (typeof section !== 'undefined') {
       this.$el.find('.version-link').each(function perLink() {
-        var $link = $(this);
+        const $link = $(this);
         $link.attr('href', prefix + section + '/' + $link.data('version'));
       });
       this.$el.find('.stop-button').each(function perButton() {
-        var $link = $(this);
+        const $link = $(this);
         /* Interpretations are split into "subterps" outside of diff view -
          * link to the first */
         if (section.indexOf('Interp') !== -1) {
@@ -54,12 +54,11 @@ var HistoryView = Backbone.View.extend({
       }
       // update diff dropdown
       this.$el.find('.select-content form').each(function perForm() {
-        var $form = $(this);
-        var actionParts;
-        var actionPath;
-
+        const $form = $(this);
         // form action = diff_redirect/section/version
-        actionParts = _.compact($form.attr('action').split('/'));
+        const actionParts = _.compact($form.attr('action').split('/'));
+        let actionPath = '';
+
         // remove section ID
         actionParts.splice(-2, 1, section);
         actionPath = '/' + actionParts.join('/');

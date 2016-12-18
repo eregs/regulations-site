@@ -1,10 +1,10 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var BreakawayEvents = _.clone(Backbone.Events);
+const BreakawayEvents = _.clone(Backbone.Events);
 module.exports = BreakawayEvents;

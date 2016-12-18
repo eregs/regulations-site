@@ -1,12 +1,12 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var HeaderEvents = require('../../events/header-events');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const HeaderEvents = require('../../events/header-events');
 
 Backbone.$ = $;
 
-var SubHeadView = Backbone.View.extend({
+const SubHeadView = Backbone.View.extend({
   el: '#content-header',
 
   initialize: function initialize() {

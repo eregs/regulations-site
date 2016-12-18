@@ -1,8 +1,8 @@
 // Defines some globally useful helper functions
 
 
-var $ = require('jquery');
-var _ = require('underscore');
+const $ = require('jquery');
+const _ = require('underscore');
 
 // indexOf polyfill
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf
@@ -10,12 +10,12 @@ var _ = require('underscore');
 if (!Array.prototype.indexOf) {
   /* eslint-disable no-extend-native,no-bitwise */
   Array.prototype.indexOf = function indexOf(searchElement, initialIndex) {
-    var fromIndex = initialIndex;
+    let fromIndex = initialIndex;
     if (this === undefined || this === null) {
       throw new TypeError('"this" is null or not defined');
     }
 
-    var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+    const length = this.length >>> 0; // Hack to convert object.length to a UInt32
 
     fromIndex = +fromIndex || 0;
 
@@ -44,8 +44,8 @@ if (!Array.prototype.indexOf) {
 module.exports = {
   // Finds parent-most reg paragraph
   findBaseSection: function findBaseSection(id) {
-    var parts;
-    var interpIndex;
+    let parts = [];
+    let interpIndex = -1;
 
     if (id.indexOf('-') !== -1) {
       parts = id.split('-');
@@ -53,12 +53,12 @@ module.exports = {
       return id;
     }
 
-        // if what has been passed in is a base section already
-        // catches:
-        // 123
-        // 123-1
-        // 123-A
-        // 123-Interp
+    // if what has been passed in is a base section already
+    // catches:
+    // 123
+    // 123-1
+    // 123-A
+    // 123-Interp
     if (parts.length <= 2) {
       return id;
     }
@@ -66,7 +66,7 @@ module.exports = {
     interpIndex = parts.indexOf('Interp');
 
     if (interpIndex !== -1) {
-            // catches 123-Interp-h1
+      // catches 123-Interp-h1
       if (parts[1] === 'Interp') {
         return id;
       }
@@ -110,8 +110,8 @@ module.exports = {
 
   // returns newer version. findVersion will return base version
   findDiffVersion: function findDiffVersion(versionElements, current) {
-    var currentVersion = current || this.findVersion(versionElements);
-    var version;
+    const currentVersion = current || this.findVersion(versionElements);
+    let version;
     version = $(versionElements.diffToc).attr('data-from-version');
     if (!version || version === currentVersion) {
       if ($(versionElements.timelineList).find('.version-link').attr('data-version') !== currentVersion) {
@@ -123,7 +123,7 @@ module.exports = {
   },
 
   isSupplement: function isSupplement(id) {
-    var parts;
+    let parts;
 
     if (typeof id !== 'undefined') {
       parts = _.compact(id.split('-'));
@@ -140,7 +140,7 @@ module.exports = {
   },
 
   isAppendix: function isAppendix(id) {
-    var parts;
+    let parts;
 
     if (typeof id !== 'undefined') {
       parts = _.compact(id.split('-'));
@@ -158,8 +158,8 @@ module.exports = {
 
   formatSubpartLabel: function formatSubpartLabel(id) {
     // accepts 123-Subpart-C
-    var parts = id.split('-');
-    var label = 'Subpart ';
+    const parts = id.split('-');
+    let label = 'Subpart ';
     if (isNaN(parts[0]) === false && parts[1] === 'Subpart') {
       label += parts[2];
     }
@@ -181,11 +181,11 @@ module.exports = {
      * @see unittests for example usage
      */
   parsePreambleId: function parsePreambleId(id) {
-    var parts = id.split('-');
-    var docId = parts.shift();
-    var type = parts.shift();
-    var path = ['preamble', docId];
-    var section;
+    const parts = id.split('-');
+    const docId = parts.shift();
+    const type = parts.shift();
+    let path = ['preamble', docId];
+    let section;
     if (type === 'preamble') {
         // Note: Document ID appears twice in preamble IDs
         // TODO: Standardize IDs and drop the `slice`
@@ -197,7 +197,7 @@ module.exports = {
       path = path.concat(['cfr_changes', parts.slice(0, 2).join('-')]);
       section = parts.slice(0, 2);
     }
-    var parsed = {
+    const parsed = {
       path: path,
       type: type,
       docId: docId,
@@ -228,10 +228,10 @@ module.exports = {
    */
   parsePreambleCitationId: function parsePreambleCitationId(hash, type) {
     // only grab the section info after #
-    var section = hash.substring(hash.indexOf('#') + 1);
-    var parts = section.split('-');
-    var docId = parts.shift();
-    var docType = type === 'preamble-section' ? 'preamble' : 'cfr';
+    const section = hash.substring(hash.indexOf('#') + 1);
+    const parts = section.split('-');
+    const docId = parts.shift();
+    const docType = type === 'preamble-section' ? 'preamble' : 'cfr';
 
     return [docId, docType, section].join('-');
   },

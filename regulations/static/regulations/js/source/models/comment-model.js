@@ -1,8 +1,8 @@
 
 
-var Backbone = require('backbone');
+const Backbone = require('backbone');
 
-var commentModel = Backbone.Model.extend({
+const commentModel = Backbone.Model.extend({
   defaults: {
     docId: '',
     label: '',
@@ -13,10 +13,10 @@ var commentModel = Backbone.Model.extend({
   },
 });
 
-var indexComparator = function indexComparator(first, second) {
-  var maxLength = Math.max(first.length, second.length);
+const indexComparator = function indexComparator(first, second) {
+  const maxLength = Math.max(first.length, second.length);
 
-  for (var i = 0; i < maxLength; i += 1) {
+  for (let i = 0; i < maxLength; i += 1) {
     if (first[i] === undefined) {
       return -1;
     } else if (second[i] === undefined) {
@@ -30,7 +30,7 @@ var indexComparator = function indexComparator(first, second) {
   return 0;
 };
 
-var commentComparator = function commentComparator(first, second) {
+const commentComparator = function commentComparator(first, second) {
   return indexComparator(first.get('indexes'), second.get('indexes'));
 };
 

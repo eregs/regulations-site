@@ -1,10 +1,10 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var SidebarEvents = _.clone(Backbone.Events);
+const SidebarEvents = _.clone(Backbone.Events);
 module.exports = SidebarEvents;

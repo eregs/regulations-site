@@ -1,6 +1,6 @@
 
 
-var $ = require('jquery');
+const $ = require('jquery');
 
 /**
  * Functions to process the different types of "stars", indicators that text
@@ -9,14 +9,14 @@ var $ = require('jquery');
  * an updated $expander.
  */
 
-var starContent = '<button class="show-more-context">&#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733; <span>Show more context</span> &#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733;</button>';
+const starContent = '<button class="show-more-context">&#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733; <span>Show more context</span> &#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733;</button>';
 
 module.exports = {
   none: function none() { return null; },  /* No changes, no new expander */
   inline: function inline($li) {
-    var $toShow = $li.find('.paragraph-text:first').hide();
-    var $expander = $(starContent).insertBefore($toShow);
-    var $paragraph = $expander.parent();
+    const $toShow = $li.find('.paragraph-text:first').hide();
+    const $expander = $(starContent).insertBefore($toShow);
+    const $paragraph = $expander.parent();
 
     $expander.click(function click() {
       $expander.remove();
@@ -35,8 +35,8 @@ module.exports = {
     return $expander;
   },
   full: function full($li, expanderEl) {
-    var $expander = expanderEl;
-    var $toShow;
+    let $expander = expanderEl;
+    let $toShow;
     /* Generally, we want to reuse the existing expander */
     if ($expander) {
       $toShow = $li.hide();

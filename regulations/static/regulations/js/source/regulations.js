@@ -3,7 +3,7 @@
 
 // make jQuery globally accessible for plugins and analytics
 window.$ = window.jQuery = require('jquery');
-var app = require('./app-init');
+const app = require('./app-init');
 
 // A `bind()` polyfill
 if (!Function.prototype.bind) {
@@ -14,12 +14,12 @@ if (!Function.prototype.bind) {
       throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
     }
 
-    var aArgs = Array.prototype.slice.call(arguments, 1);
-    var fToBind = this;
-    var FNOP = function FNOP() {};
-    var fBound = function fBound() {
-      var arg1 = this instanceof FNOP && oThis ? this : oThis;
-      var arg2 = aArgs.concat(Array.prototype.slice.call(arguments));
+    const aArgs = Array.prototype.slice.call(arguments, 1);
+    const fToBind = this;
+    const FNOP = function FNOP() {};
+    const fBound = function fBound() {
+      const arg1 = this instanceof FNOP && oThis ? this : oThis;
+      const arg2 = aArgs.concat(Array.prototype.slice.call(arguments));
       return fToBind.apply(arg1, arg2);
     };
 

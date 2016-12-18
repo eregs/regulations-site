@@ -1,17 +1,17 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var SxS = require('./sxs-view');
-var Router = require('../../router');
-var BreakawayEvents = require('../../events/breakaway-events');
-var MainEvents = require('../../events/main-events');
-var SidebarEvents = require('../../events/sidebar-events');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const SxS = require('./sxs-view');
+const Router = require('../../router');
+const BreakawayEvents = require('../../events/breakaway-events');
+const MainEvents = require('../../events/main-events');
+const SidebarEvents = require('../../events/sidebar-events');
 
 Backbone.$ = $;
 
-var BreakawayView = Backbone.View.extend({
+const BreakawayView = Backbone.View.extend({
   childViews: {},
 
   initialize: function initialize() {
@@ -19,7 +19,7 @@ var BreakawayView = Backbone.View.extend({
   },
 
   openSxS: function openSxS(initialContext) {
-    var context = $.extend({}, initialContext);
+    const context = $.extend({}, initialContext);
     context.url = context.regParagraph + '/' + context.docNumber + '?from_version=' + context.fromVersion;
 
     this.childViews.sxs = new SxS(context);
@@ -38,5 +38,5 @@ var BreakawayView = Backbone.View.extend({
   },
 });
 
-var breakaway = new BreakawayView();
+const breakaway = new BreakawayView();
 module.exports = breakaway;

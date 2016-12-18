@@ -1,12 +1,12 @@
 
 
-var _ = require('underscore');
-var Backbone = require('backbone');
+const _ = require('underscore');
+const Backbone = require('backbone');
 Backbone.LocalStorage = require('backbone.localstorage');
 
-var commentModel = require('../models/comment-model');
+const commentModel = require('../models/comment-model');
 
-var CommentCollection = Backbone.Collection.extend({
+const CommentCollection = Backbone.Collection.extend({
   model: commentModel.CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
 
@@ -17,7 +17,7 @@ var CommentCollection = Backbone.Collection.extend({
   },
 
   toJSON: function toJSON(options) {
-    var models = (options || {}).docId ? this.filter(options.docId) : this.models;
+    const models = (options || {}).docId ? this.filter(options.docId) : this.models;
     return _.map(models, function modelFilter(model) {
       return model.toJSON(options);
     });
@@ -26,7 +26,7 @@ var CommentCollection = Backbone.Collection.extend({
   comparator: commentModel.commentComparator,
 });
 
-var comments = new CommentCollection();
+const comments = new CommentCollection();
 comments.fetch();
 
 module.exports = comments;

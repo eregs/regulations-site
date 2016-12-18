@@ -1,15 +1,15 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var Router = require('../../router');
-var BreakawayEvents = require('../../events/breakaway-events');
-var GAEvents = require('../../events/ga-events');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const Router = require('../../router');
+const BreakawayEvents = require('../../events/breakaway-events');
+const GAEvents = require('../../events/ga-events');
 
 Backbone.$ = $;
 
-var SxSListView = Backbone.View.extend({
+const SxSListView = Backbone.View.extend({
   el: '#sxs-list',
 
   events: {
@@ -29,10 +29,10 @@ var SxSListView = Backbone.View.extend({
   openSxS: function openSxS(e) {
     e.preventDefault();
 
-    var $sxsLink = $(e.target);
-    var id = $sxsLink.data('sxs-paragraph-id');
-    var docNumber = $sxsLink.data('doc-number');
-    var version = $('section[data-base-version]').data('base-version');
+    const $sxsLink = $(e.target);
+    const id = $sxsLink.data('sxs-paragraph-id');
+    const docNumber = $sxsLink.data('doc-number');
+    const version = $('section[data-base-version]').data('base-version');
 
     BreakawayEvents.trigger('sxs:open', {
       regParagraph: id,
@@ -49,8 +49,8 @@ var SxSListView = Backbone.View.extend({
   },
 
   render: function render(html) {
-    var $html = $(html);
-    var list = $html.find('#sxs-list').html();
+    const $html = $(html);
+    const list = $html.find('#sxs-list').html();
     this.$el.html(list);
   },
 });

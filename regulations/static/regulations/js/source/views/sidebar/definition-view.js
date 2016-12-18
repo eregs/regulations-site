@@ -1,12 +1,12 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var Helpers = require('../../helpers');
-var Router = require('../../router');
-var MainEvents = require('../../events/main-events');
-var SidebarEvents = require('../../events/sidebar-events');
-var GAEvents = require('../../events/ga-events');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Helpers = require('../../helpers');
+const Router = require('../../router');
+const MainEvents = require('../../events/main-events');
+const SidebarEvents = require('../../events/sidebar-events');
+const GAEvents = require('../../events/ga-events');
 
 Backbone.$ = $;
 
@@ -17,7 +17,7 @@ Backbone.$ = $;
 // * **$anchor** jQobj, the reg-view link that opened the def
 //
 // this.options turns into this.model
-var DefinitionView = Backbone.View.extend({
+const DefinitionView = Backbone.View.extend({
   el: '#definition',
 
   events: {
@@ -100,7 +100,7 @@ var DefinitionView = Backbone.View.extend({
     // displayed when an open definition doesn't apply to the
     // whole open section
   displayScopeMsg: function displayScopeMsg(id) {
-    var msg = '<p>This term has a different definition for some portions of ';
+    let msg = '<p>This term has a different definition for some portions of ';
     msg += id ? $('#' + id).data('label') + '.' : 'this section.';
     msg += '</p>';
 
@@ -121,16 +121,15 @@ var DefinitionView = Backbone.View.extend({
 
   // for when the definition does not apply to the active section
   grayOutDefinition: function grayOutDefinition(defId, href, activeSectionId) {
-    var $text = this.$el.find('.definition-text');
-    var linkText = 'Load the correct definition for ';
-    var link;
-    var $msg;
+    const $text = this.$el.find('.definition-text');
+    let linkText = 'Load the correct definition for ';
+    const $msg = this.$warningContainer.find('.msg');
+    let link;
 
     if (typeof this.$warningContainer === 'undefined') {
       this.displayScopeMsg(Helpers.findBaseSection(activeSectionId));
     }
 
-    $msg = this.$warningContainer.find('.msg');
     linkText += (defId) ? $('#' + activeSectionId).data('label') : 'this section';
     link = '<a href="' + href + '" class="update-definition inactive internal" data-definition="' + defId + '">';
     link += linkText + '</a>';
@@ -148,7 +147,7 @@ var DefinitionView = Backbone.View.extend({
     // for when a definition is not in conflict for the active section,
     // but doesn't apply to the entire section, either
   unGrayDefinition: function unGrayDefinition() {
-    var $text = this.$el.find('.definition-text');
+    const $text = this.$el.find('.definition-text');
     $text.removeClass('inactive');
 
     this.$el.find('.definition-warning a').remove();
@@ -156,8 +155,8 @@ var DefinitionView = Backbone.View.extend({
 
   openFullDefinition: function openFullDefinition(e) {
     e.preventDefault();
-    var id = $(e.target).data('linked-section') || $(e.target).data('definition');
-    var parentId = Helpers.findBaseSection(id);
+    const id = $(e.target).data('linked-section') || $(e.target).data('definition');
+    const parentId = Helpers.findBaseSection(id);
 
     MainEvents.trigger('section:open', parentId, {
       scrollToId: id,
@@ -171,9 +170,9 @@ var DefinitionView = Backbone.View.extend({
 
   openInterpretation: function openInterpretation(e) {
     e.preventDefault();
-    var $e = $(e.target);
-    var id = $e.data('linked-section');
-    var pid = $e.data('linked-subsection');
+    const $e = $(e.target);
+    const id = $e.data('linked-section');
+    const pid = $e.data('linked-subsection');
 
     MainEvents.trigger('section:open', id, {
       scrollToId: pid,

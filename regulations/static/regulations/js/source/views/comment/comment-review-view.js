@@ -1,15 +1,15 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var MainEvents = require('../../events/main-events');
-var CommentEvents = require('../../events/comment-events');
-var comments = require('../../collections/comment-collection');
-var DrawerEvents = require('../../events/drawer-events');
+const MainEvents = require('../../events/main-events');
+const CommentEvents = require('../../events/comment-events');
+const comments = require('../../collections/comment-collection');
+const DrawerEvents = require('../../events/drawer-events');
 
 function selfOrChild($root, selector) {
   return $root.is(selector) ? $root : $root.find(selector);
@@ -20,7 +20,7 @@ function toggleInput($container, enabled) {
   selfOrChild($container, 'input, select').prop('disabled', !enabled);
 }
 
-var CommentReviewView = Backbone.View.extend({
+const CommentReviewView = Backbone.View.extend({
   events: {
     'click .edit-comment': 'editComment',
     'click .preview-button': 'preview',
@@ -49,9 +49,9 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   editComment: function editComment(e) {
-    var section = $(e.target).closest('li').data('section');
-    var label = $(e.target).closest('li').find('.comment-section-label').text();
-    var options = { id: section, section: section, label: label, mode: 'write' };
+    const section = $(e.target).closest('li').data('section');
+    const label = $(e.target).closest('li').find('.comment-section-label').text();
+    const options = { id: section, section: section, label: label, mode: 'write' };
 
     $('#content-body').removeClass('comment-review-wrapper');
 
@@ -60,8 +60,8 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   render: function render() {
-    var commentData = comments.toJSON({ docId: this.docId });
-    var html = this.template({
+    const commentData = comments.toJSON({ docId: this.docId });
+    const html = this.template({
       comments: commentData,
       previewLoading: this.previewLoading,
     });
@@ -84,15 +84,15 @@ var CommentReviewView = Backbone.View.extend({
   },
 
   initTabs: function initTabs() {
-    var self = this;
+    const self = this;
     function updateTabs(tab, tabSet) {
-      var tabSelector = '[data-tab="' + tab + '"]';
-      var setSelector = '[data-tab-set="' + tabSet + '"]';
+      const tabSelector = '[data-tab="' + tab + '"]';
+      const setSelector = '[data-tab-set="' + tabSet + '"]';
       self.$el.find(setSelector).removeClass('current');
       self.$el.find(setSelector + tabSelector).addClass('current');
       self.$el.find(setSelector + '[data-tabs]').each(function perEl(idx, elm) {
-        var $elm = $(elm);
-        var tabs = $elm.data('tabs');
+        const $elm = $(elm);
+        const tabs = $elm.data('tabs');
         if (tabs.indexOf(tab) !== -1) {
           $elm.show();
         } else {
@@ -101,11 +101,11 @@ var CommentReviewView = Backbone.View.extend({
       });
     }
 
-    var $tabs = self.$el.find('[data-tab]');
+    const $tabs = self.$el.find('[data-tab]');
     updateTabs($tabs.data('tab'), $tabs.data('tab-set'));
 
     $tabs.on('click', function click(e) {
-      var $tab = $(this);
+      const $tab = $(this);
 
       e.preventDefault();
 
@@ -119,19 +119,19 @@ var CommentReviewView = Backbone.View.extend({
    * _no_ options available in the second, we need to display a "write-in".
    **/
   initDependencies: function initDependencies() {
-    var self = this;
+    const self = this;
     self.$el.find('[data-depends-on]').each(function perEl(idx, elm) {
-      var $elm = $(elm);
-      var $select = selfOrChild($elm, 'select');
-      var $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
-      var $options = $select.find('option[value]').detach().clone();
-      var $writeIn = self.$el.find('[data-writein-for="' + $select.prop('id') + '"]');
+      const $elm = $(elm);
+      const $select = selfOrChild($elm, 'select');
+      const $dependsOn = self.$el.find('[name="' + $elm.data('depends-on') + '"]');
+      const $options = $select.find('option[value]').detach().clone();
+      const $writeIn = self.$el.find('[data-writein-for="' + $select.prop('id') + '"]');
       function updateOptions(value) {
         $select.find('option[value]').remove();
-        var optionsCount = 0;
-        var optionsToShow = [];
+        let optionsCount = 0;
+        const optionsToShow = [];
         $options.each(function perOption(innerIdx, option) {
-          var depVal = option.getAttribute('data-dependency');
+          const depVal = option.getAttribute('data-dependency');
           if (depVal === value) {
             optionsCount += 1;
           }
@@ -154,7 +154,7 @@ var CommentReviewView = Backbone.View.extend({
   preview: function preview(e) {
     e.preventDefault();
 
-    var $xhr = $.ajax({
+    const $xhr = $.ajax({
       type: 'POST',
       url: window.APP_PREFIX + 'comments/preview',
       data: JSON.stringify({

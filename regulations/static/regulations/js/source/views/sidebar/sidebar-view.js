@@ -1,18 +1,18 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var SxSList = require('./sxs-list-view');
-var SidebarModel = require('../../models/sidebar-model');
-var DefinitionModel = require('../../models/definition-model');
-var SidebarEvents = require('../../events/sidebar-events');
-var Definition = require('./definition-view');
-var MainEvents = require('../../events/main-events');
-var Helpers = require('../../helpers.js');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const SxSList = require('./sxs-list-view');
+const SidebarModel = require('../../models/sidebar-model');
+const DefinitionModel = require('../../models/definition-model');
+const SidebarEvents = require('../../events/sidebar-events');
+const Definition = require('./definition-view');
+const MainEvents = require('../../events/main-events');
+const Helpers = require('../../helpers.js');
 
 Backbone.$ = $;
 
-var SidebarView = Backbone.View.extend({
+const SidebarView = Backbone.View.extend({
   el: '#sidebar-content',
 
   events: {
@@ -32,7 +32,7 @@ var SidebarView = Backbone.View.extend({
     this.model = SidebarModel;
         /* Cache the initial sidebar */
     this.$el.find('[data-cache-key=sidebar]').each(function perSidebar(idx, el) {
-      var $el = $(el);
+      const $el = $(el);
       SidebarModel.set($el.data('cache-value'), $el.html());
     });
   },
@@ -46,7 +46,7 @@ var SidebarView = Backbone.View.extend({
     this.definitionModel.get(config.id, {}).then(function handleResponse(resp) {
       this.childViews.definition.render(resp);
     }.bind(this)).fail(function fail() {
-      var errorMsg = 'We tried to load that definition, but something went wrong. ';
+      let errorMsg = 'We tried to load that definition, but something went wrong. ';
       errorMsg += '<a href="#" class="update-definition inactive internal" data-definition="' + this.childViews.definition.id + '">Try again?</a>';
       this.childViews.definition.renderError(errorMsg);
     }.bind(this));
@@ -119,7 +119,7 @@ var SidebarView = Backbone.View.extend({
 
   closeExpandables: function closeExpandables() {
     this.$el.find('.expandable').each(function perEl(i, folder) {
-      var $folder = $(folder);
+      const $folder = $(folder);
       if ($folder.hasClass('open')) {
         this.toggleExpandable($folder);
       }
@@ -127,7 +127,7 @@ var SidebarView = Backbone.View.extend({
   },
 
   toggleExpandable: function toggleExpandable(e) {
-    var $expandable;
+    let $expandable;
 
     if (typeof e.stopPropagation !== 'undefined') {
       e.stopPropagation();
@@ -139,7 +139,7 @@ var SidebarView = Backbone.View.extend({
   },
 
   removeChildren: function removeChildren(except) {
-    var self = this;
+    const self = this;
     $.each(this.childViews, function perProperty(key) {
       if (!except || except !== key) {
         self.childViews[key].remove();

@@ -1,33 +1,33 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var URI = require('urijs');
+const $ = require('jquery');
+const _ = require('underscore');
+const URI = require('urijs');
 require('datatables.net')();
-var Clipboard = require('clipboard');
-var Backbone = require('backbone');
-var SearchResultsView = require('./search-results-view');
-var RegView = require('./reg-view');
-var RegModel = require('../../models/reg-model');
-var SearchModel = require('../../models/search-model');
-var SectionFooter = require('./section-footer-view');
-var MainEvents = require('../../events/main-events');
-var SidebarEvents = require('../../events/sidebar-events');
-var DiffModel = require('../../models/diff-model');
-var PreambleModel = require('../../models/preamble-model');
-var DiffView = require('./diff-view');
-var Router = require('../../router');
-var HeaderEvents = require('../../events/header-events');
-var DrawerEvents = require('../../events/drawer-events');
-var Helpers = require('../../helpers');
-var CommentReviewView = require('../comment/comment-review-view');
-var CommentConfirmView = require('../comment/comment-confirm-view');
-var PreambleView = require('./preamble-view');
-var Resources = require('../../resources');
+const Clipboard = require('clipboard');
+const Backbone = require('backbone');
+const SearchResultsView = require('./search-results-view');
+const RegView = require('./reg-view');
+const RegModel = require('../../models/reg-model');
+const SearchModel = require('../../models/search-model');
+const SectionFooter = require('./section-footer-view');
+const MainEvents = require('../../events/main-events');
+const SidebarEvents = require('../../events/sidebar-events');
+const DiffModel = require('../../models/diff-model');
+const PreambleModel = require('../../models/preamble-model');
+const DiffView = require('./diff-view');
+const Router = require('../../router');
+const HeaderEvents = require('../../events/header-events');
+const DrawerEvents = require('../../events/drawer-events');
+const Helpers = require('../../helpers');
+const CommentReviewView = require('../comment/comment-review-view');
+const CommentConfirmView = require('../comment/comment-confirm-view');
+const PreambleView = require('./preamble-view');
+const Resources = require('../../resources');
 
 Backbone.$ = $;
 
-var MainView = Backbone.View.extend({
+const MainView = Backbone.View.extend({
   el: '#content-body',
 
   events: {
@@ -52,12 +52,12 @@ var MainView = Backbone.View.extend({
    *
    */
   toggleElement: function toggleElement(e) {
-    var $target = $(e.target);
-    var $toggleEl = $target.closest('.toggle');
-    var $collapsibleEl = $toggleEl.find('.collapsible');
-    var $toggleButton = $toggleEl.find('.button');
-    var $toggleButtonOpen = $toggleButton.find('.toggle-button-open');
-    var $toggleButtonClose = $toggleButton.find('.toggle-button-close');
+    const $target = $(e.target);
+    const $toggleEl = $target.closest('.toggle');
+    const $collapsibleEl = $toggleEl.find('.collapsible');
+    const $toggleButton = $toggleEl.find('.button');
+    const $toggleButtonOpen = $toggleButton.find('.toggle-button-open');
+    const $toggleButtonClose = $toggleButton.find('.toggle-button-close');
 
     e.preventDefault();
 
@@ -116,7 +116,7 @@ var MainView = Backbone.View.extend({
       this.modelmap[this.contentType].set(this.sectionId, this.$el.html());
     }
 
-    var options = {
+    const options = {
       subContentType: this.isAppendixOrSupplement(),
       render: false,
     };
@@ -232,7 +232,7 @@ var MainView = Backbone.View.extend({
     if (this.sectionFooter) {
       this.sectionFooter.remove();
     }
-    var $footer = this.$el.find('.section-nav');
+    const $footer = this.$el.find('.section-nav');
     if ($footer) {
       this.sectionFooter = new SectionFooter({ el: $footer });
     }
@@ -263,15 +263,15 @@ var MainView = Backbone.View.extend({
     this.loading();
   },
 
-  displayError: function displayError(message='Due to a network error, we were unable to retrieve the requested information.') {
+  displayError: function displayError(message = 'Due to a network error, we were unable to retrieve the requested information.') {
     // Prevent error warning stacking
     $('.error-network').remove();
 
     // Get ID of still rendered last section
-    var $old = this.$el.find('section[data-page-type]');
-    var oldId = $old.attr('id');
-    var oldLabel = $old.data('label');
-    var $error = this.$el
+    const $old = this.$el.find('section[data-page-type]');
+    const oldId = $old.attr('id');
+    const oldLabel = $old.data('label');
+    const $error = this.$el
           .prepend(
             '<div class="error error-network">' +
               '<span class="cf-icon cf-icon-error icon-warning"></span>' +
@@ -310,7 +310,7 @@ var MainView = Backbone.View.extend({
     // Create anchor tag for copy to clipboard
     if (document.queryCommandSupported('copy')) {
       this.$el.find('*[data-copyable="true"]').each(function perCopyable(index, copyable) {
-        var link = $('<a>', {
+        const link = $('<a>', {
           class: 'clipboard-link',
           text: 'Copy this text to your clipboard',
           title: 'Copy this text to your clipboard',

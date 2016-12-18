@@ -1,16 +1,16 @@
 
 
-var URI = require('urijs');
-var Backbone = require('backbone');
-var MetaModel = require('./meta-model');
+const URI = require('urijs');
+const Backbone = require('backbone');
+const MetaModel = require('./meta-model');
 
 Backbone.SearchModel = MetaModel.extend({});
 
-var searchModel = new Backbone.SearchModel({
+const searchModel = new Backbone.SearchModel({
   supplementalPath: 'search',
 
   getAJAXUrl: function getAJAXUrl(id, options) {
-    var url = window.APP_PREFIX + 'partial/';
+    let url = window.APP_PREFIX + 'partial/';
 
     if (typeof this.supplementalPath !== 'undefined') {
       url += this.supplementalPath + '/';
@@ -20,9 +20,9 @@ var searchModel = new Backbone.SearchModel({
   },
 
   assembleSearchURL: function assembleSearchURL(options) {
-    var docType = options.docType || 'cfr';
-    var path = [docType, options.docId].join('/');
-    var query = { q: options.query };
+    const docType = options.docType || 'cfr';
+    const path = [docType, options.docId].join('/');
+    const query = { q: options.query };
     if (options.regVersion) {
       query.version = options.regVersion;
     }

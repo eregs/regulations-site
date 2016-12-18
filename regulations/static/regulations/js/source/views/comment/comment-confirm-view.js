@@ -1,14 +1,14 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var comments = require('../../collections/comment-collection');
+const comments = require('../../collections/comment-collection');
 
-var CommentConfirmView = Backbone.View.extend({
+const CommentConfirmView = Backbone.View.extend({
   initialize: function initialize(options) {
     Backbone.View.prototype.setElement.call(this, '#' + options.id);
 
@@ -44,11 +44,11 @@ var CommentConfirmView = Backbone.View.extend({
    * Fill in an element's (indicated by the selector) template with the ctx
    * provided
    **/
-  replaceTemplate: function replaceTemplate(selector, ctx, tplSelector='.js-template') {
+  replaceTemplate: function replaceTemplate(selector, ctx, tplSelector = '.js-template') {
     this.$el.find(selector).each(function perSelector(idx, elt) {
-      var $elt = $(elt);
-      var $tplElt = $elt.find(tplSelector);
-      var result = _.template($tplElt.prop('innerHTML'))(ctx);
+      const $elt = $(elt);
+      const $tplElt = $elt.find(tplSelector);
+      const result = _.template($tplElt.prop('innerHTML'))(ctx);
       $elt.empty();
       $elt.append($tplElt);
       $elt.append(result);

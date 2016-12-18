@@ -1,16 +1,16 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var TOCView = require('./toc-view');
-var HistoryView = require('./history-view');
-var SearchView = require('./search-view');
-var DrawerTabs = require('./drawer-tabs-view');
-var DrawerEvents = require('../../events/drawer-events');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const TOCView = require('./toc-view');
+const HistoryView = require('./history-view');
+const SearchView = require('./search-view');
+const DrawerTabs = require('./drawer-tabs-view');
+const DrawerEvents = require('../../events/drawer-events');
 
 Backbone.$ = $;
 
-var DrawerView = Backbone.View.extend({
+const DrawerView = Backbone.View.extend({
   el: '#menu',
 
   initialize: function initialize(options) {
@@ -26,7 +26,7 @@ var DrawerView = Backbone.View.extend({
     this.childViews.search = new SearchView();
     this.childViews['drawer-tabs'] = new DrawerTabs({ forceOpen: options.forceOpen });
 
-    var $tocSecondary = $('#table-of-contents-secondary');
+    const $tocSecondary = $('#table-of-contents-secondary');
     if ($tocSecondary.length) {
       this.childViews['table-of-contents-secondary'] = new TOCView({ el: $tocSecondary });
     }
@@ -46,7 +46,7 @@ var DrawerView = Backbone.View.extend({
 
   // selectedId = page type or child view type
   setActivePane: function setActivePane(selectedId) {
-    var activeId = selectedId;
+    let activeId = selectedId;
     if (typeof this.childViews[activeId] === 'undefined') {
       activeId = this.pageTypeMap[activeId];
     }

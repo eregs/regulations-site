@@ -1,21 +1,21 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const Backbone = require('backbone');
 require('../../events/scroll-stop.js');
 require('jquery-lazyload');
-var Router = require('../../router');
-var MainEvents = require('../../events/main-events');
-var HeaderEvents = require('../../events/header-events');
-var SidebarEvents = require('../../events/sidebar-events');
-var Helpers = require('../../helpers');
-var DrawerEvents = require('../../events/drawer-events');
-var ChildView = require('./child-view');
-var GAEvents = require('../../events/ga-events');
+const Router = require('../../router');
+const MainEvents = require('../../events/main-events');
+const HeaderEvents = require('../../events/header-events');
+const SidebarEvents = require('../../events/sidebar-events');
+const Helpers = require('../../helpers');
+const DrawerEvents = require('../../events/drawer-events');
+const ChildView = require('./child-view');
+const GAEvents = require('../../events/ga-events');
 
 Backbone.$ = $;
 
-var RegView = ChildView.extend({
+const RegView = ChildView.extend({
   events: {
     'click .definition': 'termLinkHandler',
     'click .inline-interp-header': 'expandInterp',
@@ -63,11 +63,11 @@ var RegView = ChildView.extend({
   },
 
   openSection: function openSection(e) {
-    var $target = $(e.currentTarget);
-    var id = $target.attr('data-section-id') || $target.attr('data-linked-section');
-    var href = $target.attr('href');
-    var config = {};
-    var hashIndex;
+    const $target = $(e.currentTarget);
+    const id = $target.attr('data-section-id') || $target.attr('data-linked-section');
+    const href = $target.attr('href');
+    const config = {};
+    let hashIndex;
 
     if (typeof href !== 'undefined') {
       hashIndex = href.indexOf('#');
@@ -97,18 +97,18 @@ var RegView = ChildView.extend({
   // if an inline definition is open, check the links here to see if the
   // definition is still in scope in this section
   checkDefinitionScope: function checkDefinitionScope() {
-    var $def = $('#definition');
-    var defTerm = $def.data('defined-term');
-    var defId = $def.find('.open-definition').attr('id');
-    var eventTriggered = false;
-    var $termLinks;
+    const $def = $('#definition');
+    const defTerm = $def.data('defined-term');
+    const defId = $def.find('.open-definition').attr('id');
+    let eventTriggered = false;
+    let $termLinks;
 
     if (defTerm && defId && $def.length > 0) {
       this.defScopeExclusions = this.defScopeExclusions || [];
       $termLinks = this.$el.find('a.definition');
 
       $termLinks.each(function perLink(i, link) {
-        var $link = $(link);
+        const $link = $(link);
 
         if ($link.data('defined-term') === defTerm && $link.data('definition') !== defId) {
                     // don't change the DOM over and over for no reason
@@ -131,9 +131,9 @@ var RegView = ChildView.extend({
 
   // id = active paragraph
   newActiveParagraph: function newActiveParagraph(id) {
-    var $newDefLink;
-    var newDefId;
-    var newDefHref;
+    let $newDefLink;
+    let newDefId;
+    let newDefHref;
     // if there are paragraphs where the open definition is
     // out of scope, display message
     // else be sure there's no out of scope message displayed
@@ -162,9 +162,9 @@ var RegView = ChildView.extend({
   termLinkHandler: function termLinkHandler(e) {
     e.preventDefault();
 
-    var $link = $(e.target);
-    var defId = $link.data('definition');
-    var term = $link.data('defined-term');
+    const $link = $(e.target);
+    const defId = $link.data('definition');
+    const term = $link.data('defined-term');
 
     // if this link is already active, toggle def shut
     if ($link.data('active')) {
@@ -207,11 +207,11 @@ var RegView = ChildView.extend({
         // for an open interp, they can click "hide" button or header
     e.stopImmediatePropagation();
     e.preventDefault();
-    var header = $(e.currentTarget);
-    var section = header.parent();
-    var button = header.find('.expand-button');
-    var buttonText = header.find('.expand-text');
-    var context = {
+    const header = $(e.currentTarget);
+    const section = header.parent();
+    const button = header.find('.expand-button');
+    const buttonText = header.find('.expand-text');
+    const context = {
       id: section.data('interp-id'),
       to: section.data('interp-for'),
       type: 'inline-interp',
@@ -247,9 +247,9 @@ var RegView = ChildView.extend({
   openInterp: function openInterp(e) {
     e.preventDefault();
 
-    var sectionId = $(e.currentTarget).data('linked-section');
-    var subSectionId = $(e.currentTarget).data('linked-subsection');
-    var version = $('section[data-base-version]').data('base-version');
+    const sectionId = $(e.currentTarget).data('linked-section');
+    const subSectionId = $(e.currentTarget).data('linked-subsection');
+    const version = $('section[data-base-version]').data('base-version');
 
     Router.navigate(sectionId + '/' + version + '#' + subSectionId, { trigger: true });
 

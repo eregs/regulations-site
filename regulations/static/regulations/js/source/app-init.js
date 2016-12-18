@@ -1,14 +1,14 @@
 // Module called on app load, once doc.ready
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var MainView = require('./views/main/main-view');
-var Router = require('./router');
-var SidebarView = require('./views/sidebar/sidebar-view');
-var HeaderView = require('./views/header/header-view');
-var DrawerView = require('./views/drawer/drawer-view');
-var AnalyticsHandler = require('./views/analytics-handler-view');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const MainView = require('./views/main/main-view');
+const Router = require('./router');
+const SidebarView = require('./views/sidebar/sidebar-view');
+const HeaderView = require('./views/header/header-view');
+const DrawerView = require('./views/drawer/drawer-view');
+const AnalyticsHandler = require('./views/analytics-handler-view');
 
 Backbone.$ = $;
 
@@ -23,7 +23,7 @@ module.exports = {
   },
 
   init: function init() {
-    var regs = window.regs || {};
+    const regs = window.regs || {};
 
     Router.start();
     this.bindEvents();

@@ -1,11 +1,11 @@
 
 
-var Backbone = require('backbone');
-var MainEvents = require('./events/main-events');
-var BreakawayEvents = require('./events/breakaway-events');
+const Backbone = require('backbone');
+const MainEvents = require('./events/main-events');
+const BreakawayEvents = require('./events/breakaway-events');
 require('backbone-query-parameters');
 
-var RegsRouter;
+let RegsRouter;
 
 if (typeof window.history.pushState === 'undefined') {
   RegsRouter = function router() {
@@ -30,17 +30,17 @@ if (typeof window.history.pushState === 'undefined') {
     },
 
     loadPreamble: function loadPreamble(docId, section) {
-      var parts = [docId, 'preamble', docId, section];
+      const parts = [docId, 'preamble', docId, section];
       this.openSection(parts.join('-'), 'preamble-section');
     },
 
     loadCfrChanges: function loadCfrChanges(docId, section) {
-      var parts = [docId, 'cfr', section];
+      const parts = [docId, 'cfr', section];
       this.openSection(parts.join('-'), 'preamble-section');
     },
 
     openSection: function openSection(id, type) {
-      var options = {
+      const options = {
         id: id,
         scrollToId: Backbone.history.getHash(),
         noRoute: true,
@@ -49,7 +49,7 @@ if (typeof window.history.pushState === 'undefined') {
     },
 
     loadDiffSection: function loadDiffSection(section, baseVersion, newerVersion, params) {
-      var options = {};
+      const options = {};
 
       options.id = section;
       options.baseVersion = baseVersion;
@@ -69,7 +69,7 @@ if (typeof window.history.pushState === 'undefined') {
     },
 
     loadSearchResults: function loadSearchResults(docType, reg, params) {
-      var config = {
+      const config = {
         query: params.q,
         regVersion: params.regVersion,
         docType: docType,
@@ -84,7 +84,7 @@ if (typeof window.history.pushState === 'undefined') {
     },
 
     start: function start() {
-      var root = window.APP_PREFIX || '';
+      const root = window.APP_PREFIX || '';
 
       Backbone.history.start({
         pushState: 'pushState' in window.history,
@@ -97,5 +97,5 @@ if (typeof window.history.pushState === 'undefined') {
   });
 }
 
-var router = new RegsRouter();
+const router = new RegsRouter();
 module.exports = router;

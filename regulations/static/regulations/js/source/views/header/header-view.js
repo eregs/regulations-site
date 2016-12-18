@@ -1,12 +1,12 @@
 
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var SubHead = require('./sub-head-view');
+const $ = require('jquery');
+const Backbone = require('backbone');
+const SubHead = require('./sub-head-view');
 
 Backbone.$ = $;
 
-var HeaderView = Backbone.View.extend({
+const HeaderView = Backbone.View.extend({
   el: '.reg-header',
 
   initialize: function initialize() {

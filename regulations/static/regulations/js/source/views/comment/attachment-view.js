@@ -1,14 +1,14 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var CommentEvents = require('../../events/comment-events');
+const CommentEvents = require('../../events/comment-events');
 
-var AttachmentView = Backbone.View.extend({
+const AttachmentView = Backbone.View.extend({
   events: {
     'click .attachment-remove': 'handleRemove',
   },
@@ -27,13 +27,13 @@ var AttachmentView = Backbone.View.extend({
   },
 
   render: function render() {
-    var $el = $(this.template(this.options));
+    const $el = $(this.template(this.options));
     this.options.$parent.append($el);
     this.setElement($el);
   },
 
   handleProgress: function handleProgress(e) {
-    var percent = e.loaded / e.total;
+    const percent = e.loaded / e.total;
     this.$progress.text(Math.round(percent * 1000) / 10);
   },
 

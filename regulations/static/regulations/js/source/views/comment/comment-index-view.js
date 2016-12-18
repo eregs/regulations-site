@@ -1,18 +1,18 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
 
 Backbone.$ = $;
 
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var CommentEvents = require('../../events/comment-events');
-var comments = require('../../collections/comment-collection');
+const MainEvents = require('../../events/main-events');
+const DrawerEvents = require('../../events/drawer-events');
+const CommentEvents = require('../../events/comment-events');
+const comments = require('../../collections/comment-collection');
 
 function getOptions(elm) {
-  var $elm = $(elm).closest('.comment-index-item');
+  const $elm = $(elm).closest('.comment-index-item');
   return {
     section: $elm.data('comment-section'),
     tocId: $elm.data('comment-toc-section'),
@@ -38,9 +38,9 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   render: function render() {
-    var commentData = comments.toJSON({ docId: this.docId });
+    const commentData = comments.toJSON({ docId: this.docId });
 
-    var html = this.template({ comments: commentData });
+    const html = this.template({ comments: commentData });
     this.$index.html(html);
 
     if (commentData.length) {
@@ -51,8 +51,8 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   editComment: function editComment(e) {
-    var options = _.extend({ mode: 'write' }, getOptions(e.target));
-    var type = options.section.split('-')[1];
+    const options = _.extend({ mode: 'write' }, getOptions(e.target));
+    const type = options.section.split('-')[1];
     DrawerEvents.trigger('section:open', options.tocId);
     DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
@@ -60,8 +60,8 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   },
 
   clearComment: function clearComment(e) {
-    var options = getOptions(e.target);
-    var comment = comments.get(options.section);
+    const options = getOptions(e.target);
+    const comment = comments.get(options.section);
     if (comment) {
       comment.destroy();
     }

@@ -1,15 +1,15 @@
 
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var DrawerEvents = require('../../events/drawer-events');
-var GAEvents = require('../../events/ga-events');
-var MainEvents = require('../../events/main-events');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const DrawerEvents = require('../../events/drawer-events');
+const GAEvents = require('../../events/ga-events');
+const MainEvents = require('../../events/main-events');
 
 Backbone.$ = $;
 
-var DrawerTabsView = Backbone.View.extend({
+const DrawerTabsView = Backbone.View.extend({
   el: '.toc-head',
 
   events: {
@@ -70,7 +70,7 @@ var DrawerTabsView = Backbone.View.extend({
   },
 
   openDrawer: function openDrawer(e) {
-    var context = { type: 'drawer' };
+    const context = { type: 'drawer' };
 
     if (e) {
       e.preventDefault();
@@ -94,7 +94,7 @@ var DrawerTabsView = Backbone.View.extend({
     // update the open/close arrow
     // set state
   toggleDrawerState: function toggleDrawerState() {
-    var state = (this.drawerState === 'open') ? 'close' : 'open';
+    const state = (this.drawerState === 'open') ? 'close' : 'open';
     this.updateDOMState();
     this.$toggleArrow.toggleClass('open');
     this.drawerState = state;
@@ -105,8 +105,8 @@ var DrawerTabsView = Backbone.View.extend({
   updatePaneTabs: function updatePaneTabs(e) {
     e.preventDefault();
 
-    var $target = $(e.target);
-    var linkValue = _.last($target.closest('a').attr('href').split('#'));
+    const $target = $(e.target);
+    const linkValue = _.last($target.closest('a').attr('href').split('#'));
     this.activePane = linkValue;
 
     if ($('.panel').css('left') === '-200px') {
