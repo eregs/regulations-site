@@ -28,7 +28,7 @@ var HistoryView = Backbone.View.extend({
     var section = initialSection;
     var prefix = window.APP_PREFIX;
     if (typeof prefix !== 'undefined' && prefix.substr(prefix.length - 1) !== '/') {
-      prefix = prefix + '/';
+      prefix += '/';
     }
     // section may not be defined (e.g. on the landing page)
     if (typeof section !== 'undefined') {
