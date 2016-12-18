@@ -1,5 +1,7 @@
 // this is a browserify friendly version of https://github.com/ssorallen/jquery-scrollstop
+
 'use strict';
+
 var $ = require('jquery');
 
 var dispatch = $.event.dispatch || $.event.handle;

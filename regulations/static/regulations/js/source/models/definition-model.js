@@ -1,4 +1,5 @@
 'use strict';
+
 var _ = require('underscore');
 var Backbone = require('backbone');
 var MetaModel = require('./meta-model');

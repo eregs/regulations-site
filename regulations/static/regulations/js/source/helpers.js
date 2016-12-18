@@ -1,5 +1,7 @@
 // Defines some globally useful helper functions
+
 'use strict';
+
 var $ = require('jquery');
 var _ = require('underscore');
 

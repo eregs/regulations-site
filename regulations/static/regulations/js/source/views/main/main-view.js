@@ -1,4 +1,5 @@
 'use strict';
+
 var $ = require('jquery');
 var _ = require('underscore');
 var URI = require('urijs');
