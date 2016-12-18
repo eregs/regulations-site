@@ -15,7 +15,7 @@ var MetaModel = Backbone.Model.extend({
 
     if (typeof properties !== 'undefined') {
       for (k in properties) {
-        if (properties.hasOwnProperty(k)) {
+        if (Object.prototype.hasOwnProperty.call(properties, k)) {
           this[k] = properties[k];
         }
       }
