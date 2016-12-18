@@ -108,6 +108,7 @@ var ChildView = Backbone.View.extend({
             return false;
           }
         }
+        return true;
       }.bind(this));
     },
 

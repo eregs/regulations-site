@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    consistent-return: off
     dot-notation: off
     eol-last: off
     func-names: off
