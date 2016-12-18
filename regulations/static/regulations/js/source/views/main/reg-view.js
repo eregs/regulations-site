@@ -176,30 +176,28 @@ var RegView = ChildView.extend({
         by: 'toggling term link',
       });
       this.clearActiveTerms();
+    // if its the same definition, diff term link
+    } else if ($('.open-definition').attr('id') === defId) {
+      this.toggleDefinition($link);
     } else {
-            // if its the same definition, diff term link
-      if ($('.open-definition').attr('id') === defId) {
-        this.toggleDefinition($link);
-      } else {
-                // close old definition, if there is one
-        SidebarEvents.trigger('definition:close');
-        GAEvents.trigger('definition:close', {
-          type: 'defintion',
-          by: 'opening new definition',
-        });
+      // close old definition, if there is one
+      SidebarEvents.trigger('definition:close');
+      GAEvents.trigger('definition:close', {
+        type: 'defintion',
+        by: 'opening new definition',
+      });
 
-                // open new definition
-        this.setActiveTerm($link);
-        SidebarEvents.trigger('definition:open', {
-          'id': defId,
-          'term': term,
-        });
-        GAEvents.trigger('definition:open', {
-          id: defId,
-          from: this.activeSection,
-          type: 'definition',
-        });
-      }
+      // open new definition
+      this.setActiveTerm($link);
+      SidebarEvents.trigger('definition:open', {
+        'id': defId,
+        'term': term,
+      });
+      GAEvents.trigger('definition:open', {
+        id: defId,
+        from: this.activeSection,
+        type: 'definition',
+      });
     }
 
     return this;

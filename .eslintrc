@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-lonely-if: off
     no-param-reassign: off
     no-plusplus: off
     no-prototype-builtins: off
