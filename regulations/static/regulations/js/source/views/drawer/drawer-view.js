@@ -21,8 +21,8 @@ var DrawerView = Backbone.View.extend({
 
         this.childViews = {};
         this.childViews['table-of-contents'] = new TOCView();
-        this.childViews['timeline'] = new HistoryView();
-        this.childViews['search'] = new SearchView();
+        this.childViews.timeline = new HistoryView();
+        this.childViews.search = new SearchView();
         this.childViews['drawer-tabs'] = new DrawerTabs({forceOpen: options.forceOpen});
 
         var $tocSecondary = $('#table-of-contents-secondary');

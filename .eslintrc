@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    dot-notation: off
     eol-last: off
     func-names: off
     import/newline-after-import: off
