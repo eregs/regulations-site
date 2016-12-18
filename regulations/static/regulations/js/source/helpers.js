@@ -16,7 +16,9 @@ if (!Array.prototype.indexOf) {
       throw new TypeError( '"this" is null or not defined' );
     }
 
+    /* eslint-disable no-bitwise */
     var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+    /* eslint-enable */
 
     fromIndex = +fromIndex || 0;
 

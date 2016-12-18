@@ -9,7 +9,6 @@ globals:
     $: true
 # i.e. fixmes
 rules:
-    no-bitwise: off
     no-else-return: off
     no-extend-native: off
     no-extra-semi: off
