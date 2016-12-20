@@ -4,7 +4,7 @@ var jsdom = require('mocha-jsdom');
 
 describe('starsHelpers.inline', function() {
   jsdom();
-  var starsHelpers;
+  var starsHelpers, $;
 
   before(function() {
     $ = require('jquery');
@@ -51,7 +51,7 @@ describe('starsHelpers.inline', function() {
 
 describe('starsHelpers.full', function() {
   jsdom();
-  var starsHelpers;
+  var starsHelpers, $;
 
   before(function() {
     $ = require('jquery');

@@ -5,6 +5,7 @@ var jsdom = require('mocha-jsdom');
 
 describe('DrawerTabsView', function() {
   jsdom();
+  var $;
 
   describe('::initialize', function() {
     describe('with forceOpen', function() {
@@ -12,6 +13,7 @@ describe('DrawerTabsView', function() {
 
       beforeEach(function() {
         var DrawerTabsView = require('../../../source/views/drawer/drawer-tabs-view');
+        $ = require('jquery');
 
         $fixture = $('<div id="fixutre"></div>');
         $fixture.append('<div class="toc-head"><a href="#" id="panel-link" class="toc-toggle panel-slide"></a></div>'

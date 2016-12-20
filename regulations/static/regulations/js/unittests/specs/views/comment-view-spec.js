@@ -11,6 +11,7 @@ describe('CommentView', function() {
   jsdom();
 
   var $el, comments, commentView, CommentView, AttachmentView, CommentEvents, edit;
+  var Backbone, $;
 
   before(function() {
     Backbone = require('backbone');

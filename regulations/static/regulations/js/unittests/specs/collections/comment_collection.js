@@ -6,6 +6,7 @@ describe('CommentCollection', function() {
   jsdom();
 
   var commentComparator, CommentModel;
+  var Backbone, $;
 
   before(function() {
     Backbone = require('backbone');

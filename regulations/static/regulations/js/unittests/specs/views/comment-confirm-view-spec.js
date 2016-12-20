@@ -9,6 +9,7 @@ describe('CommentConfirmView', function() {
   jsdom();
 
   var $el, comments, CommentConfirmView, CommentModel;
+  var Backbone, $;
 
   before(function() {
     Backbone = require('backbone');
