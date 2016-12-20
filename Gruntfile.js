@@ -114,13 +114,11 @@ module.exports = function toExport(grunt) {
         src: ['<%= env.frontEndPath %>/js/unittests/specs/**/*.js'],
         options: {
           root: '<%= env.frontEndPath %>/js',
+          scriptPath: require.resolve('isparta/lib/cli'),
           istanbulOptions: ['--include-all-sources'],
+          mochaOptions: ['--compilers', 'js:babel-register'],
+          nodeExec: require.resolve('.bin/babel-node'),
           coverageFolder: '<%= env.frontEndPath %>/js/unittests/coverage',
-          excludes: [
-            'built/**/*',
-            'unittests/**/*',
-            'source/otherlibs/**/*',
-          ],
           coverage: false,
         },
       },
