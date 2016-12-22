@@ -3,7 +3,8 @@ import re
 from django.template import loader
 
 from regulations.generator.layers import utils
-from regulations.generator.layers.base import LayerBase, SearchReplaceLayer
+from regulations.generator.layers.base import (
+    ParagraphLayer, SearchReplaceLayer)
 
 
 class ParagraphMarkersLayer(SearchReplaceLayer):
@@ -43,19 +44,19 @@ class MarkerHidingLayer(SearchReplaceLayer):
         yield utils.render_template(self.template, context)
 
 
-class MarkerInfoLayer(LayerBase):
+class MarkerInfoLayer(ParagraphLayer):
     """This layer adds the paragraph marker as an attribute of the node. This
     is then used to display the marker outside of the normal position"""
     shorthand = 'marker-info'
     data_source = 'paragraph-markers'
-    layer_type = LayerBase.PARAGRAPH
 
     def __init__(self, layer):
         self.layer_data = layer
 
-    def apply_layer(self, text_index):
+    def attach_metadata(self, node):
+        text_index = node['label_id']
         if self.layer_data.get(text_index):
             original = self.layer_data[text_index][0]["text"]
             stripped = original.replace('(', '').replace(')', '')
             stripped = stripped.replace('.', '')
-            return 'paragraph_marker', stripped
+            node['paragraph_marker'] = stripped

@@ -6,7 +6,6 @@ from regulations.generator.layers.toc_applier import (
 
 
 class TableOfContentsLayerTest(TestCase):
-
     def test_section(self):
         toc = TableOfContentsLayer(None)
         el = {}
@@ -117,25 +116,27 @@ class TableOfContentsLayerTest(TestCase):
             'section_id': '1-Interp'
         })
 
-    def test_apply_layer_url(self):
+    def test_attach_metadata_url(self):
         toc = TableOfContentsLayer({'100': [
             {'title': u'§ 100.1 Intro', 'index': ['100', '1']}]})
 
-        result = toc.apply_layer('100')
-        self.assertEqual('#100-1', result[1][0]['url'])
+        node = {'label_id': '100'}
+        toc.attach_metadata(node)
+        self.assertEqual('#100-1', node['TOC'][0]['url'])
 
         toc.sectional = True
         toc.version = 'verver'
-        result = toc.apply_layer('100')
-        self.assertTrue('100-1/verver#100-1' in result[1][0]['url'])
+        toc.attach_metadata(node)
+        self.assertTrue('100-1/verver#100-1' in node['TOC'][0]['url'])
 
-    def test_apply_layer_compatibility(self):
+    def test_attach_metadata_compatibility(self):
         toc = TableOfContentsLayer({'100': [
             {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
             {'title': 'Appendix A', 'index': ['100', 'A']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(3, len(result))
+        node = {'label_id': '100'}
+        toc.attach_metadata(node)
+        self.assertEqual(3, len(node['TOC']))
 
         toc = TableOfContentsLayer({
             '100': [
@@ -147,19 +148,20 @@ class TableOfContentsLayerTest(TestCase):
                 {'title': u'§ 100.2 Sec2', 'index': ['100', '2']},
                 {'title': u'§ 100.3 Sec3', 'index': ['100', '3']}]
             })
-        _, result = toc.apply_layer('100')
-        self.assertEqual(3, len(result))
-        self.assertEqual(3, len(result[0]['sub_toc']))
+        toc.attach_metadata(node)
+        self.assertEqual(3, len(node['TOC']))
+        self.assertEqual(3, len(node['TOC'][0]['sub_toc']))
 
-    def test_apply_layer_first_appendix(self):
+    def test_attach_metadata_first_appendix(self):
         toc = TableOfContentsLayer({'100': [
             {'title': 'Appendix A', 'index': ['100', 'A']},
             {'title': 'Appendix B', 'index': ['100', 'B']},
             {'title': 'Appendix C', 'index': ['100', 'C']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(4, len(result))
-        aA, aB, aC, sI = result
+        node = {'label_id': '100'}
+        toc.attach_metadata(node)
+        self.assertEqual(4, len(node['TOC']))
+        aA, aB, aC, sI = node['TOC']
         self.assertTrue(aA['is_first_appendix'])
         self.assertFalse(aB['is_first_appendix'])
         self.assertFalse(aC['is_first_appendix'])
@@ -167,18 +169,19 @@ class TableOfContentsLayerTest(TestCase):
 
         toc = TableOfContentsLayer({'100': [
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(1, len(result))
-        self.assertFalse(result[0].get('is_first_appendix', False))
+        toc.attach_metadata(node)
+        self.assertEqual(1, len(node['TOC']))
+        self.assertFalse(node['TOC'][0].get('is_first_appendix', False))
 
-    def test_apply_layer_interp_emptysubpart(self):
+    def test_attach_metadata_interp_emptysubpart(self):
         toc = TableOfContentsLayer({'100': [
             {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
             {'title': u'§ 100.2 Second', 'index': ['100', '2']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(3, len(result))
-        s1, s2, interp = result
+        node = {'label_id': '100'}
+        toc.attach_metadata(node)
+        self.assertEqual(3, len(node['TOC']))
+        s1, s2, interp = node['TOC']
         self.assertEqual(1, len(interp['sub_toc']))
         nosubpart = interp['sub_toc'][0]
         self.assertEqual('Regulation Text', nosubpart['label'])
@@ -190,9 +193,9 @@ class TableOfContentsLayerTest(TestCase):
             {'title': 'Appendix A', 'index': ['100', 'A']},
             {'title': 'Appendix C', 'index': ['100', 'C']},
             {'title': 'Supplement I', 'index': ['100', 'Interp']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(5, len(result))
-        s1, s2, appA, appC, interp = result
+        toc.attach_metadata(node)
+        self.assertEqual(5, len(node['TOC']))
+        s1, s2, appA, appC, interp = node['TOC']
         self.assertEqual(2, len(interp['sub_toc']))
         nosubpart, appendices = interp['sub_toc']
         self.assertEqual('Regulation Text', nosubpart['label'])
@@ -200,7 +203,7 @@ class TableOfContentsLayerTest(TestCase):
         self.assertEqual('Appendices', appendices['label'])
         self.assertEqual(['100', 'Appendices', 'Interp'], appendices['index'])
 
-    def test_apply_layer_interp_subparts(self):
+    def test_attach_metadata_interp_subparts(self):
         toc = TableOfContentsLayer({
             '100': [
                 {'title': 'Subpart A', 'index': ['100', 'Subpart', 'A']},
@@ -208,9 +211,10 @@ class TableOfContentsLayerTest(TestCase):
             '100-Subpart-A': [
                 {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
                 {'title': u'§ 100.2 Second', 'index': ['100', '2']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(2, len(result))
-        subpartA, interp = result
+        node = {'label_id': '100'}
+        toc.attach_metadata(node)
+        self.assertEqual(2, len(node['TOC']))
+        subpartA, interp = node['TOC']
         self.assertEqual(2, len(subpartA['sub_toc']))
         self.assertEqual(1, len(interp['sub_toc']))
         nosubpart = interp['sub_toc'][0]
@@ -226,9 +230,10 @@ class TableOfContentsLayerTest(TestCase):
             '100-Subpart-A': [
                 {'title': u'§ 100.1 Intro', 'index': ['100', '1']},
                 {'title': u'§ 100.2 Second', 'index': ['100', '2']}]})
-        _, result = toc.apply_layer('100')
-        self.assertEqual(4, len(result))
-        subpartA, appA, appC, interp = result
+        node = {'label_id': '100'}
+        toc.attach_metadata(node)
+        self.assertEqual(4, len(node['TOC']))
+        subpartA, appA, appC, interp = node['TOC']
         self.assertEqual(2, len(interp['sub_toc']))
         nosubpart, appendices = interp['sub_toc']
         self.assertEqual('Subpart A', nosubpart['label'])

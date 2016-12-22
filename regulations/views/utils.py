@@ -1,8 +1,9 @@
-# vim: set encoding=utf-8
+# -*- coding: utf-8 -*-
 import itertools
 import logging
 
-from regulations.generator import api_reader, generator
+from regulations.generator import api_reader
+from regulations.generator.generator import DATA_LAYERS
 from regulations.generator.layers.tree_builder import roman_nums
 from regulations.generator.layers.utils import convert_to_python
 from regulations.generator.toc import fetch_toc
@@ -18,8 +19,9 @@ def to_roman(number):
 
 
 def get_layer_list(names):
-    layer_names = generator.LayerCreator.LAYERS
-    return set(l.lower() for l in names.split(',') if l.lower() in layer_names)
+    requested = {name.lower() for name in names.split(',')}
+    available = set(DATA_LAYERS.keys())
+    return requested & available
 
 
 def regulation_meta(cfr_part, version):
@@ -43,7 +45,7 @@ def layer_names(request):
     if 'layers' in request.GET.keys():
         return get_layer_list(request.GET['layers'])
     else:
-        return generator.LayerCreator.LAYERS.keys()
+        return DATA_LAYERS.keys()
 
 
 def first_section(reg_part, version):

@@ -3,8 +3,6 @@ from mock import Mock, patch
 
 from django.test import RequestFactory
 
-from regulations.generator.layers.layers_applier import (
-    InlineLayersApplier, ParagraphLayersApplier, SearchReplaceLayersApplier)
 from regulations.generator.node_types import EMPTYPART, INTERP, REGTEXT
 from regulations.views import partial
 
@@ -44,10 +42,9 @@ class PartialParagraphViewTests(TestCase):
 class PartialSectionViewTests(TestCase):
     @patch('regulations.generator.generator.get_tree_paragraph')
     @patch('regulations.views.partial.navigation')
-    @patch('regulations.generator.generator.LayerCreator.get_layer_json')
-    def test_get_context_data(self, get_layer_json, navigation,
-                              get_tree_paragraph):
-        get_layer_json.return_value = {'layer': 'layer'}
+    @patch('regulations.generator.generator.api_reader.ApiReader')
+    def test_get_context_data(self, ApiReader, navigation, get_tree_paragraph):
+        ApiReader.return_value.layer.return_value = {'layer': 'layer'}
         navigation.nav_sections.return_value = None, None
         get_tree_paragraph.return_value = {
             'text': 'Some Text',
@@ -69,19 +66,3 @@ class PartialSectionViewTests(TestCase):
         subpart = root['children'][0]
         self.assertEqual(subpart['children'][0],
                          get_tree_paragraph.return_value)
-
-
-class PartialViewTest(TestCase):
-
-    def test_generate_html(self):
-        regulation_tree = {'text': '', 'children': [], 'label': ['8675'],
-                           'title': 'Regulation R', 'node_type': REGTEXT}
-        i_applier = InlineLayersApplier()
-        p_applier = ParagraphLayersApplier()
-        sr_applier = SearchReplaceLayersApplier()
-        appliers = (i_applier, p_applier, sr_applier)
-        builder = partial.generate_html(regulation_tree, appliers)
-        self.assertEquals(builder.tree, regulation_tree)
-        self.assertEquals(builder.inline_applier, i_applier)
-        self.assertEquals(builder.p_applier, p_applier)
-        self.assertEquals(builder.search_applier, sr_applier)

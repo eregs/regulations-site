@@ -51,18 +51,6 @@ class LayersApplierTest(TestCase):
                                                                     text)
         self.assertEquals(offsets, [])
 
-    def test_replace_at_offset(self):
-        pattern = 'ABCD'
-        text = 'The grey fox ABCD jumped over the fence ABCD'
-
-        first_offset = location_replace.LocationReplace.find_all_offsets(
-            pattern, text)[0]
-        result = location_replace.LocationReplace.replace_at_offset(
-            first_offset, 'giraffe', text)
-
-        self.assertEquals(result,
-                          'The grey fox giraffe jumped over the fence ABCD')
-
     def test_replace_at(self):
         text = 'The grey fox ABCD jumped ABCD over the fence ABCD'
 
@@ -83,7 +71,6 @@ class LayersApplierTest(TestCase):
                 'on a ABCD day')
 
         lr.update_offsets(pattern, text)
-        self.assertEquals(lr.counter, 0)
         self.assertEqual(lr.offset_starter, 5)
         self.assertEqual(lr.offset_counters, [5, 6, 7])
         self.assertEqual(list(lr.offsets.keys()), [5, 6, 7])
