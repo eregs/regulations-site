@@ -45,16 +45,17 @@ var DrawerView = Backbone.View.extend({
     'search-results': 'search',
   },
 
-    // activeId = page type or child view type
-  setActivePane: function setActivePane(activeId) {
+  // selectedId = page type or child view type
+  setActivePane: function setActivePane(selectedId) {
+    var activeId = selectedId;
     if (typeof this.childViews[activeId] === 'undefined') {
       activeId = this.pageTypeMap[activeId];
     }
 
-        // hide the content of all drawer sections
+    // hide the content of all drawer sections
     this.$children.addClass('hidden');
 
-        // remove the 'hidden' class from the active drawer section
+    // remove the 'hidden' class from the active drawer section
     this.childViews[activeId].$el.removeClass('hidden');
   },
 

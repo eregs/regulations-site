@@ -266,14 +266,11 @@ var MainView = Backbone.View.extend({
     this.loading();
   },
 
-  displayError: function displayError(message) {
-    if (!message) {
-      message = 'Due to a network error, we were unable to retrieve the requested information.';
-    }
-        // Prevent error warning stacking
+  displayError: function displayError(message='Due to a network error, we were unable to retrieve the requested information.') {
+    // Prevent error warning stacking
     $('.error-network').remove();
 
-        // Get ID of still rendered last section
+    // Get ID of still rendered last section
     var $old = this.$el.find('section[data-page-type]');
     var oldId = $old.attr('id');
     var oldLabel = $old.data('label');

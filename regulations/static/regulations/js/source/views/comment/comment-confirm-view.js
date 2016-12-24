@@ -47,10 +47,7 @@ var CommentConfirmView = Backbone.View.extend({
    * Fill in an element's (indicated by the selector) template with the ctx
    * provided
    **/
-  replaceTemplate: function replaceTemplate(selector, ctx, tplSelector) {
-    if (!tplSelector) {
-      tplSelector = '.js-template';
-    }
+  replaceTemplate: function replaceTemplate(selector, ctx, tplSelector='.js-template') {
     this.$el.find(selector).each(function perSelector(idx, elt) {
       var $elt = $(elt);
       var $tplElt = $elt.find(tplSelector);

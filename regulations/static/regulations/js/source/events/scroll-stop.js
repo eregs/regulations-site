@@ -18,13 +18,15 @@ special.scrollstart = {
 
     var timer,
       handler = function handler(evt) {
-        var _self = this,
-          _args = arguments;
+        var _self = this;
+        var _args = [...arguments];
 
         if (timer) {
           clearTimeout(timer);
         } else {
-          evt.type = 'scrollstart';
+          var modifiedEvent = $.Event(null, evt);
+          _args[0] = modifiedEvent;
+          modifiedEvent.type = 'scrollstart';
           dispatch.apply(_self, _args);
         }
 
@@ -49,8 +51,8 @@ special.scrollstop = {
 
     var timer,
       handler = function handler(evt) {
-        var _self = this,
-          _args = arguments;
+        var _self = this;
+        var _args = [...arguments];
 
         if (timer) {
           clearTimeout(timer);
@@ -58,7 +60,9 @@ special.scrollstop = {
 
         timer = setTimeout(function timedOut() {
           timer = null;
-          evt.type = 'scrollstop';
+          var modifiedEvent = $.Event(null, evt);
+          _args[0] = modifiedEvent;
+          modifiedEvent.type = 'scrollstop';
           dispatch.apply(_self, _args);
         }, _data.latency);
       };

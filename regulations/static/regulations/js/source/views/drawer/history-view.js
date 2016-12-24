@@ -24,12 +24,13 @@ var HistoryView = Backbone.View.extend({
     sessionStorage.setItem('drawerDefault', 'timeline');
   },
 
-  updateLinks: function updateLinks(section) {
+  updateLinks: function updateLinks(initialSection) {
+    var section = initialSection;
     var prefix = window.APP_PREFIX;
     if (typeof prefix !== 'undefined' && prefix.substr(prefix.length - 1) !== '/') {
       prefix = prefix + '/';
     }
-        // section may not be defined (e.g. on the landing page)
+    // section may not be defined (e.g. on the landing page)
     if (typeof section !== 'undefined') {
       this.$el.find('.version-link').each(function perLink() {
         var $link = $(this);
