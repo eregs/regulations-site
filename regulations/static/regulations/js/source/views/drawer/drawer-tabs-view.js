@@ -1,4 +1,5 @@
-
+import storage from '../../redux/storage';
+import { activePane } from '../../redux/reducers';
 
 const $ = require('jquery');
 const _ = require('underscore');
@@ -26,7 +27,7 @@ const DrawerTabsView = Backbone.View.extend({
 
   initialize: function initialize(options) {
     this.listenTo(DrawerEvents, 'pane:change', this.changeActiveTab);
-    this.listenTo(DrawerEvents, 'pane:init', this.setStartingTab);
+    storage().subscribe(this.handleReduxUpdate.bind(this));
     this.$activeEls = $('#menu, #site-header, #content-body, #primary-footer, #content-header');
 
         // view switcher buttons - TOC, calendar, search
@@ -46,7 +47,8 @@ const DrawerTabsView = Backbone.View.extend({
     this.$activeEls.addClass(this.drawerState);
   },
 
-  setStartingTab: function setStartingTab(tab) {
+  handleReduxUpdate: function handleReduxUpdate() {
+    const tab = activePane(storage());
     $(this.idMap[tab]).addClass('current');
   },
 

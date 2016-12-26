@@ -1,3 +1,6 @@
+import { createStore } from 'redux';
+import { setStorage } from '../../../source/redux/storage';
+
 var chai = require('chai');
 var expect = chai.expect;
 var jsdom = require('mocha-jsdom');
@@ -6,12 +9,15 @@ var jsdom = require('mocha-jsdom');
 describe('DrawerTabsView', function() {
   jsdom();
   var $;
+  const storage = createStore((state) => state);
 
   describe('::initialize', function() {
     describe('with forceOpen', function() {
       var $fixture, view;
 
       beforeEach(function() {
+        setStorage(storage);
+
         var DrawerTabsView = require('../../../source/views/drawer/drawer-tabs-view');
         $ = require('jquery');
 
@@ -26,6 +32,7 @@ describe('DrawerTabsView', function() {
       afterEach(function() {
         view.remove();
         $fixture.remove();
+        setStorage(null);
       });
 
       it('is in the open state', function() {

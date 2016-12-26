@@ -1,5 +1,6 @@
 import storage from '../../redux/storage';
 import { activeParagraph } from '../../redux/reducers';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -12,7 +13,6 @@ const PreambleHeadView = require('../header/preamble-head-view');
 const CommentView = require('../comment/comment-view');
 const CommentIndexView = require('../comment/comment-index-view');
 const CommentEvents = require('../../events/comment-events');
-const DrawerEvents = require('../../events/drawer-events');
 const starsHelpers = require('./stars-helpers');
 const helpers = require('../../helpers');
 
@@ -40,12 +40,11 @@ const PreambleView = ChildView.extend({
 
     CommentEvents.trigger('comment:readTabOpen');
 
-    DrawerEvents.trigger(
-      'pane:init',
+    storage().dispatch(paneActiveEvt(
       parsed.type === 'preamble' ?
         'table-of-contents' :
         'table-of-contents-secondary',
-    );
+    ));
   },
 
   openCitation: function openCitation(e) {

@@ -1,4 +1,5 @@
-
+import { paneActiveEvt } from '../../redux/paneReduce';
+import storage from '../../redux/storage';
 
 const $ = require('jquery');
 const _ = require('underscore');
@@ -9,7 +10,6 @@ Backbone.$ = $;
 const MainEvents = require('../../events/main-events');
 const CommentEvents = require('../../events/comment-events');
 const comments = require('../../collections/comment-collection');
-const DrawerEvents = require('../../events/drawer-events');
 
 function selfOrChild($root, selector) {
   return $root.is(selector) ? $root : $root.find(selector);
@@ -37,7 +37,7 @@ const CommentReviewView = Backbone.View.extend({
 
     this.previewLoading = false;
 
-    DrawerEvents.trigger('pane:init', 'table-of-contents');
+    storage().dispatch(paneActiveEvt('table-of-contents'));
 
     this.render();
   },

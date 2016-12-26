@@ -1,5 +1,6 @@
 import storage from '../../redux/storage';
 import { activeParagraph } from '../../redux/reducers';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -10,7 +11,6 @@ const MainEvents = require('../../events/main-events');
 const HeaderEvents = require('../../events/header-events');
 const SidebarEvents = require('../../events/sidebar-events');
 const Helpers = require('../../helpers');
-const DrawerEvents = require('../../events/drawer-events');
 const ChildView = require('./child-view');
 const GAEvents = require('../../events/ga-events');
 
@@ -29,7 +29,7 @@ const RegView = ChildView.extend({
     this.listenTo(MainEvents, 'definition:carriedOver', this.checkDefinitionScope);
     storage().subscribe(this.newActiveParagraph.bind(this));
 
-    DrawerEvents.trigger('pane:init', 'table-of-contents');
+    storage().dispatch(paneActiveEvt('table-of-contents'));
 
     this.id = this.options.id;
     this.regVersion = this.options.regVersion;
