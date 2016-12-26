@@ -1,4 +1,5 @@
-import { paragraphActive } from '../../redux/paragraphReduce';
+import { paragraphActiveEvt } from '../../redux/paragraphReduce';
+import { activeParagraph } from '../../redux/reducers';
 import storage from '../../redux/storage';
 
 const $ = require('jquery');
@@ -38,8 +39,8 @@ const ChildView = Backbone.View.extend({
       DrawerEvents.trigger('section:open', this.options.id);
     }
 
-    this.activeSection = this.options.id;
-    this.$activeSection = $(`#${this.activeSection}`);
+    storage().dispatch(paragraphActiveEvt(this.options.id));
+    this.$activeSection = $(`#${this.options.id}`);
 
     this.loadImages();
   },
@@ -89,21 +90,22 @@ const ChildView = Backbone.View.extend({
     // active section
   checkActiveSection: function checkActiveSection() {
     $.each(this.$sections, (idx, $section) => {
+      const previousSection = activeParagraph(storage());
       if ($section.offset().top + WAYFINDER_SCROLL_OFFSET >= $(window).scrollTop()) {
-        if (_.isEmpty(this.activeSection) || (this.activeSection !== $section.id)) {
-          this.activeSection = $section[0].id;
+        if (_.isEmpty(previousSection) || (previousSection !== $section.id)) {
+          const currentSection = $section[0].id;
           this.$activeSection = $($section[0]);
             // **Event** trigger active section change
           HeaderEvents.trigger('section:open', this.$activeSection.data('label'));
           DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
-          storage().dispatch(paragraphActive(this.activeSection));
+          storage().dispatch(paragraphActiveEvt(currentSection));
 
           if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
               // update hash in url
             window.history.replaceState(
                 null,
                 null,
-                `${window.location.origin + window.location.pathname + window.location.search}#${this.activeSection}`,
+                `${window.location.origin + window.location.pathname + window.location.search}#${currentSection}`,
               );
           }
 

@@ -1,7 +1,7 @@
 const PARAGRAPH_ACTIVE = 'PARAGRAPH_ACTIVE';
 const initialState = '';
 
-export function paragraphActive(paragraph) {
+export function paragraphActiveEvt(paragraph) {
   return { type: PARAGRAPH_ACTIVE, paragraph };
 }
 
