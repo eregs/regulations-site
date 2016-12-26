@@ -90,7 +90,7 @@ const ChildView = Backbone.View.extend({
     // active section
   checkActiveSection: function checkActiveSection() {
     $.each(this.$sections, (idx, $section) => {
-      const previousSection = activeParagraph(storage());
+      const previousSection = activeParagraph(storage()).paragraph;
       if ($section.offset().top + WAYFINDER_SCROLL_OFFSET >= $(window).scrollTop()) {
         if (_.isEmpty(previousSection) || (previousSection !== $section.id)) {
           const currentSection = $section[0].id;

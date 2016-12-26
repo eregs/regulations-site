@@ -70,7 +70,7 @@ const PreambleView = ChildView.extend({
 
   handleParagraphActive: function handleParagraphActive() {
     // update current Section ID as active paragraph changes
-    this.section = activeParagraph(storage());
+    this.section = activeParagraph(storage()).paragraph;
   },
 
   handleWriteLink: function handleWriteLink(e) {
