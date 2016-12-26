@@ -1,4 +1,5 @@
-
+import storage from '../../redux/storage';
+import { activeParagraph } from '../../redux/reducers';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -35,7 +36,7 @@ const PreambleView = ChildView.extend({
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
     this.listenTo(CommentEvents, 'comment:write', this.handleWriteTab);
-    this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
+    storage().subscribe(this.handleParagraphActive.bind(this));
 
     CommentEvents.trigger('comment:readTabOpen');
 
@@ -68,9 +69,9 @@ const PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  handleParagraphActive: function handleParagraphActive(id) {
+  handleParagraphActive: function handleParagraphActive() {
     // update current Section ID as active paragraph changes
-    this.section = id;
+    this.section = activeParagraph(storage());
   },
 
   handleWriteLink: function handleWriteLink(e) {

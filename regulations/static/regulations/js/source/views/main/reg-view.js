@@ -1,4 +1,5 @@
-
+import storage from '../../redux/storage';
+import { activeParagraph } from '../../redux/reducers';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -26,7 +27,7 @@ const RegView = ChildView.extend({
 
     this.listenTo(MainEvents, 'definition:close', this.closeDefinition);
     this.listenTo(MainEvents, 'definition:carriedOver', this.checkDefinitionScope);
-    this.listenTo(MainEvents, 'paragraph:active', this.newActiveParagraph);
+    storage().subscribe(this.newActiveParagraph.bind(this));
 
     DrawerEvents.trigger('pane:init', 'table-of-contents');
 
@@ -130,7 +131,8 @@ const RegView = ChildView.extend({
   },
 
   // id = active paragraph
-  newActiveParagraph: function newActiveParagraph(id) {
+  newActiveParagraph: function newActiveParagraph() {
+    const id = activeParagraph(storage());
     let $newDefLink;
     let newDefId;
     let newDefHref;

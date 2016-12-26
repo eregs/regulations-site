@@ -1,4 +1,5 @@
-
+import { paragraphActive } from '../../redux/paragraphReduce';
+import storage from '../../redux/storage';
 
 const $ = require('jquery');
 const _ = require('underscore');
@@ -95,7 +96,7 @@ const ChildView = Backbone.View.extend({
             // **Event** trigger active section change
           HeaderEvents.trigger('section:open', this.$activeSection.data('label'));
           DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
-          MainEvents.trigger('paragraph:active', this.activeSection);
+          storage().dispatch(paragraphActive(this.activeSection));
 
           if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
               // update hash in url

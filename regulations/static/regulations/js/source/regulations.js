@@ -1,4 +1,9 @@
 // Launches app
+import { createStore } from 'redux';
+import { setStorage } from './redux/storage';
+import reducers from './redux/reducers';
+
+setStorage(createStore(reducers));
 
 
 // make jQuery globally accessible for plugins and analytics
