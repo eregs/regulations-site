@@ -1,4 +1,5 @@
-
+import storage from '../../redux/storage';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const _ = require('underscore');
@@ -129,7 +130,7 @@ const MainView = Backbone.View.extend({
     this.setChildOptions(options);
 
     if (this.contentType === 'landing-page') {
-      DrawerEvents.trigger('pane:change', 'table-of-contents');
+      storage().dispatch(paneActiveEvt('table-of-contents'));
     }
 
     this.renderSection(null);

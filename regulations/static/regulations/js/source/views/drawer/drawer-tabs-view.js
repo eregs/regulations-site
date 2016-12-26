@@ -1,10 +1,10 @@
 import storage from '../../redux/storage';
 import { activePane } from '../../redux/reducers';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const _ = require('underscore');
 const Backbone = require('backbone');
-const DrawerEvents = require('../../events/drawer-events');
 const GAEvents = require('../../events/ga-events');
 const MainEvents = require('../../events/main-events');
 
@@ -26,7 +26,7 @@ const DrawerTabsView = Backbone.View.extend({
   },
 
   initialize: function initialize(options) {
-    this.listenTo(DrawerEvents, 'pane:change', this.changeActiveTab);
+    this.previousTab = activePane(storage());
     storage().subscribe(this.handleReduxUpdate.bind(this));
     this.$activeEls = $('#menu, #site-header, #content-body, #primary-footer, #content-header');
 
@@ -49,22 +49,20 @@ const DrawerTabsView = Backbone.View.extend({
 
   handleReduxUpdate: function handleReduxUpdate() {
     const tab = activePane(storage());
-    $(this.idMap[tab]).addClass('current');
-  },
-
-  changeActiveTab: function changeActiveTab(tab) {
     this.$tocLinks.removeClass('current');
     $(this.idMap[tab]).addClass('current');
-
-    GAEvents.trigger('drawer:switchTab', {
-      id: tab,
-      type: 'drawer',
-    });
+    if (tab !== this.previousTab) {
+      GAEvents.trigger('drawer:switchTab', {
+        id: tab,
+        type: 'drawer',
+      });
+    }
+    this.previousTab = tab;
   },
 
-    // this.$activeEls are structural els that need to have
-    // CSS applied to work with the drawer conditionally based
-    // on its state
+  // this.$activeEls are structural els that need to have
+  // CSS applied to work with the drawer conditionally based
+  // on its state
   updateDOMState: function updateDOMState() {
     if (typeof this.$activeEls !== 'undefined') {
       this.$activeEls.toggleClass(this.drawerState);
@@ -115,7 +113,7 @@ const DrawerTabsView = Backbone.View.extend({
       this.openDrawer();
     }
 
-    DrawerEvents.trigger('pane:change', linkValue);
+    storage().dispatch(paneActiveEvt(linkValue));
   },
 });
 

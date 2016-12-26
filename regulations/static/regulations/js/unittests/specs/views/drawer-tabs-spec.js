@@ -9,7 +9,7 @@ var jsdom = require('mocha-jsdom');
 describe('DrawerTabsView', function() {
   jsdom();
   var $;
-  const storage = createStore((state) => state);
+  const storage = createStore((state) => state, { activePane: 'table-of-contents' });
 
   describe('::initialize', function() {
     describe('with forceOpen', function() {

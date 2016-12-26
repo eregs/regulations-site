@@ -7,7 +7,6 @@ const TOCView = require('./toc-view');
 const HistoryView = require('./history-view');
 const SearchView = require('./search-view');
 const DrawerTabs = require('./drawer-tabs-view');
-const DrawerEvents = require('../../events/drawer-events');
 
 Backbone.$ = $;
 
@@ -15,7 +14,6 @@ const DrawerView = Backbone.View.extend({
   el: '#menu',
 
   initialize: function initialize(options) {
-    this.listenTo(DrawerEvents, 'pane:change', this.setActivePane);
     storage().subscribe(this.handleReduxUpdate.bind(this));
 
     this.$label = $('.toc-type');

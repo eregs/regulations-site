@@ -1,4 +1,5 @@
-
+import storage from '../../redux/storage';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const _ = require('underscore');
@@ -140,7 +141,7 @@ const CommentView = Backbone.View.extend({
     // TODO: Push this logic into `PreambleView`
     const type = options.section.split('-')[1];
     DrawerEvents.trigger('section:open', options.tocId);
-    DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
+    storage().dispatch(paneActiveEvt(type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary'));
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
   },
 
