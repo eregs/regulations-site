@@ -1,4 +1,5 @@
 import storage from '../../redux/storage';
+import { locationActiveEvt } from '../../redux/locationReduce';
 import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
@@ -19,7 +20,6 @@ const PreambleModel = require('../../models/preamble-model');
 const DiffView = require('./diff-view');
 const Router = require('../../router');
 const HeaderEvents = require('../../events/header-events');
-const DrawerEvents = require('../../events/drawer-events');
 const Helpers = require('../../helpers');
 const CommentReviewView = require('../comment/comment-review-view');
 const CommentConfirmView = require('../comment/comment-confirm-view');
@@ -282,7 +282,7 @@ const MainView = Backbone.View.extend({
           .hide()
           .fadeIn('slow');
 
-    DrawerEvents.trigger('section:open', oldId);
+    storage().dispatch(locationActiveEvt(oldId));
     HeaderEvents.trigger('section:open', oldLabel);
 
     this.loaded();

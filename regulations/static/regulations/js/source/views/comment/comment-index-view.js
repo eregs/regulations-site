@@ -1,4 +1,5 @@
 import storage from '../../redux/storage';
+import { locationActiveEvt } from '../../redux/locationReduce';
 import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
@@ -8,7 +9,6 @@ const Backbone = require('backbone');
 Backbone.$ = $;
 
 const MainEvents = require('../../events/main-events');
-const DrawerEvents = require('../../events/drawer-events');
 const CommentEvents = require('../../events/comment-events');
 const comments = require('../../collections/comment-collection');
 
@@ -54,7 +54,7 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   editComment: function editComment(e) {
     const options = _.extend({ mode: 'write' }, getOptions(e.target));
     const type = options.section.split('-')[1];
-    DrawerEvents.trigger('section:open', options.tocId);
+    storage().dispatch(locationActiveEvt(options.tocId));
     storage().dispatch(paneActiveEvt(type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary'));
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
     CommentEvents.trigger('comment:writeTabOpen');

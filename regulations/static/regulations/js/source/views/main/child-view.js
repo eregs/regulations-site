@@ -1,4 +1,4 @@
-import { paragraphActiveEvt } from '../../redux/paragraphReduce';
+import { locationActiveEvt } from '../../redux/locationReduce';
 import { activeParagraph } from '../../redux/reducers';
 import storage from '../../redux/storage';
 
@@ -8,7 +8,6 @@ const Backbone = require('backbone');
 require('../../events/scroll-stop.js');
 const Router = require('../../router');
 const HeaderEvents = require('../../events/header-events');
-const DrawerEvents = require('../../events/drawer-events');
 const MainEvents = require('../../events/main-events');
 const GAEvents = require('../../events/ga-events');
 
@@ -36,10 +35,10 @@ const ChildView = Backbone.View.extend({
       this.render();
     } else if (this.options.id) {
       MainEvents.trigger('section:sethandlers');
-      DrawerEvents.trigger('section:open', this.options.id);
+      storage().dispatch(locationActiveEvt(this.options.id));
     }
 
-    storage().dispatch(paragraphActiveEvt(this.options.id));
+    storage().dispatch(locationActiveEvt(this.options.id));
     this.$activeSection = $(`#${this.options.id}`);
 
     this.loadImages();
@@ -58,7 +57,7 @@ const ChildView = Backbone.View.extend({
     this.loadImages();
     this.scroll();
     HeaderEvents.trigger('section:open', this.sectionLabel);
-    DrawerEvents.trigger('section:open', this.id);
+    storage().dispatch(locationActiveEvt(this.sectionLabel));
   },
 
   scroll: function scroll() {
@@ -95,10 +94,9 @@ const ChildView = Backbone.View.extend({
         if (_.isEmpty(previousSection) || (previousSection !== $section.id)) {
           const currentSection = $section[0].id;
           this.$activeSection = $($section[0]);
-            // **Event** trigger active section change
+          // **Event** trigger active section change
           HeaderEvents.trigger('section:open', this.$activeSection.data('label'));
-          DrawerEvents.trigger('section:open', this.$activeSection.data('toc-id') || this.id);
-          storage().dispatch(paragraphActiveEvt(currentSection));
+          storage().dispatch(locationActiveEvt(currentSection));
 
           if (typeof window.history !== 'undefined' && typeof window.history.replaceState !== 'undefined') {
               // update hash in url

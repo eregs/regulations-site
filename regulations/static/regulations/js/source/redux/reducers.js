@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
 import paneReduce from './paneReduce';
-import paragraphReduce from './paragraphReduce';
+import locationReduce from './locationReduce';
 
 export function activeParagraph(storage) {
-  return storage.getState().activeParagraph;
+  return storage.getState().activeLocation.paragraph;
+}
+
+export function activeSection(storage) {
+  return storage.getState().activeLocation.section;
 }
 
 export function activePane(storage) {
@@ -12,5 +16,5 @@ export function activePane(storage) {
 
 export default combineReducers({
   activePane: paneReduce,
-  activeParagraph: paragraphReduce,
+  activeLocation: locationReduce,
 });

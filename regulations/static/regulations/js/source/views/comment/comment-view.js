@@ -1,4 +1,5 @@
 import storage from '../../redux/storage';
+import { locationActiveEvt } from '../../redux/locationReduce';
 import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
@@ -14,7 +15,6 @@ require('prosemirror/dist/menu/menubar');
 require('prosemirror/dist/markdown');
 
 const MainEvents = require('../../events/main-events');
-const DrawerEvents = require('../../events/drawer-events');
 const CommentModel = require('../../models/comment-model').CommentModel;
 const CommentEvents = require('../../events/comment-events');
 const AttachmentView = require('../../views/comment/attachment-view');
@@ -140,7 +140,7 @@ const CommentView = Backbone.View.extend({
     };
     // TODO: Push this logic into `PreambleView`
     const type = options.section.split('-')[1];
-    DrawerEvents.trigger('section:open', options.tocId);
+    storage().dispatch(locationActiveEvt(options.tocId));
     storage().dispatch(paneActiveEvt(type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary'));
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
   },

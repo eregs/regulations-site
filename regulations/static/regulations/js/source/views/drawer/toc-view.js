@@ -1,11 +1,12 @@
-
+import storage from '../../redux/storage';
+import { locationActiveEvt } from '../../redux/locationReduce';
+import { activeSection } from '../../redux/reducers';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
 const Helpers = require('../../helpers');
 const Router = require('../../router');
 const MainEvents = require('../../events/main-events');
-const DrawerEvents = require('../../events/drawer-events');
 const HeaderEvents = require('../../events/header-events');
 const Resources = require('../../resources.js');
 
@@ -22,7 +23,7 @@ const TOCView = Backbone.View.extend({
   initialize: function initialize() {
     const openSection = $('section[data-page-type]').attr('id');
 
-    this.listenTo(DrawerEvents, 'section:open', this.setActive);
+    storage().subscribe(this.updateFromRedux.bind(this));
 
     if (openSection) {
       this.setActive(openSection);
@@ -60,6 +61,10 @@ const TOCView = Backbone.View.extend({
     return this;
   },
 
+  updateFromRedux: function updateFromRedux() {
+    this.setActive(activeSection(storage()));
+  },
+
     // **Event trigger**
     // when a TOC link is clicked, send an event along with the href of the clicked link
   sendClickEvent: function sendClickEvent(e) {
@@ -67,7 +72,7 @@ const TOCView = Backbone.View.extend({
 
     const sectionId = $(e.currentTarget).data('section-id');
     const type = this.$el.closest('.panel').data('page-type');
-    DrawerEvents.trigger('section:open', sectionId);
+    storage().dispatch(locationActiveEvt(sectionId));
     MainEvents.trigger('section:open', sectionId, {}, type);
   },
 
@@ -80,7 +85,7 @@ const TOCView = Backbone.View.extend({
 
     config.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
     config.baseVersion = Helpers.findVersion(Resources.versionElements);
-    DrawerEvents.trigger('section:open', sectionId);
+    storage().dispatch(locationActiveEvt(sectionId));
     MainEvents.trigger('diff:open', sectionId, config, 'diff');
   },
 

@@ -132,7 +132,7 @@ const RegView = ChildView.extend({
 
   // id = active paragraph
   newActiveParagraph: function newActiveParagraph() {
-    const id = activeParagraph(storage()).paragraph;
+    const id = activeParagraph(storage());
     let $newDefLink;
     let newDefId;
     let newDefHref;
