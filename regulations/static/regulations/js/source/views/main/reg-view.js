@@ -112,9 +112,9 @@ const RegView = ChildView.extend({
         const $link = $(link);
 
         if ($link.data('defined-term') === defTerm && $link.data('definition') !== defId) {
-                    // don't change the DOM over and over for no reason
-                    // if there are multiple defined term links that
-                    // are scoped to a different definition body
+          // don't change the DOM over and over for no reason
+          // if there are multiple defined term links that
+          // are scoped to a different definition body
           if (!eventTriggered) {
             SidebarEvents.trigger('definition:outOfScope', this.id);
             eventTriggered = true;
