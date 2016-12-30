@@ -68,6 +68,7 @@ module.exports = function toExport(grunt) {
         '<%= env.frontEndPath %>/js/source/events/**/*.js',
         '<%= env.frontEndPath %>/js/source/models/**/*.js',
         '<%= env.frontEndPath %>/js/source/views/**/*.js',
+        '<%= env.frontEndPath %>/js/source/views/**/*.jsx',
       ],
     },
 

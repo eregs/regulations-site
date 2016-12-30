@@ -45,7 +45,8 @@ const DefinitionView = Backbone.View.extend({
 
     // insert the spinner header to be replaced
     // by the full def once it loads
-    this.renderHeader();
+    ReactDOM.render(React.createElement(Definitions, { loading: true }),
+                    this.$el[0]);
 
     // if pushState is supported, attach the
     // appropriate event handlers
@@ -57,21 +58,15 @@ const DefinitionView = Backbone.View.extend({
     }
   },
 
-  // temporary header w/spinner while definition is loading
-  renderHeader: function renderHeader() {
-    ReactDOM.render(React.createElement(Definitions, { loading: true }),
-                    this.$el[0]);
-  },
-
   render: function render(html) {
     this.$el.html(html);
   },
 
-  renderError: function renderError(error) {
-    this.$el.html('');
-    this.renderHeader();
-    this.$el.children().removeClass('spinner');
-    this.$el.append(`<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>${error}</div>`);
+  renderError: function renderError() {
+    ReactDOM.render(
+      React.createElement(Definitions, { errorId: this.id }),
+      this.$el[0],
+    );
   },
 
   close: function close(e) {
