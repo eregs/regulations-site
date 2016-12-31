@@ -1,59 +1,58 @@
-'use strict';
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var SxSList = require('./sxs-list-view');
-var Router = require('../../router');
-var BreakawayEvents = require('../../events/breakaway-events');
-var GAEvents = require('../../events/ga-events');
-var Helpers = require('../../helpers.js');
+
+
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const Router = require('../../router');
+const BreakawayEvents = require('../../events/breakaway-events');
+const GAEvents = require('../../events/ga-events');
 
 Backbone.$ = $;
 
-var SxSListView = Backbone.View.extend({
-    el: '#sxs-list',
+const SxSListView = Backbone.View.extend({
+  el: '#sxs-list',
 
-    events: {
-        'click .sxs-link': 'openSxS'
-    },
+  events: {
+    'click .sxs-link': 'openSxS',
+  },
 
-    initialize: function() {
-        this.render = _.bind(this.render, this);
+  initialize: function initialize() {
+    this.render = _.bind(this.render, this);
 
         // if the browser doesn't support pushState, don't
         // trigger click events for links
-        if (Router.hasPushState === false) {
-            this.events = {};
-        }
-    },
-
-    openSxS: function(e) {
-        e.preventDefault();
-
-        var $sxsLink = $(e.target),
-            id = $sxsLink.data('sxs-paragraph-id'),
-            docNumber = $sxsLink.data('doc-number'),
-            version = $('section[data-base-version]').data('base-version');
-
-        BreakawayEvents.trigger('sxs:open', {
-            'regParagraph': id,
-            'docNumber': docNumber,
-            'fromVersion': version
-        });
-
-        GAEvents.trigger('sxs:open', {
-            id: id,
-            docNumber: docNumber,
-            regVersion: version,
-            type: 'sxs'
-        });
-    },
-
-    render: function(html) {
-        var $html = $(html),
-            list = $html.find('#sxs-list').html();
-        this.$el.html(list);
+    if (Router.hasPushState === false) {
+      this.events = {};
     }
+  },
+
+  openSxS: function openSxS(e) {
+    e.preventDefault();
+
+    const $sxsLink = $(e.target);
+    const id = $sxsLink.data('sxs-paragraph-id');
+    const docNumber = $sxsLink.data('doc-number');
+    const version = $('section[data-base-version]').data('base-version');
+
+    BreakawayEvents.trigger('sxs:open', {
+      regParagraph: id,
+      docNumber,
+      fromVersion: version,
+    });
+
+    GAEvents.trigger('sxs:open', {
+      id,
+      docNumber,
+      regVersion: version,
+      type: 'sxs',
+    });
+  },
+
+  render: function render(html) {
+    const $html = $(html);
+    const list = $html.find('#sxs-list').html();
+    this.$el.html(list);
+  },
 });
 
 module.exports = SxSListView;

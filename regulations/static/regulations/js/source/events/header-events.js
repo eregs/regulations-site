@@ -1,8 +1,10 @@
-'use strict';
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+
+
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+
 Backbone.$ = $;
 
-var HeaderEvents = _.clone(Backbone.Events);
+const HeaderEvents = _.clone(Backbone.Events);
 module.exports = HeaderEvents;

@@ -6,25 +6,24 @@
  *
  */
 
-'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const Backbone = require('backbone');
+
 Backbone.$ = $;
 
-var MainEvents = require('../../events/main-events');
-var CommentEvents = require('../../events/comment-events');
+const MainEvents = require('../../events/main-events');
+const CommentEvents = require('../../events/comment-events');
 
-var PreambleHeadView = Backbone.View.extend({
+const PreambleHeadView = Backbone.View.extend({
   el: '.preamble-header',
 
   events: {
     'click .read-proposal': 'readProposal',
-    'click .write-comment': 'writeComment'
+    'click .write-comment': 'writeComment',
   },
 
-  initialize: function() {
+  initialize: function initialize() {
     this.$readTab = this.$el.find('.read-proposal');
     this.$writeTab = this.$el.find('.write-comment');
 
@@ -33,16 +32,16 @@ var PreambleHeadView = Backbone.View.extend({
     this.listenTo(MainEvents, 'route', this.handleRoute);
   },
 
-  handleRoute: function(href) {
-    this.$readTab.find('a').attr('href', '/' + href);
+  handleRoute: function handleRoute(href) {
+    this.$readTab.find('a').attr('href', `/${href}`);
   },
 
-  readTabOpen: function () {
+  readTabOpen: function readTabOpen() {
     this.$readTab.addClass('active-mode');
     this.$writeTab.removeClass('active-mode');
   },
 
-  readProposal: function(e) {
+  readProposal: function readProposal(e) {
     // yeah... need a better way to manage this. - xtine
     e.preventDefault();
     if ($('#preamble-write').is(':visible') || $('#comment-review').length) {
@@ -52,18 +51,18 @@ var PreambleHeadView = Backbone.View.extend({
     }
   },
 
-  writeTabOpen: function() {
+  writeTabOpen: function writeTabOpen() {
     this.$writeTab.addClass('active-mode');
     this.$readTab.removeClass('active-mode');
   },
 
-  writeComment: function() {
+  writeComment: function writeComment() {
     if ($('#preamble-read').is(':visible')) {
       this.writeTabOpen();
 
       CommentEvents.trigger('comment:write');
     }
-  }
+  },
 });
 
 module.exports = PreambleHeadView;

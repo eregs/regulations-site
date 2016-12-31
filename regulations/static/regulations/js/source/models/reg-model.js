@@ -1,8 +1,7 @@
-'use strict';
 
-var $ = require('jquery');
-var Backbone = require('backbone');
-var MetaModel = require('./meta-model');
+
+const Backbone = require('backbone');
+const MetaModel = require('./meta-model');
 
 Backbone.RegModel = MetaModel.extend({});
 

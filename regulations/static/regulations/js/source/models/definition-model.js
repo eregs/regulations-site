@@ -1,12 +1,12 @@
-'use strict';
-var _ = require('underscore');
-var Backbone = require('backbone');
-var MetaModel = require('./meta-model');
+
+
+const Backbone = require('backbone');
+const MetaModel = require('./meta-model');
 
 Backbone.DefinitionModel = MetaModel.extend({});
 
-var definitionModel = new Backbone.DefinitionModel({
-    supplementalPath: 'definition'
+const definitionModel = new Backbone.DefinitionModel({
+  supplementalPath: 'definition',
 });
 
 module.exports = definitionModel;

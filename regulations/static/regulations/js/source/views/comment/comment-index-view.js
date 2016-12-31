@@ -1,31 +1,32 @@
-'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+
 Backbone.$ = $;
 
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var CommentEvents = require('../../events/comment-events');
-var comments = require('../../collections/comment-collection');
+const MainEvents = require('../../events/main-events');
+const DrawerEvents = require('../../events/drawer-events');
+const CommentEvents = require('../../events/comment-events');
+const comments = require('../../collections/comment-collection');
 
 function getOptions(elm) {
-  var $elm = $(elm).closest('.comment-index-item');
+  const $elm = $(elm).closest('.comment-index-item');
   return {
     section: $elm.data('comment-section'),
     tocId: $elm.data('comment-toc-section'),
-    label: $elm.data('comment-label')
+    label: $elm.data('comment-label'),
   };
 }
 
 module.exports = Backbone.CommentIndexView = Backbone.View.extend({
   events: {
     'click .comment-index-edit': 'editComment',
-    'click .comment-index-clear': 'clearComment'
+    'click .comment-index-clear': 'clearComment',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.docId = options.docId;
     this.template = _.template($('#comment-index-template').html());
     this.$index = this.$el.find('.comment-index-items');
@@ -36,10 +37,10 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     this.render();
   },
 
-  render: function() {
-    var commentData = comments.toJSON({docId: this.docId});
+  render: function render() {
+    const commentData = comments.toJSON({ docId: this.docId });
 
-    var html = this.template({comments: commentData});
+    const html = this.template({ comments: commentData });
     this.$index.html(html);
 
     if (commentData.length) {
@@ -49,20 +50,20 @@ module.exports = Backbone.CommentIndexView = Backbone.View.extend({
     }
   },
 
-  editComment: function(e) {
-    var options = _.extend({mode: 'write'}, getOptions(e.target));
-    var type = options.section.split('-')[1];
+  editComment: function editComment(e) {
+    const options = _.extend({ mode: 'write' }, getOptions(e.target));
+    const type = options.section.split('-')[1];
     DrawerEvents.trigger('section:open', options.tocId);
     DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  clearComment: function(e) {
-    var options = getOptions(e.target);
-    var comment = comments.get(options.section);
+  clearComment: function clearComment(e) {
+    const options = getOptions(e.target);
+    const comment = comments.get(options.section);
     if (comment) {
       comment.destroy();
     }
-  }
+  },
 });
