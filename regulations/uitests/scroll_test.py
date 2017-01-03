@@ -1,7 +1,6 @@
 # vim: set encoding=utf-8
 import unittest
 
-from nose.tools import assert_equal
 from selenium.webdriver.support.ui import WebDriverWait
 
 from regulations.uitests.base_test import BaseTest
@@ -16,7 +15,7 @@ class ScrollTest(BaseTest, unittest.TestCase):
         self.driver.get(self.test_url + '/1005-36/2011-11111')
 
         header = self.driver.find_element_by_css_selector('.header-label')
-        assert_equal(header.text, u'\xa7 1005.36')
+        assert header.text == u'\xa7 1005.36'
 
         utils.scroll_to(self.driver, '#1005-36-a')
         WebDriverWait(self.driver, 5).until(

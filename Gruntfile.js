@@ -134,24 +134,6 @@ module.exports = function toExport(grunt) {
         },
       },
     },
-
-    shell: {
-      'nose-chrome': {
-        command: 'nosetests -s <%= config.testPath %> --tc=remote:chrome --tc=testUrl:<%= config.testUrl %>',
-        options: {
-          stdout: true,
-          stderr: true,
-        },
-      },
-
-      'nose-ie11': {
-        command: 'nosetests -s <%= config.testPath %> --tc=remote:ie11 --tc=testUrl:<%= config.testUrl %>',
-        options: {
-          stdout: true,
-          stderr: true,
-        },
-      },
-    },
   });
 
   /* eslint-disable global-require,import/no-extraneous-dependencies */
@@ -172,8 +154,7 @@ module.exports = function toExport(grunt) {
   /**
    * Create task aliases by registering new tasks
    */
-  grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
-  grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
+  grunt.registerTask('test', ['eslint', 'mocha_istanbul']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
   grunt.registerTask('build-dev', ['env:dev', 'copy', 'browserify:dev', 'sass']);
   grunt.registerTask('build-dist', ['env:dist', 'copy', 'browserify:dist', 'sass', 'cssmin']);

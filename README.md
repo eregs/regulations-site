@@ -158,9 +158,9 @@ After you create a [Sauce Labs](https://saucelabs.com) account:
 
 ##### For functional tests
 - They also require having the environment serving data from ```dummy_api/```. To start the dummy API, from the root of your repo, run ```./dummy_api/start.sh 0.0.0.0:8282```.
-- The tests run using [nose](http://nose.readthedocs.org/en/latest/). If you wish to run the tests outside of the Grunt environment, you may by running ```nosetests regulations/uitests/*.py``` from the root of the repo.
-- By default, functional tests run using a local PhantomJS driver. To run using a different local browser, pass the `local` option, e.g. `tc=local:Chrome`; the option should be a webdriver class within the `selenium.webdriver` module.
-- To run tests using Sauce Labs, set the `remote` option to a key in `regulations.uitests.base_test:remote_configs`, e.g. `--tc=remote:ie11`. Alternatively, run `grunt nose` to run against all configured browsers on Sauce Labs, or `grunt shell:nose-chrome` to run against a single remote browser.
+- The tests run using [py.test](http://docs.pytest.org/en/latest/). If you wish to run the tests outside of the Grunt environment, you may by running ```py.test regulations/uitests/``` from the root of the repo.
+- By default, functional tests run using a local PhantomJS driver. To run using a different local browser, set a `UITESTS_LOCAL` environment variable, e.g. `UITESTS_LOCAL=Chrome`; the option should be a webdriver class within the `selenium.webdriver` module.
+- To run tests using Sauce Labs, set the `UITESTS_REMOTE` env variable to a key in `regulations.uitests.base_test:remote_configs`, e.g. `UITESTS_REMOTE=ie11`.
 
 ##### For unit tests
 - Unit tests do not require running the dummy API.
