@@ -10,3 +10,6 @@ nose-testconfig
 selenium
 tox
 git+https://github.com/openstack/bandit.git   # PyPi version is out of date
+pytest==3.0.5
+pytest_cov==2.4.0
+pytest_django==3.1.2

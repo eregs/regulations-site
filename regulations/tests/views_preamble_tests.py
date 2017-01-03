@@ -4,7 +4,6 @@ from mock import patch
 from unittest import TestCase
 from datetime import date, timedelta
 
-from nose.tools import assert_equal
 from django.http import Http404
 from django.test import RequestFactory, override_settings
 
@@ -96,7 +95,7 @@ class PreambleViewTests(TestCase):
         """
         _, meta, _ = preamble.notice_data('1')
 
-        assert_equal(meta['comment_state'], CommentState.OPEN)
+        assert meta['comment_state'] == CommentState.OPEN
 
     def _setup_mock_response(self, ApiReader, **kwargs):
         """Mock the ApiReader response, replacing meta data fields with
@@ -124,7 +123,7 @@ class PreambleViewTests(TestCase):
         future = date.today() + timedelta(days=10)
         self._setup_mock_response(ApiReader, comments_close=future.isoformat())
         _, meta, _ = preamble.notice_data('1')
-        assert_equal(meta['comment_state'], CommentState.OPEN)
+        assert meta['comment_state'] == CommentState.OPEN
 
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_prepub(self, ApiReader):
@@ -132,13 +131,13 @@ class PreambleViewTests(TestCase):
         self._setup_mock_response(ApiReader,
                                   publication_date=future.isoformat())
         _, meta, _ = preamble.notice_data('1')
-        assert_equal(meta['comment_state'], CommentState.PREPUB)
+        assert meta['comment_state'] == CommentState.PREPUB
 
     @patch('regulations.views.preamble.ApiReader')
     def test_comments_closed(self, ApiReader):
         self._setup_mock_response(ApiReader)
         _, meta, _ = preamble.notice_data('1')
-        assert_equal(meta['comment_state'], CommentState.CLOSED)
+        assert meta['comment_state'] == CommentState.CLOSED
 
     @patch('fr_notices.navigation.CFRChangeBuilder')
     @patch('regulations.generator.generator.api_reader')
@@ -153,8 +152,8 @@ class PreambleViewTests(TestCase):
 
         path = '/preamble/1'
         response = view(RequestFactory().get(path), paragraphs='1')
-        assert_equal(response.status_code, 302)
-        assert_equal(response.get('Location'), '/preamble/1/c')
+        assert response.status_code == 302
+        assert response.get('Location') == '/preamble/1/c'
 
     @patch('regulations.views.preamble.ApiReader')
     def test_get_404(self, ApiReader):
@@ -187,7 +186,7 @@ class PreambleViewTests(TestCase):
         for doc_id in ('123_456', '123-456'):
             preamble_, meta, notice = preamble.notice_data(doc_id)
             self.assertEqual(preamble_, self._mock_preamble)
-            assert_equal(meta['comment_state'], CommentState.CLOSED)
+            assert meta['comment_state'] == CommentState.CLOSED
             self.assertEqual(meta['cfr_refs'],
                              [{'title': 21, 'parts': ['123']}])
             self.assertEqual(ApiReader.return_value.preamble.call_args[0][0],
