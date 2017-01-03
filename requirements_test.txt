@@ -1,12 +1,9 @@
 coverage
 coveralls
-django-nose
 pep8==1.5.7
 flake8
 httpretty
 mock
-nose-exclude
-nose-testconfig
 selenium
 tox
 git+https://github.com/openstack/bandit.git   # PyPi version is out of date

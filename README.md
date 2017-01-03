@@ -38,10 +38,7 @@ Requirements are retrieved and/or build automatically via pip (see below).
 If running tests:
 
 * mock - makes constructing mock objects/functions easy
-* django-nose - provides nosetest as a test runner
-* nose-exclude - allows certain directories to be excluded from nose
-* nose-testconfig - pass configuration data to tests; used to configure
-  selenium tests
+* py.test - provides py.test as a test runner
 * coverage - provides test-coverage metrics
 
 ## Setup & Running
