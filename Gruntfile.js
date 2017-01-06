@@ -8,10 +8,19 @@ module.exports = function toExport(grunt) {
 
     /**
      *
-     *  Pull in environment-specific vars
+     *  Pull in config-specific vars
      *
      */
-    env: grunt.file.readJSON('config.json'),
+    config: grunt.file.readJSON('config.json'),
+
+    env: {
+      dev: {
+        NODE_ENV: 'development',
+      },
+      dist: {
+        NODE_ENV: 'production',
+      },
+    },
 
     /**
      * Copy dependencies into static paths
@@ -23,7 +32,7 @@ module.exports = function toExport(grunt) {
             expand: true,
             flatten: true,
             src: ['node_modules/respond.js/dest/*'],
-            dest: '<%= env.frontEndPath %>/js/built/lib/respond/',
+            dest: '<%= config.frontEndPath %>/js/built/lib/respond/',
             filter: 'isFile',
           },
         ],
@@ -39,7 +48,7 @@ module.exports = function toExport(grunt) {
           style: 'expanded',
         },
         files: {
-          '<%= env.frontEndPath %>/css/style.css': '<%= env.frontEndPath %>/css/scss/main.scss',
+          '<%= config.frontEndPath %>/css/style.css': '<%= config.frontEndPath %>/css/scss/main.scss',
         },
       },
     },
@@ -52,7 +61,7 @@ module.exports = function toExport(grunt) {
     cssmin: {
       target: {
         files: {
-          '<%= env.frontEndPath %>/css/regulations.min.css': ['<%= env.frontEndPath %>/css/style.css'],
+          '<%= config.frontEndPath %>/css/regulations.min.css': ['<%= config.frontEndPath %>/css/style.css'],
         },
       },
     },
@@ -64,11 +73,11 @@ module.exports = function toExport(grunt) {
     eslint: {
       target: [
         'Gruntfile.js',
-        '<%= env.frontEndPath %>/js/source/*.js',
-        '<%= env.frontEndPath %>/js/source/events/**/*.js',
-        '<%= env.frontEndPath %>/js/source/models/**/*.js',
-        '<%= env.frontEndPath %>/js/source/views/**/*.js',
-        '<%= env.frontEndPath %>/js/source/views/**/*.jsx',
+        '<%= config.frontEndPath %>/js/source/*.js',
+        '<%= config.frontEndPath %>/js/source/events/**/*.js',
+        '<%= config.frontEndPath %>/js/source/models/**/*.js',
+        '<%= config.frontEndPath %>/js/source/views/**/*.js',
+        '<%= config.frontEndPath %>/js/source/views/**/*.jsx',
       ],
     },
 
@@ -80,7 +89,7 @@ module.exports = function toExport(grunt) {
     browserify: {
       dev: {
         files: {
-          '<%= env.frontEndPath %>/js/built/regulations.js': ['<%= env.frontEndPath %>/js/source/regulations.js', '<%= env.frontEndPath %>/js/source/regulations.js'],
+          '<%= config.frontEndPath %>/js/built/regulations.js': ['<%= config.frontEndPath %>/js/source/regulations.js', '<%= config.frontEndPath %>/js/source/regulations.js'],
         },
         options: {
           transform: ['babelify', 'browserify-shim'],
@@ -91,7 +100,7 @@ module.exports = function toExport(grunt) {
       },
       dist: {
         files: {
-          '<%= env.frontEndPath %>/js/built/regulations.min.js': ['<%= env.frontEndPath %>/js/source/regulations.js'],
+          '<%= config.frontEndPath %>/js/built/regulations.min.js': ['<%= config.frontEndPath %>/js/source/regulations.js'],
         },
         options: {
           transform: ['babelify', 'browserify-shim'],
@@ -103,7 +112,7 @@ module.exports = function toExport(grunt) {
             [function minifyify(b) {
               b.plugin('minifyify', {
                 map: '/static/regulations/js/built/regulations.min.map',
-                output: grunt.template.process('<%= env.frontEndPath %>/js/built/regulations.min.map'),
+                output: grunt.template.process('<%= config.frontEndPath %>/js/built/regulations.min.map'),
               });
             }],
           ],
@@ -113,14 +122,14 @@ module.exports = function toExport(grunt) {
 
     mocha_istanbul: {
       coverage: {
-        src: ['<%= env.frontEndPath %>/js/unittests/specs/**/*.js'],
+        src: ['<%= config.frontEndPath %>/js/unittests/specs/**/*.js'],
         options: {
-          root: '<%= env.frontEndPath %>/js',
+          root: '<%= config.frontEndPath %>/js',
           scriptPath: require.resolve('isparta/lib/cli'),
           istanbulOptions: ['--include-all-sources'],
           mochaOptions: ['--compilers', 'js:babel-register'],
           nodeExec: require.resolve('.bin/babel-node'),
-          coverageFolder: '<%= env.frontEndPath %>/js/unittests/coverage',
+          coverageFolder: '<%= config.frontEndPath %>/js/unittests/coverage',
           coverage: false,
         },
       },
@@ -128,7 +137,7 @@ module.exports = function toExport(grunt) {
 
     shell: {
       'nose-chrome': {
-        command: 'nosetests -s <%= env.testPath %> --tc=remote:chrome --tc=testUrl:<%= env.testUrl %>',
+        command: 'nosetests -s <%= config.testPath %> --tc=remote:chrome --tc=testUrl:<%= config.testUrl %>',
         options: {
           stdout: true,
           stderr: true,
@@ -136,7 +145,7 @@ module.exports = function toExport(grunt) {
       },
 
       'nose-ie11': {
-        command: 'nosetests -s <%= env.testPath %> --tc=remote:ie11 --tc=testUrl:<%= env.testUrl %>',
+        command: 'nosetests -s <%= config.testPath %> --tc=remote:ie11 --tc=testUrl:<%= config.testUrl %>',
         options: {
           stdout: true,
           stderr: true,
@@ -166,7 +175,7 @@ module.exports = function toExport(grunt) {
   grunt.registerTask('nose', ['shell:nose-chrome', 'shell:nose-ie11']);
   grunt.registerTask('test', ['eslint', 'mocha_istanbul', 'nose']);
   grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('build-dev', ['copy', 'browserify:dev', 'sass']);
-  grunt.registerTask('build-dist', ['copy', 'browserify:dist', 'sass', 'cssmin']);
+  grunt.registerTask('build-dev', ['env:dev', 'copy', 'browserify:dev', 'sass']);
+  grunt.registerTask('build-dist', ['env:dist', 'copy', 'browserify:dist', 'sass', 'cssmin']);
   grunt.registerTask('default', ['build-dist']);
 };
