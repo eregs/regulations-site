@@ -1,4 +1,6 @@
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Definitions from './definitions';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -41,12 +43,13 @@ const DefinitionView = Backbone.View.extend({
       this.$el.data('defined-term', this.term);
     }
 
-        // insert the spinner header to be replaced
-        // by the full def once it loads
-    this.renderHeader();
+    // insert the spinner header to be replaced
+    // by the full def once it loads
+    ReactDOM.render(React.createElement(Definitions, { loading: true }),
+                    this.$el[0]);
 
-        // if pushState is supported, attach the
-        // appropriate event handlers
+    // if pushState is supported, attach the
+    // appropriate event handlers
     if (Router.hasPushState) {
       this.events['click .continue-link.interp'] = 'openInterpretation';
       this.events['click .continue-link.full-def'] = 'openFullDefinition';
@@ -55,20 +58,15 @@ const DefinitionView = Backbone.View.extend({
     }
   },
 
-    // temporary header w/spinner while definition is loading
-  renderHeader: function renderHeader() {
-    this.$el.html('<header class="group spinner"><h4>Defined Term</h4></header>');
-  },
-
   render: function render(html) {
     this.$el.html(html);
   },
 
-  renderError: function renderError(error) {
-    this.$el.html('');
-    this.renderHeader();
-    this.$el.children().removeClass('spinner');
-    this.$el.append(`<div class="error"><span class="cf-icon cf-icon-error icon-warning"></span>${error}</div>`);
+  renderError: function renderError() {
+    ReactDOM.render(
+      React.createElement(Definitions, { errorId: this.id }),
+      this.$el[0],
+    );
   },
 
   close: function close(e) {
@@ -97,8 +95,8 @@ const DefinitionView = Backbone.View.extend({
     });
   },
 
-    // displayed when an open definition doesn't apply to the
-    // whole open section
+  // displayed when an open definition doesn't apply to the
+  // whole open section
   displayScopeMsg: function displayScopeMsg(id) {
     let msg = '<p>This term has a different definition for some portions of ';
     msg += id ? `${$(`#${id}`).data('label')}.` : 'this section.';

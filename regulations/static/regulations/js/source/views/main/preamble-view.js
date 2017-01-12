@@ -1,4 +1,6 @@
-
+import storage from '../../redux/storage';
+import { activeParagraph } from '../../redux/reducers';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -11,7 +13,6 @@ const PreambleHeadView = require('../header/preamble-head-view');
 const CommentView = require('../comment/comment-view');
 const CommentIndexView = require('../comment/comment-index-view');
 const CommentEvents = require('../../events/comment-events');
-const DrawerEvents = require('../../events/drawer-events');
 const starsHelpers = require('./stars-helpers');
 const helpers = require('../../helpers');
 
@@ -35,16 +36,15 @@ const PreambleView = ChildView.extend({
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
     this.listenTo(CommentEvents, 'comment:write', this.handleWriteTab);
-    this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
+    storage().subscribe(this.handleParagraphActive.bind(this));
 
     CommentEvents.trigger('comment:readTabOpen');
 
-    DrawerEvents.trigger(
-      'pane:init',
+    storage().dispatch(paneActiveEvt(
       parsed.type === 'preamble' ?
         'table-of-contents' :
         'table-of-contents-secondary',
-    );
+    ));
   },
 
   openCitation: function openCitation(e) {
@@ -68,9 +68,9 @@ const PreambleView = ChildView.extend({
     this.$read.show();
   },
 
-  handleParagraphActive: function handleParagraphActive(id) {
+  handleParagraphActive: function handleParagraphActive() {
     // update current Section ID as active paragraph changes
-    this.section = id;
+    this.section = activeParagraph(storage());
   },
 
   handleWriteLink: function handleWriteLink(e) {

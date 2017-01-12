@@ -45,11 +45,7 @@ const SidebarView = Backbone.View.extend({
 
     this.definitionModel.get(config.id, {}).then((resp) => {
       this.childViews.definition.render(resp);
-    }).fail(() => {
-      let errorMsg = 'We tried to load that definition, but something went wrong. ';
-      errorMsg += `<a href="#" class="update-definition inactive internal" data-definition="${this.childViews.definition.id}">Try again?</a>`;
-      this.childViews.definition.renderError(errorMsg);
-    });
+    }).fail(this.childViews.definition.renderError);
   },
 
   closeDefinition: function closeDefinition() {

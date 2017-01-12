@@ -1,11 +1,11 @@
-
+import storage from '../../redux/storage';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
 const Router = require('../../router');
 const HeaderEvents = require('../../events/header-events');
 const MainEvents = require('../../events/main-events');
-const DrawerEvents = require('../../events/drawer-events');
 const ChildView = require('./child-view');
 
 Backbone.$ = $;
@@ -31,9 +31,9 @@ const SearchResultsView = ChildView.extend({
       this.events = {};
     }
 
-    DrawerEvents.trigger('pane:change', 'search');
+    storage().dispatch(paneActiveEvt('search'));
 
-        // if the site wasn't loaded on the search results page
+    // if the site wasn't loaded on the search results page
     if (this.options.render) {
       this.url = `search/${this.model.assembleSearchURL(this.options)}`;
       ChildView.prototype.initialize.apply(this, [options].concat(args));
@@ -88,7 +88,7 @@ const SearchResultsView = ChildView.extend({
         scrollToId: $resultLink.data('linked-subsection'),
       };
 
-      DrawerEvents.trigger('pane:change', 'table-of-contents');
+      storage().dispatch(paneActiveEvt('table-of-contents'));
       MainEvents.trigger('section:open', $resultLink.data('linked-section'), options, pageType);
     }
   },

@@ -1,4 +1,5 @@
-
+import storage from '../../redux/storage';
+import { activePane } from '../../redux/reducers';
 
 const $ = require('jquery');
 const Backbone = require('backbone');
@@ -6,7 +7,6 @@ const TOCView = require('./toc-view');
 const HistoryView = require('./history-view');
 const SearchView = require('./search-view');
 const DrawerTabs = require('./drawer-tabs-view');
-const DrawerEvents = require('../../events/drawer-events');
 
 Backbone.$ = $;
 
@@ -14,8 +14,7 @@ const DrawerView = Backbone.View.extend({
   el: '#menu',
 
   initialize: function initialize(options) {
-    this.listenTo(DrawerEvents, 'pane:change', this.setActivePane);
-    this.listenTo(DrawerEvents, 'pane:init', this.setActivePane);
+    storage().subscribe(this.handleReduxUpdate.bind(this));
 
     this.$label = $('.toc-type');
     this.$children = $('.toc-container');
@@ -42,6 +41,10 @@ const DrawerView = Backbone.View.extend({
     'reg-section': 'table-of-contents',
     error: 'table-of-contents',
     'search-results': 'search',
+  },
+
+  handleReduxUpdate: function handleReduxUpdate() {
+    this.setActivePane(activePane(storage()));
   },
 
   // selectedId = page type or child view type

@@ -1,9 +1,9 @@
-
+import storage from '../../redux/storage';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
 const $ = require('jquery');
 const _ = require('underscore');
 const Backbone = require('backbone');
-const DrawerEvents = require('../../events/drawer-events');
 const Helpers = require('../../helpers');
 const Resources = require('../../resources');
 const ChildView = require('./child-view');
@@ -25,7 +25,7 @@ const DiffView = ChildView.extend({
     ChildView.prototype.initialize.apply(this, [options].concat(args));
 
     if (typeof this.options.render === 'undefined') {
-      DrawerEvents.trigger('pane:change', 'timeline');
+      storage().dispatch(paneActiveEvt('timeline'));
     }
   },
 
