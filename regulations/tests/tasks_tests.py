@@ -6,7 +6,6 @@ import botocore
 from celery.exceptions import Retry, MaxRetriesExceededError
 from django.conf import settings
 from django.test import TestCase, override_settings
-from nose.tools import assert_equal
 from requests.exceptions import RequestException
 
 from regulations.tasks import submit_comment, cache_pdf, SignedUrl
@@ -126,7 +125,7 @@ class TestHelpers(TestCase):
         url_generate.return_value = SignedUrl(
             'pdf', 'https://s3.amazonaws.com/bucket/pdf')
         url = cache_pdf('content', "1234_56", meta)
-        assert_equal(url, url_generate.return_value)
+        assert url == url_generate.return_value
         s3_client.put_object.assert_any_call(
             Body=json.dumps({'pdfUrl': meta.url}),
             Bucket=settings.ATTACHMENT_BUCKET,

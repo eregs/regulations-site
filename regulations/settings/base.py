@@ -170,10 +170,6 @@ ANALYTICS = {
 #   Use the 'source' directory; useful for development
 JS_DEBUG = False
 
-# Django by default tries to setup a databse when running tests. We don't have
-# a database, so we override the default test runner.
-TEST_RUNNER = 'regulations.tests.runner.DatabaselessTestRunner'
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',

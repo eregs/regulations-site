@@ -1,6 +1,5 @@
 import os
 from selenium import webdriver
-from testconfig import config
 
 
 remote_configs = {
@@ -22,17 +21,17 @@ class BaseTest():
     job_name = 'eRegs UI Test'
 
     def setUp(self):
-        self.test_url = config['testUrl']
+        self.test_url = os.environ['UITESTS_URL']
         self.driver = (
             self.make_remote()
-            if 'remote' in config
+            if 'UITESTS_REMOTE' in os.environ
             else self.make_local()
         )
         self.driver.set_window_size(800, 600)
         self.driver.implicitly_wait(30)
 
     def make_local(self):
-        attr = config.get('local', 'PhantomJS')
+        attr = os.environ.get('UITESTS_LOCAL', 'PhantomJS')
         klass = getattr(webdriver, attr)
         if not isinstance(klass, type):
             raise TypeError(
@@ -40,7 +39,7 @@ class BaseTest():
         return klass()
 
     def make_remote(self):
-        selenium_config = remote_configs[config['remote']]
+        selenium_config = remote_configs[os.environ['UITESTS_REMOTE']]
         capabilities = selenium_config['driver']
         if (os.environ.get('TRAVIS')
                 and os.environ.get('TRAVIS_SECURE_ENV_VARS')):

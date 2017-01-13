@@ -4,6 +4,6 @@ set -ev
 
 grunt test-js
 python manage.py migrate --fake-initial
-python manage.py test
+pytest --cov
 flake8 .
-bandit -r . -x node_modules
+bandit -r . -x node_modules,regulations/tests,fr_notices/tests,regulations/uitests
