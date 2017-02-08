@@ -5,6 +5,7 @@ setup(
     name="regulations",
     version="7.0.0",
     packages=find_packages(),
+    include_package_data=True,
     install_requires=[
         'boto3',
         'cached-property',
