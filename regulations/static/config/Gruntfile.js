@@ -111,7 +111,7 @@ module.exports = function toExport(grunt) {
           plugin: [
             [function minifyify(b) {
               b.plugin('minifyify', {
-                map: grunt.template.process('<%= config.frontEndPath %>/js/built/regulations.min.map'),
+                map: '/static/regulations/js/built/regulations.min.map',
                 output: grunt.template.process('<%= config.frontEndPath %>/js/built/regulations.min.map'),
               });
             }],

@@ -1,0 +1,101 @@
+{
+  "name": "regulations-site",
+  "version": "7.0.0",
+  "homepage": "https://eregs.github.io/",
+  "contributors": [
+    {
+      "name": "Consumer Financial Protection Bureau",
+      "url": "http://cfpb.github.io/"
+    },
+    {
+      "name": "18F",
+      "url": "https://18f.gsa.gov/"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/eregs/regulations-site.git"
+  },
+  "bugs": {
+    "url": "http://github.com/eregs/regulations-site/issues"
+  },
+  "licenses": [
+    {
+      "type": "Public Domain",
+      "url": "http://github.com/eregs/regulations-site/blob/master/TERMS.md"
+    }
+  ],
+  "engines": {
+    "node": "6.9.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.0",
+    "browserify-shim": "^3.8.12",
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.2",
+    "deamdify": "^0.1.1",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
+    "expect.js": "~0.2.0",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-env": "^0.4.4",
+    "grunt-eslint": "^19.0.0",
+    "grunt-mocha-istanbul": "^5.0.2",
+    "grunt-sass": "^2.0.0",
+    "grunt-shell": "^1.2.1",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.2",
+    "jsdom": "^8.1.0",
+    "load-grunt-tasks": "^3.4.1",
+    "minifyify": "^7.2.1",
+    "mocha": "^3.2.0",
+    "mocha-jsdom": "^1.1.0",
+    "node-localstorage": "^1.3.0",
+    "sinon": "^1.17.3",
+    "sinon-chai": "^2.8.0",
+    "watch": "^0.17.1"
+  },
+  "keywords": [],
+  "browser": {
+    "jquery": "./node_modules/jquery/dist/jquery.js"
+  },
+  "browserify-shim": {
+    "jquery": {
+      "exports": "jQuery"
+    }
+  },
+  "dependencies": {
+    "backbone": "1.2.3",
+    "backbone-query-parameters": "0.4.0",
+    "backbone.localstorage": "1.1.16",
+    "clipboard": "1.5.5",
+    "datatables.net": "1.10.10",
+    "filesize": "3.2.1",
+    "jquery": "1.12.2",
+    "jquery-lazyload": "1.9.7",
+    "jquery-scrollstop": "1.2.0",
+    "prosemirror": "0.4.0",
+    "query-command-supported": "1.0.0",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "redux": "^3.6.0",
+    "respond.js": "1.4.2",
+    "underscore": "1.8.3",
+    "urijs": "1.17.1"
+  },
+  "config": {
+    "travis-cov": {
+      "threshold": 70
+    }
+  }
+}

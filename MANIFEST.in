@@ -1,0 +1,7 @@
+include CONTRIBUTING.md
+include TERMS.md
+include COPYING.txt
+include README.md
+graft regulations/templates
+graft regulations/static
+graft regulations/frontend-config
