@@ -95,6 +95,7 @@ module.exports = function toExport(grunt) {
           transform: ['babelify', 'browserify-shim'],
           browserifyOptions: {
             debug: true,
+            extensions: ['.js', '.jsx'],
           },
         },
       },
