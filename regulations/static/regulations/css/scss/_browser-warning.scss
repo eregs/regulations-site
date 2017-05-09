@@ -1,0 +1,33 @@
+// IE7 browser warning message
+.browser-warning {
+  display: block;
+  position: absolute;
+  width: 100%;
+  margin-top: 0;
+  background-color: #F6D9D3;
+  border-bottom: 2px solid #E8A091;
+  font-family: Arial, sans-serif;
+  z-index: 999999;
+
+  h2 {
+    font-size: 18px;
+    margin-left: 20px;
+    padding: 0 26px;
+    background: url('../img/exclamation.png') left center no-repeat;
+  }
+
+  ul {
+    margin-top: 10px;
+    margin-left: 26px;
+  }
+
+  li {
+    display: inline;
+    font-size: 14px;
+    padding-right: 20px;
+  }
+
+  .cf-icon-right {
+    font-size: 12px;
+  }
+ }
