@@ -46,6 +46,7 @@ module.exports = function toExport(grunt) {
       dev: {
         options: {
           style: 'expanded',
+          sourceMap: true,
         },
         files: {
           '<%= config.frontEndPath %>/css/style.css': '<%= config.frontEndPath %>/css/scss/main.scss',

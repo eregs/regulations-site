@@ -1,0 +1,189 @@
+/*
+ Helper Classes
+ ========================================================================== */
+
+// apply a natural box layout model to all elements
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+ }
+
+// hide sxs links
+.sxs-ref {
+  display: none;
+}
+
+.inline {
+  display: inline;
+  margin: 0;
+}
+
+.js {
+  .hidden {
+    display: none;
+  }
+}
+
+.hidden-text {
+  position: absolute;
+  left: -99999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.icon-text {
+  position: absolute;
+  left: -99999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.disabled {
+  display: none;
+}
+
+.content-wrap {
+  padding: 0 15px;
+}
+
+.loading {
+  -moz-opacity: 0.3;
+  opacity: 0.3;
+
+  * {
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=30)'; /* IE 8 */
+    filter: alpha(opacity = 30); /* IE 6 & 7 */
+  }
+}
+
+.loading-spinner:after {
+  @include u_spinner;
+}
+
+.important {
+  color: $red;
+}
+
+.alert {
+  background-color: #F6D9D3;
+  border: 1px solid #E8A091;
+  @include sans-font-regular;
+
+  ul {
+    @include reset;
+  }
+}
+
+.reset-indent {
+  text-indent: 0;
+}
+
+.well {
+  padding: 1em 1.25em;
+  background: $gray_lightest;
+}
+
+.bump {
+  margin-top: 2em;
+}
+
+.s-bump {
+  margin-top: 1em;
+}
+
+.shrink {
+  font-size: 0.875em;
+}
+
+.sub-text {
+  font-size: 0.875em;
+}
+
+.left {
+  float: left;
+  margin-right: 15px;
+}
+
+.right {
+  float: right;
+  margin-left: 15px;
+}
+
+.full-right {
+  float: right;
+  text-align: right;
+}
+
+.error {
+  @include sans-font-regular;
+  color: $red;
+  border-bottom: 1px solid $gray_light;
+  font-size: 0.9em;
+  padding: 1em 0;
+  line-height: 1.6em;
+}
+
+.icon-warning {
+  float: left;
+  margin: 0.25em 0.5em 0 0;
+  color: $red;
+}
+
+#sig {
+  @include sans-font-regular;
+}
+
+.love {
+  color: #DA6750;
+}
+
+// focus styles need to be defined
+section:focus,
+.open-definition {
+  outline: none;
+}
+
+img.reg-image {
+  width: 60%;
+  padding: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  border: 1px solid $gray_light;
+  background-color: $white;
+}
+
+.block-image {
+  display: block;
+}
+/*
+Clearfix
+--------
+* Use .group class as clearfix...
+* It just sounds nicer!
+*/
+.group:before,
+.group:after {
+  content: ' ';
+  display: table;
+}
+
+.group:after {
+  clear: both;
+}
+
+/*
+* For IE 6/7 only
+* Include this rule to trigger hasLayout and contain floats.
+*/
+
+.group {
+  *zoom: 1;
+}
