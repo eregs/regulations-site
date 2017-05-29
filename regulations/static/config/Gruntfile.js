@@ -96,6 +96,7 @@ module.exports = function toExport(grunt) {
           transform: ['babelify', 'browserify-shim'],
           browserifyOptions: {
             debug: true,
+            extensions: ['.js', '.jsx'],
           },
         },
       },
@@ -112,7 +113,7 @@ module.exports = function toExport(grunt) {
           plugin: [
             [function minifyify(b) {
               b.plugin('minifyify', {
-                map: '/static/regulations/js/built/regulations.min.map',
+                map: grunt.template.process('<%= config.frontEndPath %>/js/built/regulations.min.map'),
                 output: grunt.template.process('<%= config.frontEndPath %>/js/built/regulations.min.map'),
               });
             }],
