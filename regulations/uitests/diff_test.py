@@ -44,8 +44,8 @@ class DiffTest(BaseTest, unittest.TestCase):
         WebDriverWait(self.driver, 60)
         # make sure the url is right
         self.assertTrue(self.driver.current_url.startswith(
-            self.test_url
-            + '/diff/1005-2/2012-12121/2011-11111?from_version=2011-11111'),
+            self.test_url +
+            '/diff/1005-2/2012-12121/2011-11111?from_version=2011-11111'),
             self.driver.current_url)
 
         WebDriverWait(self.driver, 60)
@@ -74,8 +74,8 @@ class DiffTest(BaseTest, unittest.TestCase):
         # wait until 1005.3 diff loads
         WebDriverWait(self.driver, 30).until(
             lambda driver:
-            driver.current_url == self.test_url
-            + '/diff/1005-3/2012-12121/2011-11111?from_version=2011-11111')
+            driver.current_url == self.test_url +
+            '/diff/1005-3/2012-12121/2011-11111?from_version=2011-11111')
 
         # make sure new section is greened
         new_section = self.driver.find_element_by_xpath(

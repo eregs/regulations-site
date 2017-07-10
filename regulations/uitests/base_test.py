@@ -41,8 +41,8 @@ class BaseTest():
     def make_remote(self):
         selenium_config = remote_configs[os.environ['UITESTS_REMOTE']]
         capabilities = selenium_config['driver']
-        if (os.environ.get('TRAVIS')
-                and os.environ.get('TRAVIS_SECURE_ENV_VARS')):
+        if (os.environ.get('TRAVIS') and
+                os.environ.get('TRAVIS_SECURE_ENV_VARS')):
             capabilities.update({
                 'tunnel-identifier': os.environ['TRAVIS_JOB_NUMBER'],
                 'build': os.environ['TRAVIS_BUILD_NUMBER'],
