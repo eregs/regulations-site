@@ -1,123 +1,147 @@
-regulations.views package
-=========================
+regulations\.views package
+==========================
 
 Submodules
 ----------
 
-regulations.views.about module
-------------------------------
+regulations\.views\.about module
+--------------------------------
 
 .. automodule:: regulations.views.about
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.chrome module
--------------------------------
+regulations\.views\.chrome module
+---------------------------------
 
 .. automodule:: regulations.views.chrome
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.chrome_breakaway module
------------------------------------------
+regulations\.views\.chrome\_breakaway module
+--------------------------------------------
 
 .. automodule:: regulations.views.chrome_breakaway
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.diff module
------------------------------
+regulations\.views\.comment module
+----------------------------------
+
+.. automodule:: regulations.views.comment
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations\.views\.diff module
+-------------------------------
 
 .. automodule:: regulations.views.diff
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.error_handling module
----------------------------------------
+regulations\.views\.error\_handling module
+------------------------------------------
 
 .. automodule:: regulations.views.error_handling
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.navigation module
------------------------------------
+regulations\.views\.navigation module
+-------------------------------------
 
 .. automodule:: regulations.views.navigation
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.partial module
---------------------------------
+regulations\.views\.notice\_home module
+---------------------------------------
+
+.. automodule:: regulations.views.notice_home
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations\.views\.partial module
+----------------------------------
 
 .. automodule:: regulations.views.partial
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.partial_interp module
----------------------------------------
+regulations\.views\.partial\_interp module
+------------------------------------------
 
 .. automodule:: regulations.views.partial_interp
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.partial_search module
----------------------------------------
+regulations\.views\.partial\_search module
+------------------------------------------
 
 .. automodule:: regulations.views.partial_search
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.partial_sxs module
-------------------------------------
+regulations\.views\.partial\_sxs module
+---------------------------------------
 
 .. automodule:: regulations.views.partial_sxs
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.redirect module
----------------------------------
+regulations\.views\.preamble module
+-----------------------------------
+
+.. automodule:: regulations.views.preamble
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+regulations\.views\.redirect module
+-----------------------------------
 
 .. automodule:: regulations.views.redirect
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.reg_landing module
-------------------------------------
+regulations\.views\.reg\_landing module
+---------------------------------------
 
 .. automodule:: regulations.views.reg_landing
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.sidebar module
---------------------------------
+regulations\.views\.sidebar module
+----------------------------------
 
 .. automodule:: regulations.views.sidebar
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.universal_landing module
-------------------------------------------
+regulations\.views\.universal\_landing module
+---------------------------------------------
 
 .. automodule:: regulations.views.universal_landing
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.views.utils module
-------------------------------
+regulations\.views\.utils module
+--------------------------------
 
 .. automodule:: regulations.views.utils
     :members:
