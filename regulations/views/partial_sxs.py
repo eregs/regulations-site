@@ -1,7 +1,7 @@
 # vim: set encoding=utf-8
 from collections import defaultdict
 
-from django.template import Context, loader
+from django.template import loader
 from django.views.generic.base import TemplateView
 
 from regulations.generator import api_reader, generator, notices
@@ -62,7 +62,7 @@ class ParagraphSXSView(TemplateView):
             shift = 0
             for ref in ref_dict[p_idx]:
                 p = sxs['paragraphs'][p_idx]
-                rendered = self.footnote_tpl.render(Context({'footnote': ref}))
+                rendered = self.footnote_tpl.render({'footnote': ref})
                 offset = ref['offset'] + shift
                 sxs['paragraphs'][p_idx] = p[:offset] + rendered
                 sxs['paragraphs'][p_idx] += p[offset:]

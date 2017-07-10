@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from django.template import RequestContext
 from django.template.loader import select_template
 
 from regulations.generator import api_reader
@@ -44,10 +43,8 @@ def regulation(request, label_id):
     context['meta'] = utils.regulation_meta(label_id,
                                             current_version['version'])
 
-    c = RequestContext(request, context)
-
     t = select_template([
         'regulations/landing_%s.html' % label_id,
         'regulations/landing_base.html',
         'regulations/generic_landing.html'])
-    return HttpResponse(t.render(c))
+    return HttpResponse(t.render(context, request))

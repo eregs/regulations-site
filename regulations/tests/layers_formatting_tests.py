@@ -2,7 +2,6 @@ from collections import defaultdict
 from unittest import TestCase
 from xml.etree import ElementTree as etree  # nosec - see usage below
 
-from django.template import Context
 from django.template.loader import get_template
 from mock import Mock, patch
 
@@ -38,7 +37,7 @@ class FormattingLayerTest(TestCase):
     def render_html(self, template_name, data):
         template_file = template_loc.format(template_name)
         template = get_template(template_file)
-        return template.render(Context(data))
+        return template.render(data)
 
     def test_replacements_for_table(self):
         data = {'header': [[{'colspan': 2, 'rowspan': 1, 'text': 'Title'}]],
