@@ -10,7 +10,7 @@ setup(
         'boto3',
         'cached-property',
         'celery',
-        'django>=1.8,<1.10',
+        'django>=1.8,<1.12',
         'enum34',
         'futures',
         'requests',
