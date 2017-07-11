@@ -79,6 +79,7 @@ regulations-core/
 style.css.map
 .coverage
 regulations.egg-info
+.tox
 
 
 # docs output
