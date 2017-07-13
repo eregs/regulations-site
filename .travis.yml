@@ -33,4 +33,4 @@ install:
   - npm install -g grunt-cli
 script:
   - ./frontendbuild.sh
-  - if [ ! -z "$SAUCE_ACCESS_KEY" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./integration-tests.sh; else tox; fi
+  - if [ ! -z "$SAUCE_ACCESS_KEY" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./devops/integration-tests.sh; else tox; fi

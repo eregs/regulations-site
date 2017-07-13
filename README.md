@@ -157,8 +157,8 @@ Connect](https://saucelabs.com/docs/connect).
 
 Then, you'll need to run the library as an application (see above) first;
 we'll assume it's running on port 8000. See
-[integration-tests.sh](integration-tests.sh) for an example which utlizes
-Docker.
+[devops/integration-tests.sh](devops/integration-tests.sh) for an example
+which utilizes Docker-compose.
 
 Finally, to run the tests, execute
 
