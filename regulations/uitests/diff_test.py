@@ -43,10 +43,8 @@ class DiffTest(BaseTest, unittest.TestCase):
 
         WebDriverWait(self.driver, 60)
         # make sure the url is right
-        self.assertTrue(self.driver.current_url.startswith(
-            self.test_url +
-            '/diff/1005-2/2012-12121/2011-11111?from_version=2011-11111'),
-            self.driver.current_url)
+        assert self.urlparse().path == '/diff/1005-2/2012-12121/2011-11111'
+        assert self.urlparse().query == 'from_version=2011-11111'
 
         WebDriverWait(self.driver, 60)
 
@@ -72,10 +70,12 @@ class DiffTest(BaseTest, unittest.TestCase):
         toc_link_1005_3.click()
 
         # wait until 1005.3 diff loads
-        WebDriverWait(self.driver, 30).until(
-            lambda driver:
-            driver.current_url == self.test_url +
-            '/diff/1005-3/2012-12121/2011-11111?from_version=2011-11111')
+        def matches_expected(driver):
+            parsed = self.urlparse(driver.current_url)
+            return (parsed.path == '/diff/1005-3/2012-12121/2011-11111' and
+                    parsed.query == 'from_version=2011-11111')
+
+        WebDriverWait(self.driver, 30).until(matches_expected)
 
         # make sure new section is greened
         new_section = self.driver.find_element_by_xpath(
@@ -97,5 +97,5 @@ class DiffTest(BaseTest, unittest.TestCase):
 
         # make sure it goes back to the right place
         WebDriverWait(self.driver, 30).until(
-            lambda driver: driver.current_url.startswith(
-                self.test_url + '/1005-3/2011-11111'))
+            lambda driver:
+            self.urlparse(driver.current_url).path == '/1005-3/2011-11111')

@@ -1,5 +1,7 @@
 import os
+
 from selenium import webdriver
+from six.moves.urllib.parse import urlparse
 
 
 remote_configs = {
@@ -60,6 +62,11 @@ class BaseTest():
         jobid = driver.session_id
         print("Sauce Labs job: https://saucelabs.com/jobs/%s" % jobid)
         return driver
+
+    def urlparse(self, url=None):
+        if url is None:
+            url = self.driver.current_url
+        return urlparse(url)
 
     def tearDown(self):
         self.driver.quit()
