@@ -102,7 +102,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "django.core.context_processors.request",
+                "django.template.context_processors.request",
                 "regulations.context.eregs_globals",
             ),
             # List of callables that know how to import templates from various

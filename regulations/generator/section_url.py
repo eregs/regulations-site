@@ -19,8 +19,8 @@ class SectionUrl(object):
 
     def view_label_id(self, citation, version):
         # Subterps, collections of interps of whole subparts, etc.
-        if 'Interp' in citation and ('Subpart' in citation
-                                     or 'Appendices' in citation):
+        if 'Interp' in citation and ('Subpart' in citation or
+                                     'Appendices' in citation):
             label = '-'.join(citation)
         elif 'Interp' in citation:
             label = self.interp(citation, version)

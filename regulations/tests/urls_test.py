@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 
 class UrlTests(TestCase):
     def test_about(self):
-        r = reverse('regulations.views.about.about')
+        r = reverse('about')
         self.assertEqual(r, '/about')
 
     def test_chrome_section_url(self):

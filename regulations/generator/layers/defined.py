@@ -1,4 +1,4 @@
-from django.template import loader, Context
+from django.template import loader
 
 from regulations.generator.layers.base import InlineLayer
 
@@ -23,8 +23,7 @@ class DefinedLayer(InlineLayer):
             if text_index == ref_struct['reference']:
                 pos = tuple(ref_struct['position'])
                 original = text[pos[0]:pos[1]]
-                context = Context({'term': original})
-                replacement = self.template.render(context)
+                replacement = self.template.render({'term': original})
                 replacement = replacement.strip('\n')
                 layer_pairs.append((original, replacement, pos))
         return layer_pairs

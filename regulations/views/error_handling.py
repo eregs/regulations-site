@@ -1,5 +1,5 @@
 from django import http
-from django.template import RequestContext, loader
+from django.template import loader
 
 from regulations.generator import api_reader
 from regulations.generator.sidebar.help import Help as HelpSidebar
@@ -36,8 +36,7 @@ class MissingSectionException(Exception):
 def handle_generic_404(request):
     template = loader.get_template('regulations/generic_404.html')
     context = {'request_path': request.path}
-    body = template.render(RequestContext(
-        request, context))
+    body = template.render(context, request)
     return http.HttpResponseNotFound(body, content_type='text/html')
 
 
@@ -75,8 +74,7 @@ def add_to_chrome(body, context, request):
     sidebar_response = sidebar_view(request, label_id=context['label_id'],
                                     version=context['version'])
     context['sidebar_content'] = sidebar_response.render().content
-    chrome_body = chrome_template.render(RequestContext(
-        request, context))
+    chrome_body = chrome_template.render(context, request)
 
     return http.HttpResponseNotFound(chrome_body, content_type='text/html')
 
@@ -98,7 +96,6 @@ def handle_missing_section_404(
     context.update(extra_context)
 
     template = loader.get_template('regulations/missing_section_404.html')
-    body = template.render(RequestContext(
-        request, context))
+    body = template.render(context, request)
 
     return add_to_chrome(body, context, request)

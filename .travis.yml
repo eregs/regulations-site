@@ -10,36 +10,27 @@ matrix:
     - python: '2.7'
     - python: '3.4'
     - python: '3.5'
+    - python: '3.6'
     - python: '2.7'
       addons:
         sauce_connect: true
       env:
         - secure: "bYazvj8ja2k7vG9dy/gckKfzzzk3fVaHKp2tcDO0Io7ESqaDrKgpYsmGPXKv6Lm/Kp8C9R9+/Ir8qhYV60GxQSq12rFCnwWgDZQD98i7/Bw1H/Hd8ou9fUw+7UO6OCQMI677W4tMyd7JlOdUU2rFjE+nt/WXJv3RgFKGdLOsHTU="
         - secure: "WB+NApjaJTjEjcC09R9vKWvnDcNeOhfDtc4l2jKpAYpR6NYcoF12xrsV8KlNeLb3uXgopPQsguv9dtv8x+oF7zv5NKmbDhmr2QmQxDGbuEAVrvKfk5T6F487o9Q5xKiTup1upCBvRbU7BhgKCovexlj+PwWCWOzIyeSjUtT8d3c="
-    - python: '3.4'
-      addons:
-        sauce_connect: true
-      env:
-        - secure: "bYazvj8ja2k7vG9dy/gckKfzzzk3fVaHKp2tcDO0Io7ESqaDrKgpYsmGPXKv6Lm/Kp8C9R9+/Ir8qhYV60GxQSq12rFCnwWgDZQD98i7/Bw1H/Hd8ou9fUw+7UO6OCQMI677W4tMyd7JlOdUU2rFjE+nt/WXJv3RgFKGdLOsHTU="
-        - secure: "WB+NApjaJTjEjcC09R9vKWvnDcNeOhfDtc4l2jKpAYpR6NYcoF12xrsV8KlNeLb3uXgopPQsguv9dtv8x+oF7zv5NKmbDhmr2QmQxDGbuEAVrvKfk5T6F487o9Q5xKiTup1upCBvRbU7BhgKCovexlj+PwWCWOzIyeSjUtT8d3c="
-    - python: '3.5'
+    - python: '3.6'
       addons:
         sauce_connect: true
       env:
         - secure: "bYazvj8ja2k7vG9dy/gckKfzzzk3fVaHKp2tcDO0Io7ESqaDrKgpYsmGPXKv6Lm/Kp8C9R9+/Ir8qhYV60GxQSq12rFCnwWgDZQD98i7/Bw1H/Hd8ou9fUw+7UO6OCQMI677W4tMyd7JlOdUU2rFjE+nt/WXJv3RgFKGdLOsHTU="
         - secure: "WB+NApjaJTjEjcC09R9vKWvnDcNeOhfDtc4l2jKpAYpR6NYcoF12xrsV8KlNeLb3uXgopPQsguv9dtv8x+oF7zv5NKmbDhmr2QmQxDGbuEAVrvKfk5T6F487o9Q5xKiTup1upCBvRbU7BhgKCovexlj+PwWCWOzIyeSjUtT8d3c="
 before_install:
-  - pip install -U pip wheel
-  - rm -rf ~/.nvm
   - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.30.2/install.sh | bash
   - source ~/.nvm/nvm.sh
   - nvm install 6.9.2
   - nvm use 6.9.2
 install:
-  - pip install -r requirements.txt
-  - pip install -r requirements_test.txt
+  - pip install tox-travis
   - npm install -g grunt-cli
-  - ./frontendbuild.sh
 script:
-  - if [ -z "$SAUCE_ACCESS_KEY" ]; then ./unit-tests.sh; fi
-  - if [ ! -z "$SAUCE_ACCESS_KEY" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./integration-tests.sh; fi
+  - ./frontendbuild.sh
+  - if [ ! -z "$SAUCE_ACCESS_KEY" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./devops/integration-tests.sh; else tox; fi

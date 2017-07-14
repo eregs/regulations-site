@@ -107,13 +107,13 @@ class EregsCache():
                             threading.Thread(target=self.access_url,
                                              args=(partial, )).start()
                         elif thread_count >= 12:
-                            self.write("URLs currently at " + str(thread_count)
-                                       + ". Server too slow")
+                            message = "URLs currently at {0}. Server too slow"
+                            self.write(message.format(thread_count))
                             self.write("Shutting down")
                             raise Exception("Thread Count Too High")
                         else:
-                            self.write("Currently Processing "
-                                       + str(thread_count) + " Urls")
+                            self.write("Currently Processing {0} Urls".format(
+                                thread_count))
                             self.write("Waiting...")
                             time.sleep(thread_count * 2)
 

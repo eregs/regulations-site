@@ -59,7 +59,6 @@ oldphantomjs/
 *.py[co]
 eregsip/
 *.swp
-local_settings.py
 dev_local_settings.py
 config.json
 src/
@@ -84,3 +83,4 @@ regulations.egg-info
 
 # docs output
 docs/_build
+
