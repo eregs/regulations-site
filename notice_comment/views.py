@@ -125,7 +125,7 @@ class SubmitCommentView(View):
         except Exception as exc:
             logger.exception(exc)
 
-        template = 'regulations/comment-confirm-chrome.html'
+        template = 'notice_comment/confirm-chrome.html'
         return TemplateResponse(request=request, template=template,
                                 context=context)
 
@@ -216,7 +216,7 @@ class PrepareCommentView(View):
         context['comment_mode'] = 'write'
         context['comment_fields'] = docket.safe_get_document_fields(
             settings.COMMENT_DOCUMENT_ID)
-        template = 'regulations/comment-review-chrome.html'
+        template = 'notice_comment/review-chrome.html'
 
         return TemplateResponse(request=request, template=template,
                                 context=context)

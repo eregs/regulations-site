@@ -102,7 +102,7 @@ def json_to_html(sections, mark_as_draft=False):
     :param mark_as_draft: Indicates if the HTML is to be marked as DRAFT
     """
     return loader.render_to_string(
-        'regulations/comment.html',
+        'notice_comment/comment.html',
         {'sections': sections, 'mark_as_draft': mark_as_draft}
     )
 
