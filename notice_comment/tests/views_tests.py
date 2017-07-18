@@ -16,8 +16,8 @@ from notice_comment import views
 class TestUploadProxy(SimpleTestCase):
 
     @mock.patch('time.time')
-    @mock.patch('regulations.tasks.s3_client')
-    @mock.patch('regulations.tasks.get_random_string')
+    @mock.patch('notice_comment.tasks.s3_client')
+    @mock.patch('notice_comment.tasks.get_random_string')
     def test_get_url(self, get_random, mock_client, mock_time):
         generate_presigned = mock_client.generate_presigned_url
         generate_presigned.side_effect = ['first-url', 'second-url']

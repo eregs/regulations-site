@@ -8,14 +8,14 @@ from django.conf import settings
 from django.test import TestCase, override_settings
 from requests.exceptions import RequestException
 
-from regulations.tasks import submit_comment, cache_pdf, SignedUrl
+from notice_comment.tasks import submit_comment, cache_pdf, SignedUrl
 from regulations.models import FailedCommentSubmission
 
 
-@mock.patch('regulations.tasks.submit_comment.retry')
-@mock.patch('regulations.tasks.post_submission')
-@mock.patch('regulations.tasks.html_to_pdf')
-@mock.patch('regulations.tasks.cache_pdf')
+@mock.patch('notice_comment.tasks.submit_comment.retry')
+@mock.patch('notice_comment.tasks.post_submission')
+@mock.patch('notice_comment.tasks.html_to_pdf')
+@mock.patch('notice_comment.tasks.cache_pdf')
 @override_settings(
     ATTACHMENT_BUCKET='test-bucket',
     ATTACHMENT_ACCESS_KEY_ID='test-access-key',
@@ -102,7 +102,7 @@ class TestSubmitComment(TestCase):
         self.comments[1]['files'].append(
             {"name": "file_name.png", "key": "someKey"})
         retry.return_value = MaxRetriesExceededError()
-        with mock.patch('regulations.tasks.boto3') as boto3:
+        with mock.patch('notice_comment.tasks.boto3') as boto3:
             client = boto3.Session.return_value.client.return_value
             client.download_file.side_effect = botocore.exceptions.ClientError
             submit_comment(self.comments, self.form, self.meta)
@@ -118,8 +118,8 @@ class TestSubmitComment(TestCase):
 
 class TestHelpers(TestCase):
 
-    @mock.patch('regulations.tasks.SignedUrl.generate')
-    @mock.patch('regulations.tasks.s3_client')
+    @mock.patch('notice_comment.tasks.SignedUrl.generate')
+    @mock.patch('notice_comment.tasks.s3_client')
     def test_cache_pdf(self, s3_client, url_generate):
         meta = SignedUrl('meta', 'https://s3.amazonaws.com/bucket/meta')
         url_generate.return_value = SignedUrl(
