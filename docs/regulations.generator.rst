@@ -1,5 +1,5 @@
-regulations.generator package
-=============================
+regulations\.generator package
+==============================
 
 Subpackages
 -----------
@@ -12,104 +12,96 @@ Subpackages
 Submodules
 ----------
 
-regulations.generator.api_client module
----------------------------------------
-
-.. automodule:: regulations.generator.api_client
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-regulations.generator.api_reader module
----------------------------------------
+regulations\.generator\.api\_reader module
+------------------------------------------
 
 .. automodule:: regulations.generator.api_reader
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.generator module
---------------------------------------
+regulations\.generator\.generator module
+----------------------------------------
 
 .. automodule:: regulations.generator.generator
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.html_builder module
------------------------------------------
+regulations\.generator\.html\_builder module
+--------------------------------------------
 
 .. automodule:: regulations.generator.html_builder
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.label module
-----------------------------------
+regulations\.generator\.label module
+------------------------------------
 
 .. automodule:: regulations.generator.label
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.link_flattener module
--------------------------------------------
+regulations\.generator\.link\_flattener module
+----------------------------------------------
 
 .. automodule:: regulations.generator.link_flattener
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.node_types module
----------------------------------------
+regulations\.generator\.node\_types module
+------------------------------------------
 
 .. automodule:: regulations.generator.node_types
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.notices module
-------------------------------------
+regulations\.generator\.notices module
+--------------------------------------
 
 .. automodule:: regulations.generator.notices
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.section_url module
-----------------------------------------
+regulations\.generator\.section\_url module
+-------------------------------------------
 
 .. automodule:: regulations.generator.section_url
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.subterp module
-------------------------------------
+regulations\.generator\.subterp module
+--------------------------------------
 
 .. automodule:: regulations.generator.subterp
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.title_parsing module
-------------------------------------------
+regulations\.generator\.title\_parsing module
+---------------------------------------------
 
 .. automodule:: regulations.generator.title_parsing
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.toc module
---------------------------------
+regulations\.generator\.toc module
+----------------------------------
 
 .. automodule:: regulations.generator.toc
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.generator.versions module
--------------------------------------
+regulations\.generator\.versions module
+---------------------------------------
 
 .. automodule:: regulations.generator.versions
     :members:

@@ -1,5 +1,5 @@
-regulations.management package
-==============================
+regulations\.management package
+===============================
 
 Subpackages
 -----------

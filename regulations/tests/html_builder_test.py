@@ -182,9 +182,9 @@ class CFRHTMLBuilderTest(TestCase):
         builder = CFRHTMLBuilder([icl])
 
         builder.modify_interp_node(node)
-        self.assertEqual('This interprets '
-                         + icl.render_url(['872', '22', 'a'], '22(a)')
-                         + ', a paragraph', node['header_markup'])
+        header = 'This interprets {0}, a paragraph'.format(
+            icl.render_url(['872', '22', 'a'], '22(a)'))
+        self.assertEqual(header, node['header_markup'])
 
         node['label'] = ['872', '22']
         builder.modify_interp_node(node)

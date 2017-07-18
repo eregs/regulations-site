@@ -1,4 +1,4 @@
-from django.template import loader, Context
+from django.template import loader
 
 from regulations.generator.layers.base import SearchReplaceLayer
 
@@ -30,9 +30,8 @@ class FormattingLayer(SearchReplaceLayer):
         for row in table['rows']:
             row.extend([''] * (max_width - len(row)))
 
-        context = Context(table)
         #   Remove new lines so that they don't get escaped on display
-        return self.tpls['table'].render(context).replace('\n', '')
+        return self.tpls['table'].render(table).replace('\n', '')
 
     def render_fence(self, fence, data_type=None):
         """Fenced paragraphs are formatted separately, offset from the rest of
@@ -50,7 +49,7 @@ class FormattingLayer(SearchReplaceLayer):
             strip_nl = False
             tpl = self.tpls['code']
 
-        rendered = tpl.render(Context({'lines': lines, 'type': _type}))
+        rendered = tpl.render({'lines': lines, 'type': _type})
         if strip_nl:
             rendered = rendered.replace('\n', '')
         return rendered
@@ -58,8 +57,7 @@ class FormattingLayer(SearchReplaceLayer):
     def render_replacement(self, data, data_type):
         """Several of the formatted data types are simple string replacements.
         Implement them all here"""
-        context = Context(data)
-        return self.tpls[data_type].render(context).replace('\n', '')
+        return self.tpls[data_type].render(data).replace('\n', '')
 
     def replacements_for(self, original, data):
         for data_type in self.DATA_TYPES:

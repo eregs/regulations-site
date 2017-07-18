@@ -56,8 +56,9 @@ def label_to_text(label, include_section=True, include_marker=False):
         return 'Regulation %s' % label[0]
 
     # Use short circuiting to grab the *first* type of label that matches
-    return (_l2t_subterp(label) or _l2t_interp(label) or _l2t_appendix(label)
-            or _l2t_section(label, include_section, include_marker))
+    return (_l2t_subterp(label) or _l2t_interp(label) or
+            _l2t_appendix(label) or
+            _l2t_section(label, include_section, include_marker))
 
 
 MARKERLESS_REGEX = re.compile(r'^[hp]\d+')

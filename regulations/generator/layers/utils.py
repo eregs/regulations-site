@@ -2,7 +2,6 @@ from datetime import datetime
 import re
 
 import six
-from django.template import Context
 
 
 def convert_to_python(data):
@@ -26,8 +25,7 @@ def convert_to_python(data):
 
 
 def render_template(template, context):
-    c = Context(context)
-    return template.render(c).strip('\n')
+    return template.render(context).strip('\n')
 
 
 def is_contained_in(child, parent):

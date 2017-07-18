@@ -169,8 +169,8 @@ class CFRHTMLBuilder(HTMLBuilder):
             citation = list(takewhile(lambda p: p != 'Interp',
                                       node['label']))
             for layer in self.layers:
-                if (isinstance(layer, InternalCitationLayer)
-                        and len(citation) > 2):
+                if (isinstance(layer, InternalCitationLayer) and
+                        len(citation) > 2):
                     text = '%s(%s)' % (citation[1], ')('.join(citation[2:]))
                     node['header_markup'] = node['header_markup'].replace(
                         text, layer.render_url(citation, text))

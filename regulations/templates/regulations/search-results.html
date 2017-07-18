@@ -20,7 +20,7 @@ Partial Search Results.
                 <p>{{result.text}}</p>
             </li>
         {% empty %}
-            <span class="no-results">Sorry, there are no results in the regulation effective {{version_by_date|date}}.</span>
+            <span class="no-results">Sorry, there are no results in the regulation effective {{version_by_date|date:"n/j/Y"}}.</span>
         {% endfor %}
         </ul>
     </section>
