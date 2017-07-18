@@ -8,8 +8,8 @@ from django.conf import settings
 from django.test import TestCase, override_settings
 from requests.exceptions import RequestException
 
+from notice_comment.models import FailedCommentSubmission
 from notice_comment.tasks import submit_comment, cache_pdf, SignedUrl
-from regulations.models import FailedCommentSubmission
 
 
 @mock.patch('notice_comment.tasks.submit_comment.retry')

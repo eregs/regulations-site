@@ -24,7 +24,7 @@ from django.contrib.staticfiles import finders
 from django.template import loader
 from django.utils.crypto import get_random_string
 
-from regulations.models import FailedCommentSubmission
+from notice_comment.models import FailedCommentSubmission
 logger = get_task_logger(__name__)
 
 
