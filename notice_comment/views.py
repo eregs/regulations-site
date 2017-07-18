@@ -15,8 +15,7 @@ from django.utils.crypto import get_random_string
 from django.views.generic.base import View
 import requests
 
-from notice_comment import tasks
-from regulations import docket
+from notice_comment import docket, tasks
 from regulations.views.preamble import (
     common_context, CommentState, generate_html_tree, first_preamble_section,
     notice_data)

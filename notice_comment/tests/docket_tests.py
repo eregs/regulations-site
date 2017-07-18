@@ -4,13 +4,13 @@ from mock import patch
 import httpretty
 import requests
 
-from regulations.docket import sanitize_fields
+from notice_comment.docket import sanitize_fields
 
 
 class SanitizeFieldsTest(TestCase):
     def setUp(self):
         self.patch_document_fields = patch(
-            'regulations.docket.get_document_fields')
+            'notice_comment.docket.get_document_fields')
         mock_object = self.patch_document_fields.start()
         mock_object.return_value = {
             'required_field': {'maxLength': 10, 'required': True},
@@ -82,7 +82,7 @@ class SanitizeFieldsHTTPErrorsTest(TestCase):
             valid, message = sanitize_fields({'something': 'else'})
         self.assertTrue(valid)
 
-    @patch('regulations.docket.requests.get')
+    @patch('notice_comment.docket.requests.get')
     def test_timeout(self, get):
         get.side_effect = requests.Timeout
         with self.settings(REGS_GOV_API_URL='http://example.com'):
