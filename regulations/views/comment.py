@@ -203,3 +203,21 @@ def make_cache_key(*args, **kwargs):
         Sort the keys to ensure repeatability
     """
     return ":".join((key + ":" + str(kwargs[key]) for key in sorted(kwargs)))
+
+
+class PrepareCommentView(View):
+    def get(self, request, doc_number):
+        context = common_context(doc_number)
+
+        if context['meta']['comment_state'] != CommentState.OPEN:
+            raise Http404("Cannot comment on {}".format(doc_number))
+
+        context.update(generate_html_tree(context['preamble'], request,
+                                          id_prefix=[doc_number, 'preamble']))
+        context['comment_mode'] = 'write'
+        context['comment_fields'] = docket.safe_get_document_fields(
+            settings.COMMENT_DOCUMENT_ID)
+        template = 'regulations/comment-review-chrome.html'
+
+        return TemplateResponse(request=request, template=template,
+                                context=context)

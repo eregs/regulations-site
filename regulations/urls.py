@@ -16,8 +16,8 @@ from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
 from regulations.views.preamble import (
-    CFRChangesView, PreambleView, PrepareCommentView,
-    ChromePreambleSearchView)
+    CFRChangesView, PreambleView, ChromePreambleSearchView
+)
 from regulations.views.redirect import (
     diff_redirect,
     redirect_by_current_date,
@@ -48,7 +48,7 @@ urlpatterns = [
     url(r'^about$', about, name='about'),
     url(r'^comments/attachment$', comment.upload_proxy),
     url(r'^comments/review/(?P<doc_number>[\w-]+)$',
-        PrepareCommentView.as_view(), name='comment_review'),
+        comment.PrepareCommentView.as_view(), name='comment_review'),
     url(r'^comments/preview$', comment.preview_comment),
     url(r'^comments/comment/(?P<doc_number>[\w-]+)$',
         comment.SubmitCommentView.as_view(),

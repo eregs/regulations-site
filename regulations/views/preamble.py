@@ -17,7 +17,6 @@ from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
 from fr_notices import navigation
-from regulations import docket
 from regulations.generator import generator
 from regulations.generator.api_reader import ApiReader
 from regulations.generator.html_builder import (
@@ -239,24 +238,6 @@ class ChromePreambleSearchView(chrome.ChromeSearchView):
                                           id_prefix=[doc_number, 'preamble']))
         self.add_main_content(context)
         return context
-
-
-class PrepareCommentView(View):
-    def get(self, request, doc_number):
-        context = common_context(doc_number)
-
-        if context['meta']['comment_state'] != CommentState.OPEN:
-            raise Http404("Cannot comment on {}".format(doc_number))
-
-        context.update(generate_html_tree(context['preamble'], request,
-                                          id_prefix=[doc_number, 'preamble']))
-        context['comment_mode'] = 'write'
-        context['comment_fields'] = docket.safe_get_document_fields(
-            settings.COMMENT_DOCUMENT_ID)
-        template = 'regulations/comment-review-chrome.html'
-
-        return TemplateResponse(request=request, template=template,
-                                context=context)
 
 
 SubpartInfo = namedtuple('SubpartInfo', ['letter', 'title', 'urls', 'idx'])
