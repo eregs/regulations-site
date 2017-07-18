@@ -28,14 +28,6 @@ regulations\.views\.chrome\_breakaway module
     :undoc-members:
     :show-inheritance:
 
-regulations\.views\.comment module
-----------------------------------
-
-.. automodule:: regulations.views.comment
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 regulations\.views\.diff module
 -------------------------------
 

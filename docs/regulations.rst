@@ -34,30 +34,6 @@ regulations\.context module
     :undoc-members:
     :show-inheritance:
 
-regulations\.docket module
---------------------------
-
-.. automodule:: regulations.docket
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-regulations\.models module
---------------------------
-
-.. automodule:: regulations.models
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-regulations\.tasks module
--------------------------
-
-.. automodule:: regulations.tasks
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 regulations\.url\_caches module
 -------------------------------
 
