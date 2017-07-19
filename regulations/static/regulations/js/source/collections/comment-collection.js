@@ -2,7 +2,8 @@
 
 const _ = require('underscore');
 const Backbone = require('backbone');
-Backbone.LocalStorage = require('backbone.localstorage');
+localStorage = require('backbone.localstorage');
+Backbone.LocalStorage = localStorage.LocalStorage;
 
 const commentModel = require('../models/comment-model');
 
