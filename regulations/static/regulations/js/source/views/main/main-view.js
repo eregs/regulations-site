@@ -21,12 +21,26 @@ const DiffView = require('./diff-view');
 const Router = require('../../router');
 const HeaderEvents = require('../../events/header-events');
 const Helpers = require('../../helpers');
-const CommentReviewView = require('../comment/comment-review-view');
-const CommentConfirmView = require('../comment/comment-confirm-view');
-const PreambleView = require('./preamble-view');
 const Resources = require('../../resources');
 
 Backbone.$ = $;
+
+const viewmap = {
+  'reg-section': RegView,
+  'landing-page': RegView,
+  'search-results': SearchResultsView,
+  diff: DiffView,
+  appendix: RegView,
+  interpretation: RegView,
+};
+// This is a compile-time inclusion
+if (process.env.FEATURE_FLAG_NC === 'true') {
+  /* eslint-disable global-require */
+  viewmap['comment-review'] = require('../comment/comment-review-view');
+  viewmap['comment-confirm'] = require('../comment/comment-confirm-view');
+  viewmap['preamble-section'] = require('./preamble-view');
+  /* eslint-enable global-require */
+}
 
 const MainView = Backbone.View.extend({
   el: '#content-body',
@@ -150,17 +164,7 @@ const MainView = Backbone.View.extend({
     'preamble-section': PreambleModel,
   },
 
-  viewmap: {
-    'reg-section': RegView,
-    'landing-page': RegView,
-    'search-results': SearchResultsView,
-    diff: DiffView,
-    appendix: RegView,
-    interpretation: RegView,
-    'comment-review': CommentReviewView,
-    'comment-confirm': CommentConfirmView,
-    'preamble-section': PreambleView,
-  },
+  viewmap,
 
   openSection: function openSection(id, options, type) {
       // Close breakaway if open
