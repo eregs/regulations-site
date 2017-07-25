@@ -20,17 +20,6 @@ class TemplateTest(TestCase):
 
 
 class GlobalContextTest(SimpleTestCase):
-
-    @override_settings(JS_DEBUG=True)
-    def test_debug(self):
-        resp = self.client.get('/about')
-        self.assertEqual(resp.context['EREGS_GLOBALS']['ENV'], 'source')
-
-    @override_settings(JS_DEBUG=False)
-    def test_prod(self):
-        resp = self.client.get('/about')
-        self.assertEqual(resp.context['EREGS_GLOBALS']['ENV'], 'built')
-
     @override_settings(
         ANALYTICS={
             'GOOGLE': {

@@ -88,18 +88,6 @@ module.exports = function toExport(grunt) {
     * Require('modules') in the browser/bundle up dependencies.
     */
     browserify: {
-      dev: {
-        files: {
-          '<%= config.frontEndPath %>/js/built/regulations.js': ['<%= config.frontEndPath %>/js/source/regulations.js', '<%= config.frontEndPath %>/js/source/regulations.js'],
-        },
-        options: {
-          transform: ['babelify', 'browserify-shim'],
-          browserifyOptions: {
-            debug: true,
-            extensions: ['.js', '.jsx'],
-          },
-        },
-      },
       dist: {
         files: {
           '<%= config.frontEndPath %>/js/built/regulations.min.js': ['<%= config.frontEndPath %>/js/source/regulations.js'],
@@ -157,8 +145,8 @@ module.exports = function toExport(grunt) {
    * Create task aliases by registering new tasks
    */
   grunt.registerTask('test', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('test-js', ['eslint', 'mocha_istanbul']);
-  grunt.registerTask('build-dev', ['env:dev', 'copy', 'browserify:dev', 'sass']);
-  grunt.registerTask('build-dist', ['env:dist', 'copy', 'browserify:dist', 'sass', 'cssmin']);
+  grunt.registerTask('build', ['copy', 'browserify', 'sass', 'cssmin']);
+  grunt.registerTask('build-dev', ['env:dev', 'build']);
+  grunt.registerTask('build-dist', ['env:dist', 'build']);
   grunt.registerTask('default', ['build-dist']);
 };
