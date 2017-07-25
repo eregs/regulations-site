@@ -1,4 +1,11 @@
 module.exports = function toExport(grunt) {
+  const config = grunt.file.readJSON('config.json');
+  // Set default features
+  config.featureFlags = config.featureFlags || {};
+  if (!Object.keys(config.featureFlags).includes('noticeAndComment')) {
+    config.featureFlags.noticeAndComment = true;
+  }
+
   grunt.initConfig({
 
     /**
@@ -11,14 +18,16 @@ module.exports = function toExport(grunt) {
      *  Pull in config-specific vars
      *
      */
-    config: grunt.file.readJSON('config.json'),
+    config,
 
     env: {
       dev: {
         NODE_ENV: 'development',
+        FEATURE_FLAG_NC: config.featureFlags.noticeAndComment,
       },
       dist: {
         NODE_ENV: 'production',
+        FEATURE_FLAG_NC: config.featureFlags.noticeAndComment,
       },
     },
 

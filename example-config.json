@@ -1,3 +1,6 @@
 {
-    "frontEndPath": "regulations/static/regulations"
+    "frontEndPath": "regulations/static/regulations",
+    "featureFlags": {
+      "noticeAndComment": true
+    }
 }
