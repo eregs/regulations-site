@@ -55,8 +55,8 @@ class BaseTest():
         username = os.environ['SAUCE_USERNAME']
         key = os.environ['SAUCE_ACCESS_KEY']
         capabilities['name'] = self.job_name
-        capabilities['platform'] = selenium_config['platform']
-        capabilities['version'] = selenium_config['version']
+        if 'version' in selenium_config:
+            capabilities['version'] = selenium_config['version']
         hub_url = "%s:%s" % (username, key)
         executor = "http://%s@ondemand.saucelabs.com:80/wd/hub" % hub_url
         driver = webdriver.Remote(desired_capabilities=capabilities,
