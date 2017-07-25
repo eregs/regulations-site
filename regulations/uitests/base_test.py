@@ -5,16 +5,18 @@ from six.moves.urllib.parse import urlparse
 
 
 remote_configs = {
-    'chrome': {
-        'driver': webdriver.DesiredCapabilities.CHROME,
-        'platform': 'LINUX',
-        'version': '',
-    },
-    'ie11': {
-        'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
-        'platform': 'Windows 10',
-        'version': '11',
-    }
+    'chrome': {'driver': webdriver.DesiredCapabilities.CHROME},
+    'edge': {'driver': webdriver.DesiredCapabilities.EDGE},
+    'firefox': {'driver': webdriver.DesiredCapabilities.FIREFOX},
+    'ie8': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
+             'version': '8'},
+    'ie9': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
+             'version': '9'},
+    'ie10': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
+             'version': '10'},
+    'ie11': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
+             'version': '11'},
+    'safari': {'driver': webdriver.DesiredCapabilities.SAFARI},
 }
 
 
