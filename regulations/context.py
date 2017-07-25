@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 
 
 def eregs_globals(request):
-    env = 'source' if getattr(settings, 'JS_DEBUG', False) else 'built'
     prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
     prefix = prefix.replace('9999', '')
     analytics = getattr(settings, 'ANALYTICS', {})
@@ -14,7 +13,6 @@ def eregs_globals(request):
             analytics['DAP'])
     return {
         'EREGS_GLOBALS': {
-            'ENV': env,
             'APP_PREFIX': prefix,
             'ANALYTICS': analytics,
         },

@@ -94,14 +94,14 @@ class Command(BaseCommand):
             write_storage.save(prefixed_path, source_file)
         settings.STATICFILES_DIRS = original_dirs
 
-    def build_frontend(self, install=True, dev=False):
+    def build_frontend(self, install=True):
         """Shell out to npm for building the frontend files"""
-        cmd = 'build-dev' if dev else 'build-dist'
         # Safe because: we're not passing user input into these processes
         if install:
             subprocess.check_call(  # nosec
                 ['npm', 'install'], cwd=self.BUILD_DIR)
-        subprocess.check_call(['grunt', cmd], cwd=self.BUILD_DIR)   # nosec
+        subprocess.check_call(['grunt', 'build-dist'],
+                              cwd=self.BUILD_DIR)   # nosec
 
     def cleanup(self):
         shutil.copytree("%s/static/regulations" % self.BUILD_DIR,
@@ -111,5 +111,5 @@ class Command(BaseCommand):
         self.remove_dirs()
         self.collect_files()
         self.create_configs()
-        self.build_frontend(install=options['install'], dev=settings.JS_DEBUG)
+        self.build_frontend(install=options['install'])
         self.cleanup()

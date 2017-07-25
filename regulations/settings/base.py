@@ -167,9 +167,6 @@ ANALYTICS = {
     },
 }
 
-#   Use the 'source' directory; useful for development
-JS_DEBUG = False
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',

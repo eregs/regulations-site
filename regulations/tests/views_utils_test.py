@@ -10,18 +10,12 @@ from regulations.views import utils
 
 class UtilsTest(TestCase):
     def setUp(self):
-
         if hasattr(settings, 'ANALYTICS'):
             self.old_analytics = settings.ANALYTICS
-        if hasattr(settings, 'JS_DEBUG'):
-            self.old_js_debug = settings.JS_DEBUG
 
     def tearDown(self):
         if hasattr(self, 'old_analytics'):
             settings.ANALYTICS = self.old_analytics
-
-        if hasattr(self, 'old_js_debug'):
-            settings.JS_DEBUG = self.old_js_debug
 
     def test_get_layer_list(self):
         names = 'meta,meta,GRAPHICS,fakelayer,internal'
