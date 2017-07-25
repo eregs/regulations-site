@@ -38,6 +38,7 @@
     "chai": "^3.5.0",
     "coveralls": "^2.11.2",
     "deamdify": "^0.1.1",
+    "envify": "^4.1.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",

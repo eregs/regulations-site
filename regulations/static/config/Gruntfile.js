@@ -93,7 +93,7 @@ module.exports = function toExport(grunt) {
           '<%= config.frontEndPath %>/js/built/regulations.min.js': ['<%= config.frontEndPath %>/js/source/regulations.js'],
         },
         options: {
-          transform: ['babelify', 'browserify-shim'],
+          transform: ['babelify', 'envify', 'browserify-shim'],
           browserifyOptions: {
             debug: true,
             extensions: ['.js', '.jsx'],
