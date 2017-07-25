@@ -4,20 +4,11 @@ from selenium import webdriver
 from six.moves.urllib.parse import urlparse
 
 
-remote_configs = {
-    'chrome': {'driver': webdriver.DesiredCapabilities.CHROME},
-    'edge': {'driver': webdriver.DesiredCapabilities.EDGE},
-    'firefox': {'driver': webdriver.DesiredCapabilities.FIREFOX},
-    'ie8': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
-             'version': '8'},
-    'ie9': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
-             'version': '9'},
-    'ie10': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
-             'version': '10'},
-    'ie11': {'driver': webdriver.DesiredCapabilities.INTERNETEXPLORER,
-             'version': '11'},
-    'safari': {'driver': webdriver.DesiredCapabilities.SAFARI},
-}
+ie_shorthand = {}
+for idx in range(8, 12):
+    capability = webdriver.DesiredCapabilities.INTERNETEXPLORER.copy()
+    capability['version'] = str(idx)
+    ie_shorthand['ie{0}'.format(idx)] = capability
 
 
 class BaseTest():
@@ -43,8 +34,13 @@ class BaseTest():
         return klass()
 
     def make_remote(self):
-        selenium_config = remote_configs[os.environ['UITESTS_REMOTE']]
-        capabilities = selenium_config['driver']
+        browser = os.environ['UITESTS_REMOTE']
+        if browser in ie_shorthand:
+            capabilities = ie_shorthand[browser].copy()
+        else:
+            capabilities = getattr(webdriver.DesiredCapabilities,
+                                   browser.upper())
+        capabilities['name'] = self.job_name
         if (os.environ.get('TRAVIS') and
                 os.environ.get('TRAVIS_SECURE_ENV_VARS')):
             capabilities.update({
@@ -54,9 +50,6 @@ class BaseTest():
 
         username = os.environ['SAUCE_USERNAME']
         key = os.environ['SAUCE_ACCESS_KEY']
-        capabilities['name'] = self.job_name
-        if 'version' in selenium_config:
-            capabilities['version'] = selenium_config['version']
         hub_url = "%s:%s" % (username, key)
         executor = "http://%s@ondemand.saucelabs.com:80/wd/hub" % hub_url
         driver = webdriver.Remote(desired_capabilities=capabilities,
