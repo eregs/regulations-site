@@ -9,11 +9,11 @@
         data-metadata-url="{{metadata_url}}"
         data-doc-id="{{doc_number}}">
       {% if message %}
-        {% include 'regulations/comment-confirm-invalid.html' %}
+        {% include 'notice_comment/confirm-invalid.html' %}
       {% elif not metadata_url %}
-        {% include 'regulations/comment-confirm-fail.html' %}
+        {% include 'notice_comment/confirm-fail.html' %}
       {% else %}
-        {% include 'regulations/comment-confirm-success.html' %}
+        {% include 'notice_comment/confirm-success.html' %}
       {% endif %}
     </section>
   </div>

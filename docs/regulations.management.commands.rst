@@ -36,14 +36,6 @@ regulations\.management\.commands\.fetch\_wkhtmltox module
     :undoc-members:
     :show-inheritance:
 
-regulations\.management\.commands\.setup\_cors module
------------------------------------------------------
-
-.. automodule:: regulations.management.commands.setup_cors
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------

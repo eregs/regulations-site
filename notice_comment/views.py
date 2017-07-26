@@ -15,8 +15,7 @@ from django.utils.crypto import get_random_string
 from django.views.generic.base import View
 import requests
 
-from regulations import tasks
-from regulations import docket
+from notice_comment import docket, tasks
 from regulations.views.preamble import (
     common_context, CommentState, generate_html_tree, first_preamble_section,
     notice_data)
@@ -126,7 +125,7 @@ class SubmitCommentView(View):
         except Exception as exc:
             logger.exception(exc)
 
-        template = 'regulations/comment-confirm-chrome.html'
+        template = 'notice_comment/confirm-chrome.html'
         return TemplateResponse(request=request, template=template,
                                 context=context)
 
@@ -203,3 +202,21 @@ def make_cache_key(*args, **kwargs):
         Sort the keys to ensure repeatability
     """
     return ":".join((key + ":" + str(kwargs[key]) for key in sorted(kwargs)))
+
+
+class PrepareCommentView(View):
+    def get(self, request, doc_number):
+        context = common_context(doc_number)
+
+        if context['meta']['comment_state'] != CommentState.OPEN:
+            raise Http404("Cannot comment on {}".format(doc_number))
+
+        context.update(generate_html_tree(context['preamble'], request,
+                                          id_prefix=[doc_number, 'preamble']))
+        context['comment_mode'] = 'write'
+        context['comment_fields'] = docket.safe_get_document_fields(
+            settings.COMMENT_DOCUMENT_ID)
+        template = 'notice_comment/review-chrome.html'
+
+        return TemplateResponse(request=request, template=template,
+                                context=context)

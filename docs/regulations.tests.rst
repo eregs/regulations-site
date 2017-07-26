@@ -204,14 +204,6 @@ regulations\.tests\.partial\_view\_tests module
     :undoc-members:
     :show-inheritance:
 
-regulations\.tests\.sanitize\_fields\_tests module
---------------------------------------------------
-
-.. automodule:: regulations.tests.sanitize_fields_tests
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 regulations\.tests\.sidebar\_analyses\_tests module
 ---------------------------------------------------
 
@@ -224,14 +216,6 @@ regulations\.tests\.sidebar\_help\_tests module
 -----------------------------------------------
 
 .. automodule:: regulations.tests.sidebar_help_tests
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-regulations\.tests\.tasks\_tests module
----------------------------------------
-
-.. automodule:: regulations.tests.tasks_tests
     :members:
     :undoc-members:
     :show-inheritance:
@@ -288,14 +272,6 @@ regulations\.tests\.views\_chrome\_tests module
 -----------------------------------------------
 
 .. automodule:: regulations.tests.views_chrome_tests
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-regulations\.tests\.views\_comment\_tests module
-------------------------------------------------
-
-.. automodule:: regulations.tests.views_comment_tests
     :members:
     :undoc-members:
     :show-inheritance:
