@@ -37,11 +37,11 @@ fi
 sleep 5
 export UITESTS_URL=http://localhost:8000
 UITESTS_REMOTE=chrome tox -e integration
-UITESTS_REMOTE=edge tox -e integration
+#UITESTS_REMOTE=edge tox -e integration
 UITESTS_REMOTE=firefox tox -e integration
-UITESTS_REMOTE=ie8 tox -e integration
-UITESTS_REMOTE=ie9 tox -e integration
-UITESTS_REMOTE=ie10 tox -e integration
+#UITESTS_REMOTE=ie8 tox -e integration
+#UITESTS_REMOTE=ie9 tox -e integration
+#UITESTS_REMOTE=ie10 tox -e integration
 UITESTS_REMOTE=ie11 tox -e integration
 UITESTS_REMOTE=safari tox -e integration
 
