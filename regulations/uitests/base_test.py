@@ -4,11 +4,22 @@ from selenium import webdriver
 from six.moves.urllib.parse import urlparse
 
 
-ie_shorthand = {}
-for idx in range(8, 12):
-    capability = webdriver.DesiredCapabilities.INTERNETEXPLORER.copy()
-    capability['version'] = str(idx)
-    ie_shorthand['ie{0}'.format(idx)] = capability
+remote_configs = {
+    'chrome': dict(webdriver.DesiredCapabilities.CHROME,
+                   platform='Windows 10'),
+    'edge': dict(webdriver.DesiredCapabilities.EDGE, platform='Windows 10'),
+    'firefox': dict(webdriver.DesiredCapabilities.FIREFOX,
+                    platform='Windows 10'),
+    'ie8': dict(webdriver.DesiredCapabilities.INTERNETEXPLORER,
+                platform='Windows 7', version='8'),
+    'ie9': dict(webdriver.DesiredCapabilities.INTERNETEXPLORER,
+                platform='Windows 7', version='9'),
+    'ie10': dict(webdriver.DesiredCapabilities.INTERNETEXPLORER,
+                 platform='Windows 7', version='10'),
+    'ie11': dict(webdriver.DesiredCapabilities.INTERNETEXPLORER,
+                 platform='Windows 10', version='11'),
+    'safari': webdriver.DesiredCapabilities.SAFARI.copy(),
+}
 
 
 class BaseTest():
@@ -34,12 +45,7 @@ class BaseTest():
         return klass()
 
     def make_remote(self):
-        browser = os.environ['UITESTS_REMOTE']
-        if browser in ie_shorthand:
-            capabilities = ie_shorthand[browser].copy()
-        else:
-            capabilities = getattr(webdriver.DesiredCapabilities,
-                                   browser.upper())
+        capabilities = remote_configs[os.environ['UITESTS_REMOTE']].copy()
         capabilities['name'] = self.job_name
         if (os.environ.get('TRAVIS') and
                 os.environ.get('TRAVIS_SECURE_ENV_VARS')):
