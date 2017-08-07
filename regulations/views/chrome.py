@@ -25,6 +25,11 @@ class ChromeView(TemplateView):
     sidebar_components = SideBarView.components
     partial_class = None
 
+    def fill_kwargs(self, kwargs):
+        """Entrypoint for subclasses to configure the kwargs that will be
+        handed down to get_context_data"""
+        return kwargs
+
     def check_tree(self, context):
         """Throw an exception if the requested section doesn't exist"""
         label_id, version = context['label_id'], context['version']
@@ -92,6 +97,7 @@ class ChromeView(TemplateView):
             context['label_id'], toc)
 
     def get_context_data(self, **kwargs):
+        kwargs = self.fill_kwargs(kwargs)
         context = super(ChromeView, self).get_context_data(**kwargs)
 
         label_id = context['label_id']
@@ -154,13 +160,16 @@ class ChromeSearchView(ChromeView):
     def check_tree(self, context):
         pass    # Search doesn't perform this check
 
-    def get_context_data(self, **kwargs):
+    def fill_kwargs(self, kwargs):
         """Get the version for the chrome context"""
         kwargs['version'] = self.request.GET.get('version', '')
         kwargs['skip_count'] = True
+        if not kwargs['version']:
+            current, _ = get_versions(kwargs['label_id'])
+            kwargs['version'] = current['version']
         kwargs['label_id'] = utils.first_section(kwargs['label_id'],
                                                  kwargs['version'])
-        return super(ChromeSearchView, self).get_context_data(**kwargs)
+        return kwargs
 
     def add_main_content(self, context):
         """Override this so that we have access to the main content's
@@ -187,9 +196,8 @@ class ChromeLandingView(ChromeView):
         self._assert_good(response)
         context['main_content'] = response.content
 
-    def get_context_data(self, **kwargs):
+    def fill_kwargs(self, kwargs):
         """Add the version and replace the label_id for the chrome context"""
-
         reg_part = kwargs['label_id']
         if not regulation_exists(reg_part):
             raise error_handling.MissingContentException()
@@ -197,7 +205,7 @@ class ChromeLandingView(ChromeView):
         current, _ = get_versions(kwargs['label_id'])
         kwargs['version'] = current['version']
         kwargs['label_id'] = utils.first_section(reg_part, current['version'])
-        return super(ChromeLandingView, self).get_context_data(**kwargs)
+        return kwargs
 
 
 class BadComponentException(Exception):
