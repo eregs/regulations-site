@@ -64,9 +64,11 @@ class PartialSearch(PartialView):
             results = {'results': [], 'total_hits': 0}
         else:
             results = api_reader.ApiReader().search(
-                context['q'], context['doc_type'], context['version'],
-                context['regulation'], page=page, is_root='false',
-                is_subpart='false')
+                context['q'], context['doc_type'],
+                version=context['version'], regulation=context['regulation'],
+                page=page, page_size=PAGE_SIZE,
+                is_root='false', is_subpart='false',
+            )
 
         if doc_type == 'cfr':
             context['results'] = process_cfr_results(results,

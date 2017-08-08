@@ -154,6 +154,17 @@ def test_preamble_search(client, monkeypatch):
     assert b'Section I.A' in response
 
 
+def test_page_size(client, monkeypatch):
+    """Page size should be passed along to the API"""
+    monkeypatch.setattr(partial_search, 'api_reader', Mock())
+    search = partial_search.api_reader.ApiReader.return_value.search
+    search.return_value = {'total_hits': 0, 'results': []}
+
+    client.get('/partial/search/preamble/111?q=none')
+
+    assert search.call_args[1]['page_size'] == 10
+
+
 def test_add_prev_next():
     view = partial_search.PartialSearch()
     context = {'results': {'total_hits': 77}}
