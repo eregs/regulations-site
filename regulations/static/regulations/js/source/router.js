@@ -71,7 +71,7 @@ if (typeof window.history.pushState === 'undefined') {
     loadSearchResults: function loadSearchResults(docType, reg, params) {
       const config = {
         query: params.q,
-        regVersion: params.regVersion,
+        regVersion: params.version,
         docType,
       };
 
