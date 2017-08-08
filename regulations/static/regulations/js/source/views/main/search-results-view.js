@@ -18,6 +18,10 @@ const SearchResultsView = ChildView.extend({
 
   initialize: function initialize(options, ...args) {
     this.options = options;
+    if (!this.options.id && this.options.docId) {
+      this.options.id = this.options.docId.toString();
+    }
+    this.options.id = this.options.id || '';
     this.query = this.options.query;
     // the TOC may link to a different reg version than this.options.resultsRegVersion
     // because the user can select a different version to pull search results from
