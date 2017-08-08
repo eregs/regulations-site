@@ -1,172 +1,179 @@
 from datetime import date
-from unittest import TestCase
 
-from django.test.client import Client
-from mock import patch
+from mock import Mock
 
-from regulations.views.partial_search import PartialSearch
+from regulations.views import partial_search
+from regulations.generator import section_url
 
 
-class PartialSearchTest(TestCase):
-    """Integration tests for search"""
-
-    @patch('regulations.views.partial_search.api_reader')
-    @patch('regulations.views.partial_search.fetch_grouped_history')
-    def test_get(self, fetch_grouped_history, api_reader):
-        api_reader.ApiReader.return_value.search.return_value = {
-            'total_hits': 3333,
-            'results': [
-                {'label': ['111', '22'], 'text': 'tttt', 'version': 'vvv',
-                 'title':"consumer's"},
-                {'label': ['111', '24', 'a'], 'text': 'o', 'version': 'vvv'},
-                {'label': ['111', '25'], 'text': 'more', 'version': 'vvv'}
-            ]
-        }
-        fetch_grouped_history.return_value = [
-            {'notices': [{'document_number': 'bbb',
-                          'effective_on': date(2012, 12, 12)}]},
-            {'notices': [{'document_number': 'ccc',
-                          'effective_on': date(2001, 1, 1)},
-                         {'document_number': 'vvv',
-                          'effective_on': date(2003, 4, 5)}],
-             'timeline': 'timeytimey'}
+def test_get(client, monkeypatch):
+    monkeypatch.setattr(partial_search, 'api_reader', Mock())
+    monkeypatch.setattr(partial_search, 'fetch_grouped_history', Mock())
+    partial_search.api_reader.ApiReader.return_value.search.return_value = {
+        'total_hits': 3333,
+        'results': [
+            {'label': ['111', '22'], 'text': 'tttt', 'version': 'vvv',
+             'title':"consumer's"},
+            {'label': ['111', '24', 'a'], 'text': 'o', 'version': 'vvv'},
+            {'label': ['111', '25'], 'text': 'more', 'version': 'vvv'}
         ]
-        response = Client().get('/partial/search/111?version=vvv&q=none')
-        self.assertIn(b'111-22', response.content)
-        self.assertIn(b'111.22', response.content)
-        self.assertIn(b'111-24-a', response.content)
-        self.assertIn(b'111.24(a)', response.content)
-        self.assertIn(b'111-25', response.content)
-        self.assertIn(b'111.25', response.content)
-        self.assertIn(b'3333', response.content)
-        self.assertIn(b'Consumer&#39;s', response.content)
+    }
+    partial_search.fetch_grouped_history.return_value = [
+        {'notices': [{'document_number': 'bbb',
+                      'effective_on': date(2012, 12, 12)}]},
+        {'notices': [{'document_number': 'ccc',
+                      'effective_on': date(2001, 1, 1)},
+                     {'document_number': 'vvv',
+                      'effective_on': date(2003, 4, 5)}],
+         'timeline': 'timeytimey'}
+    ]
+    response = client.get('/partial/search/111?version=vvv&q=none').content
+    assert b'111-22' in response
+    assert b'111.22' in response
+    assert b'111-24-a' in response
+    assert b'111.24(a)' in response
+    assert b'111-25' in response
+    assert b'111.25' in response
+    assert b'3333' in response
+    assert b'Consumer&#39;s' in response
 
-    @patch('regulations.views.partial_search.api_reader')
-    @patch('regulations.views.partial_search.fetch_grouped_history')
-    def test_root_info(self, fetch_grouped_history, api_reader):
-        api_reader.ApiReader.return_value.search.return_value = {
-            'total_hits': 2,
-            'results': [
-                {'label': ['444', '22'], 'text': 'tttt', 'version': 'vvv',
-                 'title':"consumer's"},
-                {'label': ['444', '24', 'a'], 'text': 'o', 'version': 'vvv'},
-            ]
-        }
-        fetch_grouped_history.return_value = [
-            {'notices': [{'document_number': 'bbb',
-                          'effective_on': date(2012, 12, 12)}]},
-            {'notices': [{'document_number': 'ccc',
-                          'effective_on': date(2001, 1, 1)},
-                         {'document_number': 'vvv',
-                          'effective_on': date(2003, 4, 5)}],
-             'timeline': 'timeytimey'}
+
+def test_root_info(client, monkeypatch):
+    monkeypatch.setattr(partial_search, 'api_reader', Mock())
+    monkeypatch.setattr(partial_search, 'fetch_grouped_history', Mock())
+    partial_search.api_reader.ApiReader.return_value.search.return_value = {
+        'total_hits': 2,
+        'results': [
+            {'label': ['444', '22'], 'text': 'tttt', 'version': 'vvv',
+             'title':"consumer's"},
+            {'label': ['444', '24', 'a'], 'text': 'o', 'version': 'vvv'},
         ]
-        response = Client().get('/partial/search/444?version=vvv&q=none')
-        self.assertIn(b'2 results', response.content)
+    }
+    partial_search.fetch_grouped_history.return_value = [
+        {'notices': [{'document_number': 'bbb',
+                      'effective_on': date(2012, 12, 12)}]},
+        {'notices': [{'document_number': 'ccc',
+                      'effective_on': date(2001, 1, 1)},
+                     {'document_number': 'vvv',
+                      'effective_on': date(2003, 4, 5)}],
+         'timeline': 'timeytimey'}
+    ]
+    response = client.get('/partial/search/444?version=vvv&q=none').content
+    assert b'2 results' in response
 
-    @patch('regulations.views.partial_search.api_reader')
-    @patch('regulations.views.partial_search.fetch_grouped_history')
-    @patch('regulations.generator.section_url.fetch_toc')
-    def test_subinterp(self, fetch_toc, fetch_grouped_history, api_reader):
-        fetch_toc.return_value = [
-            {'index': ['444', 'Subpart', 'B'], 'is_subpart': True,
-             'section_id': '444-Subpart-B', 'sub_toc': [
-                {'index': ['444', '22'], 'section_id': '444-22',
-                 'is_section': True}]},
-            {'index': ['444', 'Interp'], 'section_id': '444-Interp',
-             'sub_toc': [
-                {'index': ['444', 'Interp', 'h1'],
-                 'section_id': '444-Interp-h1'},
-                {'index': ['444', 'Subpart', 'B', 'Interp'],
-                 'section_id': '444-Subpart-B-Interp'}]}
+
+def test_subinterp(client, monkeypatch):
+    monkeypatch.setattr(partial_search, 'api_reader', Mock())
+    monkeypatch.setattr(partial_search, 'fetch_grouped_history', Mock())
+    monkeypatch.setattr(section_url, 'fetch_toc', Mock())
+
+    section_url.fetch_toc.return_value = [
+        {'index': ['444', 'Subpart', 'B'], 'is_subpart': True,
+         'section_id': '444-Subpart-B', 'sub_toc': [
+            {'index': ['444', '22'], 'section_id': '444-22',
+             'is_section': True}]},
+        {'index': ['444', 'Interp'], 'section_id': '444-Interp',
+         'sub_toc': [
+            {'index': ['444', 'Interp', 'h1'],
+             'section_id': '444-Interp-h1'},
+            {'index': ['444', 'Subpart', 'B', 'Interp'],
+             'section_id': '444-Subpart-B-Interp'}]}
+    ]
+    partial_search.api_reader.ApiReader.return_value.search.return_value = {
+        'total_hits': 3,
+        'results': [
+            {'label': ['444', '22', 'Interp'], 'text': 'tttt',
+             'version': 'vvv', 'title':"consumer's"},
+            {'label': ['444', 'Interp', 'h1', 'p5'], 'text': 'o',
+             'version': 'vvv'}
         ]
-        api_reader.ApiReader.return_value.search.return_value = {
-            'total_hits': 3,
-            'results': [
-                {'label': ['444', '22', 'Interp'], 'text': 'tttt',
-                 'version': 'vvv', 'title':"consumer's"},
-                {'label': ['444', 'Interp', 'h1', 'p5'], 'text': 'o',
-                 'version': 'vvv'}
-            ]
-        }
-        fetch_grouped_history.return_value = [
-            {'notices': [{'document_number': 'bbb',
-                          'effective_on': date(2012, 12, 12)}]},
-            {'notices': [{'document_number': 'ccc',
-                          'effective_on': date(2001, 1, 1)},
-                         {'document_number': 'vvv',
-                          'effective_on': date(2003, 4, 5)}],
-             'timeline': 'timeytimey'}
+    }
+    partial_search.fetch_grouped_history.return_value = [
+        {'notices': [{'document_number': 'bbb',
+                      'effective_on': date(2012, 12, 12)}]},
+        {'notices': [{'document_number': 'ccc',
+                      'effective_on': date(2001, 1, 1)},
+                     {'document_number': 'vvv',
+                      'effective_on': date(2003, 4, 5)}],
+         'timeline': 'timeytimey'}
+    ]
+
+    response = client.get('/partial/search/444?version=vvv&q=other').content
+    assert b'444-Subpart-B-Interp' in response
+    assert b'444-Interp-h1' in response
+
+
+def test_no_results(client, monkeypatch):
+    monkeypatch.setattr(partial_search, 'api_reader', Mock())
+    monkeypatch.setattr(partial_search, 'fetch_grouped_history', Mock())
+    partial_search.api_reader.ApiReader.return_value.search.return_value = {
+        'total_hits': 0,
+        'results': []
+    }
+    partial_search.fetch_grouped_history.return_value = [
+        {'notices': [{'document_number': 'bbb',
+                      'effective_on': date(2012, 12, 12)}]},
+        {'notices': [{'document_number': 'ccc',
+                      'effective_on': date(2001, 1, 1)},
+                     {'document_number': 'vvv',
+                      'effective_on': date(2003, 4, 5)}],
+         'timeline': 'timeytimey'}
+    ]
+    response = client.get('/partial/search/121?version=vvv&q=none').content
+    assert b'4/5/2003' in response
+
+
+def test_null_params(client, monkeypatch):
+    monkeypatch.setattr(partial_search, 'fetch_grouped_history',
+                        Mock(return_value=[]))
+
+    response = client.get('/partial/search/111?version=vvv').content
+    assert b'provide a query' in response
+
+    response = client.get('/partial/search/111?q=vvv').content
+    assert b'provide a version' in response
+
+
+def test_preamble_search(client, monkeypatch):
+    monkeypatch.setattr(partial_search, 'api_reader', Mock())
+    partial_search.api_reader.ApiReader.return_value.search.return_value = {
+        'total_hits': 3333,
+        'results': [
+            {'label': ['111_22', 'I', 'A'], 'text': 'tttt',
+             'title': 'A. Something'},
+            {'label': ['111_22', 'I', 'p1'], 'text': 'eee'}
         ]
+    }
 
-        response = Client().get('/partial/search/444?version=vvv&q=other')
-        self.assertIn(b'444-Subpart-B-Interp', response.content)
-        self.assertIn(b'444-Interp-h1', response.content)
+    response = client.get('/partial/search/preamble/111?q=none').content
+    assert b'111_22-I-A' in response
+    assert b'111_22-I-p1' in response
+    assert b'tttt' in response
+    assert b'eee' in response
+    assert b'A. Something' in response
+    assert b'Section I.A' in response
 
-    @patch('regulations.views.partial_search.api_reader')
-    @patch('regulations.views.partial_search.fetch_grouped_history')
-    def test_no_results(self, fetch_grouped_history, api_reader):
-        api_reader.ApiReader.return_value.search.return_value = {
-            'total_hits': 0,
-            'results': []
-        }
-        fetch_grouped_history.return_value = [
-            {'notices': [{'document_number': 'bbb',
-                          'effective_on': date(2012, 12, 12)}]},
-            {'notices': [{'document_number': 'ccc',
-                          'effective_on': date(2001, 1, 1)},
-                         {'document_number': 'vvv',
-                          'effective_on': date(2003, 4, 5)}],
-             'timeline': 'timeytimey'}
-        ]
-        response = Client().get('/partial/search/121?version=vvv&q=none')
-        self.assertIn(b'4/5/2003', response.content)
 
-    @patch('regulations.views.partial_search.fetch_grouped_history')
-    def test_null_params(self, fetch_grouped_history):
-        response = Client().get('/partial/search/111?version=vvv')
-        self.assertIn(b'provide a query', response.content)
-        response = Client().get('/partial/search/111?q=vvv')
-        self.assertIn(b'provide a version', response.content)
+def test_add_prev_next():
+    view = partial_search.PartialSearch()
+    context = {'results': {'total_hits': 77}}
+    view.add_prev_next(0, context)
+    assert 'previous' not in context
+    assert context['next'] == {'page': 1, 'length': 10}
 
-    @patch('regulations.views.partial_search.api_reader')
-    def test_preamble_search(self, api_reader):
-        api_reader.ApiReader.return_value.search.return_value = {
-            'total_hits': 3333,
-            'results': [
-                {'label': ['111_22', 'I', 'A'], 'text': 'tttt',
-                 'title': 'A. Something'},
-                {'label': ['111_22', 'I', 'p1'], 'text': 'eee'}
-            ]
-        }
-        response = Client().get('/partial/search/preamble/111?q=none')
-        self.assertIn(b'111_22-I-A', response.content)
-        self.assertIn(b'111_22-I-p1', response.content)
-        self.assertIn(b'tttt', response.content)
-        self.assertIn(b'eee', response.content)
-        self.assertIn(b'A. Something', response.content)
-        self.assertIn(b'Section I.A', response.content)
+    del context['next']
+    view.add_prev_next(5, context)
+    assert context['previous'] == {'page': 4, 'length': 10}
+    assert context['next'] == {'page': 6, 'length': 10}
 
-    def test_add_prev_next(self):
-        view = PartialSearch()
-        context = {'results': {'total_hits': 77}}
-        view.add_prev_next(0, context)
-        self.assertFalse('previous' in context)
-        self.assertEqual(context['next'], {'page': 1, 'length': 10})
+    del context['previous']
+    del context['next']
+    view.add_prev_next(6, context)
+    assert context['previous'] == {'page': 5, 'length': 10}
+    assert context['next'] == {'page': 7, 'length': 7}
 
-        del context['next']
-        view.add_prev_next(5, context)
-        self.assertEqual(context['previous'], {'page': 4, 'length': 10})
-        self.assertEqual(context['next'], {'page': 6, 'length': 10})
-
-        del context['previous']
-        del context['next']
-        view.add_prev_next(6, context)
-        self.assertEqual(context['previous'], {'page': 5, 'length': 10})
-        self.assertEqual(context['next'], {'page': 7, 'length': 7})
-
-        del context['previous']
-        del context['next']
-        view.add_prev_next(7, context)
-        self.assertEqual(context['previous'], {'page': 6, 'length': 10})
-        self.assertFalse('next' in context)
+    del context['previous']
+    del context['next']
+    view.add_prev_next(7, context)
+    assert context['previous'] == {'page': 6, 'length': 10}
+    assert 'next' not in context
