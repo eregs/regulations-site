@@ -33,26 +33,6 @@ Sidebar
     @include reset;
   }
 
-  // Headers within the sidebar should be <h4>
-  h4 {
-    padding: 0 10px;
-    font-size: 1em * $sans_font_scale_factor;
-    line-height: 40px;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: $gray_darkest;
-    @include sans-font-bold;
-
-    &.important {
-      color: $red;
-    }
-
-    h5 {
-      margin: 0;
-    }
-  }
-
 /*
 Sidebar Expandables
 -------------------
@@ -154,12 +134,26 @@ Regs Meta contains the sub-content meta data found in the sidebar
 
 .regs-meta {
 
+  // Headers within the sidebar should be <h4>
   h4 {
+    padding: 0 10px;
+    font-size: 1em * $sans_font_scale_factor;
+    line-height: 40px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $gray_darkest;
     @include sans-font-bold;
+
+    &.important {
+      color: $red;
+    }
+
   }
 
   h5 {
     font-size: 16px * $sans_font_scale_factor;
+    margin: 0;
   }
 
   /* We either use a subtitle + "What's this?" or an inline explanation
