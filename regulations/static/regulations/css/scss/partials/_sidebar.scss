@@ -140,10 +140,9 @@ Regs Meta contains the sub-content meta data found in the sidebar
     font-size: 1em * $sans_font_scale_factor;
     line-height: 40px;
     margin: 0;
-    text-transform: uppercase;
     letter-spacing: 1px;
     color: $gray_darkest;
-    @include sans-font-bold;
+    @include sans-font-regular;
 
     &.important {
       color: $red;
