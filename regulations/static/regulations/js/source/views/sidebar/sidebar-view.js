@@ -143,7 +143,7 @@ const SidebarView = Backbone.View.extend({
     });
     /* Also remove any components of the sidebar which don't have a Backbone
      * view */
-    this.$el.find('.regs-meta').remove();
+    this.$el.find('.regs-meta:not(#definition)').remove();
   },
 
   loading: function loading() {
