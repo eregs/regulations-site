@@ -63,13 +63,13 @@ Sidebar Expandables
   header {
     &.expandable a:before {
       @extend .cf-icon;
-      content: '\e109';
+      content: '\e003';
       color: $blue_light;
     }
 
     &.open a:before {
       @extend .cf-icon;
-      content: '\e111';
+      content: '\e007';
       color: $blue_light;
     }
   }
