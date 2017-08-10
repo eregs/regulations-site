@@ -117,17 +117,11 @@ class ApiReader(object):
         """ End point for retrieving a single notice. """
         return self._get('notice/{}'.format(fr_document_number))
 
-    def search(self, query, doc_type='cfr', version=None, regulation=None,
-               **kwargs):
+    def search(self, query, doc_type='cfr', **kwargs):
         """Search via the API. Never cache these (that's the duty of the search
         index)"""
-        params = {'q': query}
-        if version:
-            params['version'] = version
-        if regulation:
-            params['regulation'] = regulation
-        params.update(kwargs)
-        return _fetch('search/{}'.format(doc_type), params)
+        kwargs['q'] = query
+        return _fetch('search/{0}'.format(doc_type), kwargs)
 
     def preamble(self, doc_number):
         return self._get('preamble/{}'.format(doc_number))
