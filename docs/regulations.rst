@@ -18,6 +18,14 @@ Subpackages
 Submodules
 ----------
 
+regulations\.all\_urls module
+-----------------------------
+
+.. automodule:: regulations.all_urls
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 regulations\.apps module
 ------------------------
 
