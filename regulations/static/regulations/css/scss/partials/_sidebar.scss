@@ -33,26 +33,6 @@ Sidebar
     @include reset;
   }
 
-  // Headers within the sidebar should be <h4>
-  h4 {
-    padding: 0 10px;
-    font-size: 1em * $sans_font_scale_factor;
-    line-height: 40px;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: $gray_darkest;
-    @include sans-font-bold;
-
-    &.important {
-      color: $red;
-    }
-
-    h5 {
-      margin: 0;
-    }
-  }
-
 /*
 Sidebar Expandables
 -------------------
@@ -65,7 +45,7 @@ Sidebar Expandables
     width: 100%;
 
     &.has-content {
-      background-color: $orange_lightest;
+      background-color: $blue_lightest;
     }
 
     h4 {
@@ -83,13 +63,13 @@ Sidebar Expandables
   header {
     &.expandable a:before {
       @extend .cf-icon;
-      content: '\e109';
+      content: '\e003';
       color: $blue_light;
     }
 
     &.open a:before {
       @extend .cf-icon;
-      content: '\e111';
+      content: '\e007';
       color: $blue_light;
     }
   }
@@ -154,12 +134,25 @@ Regs Meta contains the sub-content meta data found in the sidebar
 
 .regs-meta {
 
+  // Headers within the sidebar should be <h4>
   h4 {
-    @include sans-font-bold;
+    padding: 0 10px;
+    font-size: 1em * $sans_font_scale_factor;
+    line-height: 40px;
+    margin: 0;
+    letter-spacing: 1px;
+    color: $gray_darkest;
+    @include sans-font-regular;
+
+    &.important {
+      color: $red;
+    }
+
   }
 
   h5 {
     font-size: 16px * $sans_font_scale_factor;
+    margin: 0;
   }
 
   /* We either use a subtitle + "What's this?" or an inline explanation
