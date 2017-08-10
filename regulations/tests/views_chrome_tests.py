@@ -3,7 +3,7 @@ from unittest import TestCase
 from django.conf import settings
 from django.http import HttpResponseGone
 from django.test import Client, RequestFactory
-from mock import patch
+from mock import call, patch, Mock
 
 from regulations.views import chrome
 
@@ -130,3 +130,42 @@ class ViewsChromeSubterpTest(TestCase):
         filter_by_subterp.return_value = ["something"]
         view.check_tree({'version': 'vvvv', 'label_id': 'llll'})
         # No exception
+
+
+def test_chrome_search_version_present(monkeypatch, rf):
+    """If a version is in the request, we use it to derive the label_id."""
+    monkeypatch.setattr(chrome, 'utils', Mock())
+    chrome.utils.first_section.return_value = '111-22'
+
+    view = chrome.ChromeSearchView()
+    view.request = rf.get('/?version=some-version')
+    result = view.fill_kwargs({'label_id': '111'})
+
+    assert result == {
+        'version': 'some-version',
+        'skip_count': True,
+        'label_id': '111-22',
+    }
+    assert chrome.utils.first_section.call_args == call('111', 'some-version')
+
+
+def test_chome_search_missing_version(monkeypatch, rf):
+    """A missing version shouldn't cause the results page to explode"""
+    monkeypatch.setattr(chrome, 'utils', Mock())
+    monkeypatch.setattr(chrome, 'get_versions', Mock())
+    chrome.get_versions.return_value = (
+        {'version': 'current-version'}, {'version': 'next-version'})
+    chrome.utils.first_section.return_value = '222-33'
+
+    view = chrome.ChromeSearchView()
+    view.request = rf.get('/')
+    result = view.fill_kwargs({'label_id': '222'})
+
+    assert result == {
+        'version': 'current-version',
+        'skip_count': True,
+        'label_id': '222-33',
+    }
+    assert chrome.get_versions.call_args == call('222')
+    assert chrome.utils.first_section.call_args == call('222',
+                                                        'current-version')
