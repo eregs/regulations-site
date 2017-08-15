@@ -81,7 +81,7 @@
     "clipboard": "^1.7.1",
     "datatables.net": "^1.10.15",
     "filesize": "^3.5.10",
-    "jquery": "1.12.2",
+    "jquery": "^1.12.4",
     "jquery-lazyload": "^1.9.7",
     "jquery-scrollstop": "^1.2.0",
     "prosemirror": "0.4.0",
