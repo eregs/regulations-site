@@ -2,10 +2,8 @@ var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon');
 var jsdom = require('mocha-jsdom');
-var localStorage = require('node-localstorage');
+var Storage = require('dom-storage');
 var _ = require('underscore');
-
-var storage = new localStorage.LocalStorage('.');
 
 describe('CommentView', function() {
   jsdom();
@@ -18,7 +16,7 @@ describe('CommentView', function() {
     $ = require('jquery');
     Backbone.$ = $;
     edit = require('prosemirror/dist/edit');
-    global.localStorage = window.localStorage = storage;
+    global.localStorage = window.localStorage = new Storage();
     comments = require('../../../source/collections/comment-collection');
     CommentEvents = require('../../../source/events/comment-events');
     CommentView = require('../../../source/views/comment/comment-view');
@@ -60,6 +58,7 @@ describe('CommentView', function() {
     edit.ProseMirror.prototype.getContent.restore();
     edit.ProseMirror.prototype.setContent.restore();
     edit.ProseMirror.prototype.ensureOperation.restore();
+    window.localStorage.clear();
   });
 
   it('removes an attachment', function() {
