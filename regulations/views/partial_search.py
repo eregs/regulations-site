@@ -1,7 +1,6 @@
 from copy import deepcopy
 
 from django.core.urlresolvers import reverse
-from django.template.defaultfilters import title
 
 from regulations.generator import api_reader, node_types
 from regulations.generator.html_builder import PreambleHTMLBuilder
@@ -85,15 +84,29 @@ class PartialSearch(PartialView):
         return context
 
 
+def add_cfr_headers(result):
+    """We always want a title to click, even if the search result doesn't have
+    one. We also want to prevent duplication, so we'll only show additional
+    levels of headings if they differ."""
+    if result.get('title'):
+        result['header'] = result['title']
+    else:
+        result['header'] = node_types.label_to_text(result['label'])
+    if result.get('match_title') and result['match_title'] != result['title']:
+        result['subheader'] = result['match_title']
+    if (result.get('paragraph_title') and
+            result['paragraph_title'] != result['match_title']):
+        result['subsubheader'] = result['paragraph_title']
+    return result
+
+
 def process_cfr_results(results, version):
     """Modify the results of a search over the CFR by adding a human-readable
     label, appropriate links, and version information"""
     section_url = SectionUrl()
     results = deepcopy(results)
     for result in results['results']:
-        result['header'] = node_types.label_to_text(result['label'])
-        if 'title' in result:
-            result['header'] += ' ' + title(result['title'])
+        add_cfr_headers(result)
         result['section_id'] = section_url.view_label_id(
             result['label'], version)
         result['url'] = section_url.fetch(
@@ -108,7 +121,7 @@ def process_preamble_results(results):
     for result in results['results']:
         result['header'] = PreambleHTMLBuilder.human_label(result)
         if 'title' in result:
-            result['header'] += ' ' + title(result['title'])
+            result['header'] += ' ' + result['title']
         result['section_id'] = '-'.join(
             [result['label'][0], 'preamble'] + result['label'])
         result['url'] = '{}#{}'.format(
