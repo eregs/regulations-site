@@ -1,3 +1,7 @@
 <a href="{{url}}" class="external {{classes}}" target="_blank"
-   {% if title %}title="{{title}}"{% endif %}
-   aria-label="Link opens in a new window">{{text}}</a>
+   {% if title %}
+   title="{{title}}" aria-label="{{title}}, Link opens in a new window"
+   {% else %}
+   aria-label="{{text}}, Link opens in a new window"
+   {% endif %}
+>{{text}}</a>
