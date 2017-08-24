@@ -35,6 +35,15 @@ def test_external_link_classes_title():
     assert 'some here' in anchor.get('class')
 
 
+def test_external_link_is_escaped():
+    # LXML decodes the value for us, so let's look at the raw markup
+    text = ('{% load macros %}'
+            '{% external_link url="http://example.com/?param=1&other=value" '
+            'text="value" %}')
+    as_str = Template(text).render(Context({}))
+    assert 'http://example.com/?param=1&amp;other=value' in as_str
+
+
 def test_search_for():
     """Macro should url-encode search terms."""
     anchor = _gen_link(
