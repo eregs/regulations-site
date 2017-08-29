@@ -1,8 +1,30 @@
+from datetime import date
+
 import pytest
 from django.http import HttpResponseGone
 from mock import call, Mock
 
+from regulations.generator.versions import Timeline
 from regulations.views import chrome, error_handling
+
+
+def test_version_span():
+    history = [
+        {'by_date': date(2009, 9, 9), 'timeline': Timeline.future},
+        {'by_date': date(2008, 8, 8), 'timeline': Timeline.present},
+        {'by_date': date(2007, 7, 7), 'timeline': Timeline.past},
+    ]
+    result = chrome.version_span(history, date(2010, 10, 10))
+    assert result == chrome.VersionSpan(date(2009, 9, 9), None,
+                                        Timeline.future)
+
+    result = chrome.version_span(history, date(2009, 9, 8))
+    assert result == chrome.VersionSpan(date(2008, 8, 8), date(2009, 9, 9),
+                                        Timeline.present)
+
+    result = chrome.version_span(history, date(2007, 8, 9))
+    assert result == chrome.VersionSpan(date(2007, 7, 7), date(2008, 8, 8),
+                                        Timeline.past)
 
 
 def test_chrome_404(monkeypatch, rf):
