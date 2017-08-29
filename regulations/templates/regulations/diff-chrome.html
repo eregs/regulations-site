@@ -71,7 +71,7 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
                       (Right)
                     {% endif %}-->
                     <a href="{% url 'chrome_section_view' label_id version.version %}" class="version-link" data-version="{{ version.version }}">
-                        {% if version.timeline == 'current' %}
+                        {% if version.timeline.is_present %}
                             <h3>Current Law</h3>
                         {% endif %}
                         <span class="version-date">{{ version.by_date|date:"n/j/Y" }}</span>

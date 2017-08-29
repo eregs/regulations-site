@@ -4,8 +4,9 @@ from datetime import date
 
 from mock import Mock
 
-from regulations.views import partial_search
 from regulations.generator import section_url
+from regulations.generator.versions import Timeline
+from regulations.views import partial_search
 
 
 def test_get(client, monkeypatch):
@@ -27,7 +28,7 @@ def test_get(client, monkeypatch):
                       'effective_on': date(2001, 1, 1)},
                      {'document_number': 'vvv',
                       'effective_on': date(2003, 4, 5)}],
-         'timeline': 'timeytimey'}
+         'timeline': Timeline.past}
     ]
     response = client.get('/partial/search/111?version=vvv&q=none').content
     assert b'111-22' in response
@@ -57,7 +58,7 @@ def test_root_info(client, monkeypatch):
                       'effective_on': date(2001, 1, 1)},
                      {'document_number': 'vvv',
                       'effective_on': date(2003, 4, 5)}],
-         'timeline': 'timeytimey'}
+         'timeline': Timeline.past}
     ]
     response = client.get('/partial/search/444?version=vvv&q=none').content
     assert b'2 results' in response
@@ -96,7 +97,7 @@ def test_subinterp(client, monkeypatch):
                       'effective_on': date(2001, 1, 1)},
                      {'document_number': 'vvv',
                       'effective_on': date(2003, 4, 5)}],
-         'timeline': 'timeytimey'}
+         'timeline': Timeline.past}
     ]
 
     response = client.get('/partial/search/444?version=vvv&q=other').content
@@ -118,7 +119,7 @@ def test_no_results(client, monkeypatch):
                       'effective_on': date(2001, 1, 1)},
                      {'document_number': 'vvv',
                       'effective_on': date(2003, 4, 5)}],
-         'timeline': 'timeytimey'}
+         'timeline': Timeline.past}
     ]
     response = client.get('/partial/search/121?version=vvv&q=none').content
     assert b'4/5/2003' in response

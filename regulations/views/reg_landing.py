@@ -16,13 +16,13 @@ def get_versions(label_id):
     """ Get the current and next version of the regulation. """
     history = fetch_grouped_history(label_id)
     if history:
-        future = [h for h in history if h['timeline'] == 'future']
+        future = [h for h in history if h['timeline'].is_future()]
         if len(future) > 0:
             next_version = future[-1]
         else:
             next_version = None
 
-        current = [h for h in history if h['timeline'] == 'current']
+        current = [h for h in history if h['timeline'].is_present()]
         current_version = current[0]
         return (current_version, next_version)
 
