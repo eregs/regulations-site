@@ -56,7 +56,8 @@ class Command(BaseCommand):
             os.mkdir(self.BUILD_DIR)
 
     def create_configs(self):
-        for config_file in ('Gruntfile.js', 'package.json', '.babelrc'):
+        for config_file in ('Gruntfile.js', 'package.json', '.babelrc',
+                            'npm-shrinkwrap.json'):
             os.rename(os.path.join(self.BUILD_DIR, 'static', 'config',
                                    config_file),
                       os.path.join(self.BUILD_DIR, config_file))
