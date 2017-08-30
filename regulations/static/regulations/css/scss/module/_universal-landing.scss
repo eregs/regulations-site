@@ -25,16 +25,16 @@
   overflow: hidden;
   @include sans-font-regular;
   @include border-bottom-light;
-
-  .inner-wrap {
-    background: url('../img/hero.png') 96% -100% no-repeat;
-  }
-}
-
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .hero .inner-wrap {
-    background: url('../img/hero@2x.png') 96% -100% no-repeat;
-    background-size: 325px 206px;
+  background:
+    linear-gradient(
+      rgba(27, 27, 27, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ),
+    url('../img/gavel.jpg') no-repeat;
+  background-size: 100%;
+  background-position: center;
+  .primary {
+    text-shadow: 1px 1px 0px rgb(0, 0, 0);
   }
 }
 
