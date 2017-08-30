@@ -32,7 +32,12 @@
 <header id="site-header" class="reg-header chrome-header" role="banner">
 {% include "regulations/main-header.html" %}
 
-<div class="sub-head {% block sub-head-class %}{% endblock %}">
+<div class="sub-head
+            {% block sub-head-class %}
+              {% if not version_span.timeline.is_present %}
+              non-current
+              {% endif %}
+            {% endblock %}">
     {% block sub-head-skip-nav %}
     <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
     {% endblock %}
@@ -90,7 +95,23 @@
           {% endblock %}
         </div>
         {% block header-secondary %}
-        <span class="effective-date"><strong>Effective Date:</strong> {{ meta.effective_date|date:"n/j/Y" }}</span>
+          <span class="effective-date">
+            Effective
+            {% if version_span.timeline.is_past %}
+              {{ version_span.start|date:"n/j/Y" }}
+              to {{ version_span.end|date:"n/j/Y" }}.
+            {% elif version_span.timeline.is_present %}
+              {{ version_span.start|date:"n/j/Y" }} to present.
+            {% else %}
+              {{ version_span.start|date:"n/j/Y" }}.
+            {% endif %}
+
+            {% if not version_span.timeline.is_present %}
+              <a class="return-to-current"
+                 href="{% url 'redirect_by_current_date' label_id %}"
+                 >View current</a>
+            {% endif %}
+          </span>
         {% endblock %}
     </div>
     {% endblock %}
@@ -132,7 +153,7 @@
                 {% for version in history %}
                     <li class="{% if version.version == active_version %}current {% endif %}status-list" data-base-version="{{version.version}}">
                     <a href="{% url version_switch_view label_id version.version %}" class="version-link" data-version="{{ version.version }}" id="link-{{ version.version }}">
-                        {% if version.timeline == 'current' %}
+                        {% if version.timeline.is_present %}
                             <h3>Current Law</h3>
                         {% endif %}
                         <span class="version-date">{{ version.by_date|date:"n/j/Y" }}</span>

@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 from regulations.generator import api_reader
 from regulations.generator.layers.utils import convert_to_python
@@ -22,6 +23,21 @@ def fetch_regulations_and_future_versions():
     return regulations_future
 
 
+class Timeline(Enum):
+    past = "past"
+    present = "present"
+    future = "future"
+
+    def is_past(self):
+        return self == Timeline.past
+
+    def is_present(self):
+        return self == Timeline.present
+
+    def is_future(self):
+        return self == Timeline.future
+
+
 def fetch_grouped_history(part):
     client = api_reader.ApiReader()
     versions = [
@@ -34,16 +50,16 @@ def fetch_grouped_history(part):
                       key=lambda v: v['by_date'])
 
     today = datetime.today()
-    seen_current = False
+    seen_present = False
 
     for version in versions:
         if version['by_date'] > today:
-            version['timeline'] = 'future'
-        elif not seen_current:
-            seen_current = True
-            version['timeline'] = 'current'
+            version['timeline'] = Timeline.future
+        elif not seen_present:
+            seen_present = True
+            version['timeline'] = Timeline.present
         else:
-            version['timeline'] = 'past'
+            version['timeline'] = Timeline.past
 
     for notice in client.notices(part)['results']:
         notice = convert_to_python(notice)

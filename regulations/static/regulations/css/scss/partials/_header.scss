@@ -107,7 +107,7 @@
   position: fixed;
   top: $mainhead_height;
   min-width: 100%;
-  background: $panel_background_color;
+  background-color: $panel_background_color;
   color: $black;
   line-height: 35px;
   height: 2.125em;
@@ -116,6 +116,23 @@
 
   .main {
     border-right: 1px solid $panel_border_color;
+  }
+
+  &.non-current {
+    background-color: $alert_color;
+
+    .effective-date:before {
+      font-family: 'CFPB Minicons';
+      content: '\e637';   // A clock
+      font-style: normal;
+      font-weight: normal;
+    }
+  }
+
+  .return-to-current {
+    @include sans-font-regular;
+    text-decoration: underline;
+    color: $black;
   }
 }
 
@@ -163,7 +180,6 @@
 
     .effective-date {
       float: right;
-      margin-right: 45px;
     }
   }
 }
@@ -204,7 +220,7 @@ mid-sized (tablet) screens
 */
 
 @media only screen and (min-width: 480px) and (max-width: 880px) {
-  .subpart {
+  .subpart, .non-current .return-to-current {
     font-size: 0;
   }
 

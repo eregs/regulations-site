@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django.views.generic.base import TemplateView
 
 from regulations.generator import generator
@@ -15,6 +17,22 @@ from regulations.views.partial import PartialSectionView
 from regulations.views.partial_search import PartialSearch
 from regulations.views.sidebar import SideBarView
 from regulations.views import error_handling
+
+
+# type: (date, Optional[date], Timeline)
+VersionSpan = namedtuple('VersionSpan', ['start', 'end', 'timeline'])
+
+
+def version_span(history, effective_date):
+    """Derive the start and end dates that would include the requested
+    effective date. Also include the past/present/future indication for that
+    range."""
+    asc_history = list(reversed(history))
+    start_dates = [h['by_date'] for h in asc_history]
+    end_dates = start_dates[1:] + [None]
+    for start, end, version_info in zip(start_dates, end_dates, asc_history):
+        if effective_date >= start and end is None or effective_date < end:
+            return VersionSpan(start, end, version_info['timeline'])
 
 
 class ChromeView(TemplateView):
@@ -92,6 +110,8 @@ class ChromeView(TemplateView):
         context['TOC'] = toc
 
         context['meta'] = utils.regulation_meta(reg_part, version)
+        context['version_span'] = version_span(
+            context['history'], context['meta']['effective_date'])
         context['version_switch_view'] = self.version_switch_view
         context['diff_redirect_label'] = self.diff_redirect_label(
             context['label_id'], toc)
