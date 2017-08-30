@@ -36,9 +36,15 @@ $red_lightest: #E9A193;
 
 $pink: #F9DEDE;
 
-$orange: #FDB81E;
-$orange_light: #FBCD92;
-$orange_lightest: #FFECD1;
+$gold: #FDB81E;
+$gold_light: #F9C642;
+$gold_lighter: #FAD980;
+$gold_lightest: #FFF1D2;
+
+// Deprecated. Will be removed in a future release
+$orange: $gold;
+$orange_light: $gold_light;
+$orange_lightest: $gold_lightest;
 
 // Element Variables
 $text_area_border: rgba(0, 0, 0, 0.25);
@@ -57,7 +63,7 @@ $panel_text_color: $black; // Text color for table of contents
 $text_highlight_color: $green_lightest; // Text highlight used for diffs
 $success_color: $green_lightest; // Used as background for success messages
 $notice_color: $blue_lightest; // Used as background for neutral notice messages
-$alert_color: $orange_lightest; // Used as background for caution messages
+$alert_color: $gold_lightest; // Used as background for caution messages
 $warning_color: $pink; // Used as background for warning messages
 $definition_border_color: $gray_light; // Bottom border/underline for the defined terms.
 
