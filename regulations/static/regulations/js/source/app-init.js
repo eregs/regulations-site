@@ -3,6 +3,7 @@
 
 const $ = require('jquery');
 const Backbone = require('backbone');
+const queryString = require('query-string');
 const MainView = require('./views/main/main-view');
 const Router = require('./router');
 const SidebarView = require('./views/sidebar/sidebar-view');
@@ -24,6 +25,7 @@ module.exports = {
 
   init: function init() {
     const regs = window.regs || {};
+    const queryParams = queryString.parse(location.search);
 
     Router.start();
     this.bindEvents();
@@ -35,6 +37,11 @@ module.exports = {
     new MainView();
     new SidebarView();
     /* eslint-enable */
+
+    if (queryParams.print === 'true') {
+      window.print();
+    }
+
     setTimeout(() => {
       $('html').addClass('selenium-start');
     }, 5000);
