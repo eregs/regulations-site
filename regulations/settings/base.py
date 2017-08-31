@@ -250,6 +250,7 @@ DATA_LAYERS = (
 SIDEBARS = (
     'regulations.generator.sidebar.analyses.Analyses',
     'regulations.generator.sidebar.help.Help',
+    'regulations.generator.sidebar.print_part.PrintPart',
 )
 
 ATTACHMENT_BUCKET = os.getenv('S3_BUCKET')

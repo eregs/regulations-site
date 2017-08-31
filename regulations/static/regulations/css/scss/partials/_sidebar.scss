@@ -4,6 +4,8 @@ Sidebar.scss
 sidebar.scss styles all of the right sidebar content
 */
 
+$icon_size: 18px;
+
 /*
 add a margin to sidebar content
 this offsets the persistent header & ensures long content is inside the viewport
@@ -54,7 +56,7 @@ Sidebar Expandables
 
     a {
       float: right;
-      font-size: 0.875em;
+      font-size: $icon_size;
       line-height: 40px;
       margin-right: 25px;
     }
@@ -200,7 +202,7 @@ Regs Meta contains the sub-content meta data found in the sidebar
 
     .cf-icon-right {
       float: right;
-      font-size: 0.875em;
+      font-size: $icon_size;
       line-height: 2;
       color: $gray_light;
     }
@@ -384,6 +386,22 @@ Styles for the UI help slide down
   border-top: 1px solid $gray_light;
 }
 
+#print_part {
+  .group {
+    background-color: $gray_lightest;
+    @include border-bottom-light;
+  }
+
+  .cf-icon-print {
+    float: right;
+    color: $action_color;
+    // The print icon is a bit smaller than chevrons; enlarge it
+    font-size: $icon_size + 3;
+    line-height: 40px;
+    margin-right: 15px;
+  }
+}
+
 /*
 Small screens
 ---------------
@@ -471,5 +489,9 @@ Small screens
         margin-right: 10px;
       }
     }
+  }
+
+  #print_part .cf-icon-print {
+    margin-right: 0;
   }
 }
