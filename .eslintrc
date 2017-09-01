@@ -3,6 +3,7 @@ extends: airbnb
 globals:
     document: true
     localStorage: true
+    location: true
     sessionStorage: true
     window: true
     XMLHttpRequest: true
