@@ -17,7 +17,7 @@
       {% endif %}
     </div>
 
-    {% include "regulations/footnotes.html" %}
+    {% include "regulations/footnotes.html" with footnotes=sub_context.node.footnotes only %}
     {% include "regulations/navigation.html" %}
   </div>
 

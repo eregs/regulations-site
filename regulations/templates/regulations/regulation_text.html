@@ -33,7 +33,7 @@
             {% endwith %}
         {% endif %}
 
-    {% include "regulations/footnotes.html" %}
+    {% include "regulations/footnotes.html" with footnotes=c.footnotes only %}
 
 </section>
 {% endif %}
