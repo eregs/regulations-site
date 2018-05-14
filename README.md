@@ -2,8 +2,9 @@ regulations-site
 ================
 [![Build Status](https://travis-ci.org/eregs/regulations-site.svg?branch=master)](https://travis-ci.org/eregs/regulations-site)
 [![Dependency Status](https://gemnasium.com/badges/github.com/eregs/regulations-site.svg)](https://gemnasium.com/github.com/eregs/regulations-site)
+[![Known
+Vulnerabilities](https://snyk.io/test/github/eregs/regulations-site/badge.svg?targetFile=regulations/static/config/package.json)](https://snyk.io/test/github/eregs/regulations-site)
 [![Code Climate](https://codeclimate.com/github/eregs/regulations-site/badges/gpa.svg)](https://codeclimate.com/github/eregs/regulations-site)
-[![Code Issues](https://www.quantifiedcode.com/api/v1/project/423b7d7702754ff4baa8715465d75bbf/badge.svg)](https://www.quantifiedcode.com/app/project/423b7d7702754ff4baa8715465d75bbf)
 
 A Django library implementing an interface for viewing regulations data. This
 library combines all of the data from a parsed regulation and generates
