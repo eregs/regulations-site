@@ -1,6 +1,6 @@
 {
   "name": "regulations-site",
-  "version": "8.1.0",
+  "version": "8.4.2",
   "dependencies": {
     "argparse": {
       "version": "1.0.9",

@@ -1,6 +1,6 @@
 {
   "name": "regulations-site",
-  "version": "8.4.0",
+  "version": "8.4.2",
   "homepage": "https://eregs.github.io/",
   "contributors": [
     {
@@ -47,6 +47,7 @@
     "expect.js": "~0.2.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^5.0.0",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-cssmin": "^1.0.1",
     "grunt-env": "^0.4.4",
@@ -93,6 +94,9 @@
     "respond.js": "^1.4.2",
     "underscore": "^1.8.3",
     "urijs": "^1.18.10"
+  },
+  "scripts": {
+    "grunt": "grunt"
   },
   "config": {
     "travis-cov": {

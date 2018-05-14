@@ -61,7 +61,6 @@ line interface using npm:
 ```sh
 cd regulations-site
 npm install
-npm install -g grunt-cli
 ```
 
 Once all of the above is complete, you may run tests and linting across
@@ -126,10 +125,10 @@ There are a number of tasks configured in [Gruntfile.js](Gruntfile.js). On the
 last lines, you will find tasks that group subtasks into common goals. These
 include:
 
-* `grunt test` runs JS lint and unit tests.
-* `grunt mocha_stanbul` runs only JS unit tests.
-* `grunt build-dev` builds a development version of the frontend assets.
-* `grunt build-dist` or just `grunt` builds a production version of the
+* `npm run grunt test` runs JS lint and unit tests.
+* `npm run grunt mocha_stanbul` runs only JS unit tests.
+* `npm run grunt build-dev` builds a development version of the frontend assets.
+* `npm run grunt build-dist` or just `grunt` builds a production version of the
   frontend assets (including minification, etc.)
 
 ## Integration tests
