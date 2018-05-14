@@ -1,18 +1,19 @@
-'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+
 Backbone.$ = $;
 
-var CommentEvents = require('../../events/comment-events');
+const CommentEvents = require('../../events/comment-events');
 
-var AttachmentView = Backbone.View.extend({
+const AttachmentView = Backbone.View.extend({
   events: {
-    'click .attachment-remove': 'handleRemove'
+    'click .attachment-remove': 'handleRemove',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.template = _.template(document.querySelector('#comment-attachment-template').innerHTML);
     this.options = options;
 
@@ -25,27 +26,27 @@ var AttachmentView = Backbone.View.extend({
     this.$progress = this.$el.find('.attachment-progress');
   },
 
-  render: function() {
-    var $el = $(this.template(this.options));
+  render: function render() {
+    const $el = $(this.template(this.options));
     this.options.$parent.append($el);
     this.setElement($el);
   },
 
-  handleProgress: function(e) {
-    var percent = e.loaded / e.total;
+  handleProgress: function handleProgress(e) {
+    const percent = e.loaded / e.total;
     this.$progress.text(Math.round(percent * 1000) / 10);
   },
 
-  handleLoad: function() {
+  handleLoad: function handleLoad() {
     this.$progress.empty();
   },
 
-  handleRemove: function() {
+  handleRemove: function handleRemove() {
     CommentEvents.trigger('attachment:remove', this.options.key);
     if (this.options.xhr) {
       this.options.xhr.abort();
     }
-  }
+  },
 });
 
 module.exports = AttachmentView;

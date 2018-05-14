@@ -1,60 +1,59 @@
-'use strict';
+import storage from '../../redux/storage';
+import { activeParagraph } from '../../redux/reducers';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
+const $ = require('jquery');
+const Backbone = require('backbone');
+
 Backbone.$ = $;
 
-var ChildView = require('./child-view');
-var MainEvents = require('../../events/main-events');
-var PreambleHeadView = require('../header/preamble-head-view');
-var CommentView = require('../comment/comment-view');
-var CommentIndexView = require('../comment/comment-index-view');
-var CommentEvents = require('../../events/comment-events');
-var DrawerEvents = require('../../events/drawer-events');
-var starsHelpers = require('./stars-helpers');
-var helpers = require('../../helpers');
+const ChildView = require('./child-view');
+const MainEvents = require('../../events/main-events');
+const PreambleHeadView = require('../header/preamble-head-view');
+const CommentView = require('../comment/comment-view');
+const CommentIndexView = require('../comment/comment-index-view');
+const CommentEvents = require('../../events/comment-events');
+const starsHelpers = require('./stars-helpers');
+const helpers = require('../../helpers');
 
-var PreambleView = ChildView.extend({
+const PreambleView = ChildView.extend({
   events: {
     'click .activate-write': 'handleWriteLink',
-    'click .citation.internal': 'openCitation'
+    'click .citation.internal': 'openCitation',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options, ...args) {
     this.options = options;
 
-    var parsed = helpers.parsePreambleId(this.options.id);
-    var type = parsed.type;
+    const parsed = helpers.parsePreambleId(this.options.id);
 
     this.options.scrollToId = parsed.hash;
 
     this.url = parsed.path.join('/');
 
-    ChildView.prototype.initialize.apply(this, arguments);
+    ChildView.prototype.initialize.apply(this, [options].concat(args));
     this.renderComments();
 
     this.listenTo(CommentEvents, 'read:proposal', this.handleRead);
     this.listenTo(CommentEvents, 'comment:write', this.handleWriteTab);
-    this.listenTo(MainEvents, 'paragraph:active', this.handleParagraphActive);
+    storage().subscribe(this.handleParagraphActive.bind(this));
 
     CommentEvents.trigger('comment:readTabOpen');
 
-    DrawerEvents.trigger(
-      'pane:init',
+    storage().dispatch(paneActiveEvt(
       parsed.type === 'preamble' ?
         'table-of-contents' :
-        'table-of-contents-secondary'
-    );
+        'table-of-contents-secondary',
+    ));
   },
 
-  openCitation: function(e) {
-    var $target = $(e.currentTarget);
-    var hash = $target.attr('href');
-    var id = $target.attr('data-section-id');
-    var options = {};
-    var type = this.options.type;
-    var section = helpers.parsePreambleCitationId(hash, type);
+  openCitation: function openCitation(e) {
+    const $target = $(e.currentTarget);
+    const hash = $target.attr('href');
+    const id = $target.attr('data-section-id');
+    const options = {};
+    const type = this.options.type;
+    const section = helpers.parsePreambleCitationId(hash, type);
 
     if (id) {
       e.preventDefault();
@@ -63,42 +62,42 @@ var PreambleView = ChildView.extend({
     }
   },
 
-  handleRead: function() {
+  handleRead: function handleRead() {
     this.mode = 'read';
     this.$write.hide();
     this.$read.show();
   },
 
-  handleParagraphActive: function(id) {
+  handleParagraphActive: function handleParagraphActive() {
     // update current Section ID as active paragraph changes
-    this.section = id;
+    this.section = activeParagraph(storage());
   },
 
-  handleWriteLink: function(e) {
-    var $target = $(e.target);
-    var $dataTarget = $target.closest('.activate-write');
-    var $section = $target.closest('[data-permalink-section]');
+  handleWriteLink: function handleWriteLink(e) {
+    const $target = $(e.target);
+    const $dataTarget = $target.closest('.activate-write');
+    const $section = $target.closest('[data-permalink-section]');
 
     this.write(
       $dataTarget.data('section'),
       $section.data('toc-id'),
       $dataTarget.data('indexes'),
       $dataTarget.data('label'),
-      $section
+      $section,
     );
 
     CommentEvents.trigger('comment:writeTabOpen');
   },
 
-  handleWriteTab: function() {
-    var $section = $('#' + this.section);
+  handleWriteTab: function handleWriteTab() {
+    const $section = $(`#${this.section}`);
 
     this.write(
       $section.find('.activate-write').data('section'),
       $section.data('toc-id'),
       $section.data('indexes'),
       $section.find('.activate-write').data('label'),
-      $section
+      $section,
     );
   },
 
@@ -107,13 +106,13 @@ var PreambleView = ChildView.extend({
     'to <em>submit</em> comments through this system. To find alternative',
     'comment submission methods, please read the agency instructions as',
     'listed in the preamble. We apologize for the inconvenience, but hope to',
-    'remove this limitation soon.'
+    'remove this limitation soon.',
   ].join(' '),
   /**
    * We rely on localStorage for commenting at the moment. If it's not
    * available, let the user know. TODO: replace with Modernizr/similar
    **/
-  checkCanWrite: function() {
+  checkCanWrite: function checkCanWrite() {
     try {
       localStorage.setItem('_test', 'value');
       if (localStorage.getItem('_test') !== 'value') {
@@ -121,10 +120,11 @@ var PreambleView = ChildView.extend({
       }
     } catch (e) {   // unfortunately, localStorage exception varies by browser
       MainEvents.trigger('section:error', this.cantWriteMessage);
-    };
+    }
   },
 
-  write: function(section, tocId, indexes, label, $parent) {
+  write: function write(section, tocId, indexes, label, parentEl) {
+    let $parent = parentEl;
     this.mode = 'write';
     this.checkCanWrite();
 
@@ -140,11 +140,11 @@ var PreambleView = ChildView.extend({
 
     if (section) {
       CommentEvents.trigger('comment:target', {
-        section: section,
-        tocId: tocId,
-        indexes: indexes,
-        label: label,
-        $parent: $parent
+        section,
+        tocId,
+        indexes,
+        label,
+        $parent,
       });
     }
 
@@ -155,7 +155,7 @@ var PreambleView = ChildView.extend({
     $('body').scrollTop(0);
   },
 
-  renderComments: function() {
+  renderComments: function renderComments() {
     this.mode = 'read';
     this.$read = this.$el.find('#preamble-read');
     this.$write = this.$el.find('#preamble-write');
@@ -168,17 +168,17 @@ var PreambleView = ChildView.extend({
     this.commentView = new CommentView({
       el: this.$write.find('.comment-wrapper'),
       section: this.section,
-      docId: this.docId
+      docId: this.docId,
     });
 
     this.commentIndex = new CommentIndexView({
       el: this.$write.find('.comment-index'),
-      docId: this.docId
+      docId: this.docId,
     });
 
     if (this.options.mode === 'write') {
-      var $parent = $('#' + this.options.scrollToId);
-      var indexes = $parent.data('indexes');
+      const $parent = $(`#${this.options.scrollToId}`);
+      const indexes = $parent.data('indexes');
 
       this.write(this.options.section, this.options.tocId, indexes, this.options.label, $parent);
     } else {
@@ -187,16 +187,16 @@ var PreambleView = ChildView.extend({
     this.collapseStars();
   },
 
-  collapseStars: function() {
-    var $expander;
-    this.$el.find('li[data-stars]').each(function(idx, elt) {
-      var $li = $(elt);
-      var starType = $li.data('stars');
+  collapseStars: function collapseStars() {
+    let $expander;
+    this.$el.find('li[data-stars]').each((idx, elt) => {
+      const $li = $(elt);
+      const starType = $li.data('stars');
       $expander = starsHelpers[starType]($li, $expander);
     });
   },
 
-  remove: function() {
+  remove: function remove() {
     this.commentView.remove();
     this.commentIndex.remove();
     Backbone.View.prototype.remove.call(this);
@@ -205,11 +205,11 @@ var PreambleView = ChildView.extend({
   /**
    * Update section in viewport if in read mode.
    */
-  checkActiveSection: function() {
+  checkActiveSection: function checkActiveSection() {
     if (this.mode === 'read') {
       ChildView.prototype.checkActiveSection.call(this);
     }
-  }
+  },
 });
 
 module.exports = PreambleView;

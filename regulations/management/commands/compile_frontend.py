@@ -8,8 +8,6 @@ from django.core.management.base import BaseCommand
 from django.contrib.staticfiles.finders import get_finders
 from django.contrib.staticfiles.storage import StaticFilesStorage
 
-import regulations
-
 
 """
 This command compiles the frontend for regulations-site after using the Django
@@ -38,11 +36,6 @@ class Command(BaseCommand):
                             action='store_false')
         parser.set_defaults(install=True)
 
-    def find_regulations_directory(self):
-        child = regulations.__file__
-        child_dir = os.path.split(child)[0]
-        return os.path.split(child_dir)[0] or "."   # if regulations is local
-
     def remove_dirs(self):
         """Remove existing output dirs"""
         if os.path.exists(self.TARGET_DIR):
@@ -62,17 +55,12 @@ class Command(BaseCommand):
         else:
             os.mkdir(self.BUILD_DIR)
 
-    def copy_configs(self):
-        """Copy over configs from regulations"""
-        regulations_directory = self.find_regulations_directory()
-        frontend_files = (
-            "package.json",
-            "Gruntfile.js",
-            ".eslintrc"
-        )
-        for f_file in frontend_files:
-            source = "%s/%s" % (regulations_directory, f_file)
-            shutil.copy(source, "%s/" % self.BUILD_DIR)
+    def create_configs(self):
+        for config_file in ('Gruntfile.js', 'package.json', '.babelrc',
+                            'npm-shrinkwrap.json'):
+            os.rename(os.path.join(self.BUILD_DIR, 'static', 'config',
+                                   config_file),
+                      os.path.join(self.BUILD_DIR, config_file))
         with codecs.open("%s/config.json" % self.BUILD_DIR, "w",
                          encoding="utf-8") as f:
             f.write('{"frontEndPath": "static/regulations"}')
@@ -81,7 +69,7 @@ class Command(BaseCommand):
         """Fetch all of the static files from the installed apps. Yield them
         as pairs of (path, file)"""
         files_seen = set()
-        pairs = (pr for finder in get_finders() for pr in finder.list([".*"]))
+        pairs = (pr for finder in get_finders() for pr in finder.list([]))
         for path, storage in pairs:
             # Prefix the relative path if the source storage contains it
             if getattr(storage, 'prefix', None):
@@ -122,7 +110,7 @@ class Command(BaseCommand):
 
     def handle(self, **options):
         self.remove_dirs()
-        self.copy_configs()
         self.collect_files()
+        self.create_configs()
         self.build_frontend(install=options['install'], dev=settings.JS_DEBUG)
         self.cleanup()

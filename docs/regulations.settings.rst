@@ -1,27 +1,27 @@
-regulations.settings package
-============================
+regulations\.settings package
+=============================
 
 Submodules
 ----------
 
-regulations.settings.base module
---------------------------------
+regulations\.settings\.base module
+----------------------------------
 
 .. automodule:: regulations.settings.base
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.settings.dev module
--------------------------------
+regulations\.settings\.dev module
+---------------------------------
 
 .. automodule:: regulations.settings.dev
     :members:
     :undoc-members:
     :show-inheritance:
 
-regulations.settings.production module
---------------------------------------
+regulations\.settings\.production module
+----------------------------------------
 
 .. automodule:: regulations.settings.production
     :members:

@@ -1,6 +1,6 @@
-'use strict';
 
-var $ = require('jquery');
+
+const $ = require('jquery');
 
 /**
  * Functions to process the different types of "stars", indicators that text
@@ -9,16 +9,16 @@ var $ = require('jquery');
  * an updated $expander.
  */
 
-var starContent = '<button class="show-more-context">&#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733; <span>Show more context</span> &#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733;</button>';
+const starContent = '<button class="show-more-context">&#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733; <span>Show more context</span> &#9733; &nbsp;&nbsp; &#9733; &nbsp;&nbsp; &#9733;</button>';
 
 module.exports = {
-  none: function() { return null; },  /* No changes, no new expander */
-  inline: function($li) {
-    var $toShow = $li.find('.paragraph-text:first').hide();
-    var $expander = $(starContent).insertBefore($toShow);
-    var $paragraph = $expander.parent();
+  none: function none() { return null; },  /* No changes, no new expander */
+  inline: function inline($li) {
+    const $toShow = $li.find('.paragraph-text:first').hide();
+    const $expander = $(starContent).insertBefore($toShow);
+    const $paragraph = $expander.parent();
 
-    $expander.click(function() {
+    $expander.click(() => {
       $expander.remove();
       $toShow.show();
     });
@@ -30,22 +30,23 @@ module.exports = {
      */
     if ($paragraph.hasClass('collapsed')) {
       $paragraph.removeClass('collapsed');
-      $expander.click(function() { $paragraph.addClass('collapsed'); });
+      $expander.click(() => { $paragraph.addClass('collapsed'); });
     }
     return $expander;
   },
-  full: function($li, $expander) {
-    var $toShow;
+  full: function full($li, expanderEl) {
+    let $expander = expanderEl;
+    let $toShow;
     /* Generally, we want to reuse the existing expander */
     if ($expander) {
       $toShow = $li.hide();
     } else {
       $toShow = $li.children().hide();
       $expander = $(starContent).insertBefore($toShow);
-      $expander.click(function() { $expander.remove(); });
+      $expander.click(() => { $expander.remove(); });
     }
 
-    $expander.click(function() { $toShow.show(); });
+    $expander.click(() => { $toShow.show(); });
     return $expander;
-  }
+  },
 };

@@ -1,69 +1,69 @@
 // this is a browserify friendly version of https://github.com/ssorallen/jquery-scrollstop
-'use strict';
-var $ = require('jquery');
 
-var dispatch = $.event.dispatch || $.event.handle;
 
-  var special = $.event.special,
-      uid1 = 'D' + (+new Date()),
-      uid2 = 'D' + (+new Date() + 1);
+const $ = require('jquery');
 
-  special.scrollstart = {
-    setup: function(data) {
-      var _data = $.extend({
-        latency: special.scrollstop.latency
-      }, data);
+const dispatch = $.event.dispatch || $.event.handle;
 
-      var timer,
-          handler = function(evt) {
-            var _self = this,
-                _args = arguments;
+const special = $.event.special;
+const uid1 = `D${+new Date()}`;
+const uid2 = `D${+new Date() + 1}`;
 
-            if (timer) {
-              clearTimeout(timer);
-            } else {
-              evt.type = 'scrollstart';
-              dispatch.apply(_self, _args);
-            }
+special.scrollstart = {
+  setup: function setup(initialData) {
+    const data = $.extend({
+      latency: special.scrollstop.latency,
+    }, initialData);
 
-            timer = setTimeout(function() {
-              timer = null;
-            }, _data.latency);
-          };
+    let timer;
+    const handler = function handler(evt, ...args) {
+      const self = this;
 
-      $(this).bind('scroll', handler).data(uid1, handler);
-    },
-    teardown: function() {
-      $(this).unbind('scroll', $(this).data(uid1));
-    }
-  };
+      if (timer) {
+        clearTimeout(timer);
+      } else {
+        const modifiedEvent = $.Event(null, evt);
+        modifiedEvent.type = 'scrollstart';
+        dispatch.apply(self, [modifiedEvent].concat(args));
+      }
 
-  special.scrollstop = {
-    latency: 250,
-    setup: function(data) {
-      var _data = $.extend({
-        latency: special.scrollstop.latency
-      }, data);
+      timer = setTimeout(() => {
+        timer = null;
+      }, data.latency);
+    };
 
-      var timer,
-          handler = function(evt) {
-            var _self = this,
-                _args = arguments;
+    $(this).bind('scroll', handler).data(uid1, handler);
+  },
+  teardown: function teardown() {
+    $(this).unbind('scroll', $(this).data(uid1));
+  },
+};
 
-            if (timer) {
-              clearTimeout(timer);
-            }
+special.scrollstop = {
+  latency: 250,
+  setup: function setup(initialData) {
+    const data = $.extend({
+      latency: special.scrollstop.latency,
+    }, initialData);
 
-            timer = setTimeout(function() {
-              timer = null;
-              evt.type = 'scrollstop';
-              dispatch.apply(_self, _args);
-            }, _data.latency);
-          };
+    let timer;
+    const handler = function handler(evt, ...args) {
+      const self = this;
 
-      $(this).bind('scroll', handler).data(uid2, handler);
-    },
-    teardown: function() {
-      $(this).unbind('scroll', $(this).data(uid2));
-    }
-  };
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      timer = setTimeout(() => {
+        timer = null;
+        const modifiedEvent = $.Event(null, evt);
+        modifiedEvent.type = 'scrollstop';
+        dispatch.apply(self, [modifiedEvent].concat(args));
+      }, data.latency);
+    };
+    $(this).bind('scroll', handler).data(uid2, handler);
+  },
+  teardown: function teardown() {
+    $(this).unbind('scroll', $(this).data(uid2));
+  },
+};

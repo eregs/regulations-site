@@ -1,8 +1,29 @@
+import logging
+
+from django.conf import settings
 from django.core.cache import caches
-from regulations.generator import api_client
+import requests
 
 
 _cache_key = '-'.join
+logger = logging.getLogger(__name__)
+
+
+def _fetch(suffix, params=None):
+    """Return a JSON result from either a web API. If not configured
+    correctly, throw a warning, but proceed"""
+    if not settings.API_BASE:
+        logger.error("API_BASE not configured. We won't have data")
+        return None
+
+    response = requests.get(settings.API_BASE + suffix, params=params)
+    if response.status_code == requests.codes.ok:
+        return response.json()
+    elif response.status_code == 404:
+        logger.warning("404 when fetching %s", settings.API_BASE + suffix)
+        return None
+    else:
+        response.raise_for_status()
 
 
 class ApiReader(object):
@@ -11,16 +32,13 @@ class ApiReader(object):
 
     def __init__(self):
         self.cache = caches['api_cache']
-        self.client = api_client.ApiClient()
 
     def all_regulations_versions(self):
         """ Get all versions, for all regulations. """
-        return self._get(['all_regulations_versions'], 'regulation')
+        return self._get('regulation')
 
     def regversions(self, label):
-        return self._get(
-            ['regversions', label],
-            'regulation/%s' % label)
+        return self._get('regulation/{}'.format(label))
 
     def cache_root_and_interps(self, reg_tree, version, is_root=True):
         """We will re-use the root tree at multiple points during page
@@ -43,21 +61,25 @@ class ApiReader(object):
         if cached is not None:
             return cached
         else:
-            regulation = self.client.get('regulation/%s/%s' % (label, version))
+            regulation = _fetch('regulation/{}/{}'.format(label, version))
             # Add the tree to the cache
             if regulation:
                 self.cache_root_and_interps(regulation, version)
                 return regulation
 
-    def _get(self, cache_key_elements, api_suffix, api_params={}):
+    def _get(self, api_suffix, api_params=None):
         """ Retrieve from the cache whenever possible, or get from the API """
+        if api_params is None:
+            api_params = {}
+        cache_key_elements = api_suffix.split('/') + list(sorted(
+            element for pair in api_params.items() for element in pair))
         cache_key = _cache_key(cache_key_elements)
         cached = self.cache.get(cache_key)
 
         if cached is not None:
             return cached
         else:
-            element = self.client.get(api_suffix, api_params)
+            element = _fetch(api_suffix, api_params)
             self.cache.set(cache_key, element)
             return element
 
@@ -72,52 +94,34 @@ class ApiReader(object):
         else:
             doc_id = '{}/{}'.format(version, root)
         result = self._get(
-            ('layer', layer_name, doc_type, root, str(version)),
             'layer/{}/{}/{}'.format(layer_name, doc_type, doc_id))
         # To remove - also try the old format for CFR layers; the API may not
         # have been updated
         if result is None and doc_type == 'cfr':
             result = self._get(
-                ('layer', layer_name, doc_type, root, str(version)),
                 'layer/{}/{}/{}'.format(layer_name, root, version))
         return result
 
     def diff(self, label, older, newer):
         """ End point for diffs. """
-        return self._get(
-            ['diff', label, older, newer],
-            "diff/%s/%s/%s" % (label, older, newer))
+        return self._get("diff/{}/{}/{}".format(label, older, newer))
 
     def notices(self, part=None):
         """ End point for notice searching. Right now just a list. """
+        params = None
         if part:
-            return self._get(
-                ['notices', part],
-                'notice',
-                {'part': part})
-        else:
-            return self._get(
-                ['notices'],
-                'notice')
+            params = {'part': part}
+        return self._get('notice', params)
 
     def notice(self, fr_document_number):
         """ End point for retrieving a single notice. """
-        return self._get(
-            ['notice', fr_document_number],
-            'notice/%s' % fr_document_number)
+        return self._get('notice/{}'.format(fr_document_number))
 
-    def search(self, query, doc_type='cfr', version=None, regulation=None,
-               **kwargs):
+    def search(self, query, doc_type='cfr', **kwargs):
         """Search via the API. Never cache these (that's the duty of the search
         index)"""
-        params = {'q': query}
-        if version:
-            params['version'] = version
-        if regulation:
-            params['regulation'] = regulation
-        params.update(kwargs)
-        return self.client.get('/'.join(['search', doc_type]), params)
+        kwargs['q'] = query
+        return _fetch('search/{0}'.format(doc_type), kwargs)
 
     def preamble(self, doc_number):
-        return self._get(
-            ['preamble', doc_number], 'preamble/{}'.format(doc_number))
+        return self._get('preamble/{}'.format(doc_number))

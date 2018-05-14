@@ -6,5 +6,5 @@ if [ ! -f config.json ]; then
   cp example-config.json config.json
 fi
 
-npm install
+npm install --quiet
 grunt build-dist

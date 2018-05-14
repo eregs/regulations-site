@@ -189,6 +189,9 @@
     background: none;
     padding-right: 0;
   }
+  a.external::after {
+    content: none;
+  }
 
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     a[href^="http://"] {

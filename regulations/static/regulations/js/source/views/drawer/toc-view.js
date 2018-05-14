@@ -1,100 +1,103 @@
-'use strict';
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var Helpers = require('../../helpers');
-var Router = require('../../router');
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var HeaderEvents = require('../../events/header-events');
-var Resources = require('../../resources.js');
+import storage from '../../redux/storage';
+import { locationActiveEvt } from '../../redux/locationReduce';
+import { activeSection } from '../../redux/reducers';
+
+const $ = require('jquery');
+const Backbone = require('backbone');
+const Helpers = require('../../helpers');
+const Router = require('../../router');
+const MainEvents = require('../../events/main-events');
+const HeaderEvents = require('../../events/header-events');
+const Resources = require('../../resources.js');
+
 Backbone.$ = $;
 
-var TOCView = Backbone.View.extend({
-    el: '#table-of-contents',
+const TOCView = Backbone.View.extend({
+  el: '#table-of-contents',
 
-    events: {
-        'click a.diff[data-section-id]': 'sendDiffClickEvent',
-        'click a[data-section-id]:not(.diff)': 'sendClickEvent'
-    },
+  events: {
+    'click a.diff[data-section-id]': 'sendDiffClickEvent',
+    'click a[data-section-id]:not(.diff)': 'sendClickEvent',
+  },
 
-    initialize: function() {
-        var openSection = $('section[data-page-type]').attr('id');
+  initialize: function initialize() {
+    const openSection = $('section[data-page-type]').attr('id');
 
-        this.listenTo(DrawerEvents, 'section:open', this.setActive);
+    storage().subscribe(this.updateFromRedux.bind(this));
 
-        if (openSection) {
-            this.setActive(openSection);
-        }
+    if (openSection) {
+      this.setActive(openSection);
+    }
 
         // **TODO** need to work out a bug where it scrolls the content section
         // $('#menu-link:not(.active)').on('click', this.scrollToActive);
 
         // if the browser doesn't support pushState, don't
         // trigger click events for links
-        if (Router.hasPushState === false) {
-            this.events = {};
-        }
-    },
+    if (Router.hasPushState === false) {
+      this.events = {};
+    }
+  },
 
-    // update active classes, find new active based on the reg entity id in the anchor
-    setActive: function(tocId) {
-        var newActiveLink, subpart;
-
-        newActiveLink = this.$el.find('a[data-section-id="' + tocId + '"]');
-
-        this.$el.find('.current').removeClass('current');
-        newActiveLink.addClass('current');
-        subpart = newActiveLink
+  // update active classes, find new active based on the reg entity id in the anchor
+  setActive: function setActive(tocId) {
+    const newActiveLink = this.$el.find(`a[data-section-id="${tocId}"]`);
+    const subpart = newActiveLink
                     .parent()
                     .prevAll('li[data-subpart-heading]')
                     .first()
                     .find('.toc-nav__divider')
                     .attr('data-section-id');
 
-        if (subpart && subpart.length > 0) {
-            HeaderEvents.trigger('subpart:present', Helpers.formatSubpartLabel(subpart));
-        }
-        else {
-            HeaderEvents.trigger('subpart:absent');
-        }
+    this.$el.find('.current').removeClass('current');
+    newActiveLink.addClass('current');
 
-        return this;
-    },
+    if (subpart && subpart.length > 0) {
+      HeaderEvents.trigger('subpart:present', Helpers.formatSubpartLabel(subpart));
+    } else {
+      HeaderEvents.trigger('subpart:absent');
+    }
+
+    return this;
+  },
+
+  updateFromRedux: function updateFromRedux() {
+    this.setActive(activeSection(storage()));
+  },
 
     // **Event trigger**
     // when a TOC link is clicked, send an event along with the href of the clicked link
-    sendClickEvent: function(e) {
-        e.preventDefault();
+  sendClickEvent: function sendClickEvent(e) {
+    e.preventDefault();
 
-        var sectionId = $(e.currentTarget).data('section-id');
-        var type = this.$el.closest('.panel').data('page-type');
-        DrawerEvents.trigger('section:open', sectionId);
-        MainEvents.trigger('section:open', sectionId, {}, type);
-    },
+    const sectionId = $(e.currentTarget).data('section-id');
+    const type = this.$el.closest('.panel').data('page-type');
+    storage().dispatch(locationActiveEvt(sectionId));
+    MainEvents.trigger('section:open', sectionId, {}, type);
+  },
 
-    sendDiffClickEvent: function(e) {
-        e.preventDefault();
+  sendDiffClickEvent: function sendDiffClickEvent(e) {
+    e.preventDefault();
 
-        var $link = $(e.currentTarget),
-            sectionId = $link.data('section-id'),
-            config = {};
+    const $link = $(e.currentTarget);
+    const sectionId = $link.data('section-id');
+    const config = {};
 
-        config.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
-        config.baseVersion = Helpers.findVersion(Resources.versionElements);
-        DrawerEvents.trigger('section:open', sectionId);
-        MainEvents.trigger('diff:open', sectionId, config, 'diff');
-    },
+    config.newerVersion = Helpers.findDiffVersion(Resources.versionElements);
+    config.baseVersion = Helpers.findVersion(Resources.versionElements);
+    storage().dispatch(locationActiveEvt(sectionId));
+    MainEvents.trigger('diff:open', sectionId, config, 'diff');
+  },
 
     // **Inactive**
     // Intended to keep the active link in view as the user moves around the doc
-    scrollToActive: function() {
-        var activeLink = document.querySelectorAll('#table-of-contents .current');
+  scrollToActive: function scrollToActive() {
+    const activeLink = document.querySelectorAll('#table-of-contents .current');
 
-        if (activeLink[0]) {
-            activeLink[0].scrollIntoView();
-        }
+    if (activeLink[0]) {
+      activeLink[0].scrollIntoView();
     }
+  },
 });
 
 module.exports = TOCView;

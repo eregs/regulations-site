@@ -19,10 +19,10 @@ class FootnotesLayerTest(TestCase):
                 }
             ]
         }
-        fl = FootnotesLayer(layer)
-        self.assertEqual(fl.apply_layer('555-220'), ('footnotes',
-                         [{'ref': '1',
-                           'note': 'Some notes'}]))
+        node = {'label_id': '555-220'}
+        FootnotesLayer(layer).attach_metadata(node)
+        self.assertEqual(node['footnotes'],
+                         [{'ref': '1', 'note': 'Some notes'}])
 
     def test_sorted_multiple_notes(self):
         layer = {
@@ -59,13 +59,12 @@ class FootnotesLayerTest(TestCase):
                 }
             ]
         }
-        fl = FootnotesLayer(layer)
-        self.assertEqual(fl.apply_layer('555-220'), ('footnotes',
-                         [
-                             {'ref': '1', 'note': 'First notes'},
-                             {'ref': '2', 'note': 'Second notes'},
-                             {'ref': '3', 'note': 'Third notes'},
-                         ]))
+        node = {'label_id': '555-220'}
+        FootnotesLayer(layer).attach_metadata(node)
+        self.assertEqual(node['footnotes'],
+                         [{'ref': '1', 'note': 'First notes'},
+                          {'ref': '2', 'note': 'Second notes'},
+                          {'ref': '3', 'note': 'Third notes'}])
 
     def test_multiple_children(self):
         layer = {
@@ -94,9 +93,8 @@ class FootnotesLayerTest(TestCase):
                 }
             ]
         }
-        fl = FootnotesLayer(layer)
-        self.assertEqual(fl.apply_layer('555-220'), ('footnotes',
-                         [
-                             {'ref': '1', 'note': 'First notes'},
-                             {'ref': '2', 'note': 'Second notes'},
-                         ]))
+        node = {'label_id': '555-220'}
+        FootnotesLayer(layer).attach_metadata(node)
+        self.assertEqual(node['footnotes'],
+                         [{'ref': '1', 'note': 'First notes'},
+                          {'ref': '2', 'note': 'Second notes'}])

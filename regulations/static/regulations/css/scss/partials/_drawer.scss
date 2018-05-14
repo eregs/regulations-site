@@ -64,6 +64,7 @@ Drawer default state
   background-color: $white;
   border-right: 2px solid $panel_border_color;
   border-bottom: 1px solid $panel_border_color;
+  z-index: 100;
 
   .toc-type,
   .toc-subheader {
@@ -73,7 +74,6 @@ Drawer default state
     height: 40px;
     line-height: 40px;
     border-bottom: none;
-    z-index: 100;
     padding: 0 15px;
   }
 

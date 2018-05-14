@@ -1,7 +1,3 @@
-def get_notice(api_client, document_number):
-    return api_client.notice(document_number)
-
-
 def filter_labeled_children(sxs):
     """ Some children don't have labels. We display those with their parents.
     The other children are displayed when they are independently, specifically

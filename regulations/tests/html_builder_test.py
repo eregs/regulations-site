@@ -1,48 +1,18 @@
-# vim: set encoding=utf-8
+# -*- coding: utf-8 -*-
 from unittest import TestCase
-from mock import Mock
 
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, CFRHTMLBuilder, HTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.diff_applier import DiffApplier
 from regulations.generator.layers.internal_citation import (
     InternalCitationLayer)
-from regulations.generator.layers.layers_applier import InlineLayersApplier
-from regulations.generator.layers.layers_applier import ParagraphLayersApplier
 from regulations.generator.node_types import REGTEXT, APPENDIX, INTERP
 from regulations.generator.layers import diff_applier
 
 
 class HTMLBuilderTest(TestCase):
-    def test_process_node_appliers(self):
-        node = {
-            "text": "Text text text.",
-            "children": [],
-            "label": ["123", "aaa"],
-            'node_type': REGTEXT
-        }
-
-        inline = Mock()
-        inline.get_layer_pairs.return_value = []
-        par = Mock()
-        par.apply_layers.return_value = node
-        sr = Mock()
-        sr.get_layer_pairs.return_value = []
-
-        builder = HTMLBuilder(inline, par, sr)
-        builder.process_node(node)
-
-        self.assertTrue(inline.get_layer_pairs.called)
-        self.assertEqual("123-aaa",
-                         inline.get_layer_pairs.call_args[0][0])
-        self.assertEqual("Text text text.",
-                         inline.get_layer_pairs.call_args[0][1])
-
-        self.assertTrue(par.apply_layers.called)
-        self.assertEqual(node, par.apply_layers.call_args[0][0])
-
     def test_process_node_header(self):
-        builder = HTMLBuilder(None, ParagraphLayersApplier(), None)
+        builder = HTMLBuilder()
         node = {'text': '', 'children': [], 'label': ['99', '22'],
                 'node_type': REGTEXT}
         builder.process_node(node)
@@ -60,7 +30,7 @@ class HTMLBuilderTest(TestCase):
         self.assertTrue('header' in node)
 
     def test_process_node_title_diff(self):
-        builder = HTMLBuilder(None, None, None)
+        builder = HTMLBuilder()
         diff = {'204': {'title': [('delete', 0, 2), ('insert', 4, 'AAC')],
                         'text':  [('delete', 0, 2), ('insert', 4, 'AAB')],
                         'op': ''}}
@@ -75,7 +45,7 @@ class HTMLBuilderTest(TestCase):
         self.assertEqual('<del>ab</del>cd<ins>AAC</ins>', node['header'])
 
     def test_node_title_no_diff(self):
-        builder = HTMLBuilder(None, None, None)
+        builder = HTMLBuilder()
         node = {
             "label_id": "204",
             "title": "abcd",
@@ -84,29 +54,6 @@ class HTMLBuilderTest(TestCase):
         builder.process_node_title(node)
         self.assertTrue('header' in node)
         self.assertEqual(node['title'], 'abcd')
-
-    def test_generate_html(self):
-        exex = Mock(spec=[])        # no attributes
-        p_applier = Mock()
-        p_applier.layers = {'exex': exex}
-        p_applier.apply_layers.side_effect = lambda n: n    # identity
-        builder = HTMLBuilder(None, p_applier, None)
-        builder.tree = {'label': ['1234'], 'children': [],
-                        'node_type': 'regtext', 'text': ''}
-        builder.generate_html()
-        #   No explosion so far means this works for most layers
-
-        exex = Mock()               # "includes" any attribute
-        p_applier = Mock()
-        p_applier.layers = {'exex': exex}
-        p_applier.apply_layers.side_effect = lambda n: n    # identity
-        builder = HTMLBuilder(None, p_applier, None)
-        builder.tree = {'label': ['1234'], 'children': [],
-                        'node_type': 'regtext', 'text': ''}
-        builder.generate_html()
-        self.assertTrue(exex.preprocess_root.called)
-        self.assertEqual(exex.preprocess_root.call_args[0][0],
-                         builder.tree)
 
     def test_is_collapsed(self):
         for label, text in ((['111', '22', 'a'], '(a) '),
@@ -131,7 +78,7 @@ class HTMLBuilderTest(TestCase):
 
 class CFRHTMLBuilderTest(TestCase):
     def test_list_level_interpretations(self):
-        builder = CFRHTMLBuilder(None, None, None)
+        builder = CFRHTMLBuilder()
 
         parts = ['101', '12', 'a', 'Interp', '1']
         node_type = INTERP
@@ -148,7 +95,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEquals(result, 3)
 
     def test_list_level_appendices(self):
-        builder = CFRHTMLBuilder(None, None, None)
+        builder = CFRHTMLBuilder()
 
         parts = ['101', 'A', '1', 'a']
         node_type = APPENDIX
@@ -169,7 +116,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEquals(result, 4)
 
     def test_list_level_regulations(self):
-        builder = CFRHTMLBuilder(None, None, None)
+        builder = CFRHTMLBuilder()
 
         parts = ['101', '1', 'a']
         node_type = REGTEXT
@@ -190,7 +137,7 @@ class CFRHTMLBuilderTest(TestCase):
         self.assertEquals(result, 4)
 
     def test_list_level_regulations_no_level(self):
-        builder = CFRHTMLBuilder(None, None, None)
+        builder = CFRHTMLBuilder()
 
         parts = ['101', '1']
         node_type = REGTEXT
@@ -198,28 +145,9 @@ class CFRHTMLBuilderTest(TestCase):
         result = builder.list_level(parts, node_type)
         self.assertEquals(result, 0)
 
-    def test_interp_node_with_citations(self):
-        inline, p, sr = Mock(), Mock(), Mock()
-        builder = CFRHTMLBuilder(inline, p, sr)
-
-        node = {
-            'text': 'Interpretation with a link',
-            'children': [],
-            'node_type': INTERP,
-            'label': ['999', '5', 'Interp']
-        }
-        p.apply_layers.return_value = node
-        inline.get_layer_pairs.return_value = []
-        sr.get_layer_pairs.return_value = []
-        builder.process_node(node)
-        layer_parameters = inline.get_layer_pairs.call_args[0]
-        self.assertEqual('Interpretation with a link', layer_parameters[1])
-        self.assertEqual('999-5-Interp', layer_parameters[0])
-
     def test_no_section_sign(self):
         text = CFRHTMLBuilder.section_space(' abc')
         self.assertEquals(text, ' abc')
-        self.assertTrue(True)
 
     def test_modify_interp_node(self):
         node = {
@@ -229,7 +157,7 @@ class CFRHTMLBuilderTest(TestCase):
                          {'label': ['872', '22', 'a', 'Interp']},
                          {'label': ['872', '22', 'b', 'Interp']}]
         }
-        builder = CFRHTMLBuilder(None, None, None)
+        builder = CFRHTMLBuilder()
         builder.modify_interp_node(node)
         self.assertTrue(node['section_header'])
         self.assertEqual(node['header_children'],
@@ -251,14 +179,12 @@ class CFRHTMLBuilderTest(TestCase):
         }
         icl = InternalCitationLayer(None)
         icl.sectional = True
-        ila = InlineLayersApplier()
-        ila.add_layer(icl)
-        builder = CFRHTMLBuilder(ila, None, None)
+        builder = CFRHTMLBuilder([icl])
 
         builder.modify_interp_node(node)
-        self.assertEqual('This interprets '
-                         + icl.render_url(['872', '22', 'a'], '22(a)')
-                         + ', a paragraph', node['header_markup'])
+        header = 'This interprets {0}, a paragraph'.format(
+            icl.render_url(['872', '22', 'a'], '22(a)'))
+        self.assertEqual(header, node['header_markup'])
 
         node['label'] = ['872', '22']
         builder.modify_interp_node(node)
@@ -266,7 +192,7 @@ class CFRHTMLBuilderTest(TestCase):
 
     def test_process_node_title_section_space_diff(self):
         """" Diffs and sections spaces need to place nicely together. """
-        builder = CFRHTMLBuilder(None, None, None)
+        builder = CFRHTMLBuilder()
         diff = {'204': {'title': [('delete', 7, 9), ('insert', 10, 'AAC')],
                         'text':  [('delete', 0, 2), ('insert', 4, 'AAB')],
                         'op': ''}}
@@ -291,12 +217,7 @@ class CFRHTMLBuilderTest(TestCase):
 
 class PreambleHTMLBuilderTest(TestCase):
     def setUp(self):
-        inline, par, sr = Mock(), Mock(), Mock()
-        inline.get_layer_pairs.return_value = []
-        par.apply_layers.side_effect = lambda x: x
-        sr.get_layer_pairs.return_value = []
-
-        self.builder = PreambleHTMLBuilder(inline, par, sr)
+        self.builder = PreambleHTMLBuilder()
 
     def test_human_label(self):
         self.assertEqual(
@@ -335,12 +256,8 @@ class PreambleHTMLBuilderTest(TestCase):
 
 class CFRChangeHTMLBuilderTests(TestCase):
     def setUp(self):
-        inline, par, sr = Mock(), Mock(), Mock()
-        inline.get_layer_pairs.return_value = []
-        par.apply_layers.side_effect = lambda x: x
-        sr.get_layer_pairs.return_value = []
         diffs = DiffApplier({'111-22-a': {'op': 'deleted'}}, '111-22')
-        self.builder = CFRChangeHTMLBuilder(inline, par, sr, diffs)
+        self.builder = CFRChangeHTMLBuilder([], diffs)
 
     def test_accepts_comment(self):
         """We can only comment on changed paragraphs"""
@@ -368,9 +285,7 @@ class CFRChangeHTMLBuilderTests(TestCase):
     def test_preprocess(self):
         diffs = DiffApplier({'111-22-a': {'op': 'deleted'},
                              '111-33-b-5-v': {'op': 'deleted'}}, '111-22')
-        builder = CFRChangeHTMLBuilder(
-            self.builder.inline_applier, self.builder.p_applier,
-            self.builder.search_applier, diffs)
+        builder = CFRChangeHTMLBuilder([], diffs)
         self.assertEqual(
             builder.diff_paths,
             {('111',), ('111', '22'), ('111', '22', 'a'), ('111', '33'),

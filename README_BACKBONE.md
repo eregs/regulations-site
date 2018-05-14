@@ -27,9 +27,11 @@ eRegulations’ Backbone Models do not sync data in a standard Backbone way. Bec
 
 **The model caches data in a key-value pair**. The key is the id of the section and the value is a string of HTML containing the content. Example:
 
-```{
-    ‘1005-2-a’: ‘<li id=”1005-2-a”>Paragraph content</li>’
-}```
+```
+{
+    '1005-2-a': '<li id="1005-2-a">Paragraph content</li>'
+}
+```
 
 All models inherit from [meta-model](regulations/static/regulations/js/source/models/meta-model.js). The cycle of a model is as follows:
 - A view is created for a piece of content. The view calls [get()](regulations/static/regulations/js/source/models/meta-model.js#L60) on its model.

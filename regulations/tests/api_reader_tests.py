@@ -6,29 +6,28 @@ from regulations.generator.api_reader import ApiReader
 
 
 class ClientTest(TestCase):
-    @patch('regulations.generator.api_reader.api_client')
-    def test_regulation(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_regulation(self, fetch):
         to_return = {'example': 0, 'label': ['204'], 'children': []}
-        api_client.ApiClient.return_value.get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
         self.assertEqual(to_return,
                          reader.regulation("label-here", "date-here"))
-        self.assertTrue(api_client.ApiClient.return_value.get.called)
-        param = api_client.ApiClient.return_value.get.call_args[0][0]
+        self.assertTrue(fetch.called)
+        param = fetch.call_args[0][0]
         self.assertTrue('label-here' in param)
         self.assertTrue('date-here' in param)
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_layer(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_layer(self, fetch):
         to_return = {'example': 1}
-        api_client.ApiClient.return_value.get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
         self.assertEqual(
             to_return,
             reader.layer("layer-here", "cfr", "label-here", "version-here"))
-        get = api_client.ApiClient.return_value.get
-        self.assertEqual(1, get.call_count)
-        param = api_client.ApiClient.return_value.get.call_args[0][0]
+        self.assertEqual(1, fetch.call_count)
+        param = fetch.call_args[0][0]
         self.assertIn('layer-here/cfr/version-here/label', param)
         self.assertNotIn('label-here', param)   # only grabs the root, "label"
 
@@ -36,73 +35,69 @@ class ClientTest(TestCase):
         self.assertEqual(
             to_return,
             reader.layer("layer-here", "cfr", "label-abc", "version-here"))
-        self.assertEqual(1, get.call_count)
+        self.assertEqual(1, fetch.call_count)
 
         self.assertEqual(
             to_return,
             reader.layer("layer-here", "cfr", "lablab", "version-here"))
-        self.assertEqual(2, get.call_count)
-        param = get.call_args[0][0]
+        self.assertEqual(2, fetch.call_count)
+        param = fetch.call_args[0][0]
         self.assertIn('layer-here/cfr/version-here/lablab', param)
 
         self.assertEqual(
             to_return,
             reader.layer("layer-here", "preamble", "lablab"))
-        self.assertEqual(3, get.call_count)
-        param = get.call_args[0][0]
+        self.assertEqual(3, fetch.call_count)
+        param = fetch.call_args[0][0]
         self.assertIn('layer-here/preamble/lablab', param)
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_notices(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_notices(self, fetch):
         to_return = {'example': 1}
-        api_client.ApiClient.return_value.get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
         self.assertEqual(to_return, reader.notices())
-        get = api_client.ApiClient.return_value.get
-        self.assertTrue(get.called)
+        self.assertTrue(fetch.called)
 
         self.assertEqual(to_return, reader.notices(part='p'))
-        self.assertTrue(get.called)
-        self.assertEqual({'part': 'p'}, get.call_args[0][1])
+        self.assertTrue(fetch.called)
+        self.assertEqual({'part': 'p'}, fetch.call_args[0][1])
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_regversion(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_regversion(self, fetch):
         to_return = {}
-        api_client.ApiClient.return_value.get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
         self.assertEqual(to_return, reader.regversions('765'))
-        get = api_client.ApiClient.return_value.get
-        self.assertTrue(get.called)
-        param = get.call_args[0][0]
+        self.assertTrue(fetch.called)
+        param = fetch.call_args[0][0]
         self.assertTrue('765' in param)
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_notice(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_notice(self, fetch):
         to_return = {'example': 1}
-        api_client.ApiClient.return_value.get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
         self.assertEqual(to_return, reader.notice("doc"))
-        get = api_client.ApiClient.return_value.get
-        self.assertTrue(get.called)
-        param = get.call_args[0][0]
+        self.assertTrue(fetch.called)
+        param = fetch.call_args[0][0]
         self.assertTrue('doc' in param)
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_diff(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_diff(self, fetch):
         to_return = {'example': 1}
-        api_client.ApiClient.return_value.get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
         self.assertEqual(to_return, reader.diff("204", "old", "new"))
 
-        get = api_client.ApiClient.return_value.get
-        self.assertTrue(get.called)
-        param = get.call_args[0][0]
+        self.assertTrue(fetch.called)
+        param = fetch.call_args[0][0]
         self.assertTrue('204' in param)
         self.assertTrue('old' in param)
         self.assertTrue('new' in param)
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_reg_cache(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_reg_cache(self, fetch):
         child = {
             'text': 'child',
             'node_type': 'interp',
@@ -128,22 +123,21 @@ class ClientTest(TestCase):
             'label': ['923', 'Interp'],
             'children': [child, child2, child3]
         }
-        get = api_client.ApiClient.return_value.get
-        get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
 
         reader.regulation('923-Interp', 'ver')
         reader.regulation('923-Interp', 'ver')
         reader.regulation('923-a-Interp', 'ver')
-        self.assertEqual(1, get.call_count)
+        self.assertEqual(1, fetch.call_count)
 
-        get.return_value = child2
+        fetch.return_value = child2
         reader.regulation('923-Interp-1', 'ver')
-        self.assertEqual(2, get.call_count)
+        self.assertEqual(2, fetch.call_count)
 
-        get.return_value = child3
+        fetch.return_value = child3
         reader.regulation('923-b-Interp', 'ver')
-        self.assertEqual(3, get.call_count)
+        self.assertEqual(3, fetch.call_count)
 
         child = {
             'text': 'child',
@@ -155,23 +149,21 @@ class ClientTest(TestCase):
             'label': ['923', '1'],
             'children': [child]
         }
-        get.reset_mock()
-        get.return_value = to_return
+        fetch.reset_mock()
+        fetch.return_value = to_return
         reader.regulation('923-1', 'ver')
         reader.regulation('923-1', 'ver')
         reader.regulation('923-1-a', 'ver')
-        get = api_client.ApiClient.return_value.get
-        self.assertEqual(2, get.call_count)
+        self.assertEqual(2, fetch.call_count)
 
-    @patch('regulations.generator.api_reader.api_client')
-    def test_cache_mutability(self, api_client):
+    @patch('regulations.generator.api_reader._fetch')
+    def test_cache_mutability(self, fetch):
         to_return = {
             'text': 'parent',
             'label': ['1024'],
             'children': []
         }
-        get = api_client.ApiClient.return_value.get
-        get.return_value = to_return
+        fetch.return_value = to_return
         reader = ApiReader()
 
         result = reader.regulation('1024', 'ver')
@@ -184,6 +176,6 @@ class ClientTest(TestCase):
         result['children'] = [child]
 
         second = reader.regulation('1024', 'ver')
-        self.assertEqual(1, get.call_count)
+        self.assertEqual(1, fetch.call_count)
         self.assertEqual(second, {'text': 'parent', 'label': ['1024'],
                                   'children': []})

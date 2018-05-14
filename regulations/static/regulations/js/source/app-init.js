@@ -1,39 +1,49 @@
 // Module called on app load, once doc.ready
-'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var MainView = require('./views/main/main-view');
-var Router = require('./router');
-var SidebarView = require('./views/sidebar/sidebar-view');
-var HeaderView = require('./views/header/header-view');
-var DrawerView = require('./views/drawer/drawer-view');
-var AnalyticsHandler = require('./views/analytics-handler-view');
+
+const $ = require('jquery');
+const Backbone = require('backbone');
+const queryString = require('query-string');
+const MainView = require('./views/main/main-view');
+const Router = require('./router');
+const SidebarView = require('./views/sidebar/sidebar-view');
+const HeaderView = require('./views/header/header-view');
+const DrawerView = require('./views/drawer/drawer-view');
+const AnalyticsHandler = require('./views/analytics-handler-view');
+
 Backbone.$ = $;
 
- module.exports = {
+module.exports = {
     // Purgatory for DOM event bindings that should happen in a View
-    bindEvents: function() {
+  bindEvents: function bindEvents() {
         // disable/hide an alert
-        $('.disable-link').on( 'click', function(e) {
-            e.preventDefault();
-            $(this).closest('.displayed').addClass('disabled');
-        });
-    },
+    $('.disable-link').on('click', function click(e) {
+      e.preventDefault();
+      $(this).closest('.displayed').addClass('disabled');
+    });
+  },
 
-    init: function() {
-        var regs = window.regs || {};
+  init: function init() {
+    const regs = window.regs || {};
+    const queryParams = queryString.parse(location.search);
 
-        Router.start();
-        this.bindEvents();
-        var gaview = new AnalyticsHandler();
-        var header = new HeaderView();  // Header before Drawer as Drawer sends Header events
-        var drawer = new DrawerView({forceOpen: regs.drawer && regs.drawer.forceOpen});
-        var main = new MainView();
-        var sidebar = new SidebarView();
-        setTimeout(function() {
-            $('html').addClass('selenium-start');
-        }, 5000);
+    Router.start();
+    this.bindEvents();
+    // Can we avoid `new`s here?
+    /* eslint-disable no-new */
+    new AnalyticsHandler();
+    new HeaderView();  // Header before Drawer as Drawer sends Header events
+    new DrawerView({ forceOpen: regs.drawer && regs.drawer.forceOpen });
+    new MainView();
+    new SidebarView();
+    /* eslint-enable */
+
+    if (queryParams.print === 'true') {
+      window.print();
     }
+
+    setTimeout(() => {
+      $('html').addClass('selenium-start');
+    }, 5000);
+  },
 };

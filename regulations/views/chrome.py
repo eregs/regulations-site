@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from django.views.generic.base import TemplateView
 
 from regulations.generator import generator
@@ -17,6 +19,22 @@ from regulations.views.sidebar import SideBarView
 from regulations.views import error_handling
 
 
+# type: (date, Optional[date], Timeline)
+VersionSpan = namedtuple('VersionSpan', ['start', 'end', 'timeline'])
+
+
+def version_span(history, effective_date):
+    """Derive the start and end dates that would include the requested
+    effective date. Also include the past/present/future indication for that
+    range."""
+    asc_history = list(reversed(history))
+    start_dates = [h['by_date'] for h in asc_history]
+    end_dates = start_dates[1:] + [None]
+    for start, end, version_info in zip(start_dates, end_dates, asc_history):
+        if effective_date >= start and end is None or effective_date < end:
+            return VersionSpan(start, end, version_info['timeline'])
+
+
 class ChromeView(TemplateView):
     """ Base class for views which wish to include chrome. """
     template_name = 'regulations/chrome.html'
@@ -24,6 +42,11 @@ class ChromeView(TemplateView):
     version_switch_view = 'chrome_section_view'
     sidebar_components = SideBarView.components
     partial_class = None
+
+    def fill_kwargs(self, kwargs):
+        """Entrypoint for subclasses to configure the kwargs that will be
+        handed down to get_context_data"""
+        return kwargs
 
     def check_tree(self, context):
         """Throw an exception if the requested section doesn't exist"""
@@ -87,11 +110,19 @@ class ChromeView(TemplateView):
         context['TOC'] = toc
 
         context['meta'] = utils.regulation_meta(reg_part, version)
+
+        # Throw 404 if regulation doesn't exist
+        if not context['meta']:
+            raise error_handling.MissingContentException()
+
+        context['version_span'] = version_span(
+            context['history'], context['meta']['effective_date'])
         context['version_switch_view'] = self.version_switch_view
         context['diff_redirect_label'] = self.diff_redirect_label(
             context['label_id'], toc)
 
     def get_context_data(self, **kwargs):
+        kwargs = self.fill_kwargs(kwargs)
         context = super(ChromeView, self).get_context_data(**kwargs)
 
         label_id = context['label_id']
@@ -154,13 +185,16 @@ class ChromeSearchView(ChromeView):
     def check_tree(self, context):
         pass    # Search doesn't perform this check
 
-    def get_context_data(self, **kwargs):
+    def fill_kwargs(self, kwargs):
         """Get the version for the chrome context"""
         kwargs['version'] = self.request.GET.get('version', '')
         kwargs['skip_count'] = True
+        if not kwargs['version']:
+            current, _ = get_versions(kwargs['label_id'])
+            kwargs['version'] = current['version']
         kwargs['label_id'] = utils.first_section(kwargs['label_id'],
                                                  kwargs['version'])
-        return super(ChromeSearchView, self).get_context_data(**kwargs)
+        return kwargs
 
     def add_main_content(self, context):
         """Override this so that we have access to the main content's
@@ -187,9 +221,8 @@ class ChromeLandingView(ChromeView):
         self._assert_good(response)
         context['main_content'] = response.content
 
-    def get_context_data(self, **kwargs):
+    def fill_kwargs(self, kwargs):
         """Add the version and replace the label_id for the chrome context"""
-
         reg_part = kwargs['label_id']
         if not regulation_exists(reg_part):
             raise error_handling.MissingContentException()
@@ -197,7 +230,7 @@ class ChromeLandingView(ChromeView):
         current, _ = get_versions(kwargs['label_id'])
         kwargs['version'] = current['version']
         kwargs['label_id'] = utils.first_section(reg_part, current['version'])
-        return super(ChromeLandingView, self).get_context_data(**kwargs)
+        return kwargs
 
 
 class BadComponentException(Exception):

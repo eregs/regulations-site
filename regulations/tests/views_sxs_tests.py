@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from django.template import Template
+from django.template import engines as template_engines
 from mock import patch
 
 from regulations.views.partial_sxs import ParagraphSXSView
@@ -86,7 +86,8 @@ class ParagrasphSXSViewTests(TestCase):
 
     def test_footnote_refs(self):
         psv = ParagraphSXSView()
-        psv.footnote_tpl = Template("[{{footnote.reference}}]")
+        psv.footnote_tpl = template_engines['django'].from_string(
+            "[{{footnote.reference}}]")
         sxs = {
             'paragraphs': [
                 'This is paragraph 1, I mean zero',

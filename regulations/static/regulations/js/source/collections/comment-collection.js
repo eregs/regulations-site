@@ -1,33 +1,29 @@
-'use strict';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-Backbone.LocalStorage = require('backbone.localstorage');
 
-var commentModel = require('../models/comment-model');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const localStorage = require('backbone.localstorage');
+Backbone.LocalStorage = localStorage.LocalStorage;
 
-var CommentCollection = Backbone.Collection.extend({
+const commentModel = require('../models/comment-model');
+
+const CommentCollection = Backbone.Collection.extend({
   model: commentModel.CommentModel,
   localStorage: new Backbone.LocalStorage('eregsnc'),
 
-  filter: function(docId) {
-    return _.filter(this.models, function(model) {
-      return model.get('docId') === docId;
-    });
+  filter: function filter(docId) {
+    return _.filter(this.models, model => model.get('docId') === docId);
   },
 
-  toJSON: function(options) {
-    var models = (options || {}).docId ? this.filter(options.docId) : this.models;
-    return _.map(models, function(model) {
-      return model.toJSON(options);
-    });
+  toJSON: function toJSON(options) {
+    const models = (options || {}).docId ? this.filter(options.docId) : this.models;
+    return _.map(models, model => model.toJSON(options));
   },
 
-  comparator: commentModel.commentComparator
+  comparator: commentModel.commentComparator,
 });
 
-var comments = new CommentCollection();
+const comments = new CommentCollection();
 comments.fetch();
 
 module.exports = comments;

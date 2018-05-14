@@ -1,6 +1,7 @@
 from unittest import TestCase
 from mock import patch
 
+from regulations.generator.versions import Timeline
 from regulations.views import reg_landing
 
 
@@ -21,16 +22,19 @@ class LandingViewTest(TestCase):
     @patch('regulations.views.reg_landing.fetch_grouped_history')
     def test_get_versions(self, fetch_grouped_history):
         fetch_grouped_history.return_value = [
-            {'timeline': 'future', 'version': 'a'},
-            {'timeline': 'current', 'version': 'b'}]
+            {'timeline': Timeline.future, 'version': 'a'},
+            {'timeline': Timeline.present, 'version': 'b'}]
         current_ver, next_ver = reg_landing.get_versions('204')
-        self.assertEqual({'timeline': 'current', 'version': 'b'}, current_ver)
-        self.assertEqual({'timeline': 'future', 'version': 'a'}, next_ver)
+        self.assertEqual({'timeline': Timeline.present, 'version': 'b'},
+                         current_ver)
+        self.assertEqual({'timeline': Timeline.future, 'version': 'a'},
+                         next_ver)
 
     @patch('regulations.views.reg_landing.fetch_grouped_history')
     def test_get_versions_no_next(self, fetch_grouped_history):
         fetch_grouped_history.return_value = [
-            {'timeline': 'current', 'version': 'b'}]
+            {'timeline': Timeline.present, 'version': 'b'}]
         current_ver, next_ver = reg_landing.get_versions('204')
-        self.assertEqual({'timeline': 'current', 'version': 'b'}, current_ver)
+        self.assertEqual({'timeline': Timeline.present, 'version': 'b'},
+                         current_ver)
         self.assertEqual(None, next_ver)

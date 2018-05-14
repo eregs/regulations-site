@@ -1,48 +1,57 @@
 // Launches app
-'use strict';
+import { createStore } from 'redux';
+import { setStorage } from './redux/storage';
+import reducers from './redux/reducers';
+
+setStorage(createStore(reducers));
+
+
 // make jQuery globally accessible for plugins and analytics
 window.$ = window.jQuery = require('jquery');
-var app = require('./app-init');
+const app = require('./app-init');
 
 // A `bind()` polyfill
 if (!Function.prototype.bind) {
-    Function.prototype.bind = function (oThis) {
-        if (typeof this !== 'function') {
+  /* eslint-disable no-extend-native */
+  Function.prototype.bind = function bind(oThis, ...aArgs) {
+    if (typeof this !== 'function') {
             // closest thing possible to the ECMAScript 5 internal IsCallable function
-            throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-        }
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
 
-      var aArgs = Array.prototype.slice.call(arguments, 1),
-          fToBind = this,
-          FNOP = function () {},
-          fBound = function () {
-            return fToBind.apply(this instanceof FNOP && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
-          };
-
-      FNOP.prototype = this.prototype;
-      fBound.prototype = new FNOP();
-
-      return fBound;
+    const fToBind = this;
+    const FNOP = function FNOP() {};
+    const fBound = function fBound(...args) {
+      const arg1 = this instanceof FNOP && oThis ? this : oThis;
+      const arg2 = aArgs.concat(args);
+      return fToBind.apply(arg1, arg2);
     };
+
+    FNOP.prototype = this.prototype;
+    fBound.prototype = new FNOP();
+
+    return fBound;
+  };
+  /* eslint-enable */
 }
 
 // a 'window.location.origin' polyfill for IE10
 // http://tosbourn.com/2013/08/javascript/a-fix-for-window-location-origin-in-internet-explorer/
 if (!window.location.origin) {
-  window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+  window.location.origin = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
 }
 
-$(document).ready(function() {
-    app.init();
+$(document).ready(() => {
+  app.init();
 });
 
 // tests for some accessibility misses
 // use in browser console with AccessibilityTest()
-window.AccessibilityTest = function() {
+window.AccessibilityTest = function AccessibilityTest() {
+    /* eslint-disable */
     // I think this will keep IE from crying?
     console = console || {error: function() {}};
 
-    /* eslint-disable */
     $('img').each(function() {
         if (typeof this.attributes.alt === 'undefined') {
             console.error('Image does not have alt text', this);

@@ -1,9 +1,9 @@
 from django.http import Http404
 
 from regulations.generator import generator, node_types
+from regulations.generator.html_builder import CFRHTMLBuilder
 from regulations.generator.subterp import filter_by_subterp
-from regulations.views.partial import (
-    PartialSectionView, PartialView, generate_html)
+from regulations.views.partial import PartialSectionView, PartialView
 
 
 class PartialInterpView(PartialView):
@@ -12,20 +12,18 @@ class PartialInterpView(PartialView):
 
     template_name = "regulations/interpretations.html"
     inline = False
-    appliers = []
+    layers = []
 
     @staticmethod
-    def mk_appliers(root_label, version):
-        """Function to generate a shared set of appliers"""
-        layer_creator = generator.LayerCreator()
-        layer_creator.add_layers(
+    def mk_layers(root_label, version):
+        """Function to generate a shared set of layers"""
+        return generator.layers(
             ['terms', 'internal', 'keyterms', 'paragraph'], 'cfr', root_label,
             sectional=True, version=version)
-        return layer_creator.get_appliers()
 
-    def determine_appliers(self, label_id, version):
+    def determine_layers(self, label_id, version):
         """Don't generate new appliers"""
-        return self.appliers
+        return self.layers
 
     def transform_context(self, context, builder):
         context['inline'] = self.inline
@@ -64,9 +62,10 @@ class PartialSubterpView(PartialSectionView):
         # appropriate markup ID, matching the rendered subterp and not
         # the parent node in the tree
         interp['label'] = label
-        inline_applier, p_applier, s_applier = self.determine_appliers(
-            reg_part + '-Interp', version)
-        builder = generate_html(interp, (inline_applier, p_applier, s_applier))
+        layers = list(self.determine_layers(reg_part + '-Interp', version))
+        builder = CFRHTMLBuilder(layers)
+        builder.tree = interp
+        builder.generate_html()
         interp = builder.tree
         interp['html_label'] = html_label
         context['tree'] = {'children': [interp]}

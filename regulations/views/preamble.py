@@ -17,16 +17,14 @@ from django.template.response import TemplateResponse
 from django.views.generic.base import View
 
 from fr_notices import navigation
-from regulations import docket
+from regulations.generator import generator
 from regulations.generator.api_reader import ApiReader
-from regulations.generator.generator import LayerCreator
 from regulations.generator.html_builder import (
     CFRChangeHTMLBuilder, PreambleHTMLBuilder)
 from regulations.generator.layers.utils import (
     convert_to_python, is_contained_in)
-from regulations.views import utils
-from regulations.views import chrome
-from regulations.views.diff import Versions, get_appliers
+from regulations.views import chrome, error_handling, utils
+from regulations.views.diff import Versions
 
 
 logger = logging.getLogger(__name__)
@@ -53,15 +51,11 @@ def find_subtree(root, label_parts):
 def generate_html_tree(subtree, request, id_prefix=None):
     """Use the HTMLBuilder to generate a version of this subtree with
     appropriate markup. Currently, includes no layers"""
-    layer_creator = LayerCreator()
     doc_id = '-'.join(subtree['label'])
-    layer_creator.add_layers(utils.layer_names(request), 'preamble',
-                             doc_id, sectional=True)
-    builder = PreambleHTMLBuilder(
-        *layer_creator.get_appliers(),
-        id_prefix=id_prefix,
-        index_prefix=[0, subtree.get('lft')]
-    )
+    layers = list(generator.layers(
+        utils.layer_names(request), 'preamble', doc_id, sectional=True))
+    builder = PreambleHTMLBuilder(layers, id_prefix=id_prefix,
+                                  index_prefix=[0, subtree.get('lft')])
     builder.tree = subtree
     builder.generate_html()
 
@@ -246,24 +240,6 @@ class ChromePreambleSearchView(chrome.ChromeSearchView):
         return context
 
 
-class PrepareCommentView(View):
-    def get(self, request, doc_number):
-        context = common_context(doc_number)
-
-        if context['meta']['comment_state'] != CommentState.OPEN:
-            raise Http404("Cannot comment on {}".format(doc_number))
-
-        context.update(generate_html_tree(context['preamble'], request,
-                                          id_prefix=[doc_number, 'preamble']))
-        context['comment_mode'] = 'write'
-        context['comment_fields'] = docket.safe_get_document_fields(
-            settings.COMMENT_DOCUMENT_ID)
-        template = 'regulations/comment-review-chrome.html'
-
-        return TemplateResponse(request=request, template=template,
-                                context=context)
-
-
 SubpartInfo = namedtuple('SubpartInfo', ['letter', 'title', 'urls', 'idx'])
 
 
@@ -337,10 +313,15 @@ class CFRChangesView(View):
         versions = Versions(version_info[cfr_part]['left'],
                             version_info[cfr_part]['right'])
         left_tree = ApiReader().regulation(label_id, versions.older)
-        appliers = get_appliers(label_id, versions)
+        diff_applier = generator.get_diff_applier(
+            label_id, versions.older, versions.newer)
+        if diff_applier is None:
+            raise error_handling.MissingContentException()
+
+        layers = list(generator.diff_layers(versions, label_id))
 
         builder = CFRChangeHTMLBuilder(
-            *appliers, id_prefix=[str(doc_number), 'cfr'],
+            layers, diff_applier, id_prefix=[str(doc_number), 'cfr'],
             index_prefix=[1, toc_position]
         )
         builder.tree = left_tree or {}

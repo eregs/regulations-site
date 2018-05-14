@@ -27,7 +27,7 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -102,7 +102,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "django.core.context_processors.request",
+                "django.template.context_processors.request",
                 "regulations.context.eregs_globals",
             ),
             # List of callables that know how to import templates from various
@@ -117,18 +117,32 @@ TEMPLATES = [
 ]
 
 
-# Note order:
-# https://docs.djangoproject.com/en/1.8/topics/cache/#the-per-site-cache
+# Order from
+# https://docs.djangoproject.com/en/1.9/ref/middleware/#middleware-ordering
 MIDDLEWARE_CLASSES = (
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
 )
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 ROOT_URLCONF = 'regulations.urls'
 
 INSTALLED_APPS = (
+    # Note: no admin
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'regulations.apps.RegulationsConfig',
 )
@@ -155,10 +169,6 @@ ANALYTICS = {
 
 #   Use the 'source' directory; useful for development
 JS_DEBUG = False
-
-# Django by default tries to setup a databse when running tests. We don't have
-# a database, so we override the default test runner.
-TEST_RUNNER = 'regulations.tests.runner.DatabaselessTestRunner'
 
 CACHES = {
     'default': {
@@ -240,6 +250,7 @@ DATA_LAYERS = (
 SIDEBARS = (
     'regulations.generator.sidebar.analyses.Analyses',
     'regulations.generator.sidebar.help.Help',
+    'regulations.generator.sidebar.print_part.PrintPart',
 )
 
 ATTACHMENT_BUCKET = os.getenv('S3_BUCKET')

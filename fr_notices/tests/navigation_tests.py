@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 from unittest import TestCase
 
-from nose.tools import assert_equal, assert_is_none
 from mock import patch
 
 from fr_notices import navigation
@@ -50,12 +49,12 @@ class PreambleToCTests(TestCase):
         toc = navigation.make_preamble_nav(self.nodes)
 
         nav = navigation.footer(toc, [], 'doc_id-preamble-doc_id-I')
-        assert_equal(nav['next'].section_id, 'doc_id-preamble-doc_id-II')
-        assert_is_none(nav['previous'])
+        assert nav['next'].section_id == 'doc_id-preamble-doc_id-II'
+        assert nav['previous'] is None
 
         nav = navigation.footer(toc, [], 'doc_id-preamble-doc_id-II')
-        assert_equal(nav['previous'].section_id, 'doc_id-preamble-doc_id-I')
-        assert_is_none(nav['next'])
+        assert nav['previous'].section_id == 'doc_id-preamble-doc_id-I'
+        assert nav['next'] is None
 
 
 class CFRChangeBuilderTests(TestCase):
@@ -117,6 +116,17 @@ class CFRChangeBuilderTests(TestCase):
                 section_id='')
         ])
 
+    def test_add_change_no_section_titles(self):
+        """If we don't have a section title for a change, we shouldn't
+        explode."""
+        builder = navigation.CFRChangeBuilder()
+        builder.cfr_title, builder.cfr_part = 11, 222
+        self.assertEqual(builder.section_titles, {})
+        builder.add_change('docnum', ('333', '444'))
+        self.assertEqual(len(builder.toc), 1)
+        self.assertEqual(builder.toc[0].title.full, '')
+        self.assertEqual(builder.toc[0].category, '11 CFR 222')
+
     def test_footer(self):
         toc = [
             navigation.NavItem(
@@ -139,13 +149,13 @@ class CFRChangeBuilderTests(TestCase):
         ]
 
         nav = navigation.footer([], toc, '2016_02749-cfr-478')
-        assert_is_none(nav['previous'])
-        assert_equal(nav['next'].section_id, '2016_02749-cfr-478-99')
+        assert nav['previous'] is None
+        assert nav['next'].section_id == '2016_02749-cfr-478-99'
 
         nav = navigation.footer([], toc, '2016_02749-cfr-478-99')
-        assert_equal(nav['previous'].section_id, '2016_02749-cfr-478')
-        assert_equal(nav['next'].section_id, '2016_02749-cfr-478-120')
+        assert nav['previous'].section_id == '2016_02749-cfr-478'
+        assert nav['next'].section_id == '2016_02749-cfr-478-120'
 
         nav = navigation.footer([], toc, '2016_02749-cfr-478-120')
-        assert_equal(nav['previous'].section_id, '2016_02749-cfr-478-99')
-        assert_is_none(nav['next'])
+        assert nav['previous'].section_id == '2016_02749-cfr-478-99'
+        assert nav['next'] is None

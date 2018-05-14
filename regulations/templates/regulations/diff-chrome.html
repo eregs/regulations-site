@@ -14,9 +14,9 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
 {% block header-secondary %}
 <span class="effective-date diff-dates"><strong>Comparing:</strong>
     {% with older_version=version %}
-        {% for version in history %} {% if version.version == older_version %}{{ version.by_date|date }}{% endif %} {% endfor %}
+        {% for version in history %} {% if version.version == older_version %}{{ version.by_date|date:"n/j/Y" }}{% endif %} {% endfor %}
         to
-        {% for version in history %} {% if version.version == newer_version %}{{ version.by_date|date }}{% endif %} {% endfor %}
+        {% for version in history %} {% if version.version == newer_version %}{{ version.by_date|date:"n/j/Y" }}{% endif %} {% endfor %}
     {% endwith %}
 </span>
 {% endblock %}
@@ -71,15 +71,15 @@ Comparison of {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
                       (Right)
                     {% endif %}-->
                     <a href="{% url 'chrome_section_view' label_id version.version %}" class="version-link" data-version="{{ version.version }}">
-                        {% if version.timeline == 'current' %}
+                        {% if version.timeline.is_present %}
                             <h3>Current Law</h3>
                         {% endif %}
-                        <span class="version-date">{{ version.by_date|date }}</span>
+                        <span class="version-date">{{ version.by_date|date:"n/j/Y" }}</span>
                     </a>
                     <div class="timeline-content-wrap">
                     <ul class="rule-list">
                       {% for notice in version.notices %}
-                        {% with pub_date=notice.publication_date|date %}
+                        {% with pub_date=notice.publication_date|date:"n/j/Y" %}
                           {% if notice.fr_url %}
                             <li>{% external_link classes="fr-notice" url=notice.fr_url text="Final Rule –  "|add:pub_date %}</li>
                           {% else %}

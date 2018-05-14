@@ -1,15 +1,14 @@
-# vim: set fileencoding=utf-8
+# -*- coding: utf-8 -*-
 from regulations.generator import title_parsing
-from regulations.generator.layers.base import LayerBase
+from regulations.generator.layers.base import ParagraphLayer
 from regulations.generator.section_url import SectionUrl
 from regulations.generator.toc import (
     toc_interp, toc_sect_appendix, toc_subpart)
 
 
-class TableOfContentsLayer(LayerBase):
+class TableOfContentsLayer(ParagraphLayer):
     shorthand = 'toc'
     data_source = 'toc'
-    layer_type = LayerBase.PARAGRAPH
 
     def __init__(self, layer):
         self.layer = layer
@@ -17,7 +16,8 @@ class TableOfContentsLayer(LayerBase):
         self.version = None
         self.section_url = SectionUrl()
 
-    def apply_layer(self, text_index):
+    def attach_metadata(self, node):
+        text_index = node['label_id']
         if text_index in self.layer:
             layer_elements = self.layer[text_index]
 
@@ -36,7 +36,7 @@ class TableOfContentsLayer(LayerBase):
                 for sub in el.get('sub_toc', []):
                     sub['url'] = self.section_url.fetch(
                         sub['index'], self.version, self.sectional)
-            return ('TOC', toc_list)
+            node['TOC'] = toc_list
 
     @staticmethod
     def section(element, data):

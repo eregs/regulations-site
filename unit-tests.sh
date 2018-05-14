@@ -4,6 +4,6 @@ set -ev
 
 grunt test-js
 python manage.py migrate --fake-initial
-python manage.py test
-flake8 .
-bandit -r .
+pytest --cov
+flake8 fr_notices regulations
+bandit -r --ini tox.ini fr_notices regulations manage.py setup.py

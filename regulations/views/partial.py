@@ -1,4 +1,4 @@
-# vim: set encoding=utf-8
+# -*- coding: utf-8 -*-
 from django.http import Http404
 from django.views.generic.base import TemplateView
 
@@ -8,13 +8,6 @@ from regulations.generator.node_types import EMPTYPART, REGTEXT, label_to_text
 from regulations.views import navigation, utils
 
 
-def generate_html(regulation_tree, layer_appliers):
-    builder = CFRHTMLBuilder(*layer_appliers)
-    builder.tree = regulation_tree
-    builder.generate_html()
-    return builder
-
-
 class PartialView(TemplateView):
     """Base class of various partial markup views. sectional_links indicates
     whether this view should use section links (url to a path) or just hash
@@ -22,12 +15,11 @@ class PartialView(TemplateView):
 
     sectional_links = True
 
-    def determine_appliers(self, label_id, version):
+    def determine_layers(self, label_id, version):
         """Figure out which layers to apply by checking the GET args"""
-        layer_creator = generator.LayerCreator()
-        layer_creator.add_layers(utils.layer_names(self.request), 'cfr',
-                                 label_id, self.sectional_links, version)
-        return layer_creator.get_appliers()
+        return generator.layers(
+            utils.layer_names(self.request), 'cfr', label_id,
+            self.sectional_links, version)
 
     def get_context_data(self, **kwargs):
         context = super(PartialView, self).get_context_data(**kwargs)
@@ -39,10 +31,10 @@ class PartialView(TemplateView):
         if tree is None:
             raise Http404
 
-        inline_applier, p_applier, s_applier = self.determine_appliers(
-            label_id, version)
-
-        builder = generate_html(tree, (inline_applier, p_applier, s_applier))
+        layers = list(self.determine_layers(label_id, version))
+        builder = CFRHTMLBuilder(layers)
+        builder.tree = tree
+        builder.generate_html()
         return self.transform_context(context, builder)
 
 

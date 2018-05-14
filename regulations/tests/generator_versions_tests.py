@@ -35,9 +35,9 @@ class VersionsTest(TestCase):
         self.assertEqual(3, len(history))
         v1, v2, v3 = history
 
-        self.assertEqual('future', v1['timeline'])
-        self.assertEqual('current', v2['timeline'])
-        self.assertEqual('past', v3['timeline'])
+        self.assertEqual(versions.Timeline.future, v1['timeline'])
+        self.assertEqual(versions.Timeline.present, v2['timeline'])
+        self.assertEqual(versions.Timeline.past, v3['timeline'])
 
         self.assertEqual(versions.convert_to_python([n6, n5, n4]),
                          v1['notices'])

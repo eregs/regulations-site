@@ -1,5 +1,4 @@
-# vim: set encoding=utf-8
-
+# -*- coding: utf-8 -*-
 from collections import namedtuple
 
 import six
@@ -22,20 +21,6 @@ class Versions(namedtuple('Versions', ['older', 'newer', 'return_to'])):
         if return_to is None:
             return_to = older
         return super(Versions, cls).__new__(cls, older, newer, return_to)
-
-
-def get_appliers(label_id, versions):
-    diff = generator.get_diff_applier(label_id, versions.older, versions.newer)
-
-    if diff is None:
-        raise error_handling.MissingContentException()
-
-    layer_creator = generator.DiffLayerCreator(versions.newer)
-    layer_creator.add_layers(
-        ['graphics', 'paragraph', 'keyterms', 'defined', 'formatting',
-         'marker-hiding', 'marker-info'],
-        'cfr', label_id, version=versions.older)
-    return layer_creator.get_appliers() + (diff, )
 
 
 class PartialSectionDiffView(PartialView):
@@ -88,9 +73,13 @@ class PartialSectionDiffView(PartialView):
             # add the requested section. If not -> 404
             tree = {}
 
-        appliers = get_appliers(label_id, versions)
+        diff_applier = generator.get_diff_applier(
+            label_id, versions.older, versions.newer)
+        if diff_applier is None:
+            raise error_handling.MissingContentException()
+        layers = list(generator.diff_layers(versions, label_id))
 
-        builder = CFRHTMLBuilder(*appliers)
+        builder = CFRHTMLBuilder(layers, diff_applier)
         builder.tree = tree
         builder.generate_html()
 

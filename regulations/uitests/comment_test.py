@@ -1,6 +1,5 @@
 import unittest
 
-from nose.tools import assert_equal, assert_in
 from selenium.webdriver.support.ui import WebDriverWait
 
 from regulations.uitests.base_test import BaseTest
@@ -28,7 +27,7 @@ class CommentTest(BaseTest, unittest.TestCase):
         self.driver.implicitly_wait(0)
         index_items = item_container.find_elements_by_css_selector(
             '.comment-index-item')
-        assert_equal(len(index_items), 0)
+        assert index_items == []
         self.driver.implicitly_wait(30)
 
         # Write and save a comment
@@ -41,8 +40,8 @@ class CommentTest(BaseTest, unittest.TestCase):
         # Comment index is populated
         index_items = self.driver.find_elements_by_css_selector(
             '.comment-index-item')
-        assert_equal(len(index_items), 1)
-        assert_in(comment_label, index_items[0].text)
+        assert len(index_items) == 1
+        assert comment_label in index_items[0].text
 
         # Browse to review page
         self.driver.execute_script('window.scrollTo(0, 0);')
@@ -52,8 +51,8 @@ class CommentTest(BaseTest, unittest.TestCase):
         # Verify comment in review text
         html = self.driver.find_element_by_css_selector(
             '.comments').get_attribute('innerHTML')
-        assert_in(comment_label, html)
-        assert_in('i prefer not to', html)
+        assert comment_label in html
+        assert 'i prefer not to' in html
 
     def test_intro(self):
         """Verify that the intro meta data is visible"""

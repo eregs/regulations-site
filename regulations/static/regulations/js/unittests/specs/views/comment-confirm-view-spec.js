@@ -1,20 +1,19 @@
 var chai = require('chai');
 var expect = chai.expect;
 var jsdom = require('mocha-jsdom');
-var localStorage = require('node-localstorage');
-
-var storage = new localStorage.LocalStorage('.');
+var Storage = require('dom-storage');
 
 describe('CommentConfirmView', function() {
   jsdom();
 
   var $el, comments, CommentConfirmView, CommentModel;
+  var Backbone, $;
 
   before(function() {
     Backbone = require('backbone');
     $ = require('jquery');
     Backbone.$ = $;
-    global.localStorage = window.localStorage = storage;
+    global.localStorage = window.localStorage = new Storage();
     comments = require('../../../source/collections/comment-collection');
     CommentModel = require('../../../source/models/comment-model').CommentModel;
     CommentConfirmView = require('../../../source/views/comment/comment-confirm-view');
@@ -36,6 +35,7 @@ describe('CommentConfirmView', function() {
     comments.models.forEach(function(comment) {
       comment.destroy();
     });
+    window.localStorage.clear();
   });
 
   it('clears comments when metadata is defined', function() {

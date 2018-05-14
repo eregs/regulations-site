@@ -1,25 +1,27 @@
-'use strict';
+import storage from '../../redux/storage';
+import { locationActiveEvt } from '../../redux/locationReduce';
+import { paneActiveEvt } from '../../redux/paneReduce';
 
-var $ = require('jquery');
-var _ = require('underscore');
-var Backbone = require('backbone');
-var filesize = require('filesize');
+const $ = require('jquery');
+const _ = require('underscore');
+const Backbone = require('backbone');
+const filesize = require('filesize');
+
 Backbone.$ = $;
 
-var edit = require('prosemirror/dist/edit');
-var menu = require('prosemirror/dist/menu/menu');
+const edit = require('prosemirror/dist/edit');
+const menu = require('prosemirror/dist/menu/menu');
 require('prosemirror/dist/menu/menubar');
 require('prosemirror/dist/markdown');
 
-var MainEvents = require('../../events/main-events');
-var DrawerEvents = require('../../events/drawer-events');
-var CommentModel = require('../../models/comment-model').CommentModel;
-var CommentEvents = require('../../events/comment-events');
-var AttachmentView = require('../../views/comment/attachment-view');
-var comments = require('../../collections/comment-collection');
-var helpers = require('../../helpers');
+const MainEvents = require('../../events/main-events');
+const CommentModel = require('../../models/comment-model').CommentModel;
+const CommentEvents = require('../../events/comment-events');
+const AttachmentView = require('../../views/comment/attachment-view');
+const comments = require('../../collections/comment-collection');
+const helpers = require('../../helpers');
 
-var MAX_ATTACHMENTS = 9;
+const MAX_ATTACHMENTS = 9;
 
 /**
  * Get a presigned upload URL.
@@ -30,14 +32,12 @@ var MAX_ATTACHMENTS = 9;
  */
 function getUploadUrl(file) {
   return $.getJSON(
-    window.APP_PREFIX + 'comments/attachment',
-    {size: file.size, name: file.name, type: file.type || 'application/octet-stream'}
-  ).then(function(resp) {
-    return resp;
-  });
+    `${window.APP_PREFIX}comments/attachment`,
+    { size: file.size, name: file.name, type: file.type || 'application/octet-stream' },
+  ).then(resp => resp);
 }
 
-var CommentView = Backbone.View.extend({
+const CommentView = Backbone.View.extend({
   events: {
     'change input[type="file"]': 'addAttachments',
     'dragenter input[type="file"]': 'highlightDropzone',
@@ -45,10 +45,10 @@ var CommentView = Backbone.View.extend({
     'click .comment-header': 'openComment',
     'click .comment-context-toggle': 'toggleCommentExcerpt',
     'click .comment-delete-response': 'deleteComment',
-    'submit form': 'save'
+    'submit form': 'save',
   },
 
-  initialize: function(options) {
+  initialize: function initialize(options) {
     this.options = options;
 
     this.$context = this.$el.find('.comment-context');
@@ -63,21 +63,21 @@ var CommentView = Backbone.View.extend({
     this.$attachments = this.$el.find('.comment-attachments');
     this.$status = this.$el.find('.status');
 
-    var hrGroup = new menu.MenuCommandGroup('insert');
-    var headingMenu = new menu.Dropdown({
-      label: 'Heading', displayActive: true
+    const hrGroup = new menu.MenuCommandGroup('insert');
+    const headingMenu = new menu.Dropdown({
+      label: 'Heading', displayActive: true,
     }, [new menu.MenuCommandGroup('textblock'), new menu.MenuCommandGroup('textblockHeading')]);
     this.editor = new edit.ProseMirror({
-      menuBar: {content: [menu.inlineGroup, headingMenu, menu.blockGroup, hrGroup]},
+      menuBar: { content: [menu.inlineGroup, headingMenu, menu.blockGroup, hrGroup] },
       commands: edit.CommandSet.default.update({
-        'code:toggle': {menu: null},
-        'code_block:make': {menu: null},
-        'image:insert': {menu: null},
-        'selectParentNode': {menu: null}
+        'code:toggle': { menu: null },
+        'code_block:make': { menu: null },
+        'image:insert': { menu: null },
+        selectParentNode: { menu: null },
       }),
       place: this.$container.get(0),
       docFormat: 'markdown',
-      doc: ''
+      doc: '',
     });
 
     this.attachmentViews = [];
@@ -88,34 +88,40 @@ var CommentView = Backbone.View.extend({
     this.setSection(options.section, options.tocId, options.indexes, options.label);
   },
 
-  setSection: function(section, tocId, indexes, label, blank) {
+  setSection: function setSection(section, tocId, indexes, label, blank) {
     if (this.model) {
       this.stopListening(this.model);
     }
-    var options = {id: section, tocId: tocId, indexes: indexes, label: label, docId: this.options.docId};
+    const options = {
+      id: section,
+      tocId,
+      indexes,
+      label,
+      docId: this.options.docId,
+    };
     this.model = blank ?
       new CommentModel(options) :
       comments.get(section) || new CommentModel(options);
-      this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, tocId, indexes, label, true));
+    this.listenTo(this.model, 'destroy', this.setSection.bind(this, section, tocId, indexes, label, true));
 
     this.render();
   },
 
-  target: function(options) {
+  target: function target(options) {
     this.setSection(options.section, options.tocId, options.indexes, options.label);
     this.$context.empty();
     if (options.$parent) {
-      var label = options.label;
-      var parsed = helpers.parsePreambleId(options.section);
-      var href = window.APP_PREFIX + parsed.path.join('/') + '#' + parsed.hash;
+      let label = options.label;
+      const parsed = helpers.parsePreambleId(options.section);
+      const href = `${window.APP_PREFIX + parsed.path.join('/')}#${parsed.hash}`;
       // Splice section label and context title, if present
       // TODO: Build this upstream
-      var $sectionHeader = options.$parent.find('.node:first :header');
+      const $sectionHeader = options.$parent.find('.node:first :header');
       if ($sectionHeader.length) {
         label = [label, $sectionHeader.text().split('. ').slice(1)].join('. ');
         $sectionHeader.remove();
       }
-      this.$headerLink.html('<a href="' + href + '">' + label + '</a>');
+      this.$headerLink.html(`<a href="${href}">${label}</a>`);
 
       this.$contextSectionLabel.html(options.label);
 
@@ -125,21 +131,21 @@ var CommentView = Backbone.View.extend({
     }
   },
 
-  openComment: function(e) {
+  openComment: function openComment(e) {
     e.preventDefault();
-    var options = {
+    const options = {
       section: this.model.get('id'),
       tocId: this.model.get('tocId'),
-      label: this.model.get('label')
+      label: this.model.get('label'),
     };
     // TODO: Push this logic into `PreambleView`
-    var type = options.section.split('-')[1];
-    DrawerEvents.trigger('section:open', options.tocId);
-    DrawerEvents.trigger('pane:change', type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary');
+    const type = options.section.split('-')[1];
+    storage().dispatch(locationActiveEvt(options.tocId));
+    storage().dispatch(paneActiveEvt(type === 'preamble' ? 'table-of-contents' : 'table-of-contents-secondary'));
     MainEvents.trigger('section:open', options.section, options, 'preamble-section');
   },
 
-  toggleCommentExcerpt: function() {
+  toggleCommentExcerpt: function toggleCommentExcerpt() {
     $('.comment-context-text-show').toggle();
     $('.comment-context-text-hide').toggle();
     $('.fa-plus-circle').toggle();
@@ -147,32 +153,30 @@ var CommentView = Backbone.View.extend({
     $('.comment-context').toggle();
   },
 
-  render: function() {
+  render: function render() {
     this.editor.setContent(this.model.get('comment'), 'markdown');
     this.$attachments.empty();
-    this.attachmentViews = this.model.get('files').map(function(file) {
-      return new AttachmentView(_.extend({$parent: this.$attachments}, file));
-    }.bind(this));
+    this.attachmentViews = this.model.get('files').map(file => new AttachmentView(_.extend({ $parent: this.$attachments }, file)));
     this.setAttachmentCount();
-    this.$attachmentLimit.html('<strong>Limit</strong>: ' + MAX_ATTACHMENTS + ' total attachments.');
+    this.$attachmentLimit.html(`<strong>Limit</strong>: ${MAX_ATTACHMENTS} total attachments.`);
   },
 
-  highlightDropzone: function() {
+  highlightDropzone: function highlightDropzone() {
     this.$input.addClass('highlight');
   },
 
-  unhighlightDropzone: function() {
+  unhighlightDropzone: function unhighlightDropzone() {
     this.$input.removeClass('highlight');
   },
 
-  addAttachments: function(e) {
+  addAttachments: function addAttachments(e) {
     if (this.attachmentCount + e.target.files.length > MAX_ATTACHMENTS) {
       this.$status.text('Too many attachments');
       return;
     }
-    _.each(e.target.files, function(file) {
+    _.each(e.target.files, (file) => {
       this.addAttachment(file);
-    }.bind(this));
+    });
     this.$input.val(null);
     this.unhighlightDropzone();
   },
@@ -183,9 +187,9 @@ var CommentView = Backbone.View.extend({
    *
    * @param {File} file File to upload
    */
-  addAttachment: function(file) {
-    getUploadUrl(file).then(function(resp) {
-      var xhr = new XMLHttpRequest();
+  addAttachment: function addAttachment(file) {
+    getUploadUrl(file).then((resp) => {
+      const xhr = new XMLHttpRequest();
       this.attachmentViews.push(
         new AttachmentView({
           $parent: this.$attachments,
@@ -193,8 +197,8 @@ var CommentView = Backbone.View.extend({
           name: file.name,
           size: filesize(file.size),
           key: resp.key,
-          xhr: xhr
-        })
+          xhr,
+        }),
       );
       this.setAttachmentCount();
       xhr.open('PUT', resp.urls.put);
@@ -203,38 +207,36 @@ var CommentView = Backbone.View.extend({
       // in the meta data fields with x-amz-meta- prefixes
       xhr.setRequestHeader('x-amz-meta-name', file.name);
       xhr.send(file);
-    }.bind(this));
+    });
   },
 
-  clearAttachment: function(key) {
-    var index = _.findIndex(this.attachmentViews, function(view) {
-      return view.options.key === key;
-    });
+  clearAttachment: function clearAttachment(key) {
+    const index = _.findIndex(this.attachmentViews, view => view.options.key === key);
     this.attachmentViews[index].remove();
     this.attachmentViews.splice(index, 1);
     this.setAttachmentCount();
   },
 
-  setAttachmentCount: function() {
+  setAttachmentCount: function setAttachmentCount() {
     // Count saved attachments on other comments and pending attachments on the
     // current comment
-    var count = comments.filter(this.options.docId).reduce(function(total, comment) {
-      var incr = comment.id !== this.model.id ?
+    let count = comments.filter(this.options.docId).reduce((total, comment) => {
+      const incr = comment.id !== this.model.id ?
         comment.get('files').length :
         0;
       return total + incr;
-    }.bind(this), 0);
+    }, 0);
     count += this.attachmentViews.length;
     this.attachmentCount = count;
-    var plural = this.attachmentCount !== 1 ? 's' : '';
-    this.$attachmentCount.text('You\'ve uploaded ' + this.attachmentCount + ' total attachment' + plural + '.');
+    const plural = this.attachmentCount !== 1 ? 's' : '';
+    this.$attachmentCount.text(`You've uploaded ${this.attachmentCount} total attachment${plural}.`);
     this.$input.prop('disabled', this.attachmentCount >= MAX_ATTACHMENTS);
   },
 
-  deleteComment: function(e) {
+  deleteComment: function deleteComment(e) {
     e.preventDefault();
 
-    var comment = comments.get($(e.target).data('section'));
+    const comment = comments.get($(e.target).data('section'));
     if (comment) {
       comment.destroy();
 
@@ -243,26 +245,24 @@ var CommentView = Backbone.View.extend({
     }
   },
 
-  save: function(e) {
+  save: function save(e) {
     e.preventDefault();
 
     this.model.set({
       comment: this.editor.getContent('markdown'),
       commentHtml: this.editor.getContent('html'),
-      files: _.map(this.attachmentViews, function(view) {
-        return {
-          key: view.options.key,
-          name: view.options.name,
-          size: view.options.size,
-          previewUrl: view.options.previewUrl
-        };
-      })
+      files: _.map(this.attachmentViews, view => ({
+        key: view.options.key,
+        name: view.options.name,
+        size: view.options.size,
+        previewUrl: view.options.previewUrl,
+      })),
     });
 
     comments.add(this.model);
     this.model.save();
     this.$status.hide().html('Your comment was saved.').fadeIn();
-  }
+  },
 });
 
 module.exports = CommentView;

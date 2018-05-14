@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# vim: set fileencoding=utf-8
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 import re
@@ -17,12 +16,12 @@ from .link_flattener import flatten_links
 
 class HTMLBuilder(object):
     # @todo simplify this constructor
-    def __init__(self, inline_applier, p_applier, search_applier,
-                 diff_applier=None, id_prefix=None, index_prefix=None):
+    def __init__(self, layers=None, diff_applier=None, id_prefix=None,
+                 index_prefix=None):
+        if layers is None:
+            layers = []
+        self.layers = layers
         self.tree = None
-        self.inline_applier = inline_applier
-        self.p_applier = p_applier
-        self.search_applier = search_applier
         self.diff_applier = diff_applier
         self.id_prefix = id_prefix or []
         self.index_prefix = index_prefix or []
@@ -35,7 +34,7 @@ class HTMLBuilder(object):
     def generate_html(self):
         if self.diff_applier:
             self.diff_applier.tree_changes(self.tree)
-        for layer in self.p_applier.layers.values():
+        for layer in self.layers:
             if hasattr(layer, 'preprocess_root'):   # @todo - remove
                 layer.preprocess_root(self.tree)
         self.process_node(self.tree, indexes=self.index_prefix)
@@ -82,24 +81,21 @@ class HTMLBuilder(object):
         node['list_level'] = self.list_level(node['label'], node['node_type'])
 
         if len(node['text']):
-            inline_elements = self.inline_applier.get_layer_pairs(
-                node['label_id'], node['text'])
-            search_elements = self.search_applier.get_layer_pairs(
-                node['label_id'])
-
             if self.diff_applier:
                 node['marked_up'] = self.diff_applier.apply_diff(
                     node['text'], node['label_id'])
 
             layers_applier = LayersApplier()
-            layers_applier.enqueue_from_list(inline_elements)
-            layers_applier.enqueue_from_list(search_elements)
+            for layer in self.layers:
+                layers_applier.enqueue_from_list(layer.inline_replacements(
+                    node['label_id'], node['text']))
 
             node['marked_up'] = layers_applier.apply_layers(
                 node.get('marked_up', node['text']))
             node['marked_up'] = flatten_links(node['marked_up'])
 
-        node = self.p_applier.apply_layers(node)
+        for layer in self.layers:
+            layer.attach_metadata(node)
 
         node['template_name'] = RegulationsConfig.custom_tpls.get(
             node['label_id'],
@@ -172,12 +168,12 @@ class CFRHTMLBuilder(HTMLBuilder):
             node['header_markup'] = node['header']
             citation = list(takewhile(lambda p: p != 'Interp',
                                       node['label']))
-            icl = self.inline_applier.layers.get(
-                InternalCitationLayer.shorthand)
-            if icl and len(citation) > 2:
-                text = '%s(%s)' % (citation[1], ')('.join(citation[2:]))
-                node['header_markup'] = node['header_markup'].replace(
-                    text, icl.render_url(citation, text))
+            for layer in self.layers:
+                if (isinstance(layer, InternalCitationLayer) and
+                        len(citation) > 2):
+                    text = '%s(%s)' % (citation[1], ')('.join(citation[2:]))
+                    node['header_markup'] = node['header_markup'].replace(
+                        text, layer.render_url(citation, text))
 
     @staticmethod
     def human_label(node):

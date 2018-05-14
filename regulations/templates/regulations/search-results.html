@@ -17,10 +17,12 @@ Partial Search Results.
         {% for result in results.results %}
             <li>
             <h3><a href="{{result.url}}" class="internal" data-linked-section="{{result.section_id}}" data-linked-version="{{version}}" data-linked-subsection="{{result.label|join:'-'}}">{{result.header}}</a></h3>
-                <p>{{result.text}}</p>
+              {% if result.subheader %}<h4>{{ result.subheader }}</h4>{% endif %}
+              {% if result.subsubheader %}<h5>{{ result.subsubheader }}</h5>{% endif %}
+              {% if result.text %}<p>{{result.text}}</p>{% endif %}
             </li>
         {% empty %}
-            <span class="no-results">Sorry, there are no results in the regulation effective {{version_by_date|date}}.</span>
+            <span class="no-results">Sorry, there are no results in the regulation effective {{version_by_date|date:"n/j/Y"}}.</span>
         {% endfor %}
         </ul>
     </section>

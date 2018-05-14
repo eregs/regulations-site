@@ -1,0 +1,8 @@
+{% extends "notice_comment/confirm-fail.html" %}
+
+{% block alert-text %}
+<div class="alert-text">
+  <h3>Comment submission invalid.</h3>
+  <p>Your submission was invalid: {{ message }}</p>
+</div>
+{% endblock %}

@@ -4,6 +4,8 @@ Sidebar.scss
 sidebar.scss styles all of the right sidebar content
 */
 
+$icon_size: 18px;
+
 /*
 add a margin to sidebar content
 this offsets the persistent header & ensures long content is inside the viewport
@@ -33,26 +35,6 @@ Sidebar
     @include reset;
   }
 
-  // Headers within the sidebar should be <h4>
-  h4 {
-    padding: 0 10px;
-    font-size: 1em * $sans_font_scale_factor;
-    line-height: 40px;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: $gray_darkest;
-    @include sans-font-bold;
-
-    &.important {
-      color: $red;
-    }
-
-    h5 {
-      margin: 0;
-    }
-  }
-
 /*
 Sidebar Expandables
 -------------------
@@ -65,7 +47,7 @@ Sidebar Expandables
     width: 100%;
 
     &.has-content {
-      background-color: $orange_lightest;
+      background-color: $blue_lightest;
     }
 
     h4 {
@@ -74,7 +56,7 @@ Sidebar Expandables
 
     a {
       float: right;
-      font-size: 0.875em;
+      font-size: $icon_size;
       line-height: 40px;
       margin-right: 25px;
     }
@@ -83,13 +65,13 @@ Sidebar Expandables
   header {
     &.expandable a:before {
       @extend .cf-icon;
-      content: '\e109';
+      content: '\e003';
       color: $blue_light;
     }
 
     &.open a:before {
       @extend .cf-icon;
-      content: '\e111';
+      content: '\e007';
       color: $blue_light;
     }
   }
@@ -154,12 +136,25 @@ Regs Meta contains the sub-content meta data found in the sidebar
 
 .regs-meta {
 
+  // Headers within the sidebar should be <h4>
   h4 {
-    @include sans-font-bold;
+    padding: 0 10px;
+    font-size: 1em * $sans_font_scale_factor;
+    line-height: 40px;
+    margin: 0;
+    letter-spacing: 1px;
+    color: $gray_darkest;
+    @include sans-font-regular;
+
+    &.important {
+      color: $red;
+    }
+
   }
 
   h5 {
     font-size: 16px * $sans_font_scale_factor;
+    margin: 0;
   }
 
   /* We either use a subtitle + "What's this?" or an inline explanation
@@ -207,7 +202,7 @@ Regs Meta contains the sub-content meta data found in the sidebar
 
     .cf-icon-right {
       float: right;
-      font-size: 0.875em;
+      font-size: $icon_size;
       line-height: 2;
       color: $gray_light;
     }
@@ -391,6 +386,22 @@ Styles for the UI help slide down
   border-top: 1px solid $gray_light;
 }
 
+#print_part {
+  .group {
+    background-color: $gray_lightest;
+    @include border-bottom-light;
+  }
+
+  .cf-icon-print {
+    float: right;
+    color: $action_color;
+    // The print icon is a bit smaller than chevrons; enlarge it
+    font-size: $icon_size + 3;
+    line-height: 40px;
+    margin-right: 15px;
+  }
+}
+
 /*
 Small screens
 ---------------
@@ -478,5 +489,9 @@ Small screens
         margin-right: 10px;
       }
     }
+  }
+
+  #print_part .cf-icon-print {
+    margin-right: 0;
   }
 }
