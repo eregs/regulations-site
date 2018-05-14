@@ -7,7 +7,7 @@ ENV PIP_PACKAGE=python${PYTHON3}-pip \
 RUN apt-get update \
     && apt-get install -y $PIP_PACKAGE \
     && rm -rf /var/lib/apt/lists/*
-RUN $PIP_CMD install --upgrade pip
+RUN $PIP_CMD install --upgrade pip setuptools
 RUN npm install --quiet -g grunt-cli
 
 COPY ["manage.py", "package.json", "example-config.json", "setup.py", "frontendbuild.sh", "Gruntfile.js", ".babelrc", ".eslintignore", ".eslintrc", "/app/src/"]

@@ -17,6 +17,7 @@ This repository is part of a larger eRegulations project. To read about it, plea
 This library requires
 * Python 2.7, 3.4, 3.5, or 3.6
 * Django 1.8, 1.9, 1.10, or 1.11
+* setuptools v20.5 or later
 * Node 6 or later
 
 ## API Docs

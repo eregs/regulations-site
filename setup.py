@@ -9,8 +9,8 @@ setup(
     install_requires=[
         'cached-property',
         'django>=1.8,<1.12',
-        'enum34',
-        'futures',
+        'enum34;python_version<"3.4"',
+        'futures;python_version<"3"',
         'requests',
         'six',
     ],
