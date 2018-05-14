@@ -9,4 +9,4 @@ nose-exclude
 nose-testconfig
 selenium
 tox
-git+https://github.com/openstack/bandit.git   # PyPi version is out of date
+bandit
