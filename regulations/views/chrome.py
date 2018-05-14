@@ -110,6 +110,11 @@ class ChromeView(TemplateView):
         context['TOC'] = toc
 
         context['meta'] = utils.regulation_meta(reg_part, version)
+
+        # Throw 404 if regulation doesn't exist
+        if not context['meta']:
+            raise error_handling.MissingContentException()
+
         context['version_span'] = version_span(
             context['history'], context['meta']['effective_date'])
         context['version_switch_view'] = self.version_switch_view

@@ -52,6 +52,20 @@ def test_chrome_404(monkeypatch, rf):
     assert response.status_code == 404
 
 
+def test_chrome_empty_meta(monkeypatch, rf):
+    """Return 404 when trying to access missing regulation.
+    In this situation, `regulation_meta` returns {} """
+
+    chrome_view = chrome.ChromeView()
+
+    monkeypatch.setattr(chrome, 'fetch_grouped_history', Mock())
+    monkeypatch.setattr(chrome, 'fetch_toc', Mock(return_value=[]))
+    monkeypatch.setattr(chrome.utils, 'regulation_meta', Mock(return_value={}))
+
+    with pytest.raises(error_handling.MissingContentException):
+        chrome_view.set_chrome_context({}, '2', 'version')
+
+
 def test_chrome_error_propagation(monkeypatch, rf):
     """While we don't rely on this sort of propagation for the main content
     (much), test it in the sidebar"""
