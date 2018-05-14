@@ -135,3 +135,45 @@ class LayersApplierTest(TestCase):
                   "law. </dfn> state law. <dfn> <a href=\"link_url\">state"
                   "</a> liability. </dfn>")
         self.assertEquals(applier.text, result)
+
+    def test_apply_layers(self):
+        # Tests same as above but from one level out.
+        original = 'state'
+        replacement = '<a href="link_url">state</a>'
+        locations = [0, 2]
+        text = ("<em>(6)</em> <dfn> Under state law. </dfn> state "
+                "law. <dfn> state liability. </dfn>")
+
+        applier = layers_applier.LayersApplier()
+        applier.enqueue((original, replacement, locations))
+        applier.apply_layers(text)
+
+        result = ("<em>(6)</em> <dfn> Under <a href=\"link_url\">state</a> "
+                  "law. </dfn> state law. <dfn> <a href=\"link_url\">state"
+                  "</a> liability. </dfn>")
+        self.assertEquals(applier.text, result)
+
+    def test_apply_layers_escaping(self):
+        # See https://github.com/eregs/regulations-site/issues/514 and
+        # https://github.com/fecgov/fec-eregs/issues/382
+        #
+        # It appears that we had a holdover step of unescaping that, thanks to
+        # looser interpretations in Python 3.6 (specifically, ``&sec`` was
+        # treated as a valid escape even without a trailing semicolon) started
+        # breaking links that have a ``&section`` parameter.
+        original = 'state'
+        replacement = '<a href="link_url">state</a>'
+        locations = [0, 2]
+        text = ("<em>(6)</em> <dfn> Under state law. </dfn> state "
+                "law. <dfn> state liability. </dfn>"
+                "<a href='http://example.org?one=1&section2'>test</a>")
+
+        applier = layers_applier.LayersApplier()
+        applier.enqueue((original, replacement, locations))
+        applier.apply_layers(text)
+
+        result = ("<em>(6)</em> <dfn> Under <a href=\"link_url\">state</a> "
+                  "law. </dfn> state law. <dfn> <a href=\"link_url\">state"
+                  "</a> liability. </dfn>"
+                  "<a href='http://example.org?one=1&section2'>test</a>")
+        self.assertEquals(applier.text, result)

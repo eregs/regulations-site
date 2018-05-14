@@ -1,7 +1,6 @@
 import re
 
 from six.moves.queue import PriorityQueue
-from six.moves.html_parser import HTMLParser
 
 from regulations.generator.layers.location_replace import LocationReplace
 
@@ -29,11 +28,6 @@ class LayersApplier(object):
         LocationReplace().location_replace(xml_node, original, replacement,
                                            locations)
 
-    def unescape_text(self):
-        """ Because of the way we do replace_all(), we need to unescape HTML
-        entities.  """
-        self.text = HTMLParser().unescape(self.text)
-
     def replace_all(self, original, replacement):
         """ Replace all occurrences of original with replacement. This is HTML
         aware; it effectively looks at all of the text in between HTML tags"""
@@ -46,7 +40,6 @@ class LayersApplier(object):
             index = match.end()
         text_chunks.append(self.text[index:])   # trailing text
         self.text = "".join(text_chunks)
-        self.unescape_text()
 
     def replace_at(self, original, replacement, locations):
         """ Replace the occurrences of original at all the locations with
@@ -55,7 +48,6 @@ class LayersApplier(object):
         locations.sort()
         self.text = LocationReplace().location_replace_text(
             self.text, original, replacement, locations)
-        self.unescape_text()
 
     def apply_layers(self, original_text):
         self.text = original_text
