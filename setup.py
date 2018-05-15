@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="regulations",
-    version="8.4.1",
+    version="8.4.2",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
