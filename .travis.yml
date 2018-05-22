@@ -28,7 +28,6 @@ before_install:
   - nvm use 6.9.2
 install:
   - pip install tox-travis
-  - npm install -g grunt-cli
 script:
   - ./frontendbuild.sh
   - if [ "$INTEGRATION_TESTS" = "true" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./devops/integration-tests.sh; else tox; fi

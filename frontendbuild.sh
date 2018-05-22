@@ -7,4 +7,4 @@ if [ ! -f config.json ]; then
 fi
 
 npm install --quiet
-grunt build-dist
+npm run grunt build-dist
