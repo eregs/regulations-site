@@ -39,7 +39,7 @@
     "coveralls": "^2.11.2",
     "deamdify": "^0.1.1",
     "dom-storage": "^2.0.2",
-    "eslint": "^3.12.2",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
