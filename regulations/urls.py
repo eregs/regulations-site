@@ -12,6 +12,7 @@ from regulations.views.diff import PartialSectionDiffView
 from regulations.views.partial import PartialDefinitionView
 from regulations.views.partial import PartialParagraphView
 from regulations.views.partial import PartialRegulationView, PartialSectionView
+from regulations.views.section import SectionView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
@@ -89,7 +90,7 @@ urlpatterns = [
     # A regulation section with chrome
     # Example: http://.../201-4/2013-10704
     url(r'^%s/%s$' % (section_pattern, version_pattern),
-        lt_cache(ChromeView.as_view(partial_class=PartialSectionView)),
+        SectionView.as_view(),
         name='chrome_section_view'),
     # Subterp, interpretations of a while subpart, emptypart or appendices
     # Example: http://.../201-Subpart-A-Interp/2013-10706
