@@ -1,0 +1,258 @@
+{% extends "regulations/base.html" %}
+{% load static from staticfiles %}
+{% load macros %}
+
+
+{% block title %}
+    {{meta.cfr_title_number}} CFR {{formatted_id}} | eRegulations
+{% endblock %}
+
+
+{% block body %}
+{% comment %}
+    Page-level template for everything but notices.
+{% endcomment %}
+
+<!--[if lt IE 8]>
+    <div class="browser-warning displayed">
+        <h2>Please note that the eRegulations tool does not support Internet Explorer version 7 or below.</h2>
+        <ul>
+            <li>To improve your experience, please <a href="http://browsehappy.com/">upgrade your browser <span class="cf-icon cf-icon-right"></span></a></li>
+            <li>If you are using IE8 or later, you may need to turn off "Compatibility View."</li>
+        </ul>
+    </div>
+<![endif]-->
+
+<header id="site-header" class="reg-header chrome-header" role="banner">
+{% include "regulations/main-header.html" %}
+
+<div class="sub-head
+            {% block sub-head-class %}
+              {% if not version_span.timeline.is_present %}
+              non-current
+              {% endif %}
+            {% endblock %}">
+    {% block sub-head-skip-nav %}
+    <a href="#content-wrapper" class="hidden-text">Skip to main content</a> <!-- skip to content link for screen readers-->
+    {% endblock %}
+    {% block sub-head-drawer-icons %}
+    <div class="toc-head">
+        {% block sidebar-drawer-icons %}
+        <a href="#" id="panel-link" class="toc-toggle panel-slide"
+           title="Navigation drawer toggle">
+          {% include "regulations/svgs/open-caret.svg" %}
+          {% include "regulations/svgs/close-caret.svg" %}
+        </a>
+        {% endblock %}
+        <ul class="drawer-toggles">
+          {% block sidebar-icons %}
+            {% block sidebar-toc-link %}
+              {% spaceless %}
+                <li>
+                  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents">
+                    <span class="icon-text">Table of Contents</span>
+                    {% include "regulations/svgs/table-of-contents.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
+            {% endblock %}
+            {% block sidebar-history-link %}
+              {% spaceless %}
+                <li>
+                  <a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline">
+                    <span class="icon-text">Regulation Timeline</span>
+                    {% include "regulations/svgs/timeline.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
+            {% endblock %}
+            {% block sidebar-search-link %}
+              {% spaceless %}
+                <li>
+                  <a href="#search" id="search-link" class="toc-nav-link" title="Search">
+                    <span class="icon-text">Search</span>
+                    {% include "regulations/svgs/search.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
+            {% endblock %}
+          {% endblock %}
+        </ul>
+    </div> <!-- /toc-head-->
+    {% endblock %}
+    {% block sub-head-content %}
+    <div id="content-header" class="header-main group">
+        <div class="wayfinding">
+          {% block wayfinding %}
+            <span class="subpart"></span>
+            <span id="active-title">{% block active_title %}<em class="header-label"><span class="reg_part">§{{ reg_part }}</span></em>{% endblock %}</span>
+          {% endblock %}
+        </div>
+        {% block header-secondary %}
+          <span class="effective-date">
+            Effective
+            {% if version_span.timeline.is_past %}
+              {{ version_span.start|date:"n/j/Y" }}
+              to {{ version_span.end|date:"n/j/Y" }}.
+            {% elif version_span.timeline.is_present %}
+              {{ version_span.start|date:"n/j/Y" }} to present.
+            {% else %}
+              {{ version_span.start|date:"n/j/Y" }}.
+            {% endif %}
+
+            {% if not version_span.timeline.is_present %}
+              <a class="return-to-current"
+                 href="{% url 'redirect_by_current_date' label_id %}"
+                 >View current</a>
+            {% endif %}
+          </span>
+        {% endblock %}
+    </div>
+    {% endblock %}
+</div>
+</header>
+
+{% comment %}
+    We include the drawer in-line so that we can use blocks
+    http://stackoverflow.com/questions/9633387/django-using-blocks-in-included-templates
+{% endcomment %}
+{% block whole-toc %}
+{% with active_version=version %}
+<div id="menu" class="panel" data-page-type="reg-section" data-doc-id="{{ reg_part }}" data-cfr-title-number="{{meta.cfr_title_number}}">
+    {% block drawer-toc %}
+        {%if TOC %}
+            {% with nav_class='toc-nav__base toc-nav__cfr-viewer' toc_items=TOC top_toc=True %}
+                {% include "regulations/toc.html" %}
+            {% endwith %}
+        {%endif%}
+    {% endblock %}
+    {% block drawer-history %}
+        <div id="timeline" class="history-drawer toc-container hidden">
+            <div class="drawer-header">
+                <h2 class="toc-type">Regulation Timeline</h2>
+            </div><!-- /.drawer-header -->
+            <div class="drawer-content">
+                <p class="effective-label">Find the regulation effective on this date:</p>
+                <div class="form-wrap group">
+                <form action="{% url 'redirect_by_date_get' label_id %}"
+                      method="GET" class="date-input">
+                  <input type="text" name="month" class="month-input" maxlength="2" value="{% now "m" %}" title="Effective month" />
+                  / <input type="text" name="day" class="day-input" maxlength="2" value="{% now "d" %}" title="Effective day"/>
+                  / <input type="text" name="year" class="year-input" maxlength="4" value="{% now "Y" %}" title="Effective year" />
+                  <button type="submit" class="find-button">Find</button>
+                </form>
+                </div><!--./date-form-->
+                {% comment %}TODO: Indentation here is all kinds of funky {% endcomment %}
+                <ul class="version-list" id="history-toc-list">
+                {% for version in history %}
+                    <li class="{% if version.version == active_version %}current {% endif %}status-list" data-base-version="{{version.version}}">
+                    <a href="{% url version_switch_view label_id version.version %}" class="version-link" data-version="{{ version.version }}" id="link-{{ version.version }}">
+                        {% if version.timeline.is_present %}
+                            <h3>Current Regulation</h3>
+                        {% endif %}
+                        <span class="version-date">{{ version.by_date|date:"n/j/Y" }}</span>
+                    </a>
+                        <div class="timeline-content-wrap">
+                            <h3 class="final-rule">Final Rule</h3>
+                            <ul class="rule-list">
+                            {% for notice in version.notices %}
+                              {% with pub_date=notice.publication_date|date:"n/j/Y" %}
+                                {% if notice.fr_url %}
+                                  <li>{% external_link classes="fr-notice" url=notice.fr_url text="Published "|add:pub_date %}</li>
+                                {% else %}
+                                  <li>Published {{pub_date}}</li>
+                                {% endif %}
+                              {% endwith %}
+                            {% endfor %}
+                            </ul>
+                            <div class="diff-selector group">
+                                <h3 class="compare-title">Compare {{reg_part}} effective on {{version.by_date|date:"n/j/Y"}} with</h3>
+                                <form action="{% url 'diff_redirect' diff_redirect_label active_version %}" method="GET">
+                                  <div class="select-content">
+                                    <select name="new_version" title="Compare version">
+                                        {% for version in history %}
+                                            {% if active_version != version.version %}
+                                                <option value="{{version.version}}">{{version.by_date|date:"n/j/Y"}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                  </div> <!--/.select-content-->
+                                  <div class="diff-button-wrapper">
+                                      <button>Show Differences</button>
+                                  </div>
+                                </form>
+                            </div><!--/.diff-selector-->
+                        </div><!--/.timeline-content-wrap-->
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div> <!--/#history-->
+    {% endblock %}
+    {% block drawer-search %}
+    <div id="search" class="search-drawer toc-container hidden">
+        <div class="drawer-header">
+            <h2 class="toc-type">Search</h2>
+        </div><!-- /.drawer-header -->
+        <div class="drawer-content">
+            <form action="{% url 'chrome_search' reg_part %}" method="GET" role="search" data-doc-type="cfr">
+                <div class="search-box">
+                    <input type="text" name="q" value="{{ q }}" id="search-input" title="Search term"/><button type="submit"><span class="cf-icon cf-icon-search"></span><strong class="icon-text">Search</strong></button>
+                </div><!--/.search-box-->
+                <div class="version-search">
+                    <h3>Search in regulation effective:</h3>
+                    <div class="select-content">
+                        <select name="version" id="version-select" title="Effective version">
+                        {% for version in history %}
+                            <option value="{{version.version}}"{% if active_version == version.version %} selected="selected"{% endif %}>{{version.by_date|date:"n/j/Y"}}</option>
+                        {% endfor %}
+                        </select>
+                    </div> <!--/.select-content-->
+                </div><!--/.version-search-->
+            </form>
+        </div><!-- /.drawer-content -->
+    </div> <!--/#search-->
+    {% endblock %}
+</div> <!-- /.panel -->
+{% endwith %}
+{% endblock %}
+
+<div class="wrap group">
+
+{% block chrome-content %}
+<main role="main">
+  <div id="content-body" class="main-content">
+    <section id="content-wrapper" class="reg-text">
+        {% if tree.children %}
+            {% for c in tree.children %}
+                {%include "regulations/subpart.html" %}
+                {%include "regulations/appendix.html" %}
+                {%include "regulations/interpretations.html" %}
+                {%include "regulations/navigation.html"%}
+            {% endfor %}
+        {% endif %}
+    </section> <!-- /.reg-text -->        
+  </div> <!-- /.main-content -->
+</main>
+{% endblock %}
+
+{% block chrome-sidebar %}
+<div id="sidebar" class="secondary-content" role="complementary">
+    <div id="sidebar-content" class="sidebar-inner">
+        <section id="definition" class="regs-meta"></section>
+        {% block reg_sidebar %}
+            {{ sidebar_content|safe }}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+</div> <!-- /.wrap -->
+
+{% include "regulations/footer.html" %}
+
+<div class="breakaway-wrap">
+    <div id="breakaway-view" class="breakaway-content"></div>
+</div>
+
+{% endblock %}

@@ -17,7 +17,7 @@ class SectionView(TemplateView):
 
     url_path_view = 'chrome_section_view'
 
-    template_name = 'regulations/regulation-content.html'
+    template_name = 'regulations/section.html'
 
     sectional_links = True
 
@@ -26,8 +26,6 @@ class SectionView(TemplateView):
         return generator.layers(
             utils.layer_names(self.request), 'cfr', label_id,
             self.sectional_links, version)
-
-    
   
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
