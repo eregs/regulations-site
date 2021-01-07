@@ -241,7 +241,7 @@
     <div id="sidebar-content" class="sidebar-inner">
         <section id="definition" class="regs-meta"></section>
         {% block reg_sidebar %}
-            {{ sidebar_content|safe }}
+            {%include "regulations/sidebar.html"%}
         {% endblock %}
     </div>
 </div>
