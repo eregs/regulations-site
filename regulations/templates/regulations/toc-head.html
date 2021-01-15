@@ -1,0 +1,45 @@
+{% block sub-head-drawer-icons %}
+    <div class="toc-head">
+        {% block sidebar-drawer-icons %}
+        <a href="#" id="panel-link" class="toc-toggle panel-slide"
+           title="Navigation drawer toggle">
+          {% include "regulations/svgs/open-caret.svg" %}
+          {% include "regulations/svgs/close-caret.svg" %}
+        </a>
+        {% endblock %}
+        <ul class="drawer-toggles">
+          {% block sidebar-icons %}
+            {% block sidebar-toc-link %}
+              {% spaceless %}
+                <li>
+                  <a href="#table-of-contents" id="menu-link" class="toc-nav-link current" title="Table of Contents">
+                    <span class="icon-text">Table of Contents</span>
+                    {% include "regulations/svgs/table-of-contents.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
+            {% endblock %}
+            {% block sidebar-history-link %}
+              {% spaceless %}
+                <li>
+                  <a href="#timeline" id="timeline-link" class="toc-nav-link" title="Regulation Timeline">
+                    <span class="icon-text">Regulation Timeline</span>
+                    {% include "regulations/svgs/timeline.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
+            {% endblock %}
+            {% block sidebar-search-link %}
+              {% spaceless %}
+                <li>
+                  <a href="#search" id="search-link" class="toc-nav-link" title="Search">
+                    <span class="icon-text">Search</span>
+                    {% include "regulations/svgs/search.svg" %}
+                  </a>
+                </li>
+              {% endspaceless %}
+            {% endblock %}
+          {% endblock %}
+        </ul>
+    </div> <!-- /toc-head-->
+    {% endblock %}

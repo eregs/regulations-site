@@ -53,6 +53,15 @@ CSS/Javascript etc., should inherit from this template.
     <!--[if IE 8]>         <body class="lt-ie9"> <![endif]-->
     <!--[if IE 9]>         <body class="lt-ie10"> <![endif]-->
     <!--[if gt IE 9]><!--><body><!--<![endif]-->
+    <!--[if lt IE 8]>
+    <div class="browser-warning displayed">
+        <h2>Please note that the eRegulations tool does not support Internet Explorer version 7 or below.</h2>
+        <ul>
+            <li>To improve your experience, please <a href="http://browsehappy.com/">upgrade your browser <span class="cf-icon cf-icon-right"></span></a></li>
+            <li>If you are using IE8 or later, you may need to turn off "Compatibility View."</li>
+        </ul>
+    </div>
+    <![endif]-->
 
     {% if EREGS_GLOBALS.ANALYTICS.GOOGLE %}
       {% include "regulations/google_analytics.html" %}
