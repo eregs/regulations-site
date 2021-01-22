@@ -165,8 +165,6 @@ urlpatterns = [
 
     # A regulation section without chrome
     # Example: http://.../partial/201-4/2013-10704
-    url(rf'^partial/(?P<label_id>{match_section})/(?P<version>{match_version})$',
-        lt_cache(PartialSectionView.as_view()), name='partial_section_view'),
 
     # Subterp, interpretations of a whole subpart, emptypart or appendices
     # Example: http://.../partial/201-Subpart-A-Interp/2013-10706
@@ -184,9 +182,4 @@ urlpatterns = [
     # Example: http://.../partial/201/2013-10704
     url(rf'^partial/(?P<label_id>{match_reg})/(?P<version>{match_version})$',
         lt_cache(PartialRegulationView.as_view()), name='partial_regulation_view'),
-
-    # A regulation paragraph without chrome.
-    # Example: http://.../partial/201-2-g/2013-10704
-    url(rf'^partial/(?P<label_id>{match_paragraph})/(?P<version>{match_version})$',
-        lt_cache(PartialParagraphView.as_view()), name='partial_paragraph_view'),
 ]
