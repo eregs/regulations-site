@@ -56,7 +56,4 @@ class MarkerInfoLayer(ParagraphLayer):
     def attach_metadata(self, node):
         text_index = node['label_id']
         if self.layer_data.get(text_index):
-            original = self.layer_data[text_index][0]["text"]
-            stripped = original.replace('(', '').replace(')', '')
-            stripped = stripped.replace('.', '')
-            node['paragraph_marker'] = stripped
+            node['paragraph_marker'] = self.layer_data[text_index][0]["text"]

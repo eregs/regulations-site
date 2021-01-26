@@ -50,8 +50,8 @@ class MarkerInfoLayerTest(TestCase):
 
         node['label_id'] = '1001-12-a'
         mil.attach_metadata(node)
-        self.assertEqual(node['paragraph_marker'], 'a')
+        self.assertEqual(node['paragraph_marker'], '(a)')
 
         node['label_id'] = '1001-12-q'
         mil.attach_metadata(node)
-        self.assertEqual(node['paragraph_marker'], 'q')
+        self.assertEqual(node['paragraph_marker'], 'q.')
