@@ -6,14 +6,12 @@ from regulations.generator import generator
 from regulations.generator.node_types import label_to_text, type_from_label
 from regulations.generator.section_url import SectionUrl
 from regulations.generator.sidebar.help import Help as HelpSideBar
-from regulations.generator.subterp import filter_by_subterp
 from regulations.generator.toc import fetch_toc
 from regulations.generator.versions import fetch_grouped_history
 from regulations.views import utils
-from regulations.views.partial_interp import PartialSubterpView
 from regulations.views.reg_landing import regulation_exists, get_versions
 from regulations.views.reg_landing import regulation as landing_page
-from regulations.views.partial import PartialSectionView
+from regulations.views.partial import PartialView
 from regulations.views.partial_search import PartialSearch
 from regulations.views.sidebar import SideBarView
 from regulations.views import error_handling
@@ -153,29 +151,6 @@ class ChromeView(TemplateView):
         return response.content
 
 
-class ChromeSubterpView(ChromeView):
-    """Corresponding chrome class for subterp partial view"""
-    partial_class = PartialSubterpView
-    version_switch_view = 'chrome_subterp_view'
-
-    def check_tree(self, context):
-        """We can't defer to Chrome's check because Subterps are constructed
-        -site side"""
-        version, label_id = context['version'], context['label_id']
-        label = label_id.split('-')
-        reg_part = label[0]
-
-        interp = generator.get_tree_paragraph(reg_part + '-Interp', version)
-        if not interp:
-            raise error_handling.MissingSectionException(label_id, version,
-                                                         context)
-
-        subterp_sects = filter_by_subterp(interp['children'], label, version)
-        if not subterp_sects:
-            raise error_handling.MissingSectionException(label_id, version,
-                                                         context)
-
-
 class ChromeSearchView(ChromeView):
     """Search results with chrome"""
     template_name = 'regulations/chrome-search.html'
@@ -206,7 +181,7 @@ class ChromeSearchView(ChromeView):
 class ChromeLandingView(ChromeView):
     """Landing page with chrome"""
     template_name = 'regulations/landing-chrome.html'
-    partial_class = PartialSectionView  # Needed to know sectional status
+    partial_class = PartialView
 
     def check_tree(self, context):
         pass    # Landing page doesn't perform this check

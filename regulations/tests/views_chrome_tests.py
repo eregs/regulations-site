@@ -130,32 +130,6 @@ def test_chrome_diff_redirect_label_paragraph(label, expected):
     assert view.diff_redirect_label(label, []) == expected
 
 
-@pytest.mark.parametrize('label', (
-    '199-Subpart-Interp', '199-Subpart-A-Interp', '199-Appendices-Interp'))
-def test_subterp_diff_redirect_label(label):
-    view = chrome.ChromeSubterpView()
-    assert '199-Interp' == view.diff_redirect_label(label, None)
-
-
-def test_subterp_check_tree(monkeypatch):
-    monkeypatch.setattr(chrome, 'generator', Mock())
-    monkeypatch.setattr(chrome, 'filter_by_subterp', Mock())
-    chrome.generator.get_tree_paragraph.return_value = None
-
-    view = chrome.ChromeSubterpView()
-    with pytest.raises(chrome.error_handling.MissingSectionException):
-        view.check_tree({'version': 'vvvv', 'label_id': 'llll'})
-
-    chrome.generator.get_tree_paragraph.return_value = {'children': []}
-    chrome.filter_by_subterp.return_value = []
-    with pytest.raises(chrome.error_handling.MissingSectionException):
-        view.check_tree({'version': 'vvvv', 'label_id': 'llll'})
-
-    chrome.filter_by_subterp.return_value = ["something"]
-    # No exception
-    view.check_tree({'version': 'vvvv', 'label_id': 'llll'})
-
-
 def test_chrome_search_version_present(monkeypatch, rf):
     """If a version is in the request, we use it to derive the label_id."""
     monkeypatch.setattr(chrome, 'utils', Mock())

@@ -5,13 +5,11 @@ from regulations.views.about import about
 from regulations.views.chrome_breakaway import ChromeSXSView
 from regulations.views.chrome import (
     ChromeView, ChromeLandingView,
-    ChromeSearchView,
-    ChromeSubterpView)
+    ChromeSearchView)
 from regulations.views.diff import ChromeSectionDiffView
 from regulations.views.diff import PartialSectionDiffView
 from regulations.views.partial import PartialDefinitionView
-from regulations.views.partial import PartialParagraphView
-from regulations.views.partial import PartialRegulationView, PartialSectionView
+from regulations.views.partial import PartialRegulationView
 from regulations.views.section import SectionView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
@@ -100,13 +98,6 @@ urlpatterns = [
         SectionView.as_view(),
         name='chrome_section_view'),
 
-    # Subterp, interpretations of a while subpart, emptypart or appendices
-    # Example: http://.../201-Subpart-A-Interp/2013-10706
-    #          http://.../201-Subpart-Interp/2013-10706
-    #          http://.../201-Appendices-Interp/2013-10706
-    url(rf'^(?P<label_id>{match_sub_interp})/(?P<version>{match_version})$',
-        lt_cache(ChromeSubterpView.as_view()), name=ChromeSubterpView.version_switch_view),
-
     # Interpretation of a section/paragraph or appendix
     # Example: http://.../201-4-Interp/2013-10704
     url(rf'^(?P<label_id>{match_interp})/(?P<version>{match_version})$',
@@ -120,14 +111,6 @@ urlpatterns = [
             partial_class=PartialRegulationView,
             version_switch_view='chrome_regulation_view')),
         name='chrome_regulation_view'),
-
-    # A regulation paragraph with chrome
-    # Example: http://.../201-2-g/2013-10704
-    url(rf'^(?P<label_id>{match_paragraph})/(?P<version>{match_version})$',
-        lt_cache(ChromeView.as_view(
-            partial_class=PartialParagraphView,
-            version_switch_view='chrome_paragraph_view')),
-        name='chrome_paragraph_view'),
 
     # A regulation landing page
     # Example: http://.../201
@@ -163,18 +146,6 @@ urlpatterns = [
     url(rf'^partial/definition/(?P<label_id>{match_paragraph})/(?P<version>{match_version})$',
         lt_cache(PartialDefinitionView.as_view()), name='partial_definition_view'),
 
-    # A regulation section without chrome
-    # Example: http://.../partial/201-4/2013-10704
-    url(rf'^partial/(?P<label_id>{match_section})/(?P<version>{match_version})$',
-        lt_cache(PartialSectionView.as_view()), name='partial_section_view'),
-
-    # Subterp, interpretations of a whole subpart, emptypart or appendices
-    # Example: http://.../partial/201-Subpart-A-Interp/2013-10706
-    #          http://.../partial/201-Subpart-Interp/2013-10706
-    #          http://.../partial/201-Appendices-Interp/2013-10706
-    url(rf'^partial/(?P<label_id>{match_sub_interp})/(?P<version>{match_version})$',
-        lt_cache(partial_interp.PartialSubterpView.as_view()), name='partial_subterp_view'),
-
     # An interpretation of a section/paragraph or appendix without chrome.
     # Example: http://.../partial/201-2-Interp/2013-10704
     url(rf'^partial/(?P<label_id>{match_interp})/(?P<version>{match_version})$',
@@ -184,9 +155,4 @@ urlpatterns = [
     # Example: http://.../partial/201/2013-10704
     url(rf'^partial/(?P<label_id>{match_reg})/(?P<version>{match_version})$',
         lt_cache(PartialRegulationView.as_view()), name='partial_regulation_view'),
-
-    # A regulation paragraph without chrome.
-    # Example: http://.../partial/201-2-g/2013-10704
-    url(rf'^partial/(?P<label_id>{match_paragraph})/(?P<version>{match_version})$',
-        lt_cache(PartialParagraphView.as_view()), name='partial_paragraph_view'),
 ]

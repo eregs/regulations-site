@@ -31,8 +31,6 @@ def redirect_by_date_str(request, label_id, date_str):
         return redirect('chrome_section_view', label_id, last_version)
     elif last_version and len(label_parts) == 1:
         return redirect('chrome_regulation_view', label_id, last_version)
-    elif last_version:
-        return redirect('chrome_paragraph_view', label_id, last_version)
     else:
         return handle_generic_404(request)
 

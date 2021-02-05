@@ -4,8 +4,8 @@ from django.views.generic.base import TemplateView
 
 from regulations.generator import generator
 from regulations.generator.html_builder import CFRHTMLBuilder
-from regulations.generator.node_types import EMPTYPART, REGTEXT, label_to_text
-from regulations.views import navigation, utils
+from regulations.generator.node_types import label_to_text
+from regulations.views import utils
 
 
 class PartialView(TemplateView):
@@ -36,61 +36,6 @@ class PartialView(TemplateView):
         builder.tree = tree
         builder.generate_html()
         return self.transform_context(context, builder)
-
-
-class PartialSectionView(PartialView):
-    """ Single section of reg text """
-    template_name = 'regulations/regulation-content.html'
-
-    def section_navigation(self, label, version):
-        nav_sections = navigation.nav_sections(label, version)
-        if nav_sections:
-            p_sect, n_sect = nav_sections
-
-            return {'previous': p_sect, 'next': n_sect,
-                    'page_type': 'reg-section'}
-
-    def transform_context(self, context, builder):
-        child_of_root = builder.tree
-        #   Add a layer to account for subpart if this is regtext
-        if builder.tree['node_type'] == REGTEXT:
-            child_of_root = {
-                'node_type': EMPTYPART,
-                'children': [builder.tree]}
-        context['markup_page_type'] = 'reg-section'
-        context['tree'] = {'children': [child_of_root]}
-        context['navigation'] = self.section_navigation(
-            context['label_id'], context['version'])
-
-        return context
-
-
-class PartialParagraphView(PartialSectionView):
-    """ Single paragraph of a regtext """
-    def transform_context(self, context, builder):
-        node = builder.tree
-        # Wrap with layers until we reach a section
-        while len(node['label']) > 2:
-            node = {'node_type': node['node_type'],
-                    'children': [node],
-                    'label': node['label'][:-1]}
-
-        # added to give the proper parent container ID
-        # when interp headers are rendered
-        node['markup_id'] = context['label_id']
-
-        # One more layer for regtext
-        if node['node_type'] == REGTEXT:
-            node = {'node_type': EMPTYPART,
-                    'children': [node],
-                    'label': node['label'][:1] + ['Subpart']}
-
-        context['markup_page_type'] = 'reg-section'
-        context['tree'] = {'children': [node], 'label': node['label'][:1],
-                           'node_type': REGTEXT}
-        context['navigation'] = self.section_navigation(
-            context['label_id'], context['version'])
-        return context
 
 
 class PartialDefinitionView(PartialView):
