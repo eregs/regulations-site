@@ -92,10 +92,12 @@ class SectionView(SidebarContextMixin, TemplateView):
     def get_toc(self, reg_part, version):
         # table of contents
         toc = fetch_toc(reg_part, version)
+        self.build_urls(toc, version)
+        return toc
+
+    def build_urls(self, toc, version):
         for el in toc:
             el['url'] = SectionUrl().of(
                 el['index'], version, self.sectional_links)
-            for sub in el.get('sub_toc', []):
-                sub['url'] = SectionUrl().of(
-                    sub['index'], version, self.sectional_links)
-        return toc
+            if 'sub_toc' in el:
+                self.build_urls(el['sub_toc'], version)
