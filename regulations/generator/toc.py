@@ -69,7 +69,10 @@ def toc_subpart(data, so_far, toc):
         'sub_toc': []
     }
     for sub in toc.get('-'.join(data['index']), []):
-        element['sub_toc'].append(toc_sect_appendix(sub, so_far))
+        if 'Subjgrp' in sub['index']:
+            element['sub_toc'].append(toc_subjgrp(sub, so_far, toc))
+        else:
+            element['sub_toc'].append(toc_sect_appendix(sub, so_far))
     return element
 
 
