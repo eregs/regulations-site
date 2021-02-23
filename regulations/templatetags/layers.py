@@ -14,7 +14,6 @@ def internalcitation(value, arg):
     label = "-".join(arg['label'])
     result = api_reader.ApiReader().layer("internal-citations", "cfr", label, version)
     if result is not None and label in result:
-        raise Exception("test")
         citations = result[label]
         citations.sort(key=lambda x: x["offsets"][0][0], reverse=True)
         for citation in citations:
