@@ -127,7 +127,7 @@ class TableOfContentsLayerTest(TestCase):
         toc.sectional = True
         toc.version = 'verver'
         toc.attach_metadata(node)
-        self.assertTrue('100-1/verver#100-1' in node['TOC'][0]['url'])
+        self.assertTrue('100/1/verver/#100-1' in node['TOC'][0]['url'])
 
     def test_attach_metadata_compatibility(self):
         toc = TableOfContentsLayer({'100': [

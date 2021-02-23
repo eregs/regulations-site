@@ -29,7 +29,7 @@
             </p>
         {% endif  %}
 
-        <a  href="{% url 'chrome_section_view' node.section_id version %}#{{node.label_id}}"
+        <a  href="{% url 'reader_view' node.part node.section_id version %}#{{node.label_id}}"
             class="full-def internal"
             data-linked-section="{{node.label_id}}">{{formatted_label}}</a>
 

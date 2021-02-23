@@ -3,14 +3,13 @@ from setuptools import find_packages, setup
 
 setup(
     name="regulations",
-    version="8.4.2",
+    version="9.0.0-rc",
     packages=find_packages(),
     include_package_data=True,
+    python_requires='~=3.6',
     install_requires=[
         'cached-property',
-        'django>=1.8,<1.12',
-        'enum34;python_version<"3.4"',
-        'futures;python_version<"3"',
+        'django>=3.1,<4',
         'requests',
         'six',
     ],

@@ -54,7 +54,7 @@ def first_section(reg_part, version):
     some it's -101. """
 
     toc = fetch_toc(reg_part, version, flatten=True)
-    return toc[0]['section_id']
+    return toc[0]['index'][1]
 
 
 def make_sortable(string):

@@ -19,7 +19,7 @@ class SidebarContextMixin:
             sidebars.append(
                 self.build_sidebar_context(
                     class_or_class_path,
-                    context['label_id'],
+                    f"{context['part']}-{context['section']}",
                     context['version']))
 
         context['sidebars'] = sidebars

@@ -16,8 +16,14 @@ class UrlCachesTests(TestCase):
         fn = Mock(return_value=HttpResponse('response'))
         request = RequestFactory().get('a-path')
 
-        mock_caches = {'example': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}}
+        mock_caches = {
+            'example': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            },
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            },
+        }
         with self.settings(CACHES=mock_caches):
             daily_cache = decorator_from_middleware_with_args(
                 url_caches.DailyCacheMiddleware)(cache_alias='example')

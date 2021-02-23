@@ -5,7 +5,7 @@ from collections import namedtuple
 import logging
 import re
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from regulations.generator.toc import fetch_toc
 from regulations.views import utils

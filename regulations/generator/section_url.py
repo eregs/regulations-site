@@ -1,6 +1,6 @@
 from itertools import takewhile
 
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.urls import reverse, NoReverseMatch
 
 from regulations.generator.node_types import to_markup_id
 from regulations.generator.toc import fetch_toc
@@ -34,11 +34,12 @@ class SectionUrl(object):
             url = ''
 
             if sectional:
-                view_name = 'chrome_section_view'
-                label = self.view_label_id(citation, version)
+                view_name = 'reader_view'
+                part = citation[0]
+                section = citation[1]
 
                 try:
-                    url = reverse(view_name, args=(label, version))
+                    url = reverse(view_name, args=(part, section, version))
                 except NoReverseMatch:
                     # XXX We have some errors in our layers. Once those are
                     # fixed, we need to revisit this.

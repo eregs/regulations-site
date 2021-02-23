@@ -1,39 +1,16 @@
 {% comment %}
     Used once per section. Contained by subparts at the top level.
 {% endcomment %}
+{% load layers %}
 
-{%if c.node_type == 'regtext' %}
-<section
-        id="{{c.markup_id}}"
-        class="reg-section"
-        tabindex="0"
-        data-permalink-section
-        data-base-version="{{version}}"
-        data-page-type="{{markup_page_type}}"
-        data-label="{{c.human_label}}"
-        {% if newer_version %}data-newer-version="{{newer_version}}"{% endif %}>
-    <h3 class="section-title" tabindex="0"> {{c.header|safe}} </h3>
-        {% if c.marked_up %}
-        <p>
-        {{c.marked_up|safe}}
-        </p>
-        {% endif %}
-
-        <ol class="level-{{c.list_level|add:1}}">
-        {% if c.children %}
-            {% for node in c.children %}
-              {% include node.template_name %}
-            {% endfor %}
-        {% endif %}
-        </ol>
-
-        {% if c.interp %}
-            {% with interp=c.interp %}
-                {% include "regulations/slide-down-interp.html" %}
-            {% endwith %}
-        {% endif %}
-
-    {% include "regulations/footnotes.html" with footnotes=c.footnotes only %}
-
+<section id="{{c.label | join:'-'}}" class="reg-section">
+    {% if c.title %}
+    <h2 class="section-title" tabindex="0"> {{c.title}} </h2>
+    {% endif %}
+    {{c.text | internalcitation:c | safe}}
+    <div class="children">
+    {% for node in c.children %}
+    {% include "regulations/regulation_text.html" with c=node %}
+    {% endfor %}
+    </div>
 </section>
-{% endif %}

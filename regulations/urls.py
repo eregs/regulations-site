@@ -1,3 +1,4 @@
+from django.urls import path
 from django.conf.urls import url
 
 from regulations.url_caches import daily_cache, lt_cache
@@ -92,11 +93,7 @@ urlpatterns = [
     url(rf'^(?P<label_id>{match_paragraph})/CURRENT$',
         redirect_by_current_date, name='redirect_by_current_date'),
 
-    # A regulation section with chrome
-    # Example: http://.../201-4/2013-10704
-    url(rf'^(?P<label_id>{match_section})/(?P<version>{match_version})$',
-        SectionView.as_view(),
-        name='chrome_section_view'),
+    path('<part>/<section>/<version>/', SectionView.as_view(), name='reader_view'),
 
     # Interpretation of a section/paragraph or appendix
     # Example: http://.../201-4-Interp/2013-10704

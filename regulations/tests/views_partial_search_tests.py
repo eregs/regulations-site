@@ -30,14 +30,13 @@ def test_get(client, monkeypatch):
                       'effective_on': date(2003, 4, 5)}],
          'timeline': Timeline.past}
     ]
-    response = client.get('/partial/search/111?version=vvv&q=none').content
-    assert b'111-22' in response
-    assert b'111-24-a' in response
-    assert b'111.24(a)' in response
-    assert b'111-25' in response
-    assert b'111.25' in response
-    assert b'3333' in response
-    assert b'Consumer&#39;s' in response
+    response = client.get('/partial/search/111?version=vvv&q=none').content.decode("utf-8")
+    assert '111-22' in response
+    assert '111-24-a' in response
+    assert '111.24(a)' in response
+    assert '111-25' in response
+    assert '111.25' in response
+    assert '3333' in response
 
 
 def test_root_info(client, monkeypatch):

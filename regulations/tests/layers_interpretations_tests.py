@@ -22,7 +22,7 @@ class InterpretationsLayerTest(TestCase):
         }
         il = InterpretationsLayer(layer)
         il.partial_view = Mock()
-        il.partial_view.return_value.content = 'content'
+        il.partial_view.return_value.content = b'content'
 
         node = {'label_id': '200-2-b-3-i'}
         il.attach_metadata(node)
@@ -46,7 +46,7 @@ class InterpretationsLayerTest(TestCase):
         }
         il = InterpretationsLayer(layer)
         il.partial_view = Mock()
-        il.partial_view.return_value.content = 'content'
+        il.partial_view.return_value.content = b'content'
 
         node = {'label_id': '200-2'}
         il.attach_metadata(node)
@@ -66,7 +66,7 @@ class InterpretationsLayerTest(TestCase):
         }
         il = InterpretationsLayer(layer)
         il.partial_view = Mock()
-        il.partial_view.return_value.content = 'content'
+        il.partial_view.return_value.content = b'content'
 
         node = {'label_id': '200-2'}
         il.attach_metadata(node)
@@ -84,7 +84,7 @@ class InterpretationsLayerTest(TestCase):
         }
         il = InterpretationsLayer(layer)
         il.partial_view = Mock()
-        il.partial_view.return_value.content = 'content'
+        il.partial_view.return_value.content = b'content'
 
         node = {'label_id': '200-Q-5'}
         il.attach_metadata(node)
@@ -105,7 +105,7 @@ class InterpretationsLayerTest(TestCase):
         }
         il = InterpretationsLayer(layer)
         il.partial_view = Mock()
-        il.partial_view.return_value.content = 'content'
+        il.partial_view.return_value.content = b'content'
 
         node = {'label_id': '200-2-a'}
         il.attach_metadata(node)
@@ -122,7 +122,7 @@ class InterpretationsLayerTest(TestCase):
             '1234-56-a': [{'reference': '1234-56-a-Interp'}]}, version='vvvv')
         il.root_interp_label = '1234-56-Interp'
         il.partial_view = Mock()
-        il.partial_view.return_value.content = 'content'
+        il.partial_view.return_value.content = b'content'
         il.attach_metadata({'label_id': '1234-56'})
         self.assertFalse(generator.generator.get_tree_paragraph.called)
 

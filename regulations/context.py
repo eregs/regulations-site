@@ -1,7 +1,7 @@
 from six.moves.urllib_parse import urlencode
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 
 def eregs_globals(request):

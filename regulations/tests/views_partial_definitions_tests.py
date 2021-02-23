@@ -9,7 +9,8 @@ class PartialDefinitionTests(TestCase):
         t = loader.get_template('regulations/partial-definition.html')
 
         node = {
-            'section_id': '102-4',
+            'part': '102',
+            'section_id': '4',
             'label_id': '202-2-a',
             'children': [{'label_id': '202-2-a-1'}]}
 
@@ -22,7 +23,8 @@ class PartialDefinitionTests(TestCase):
         t = loader.get_template('regulations/partial-definition.html')
 
         node = {
-            'section_id': '102-4',
+            'part': '102',
+            'section_id': '4',
             'label_id': '202-2-a',
             'marked_up': 'This term is defined carefully'}
 

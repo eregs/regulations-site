@@ -66,27 +66,6 @@ def test_chrome_empty_meta(monkeypatch, rf):
         chrome_view.set_chrome_context({}, '2', 'version')
 
 
-def test_chrome_error_propagation(monkeypatch, rf):
-    """While we don't rely on this sort of propagation for the main content
-    (much), test it in the sidebar"""
-    monkeypatch.setattr(chrome, 'error_handling', Mock())
-    monkeypatch.setattr(chrome, 'generator', Mock())
-    monkeypatch.setattr(chrome, 'SideBarView', Mock())
-    chrome.SideBarView.as_view.return_value.return_value = HttpResponseGone()
-
-    class FakeView(chrome.ChromeView):
-        def add_main_content(self, context):
-            pass
-
-        def set_chrome_context(self, context, reg_part, version):
-            pass
-
-    view = FakeView()
-    view.request = rf.get('/')
-    response = view.get(view.request, label_id='lab', version='ver')
-    assert response.status_code == 410
-
-
 def test_chrome_get_404(client, monkeypatch):
     monkeypatch.setattr(chrome, 'generator', Mock())
     chrome.generator.get_regulation.return_value = None

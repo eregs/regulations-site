@@ -51,7 +51,7 @@ class InterpretationsLayer(ParagraphLayer):
 
                 interp = {
                     'label_id': reference,
-                    'markup': response.content,
+                    'markup': response.content.decode('utf-8'),
                 }
 
                 ref_parts = reference.split('-')

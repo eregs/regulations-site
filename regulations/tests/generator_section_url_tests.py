@@ -57,9 +57,9 @@ class SectionUrlTest(TestCase):
         self.assertEquals('#303', url)
 
         url = SectionUrl.of(['303', '1', 'b'], 'vvv', True)
-        self.assertEquals('/303-1/vvv#303-1-b', url)
+        self.assertEquals('/303/1/vvv/#303-1-b', url)
 
-        self.assertTrue('999-88/verver#999-88-e' in
+        self.assertTrue('999/88/verver/#999-88-e' in
                         SectionUrl.of(['999', '88', 'e'], 'verver', True))
         self.assertEqual(
             '#999-88-e', SectionUrl.of(['999', '88', 'e'], 'verver', False))

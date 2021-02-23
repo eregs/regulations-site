@@ -48,8 +48,8 @@ class PartialDefinitionView(PartialView):
         context['node'] = builder.tree
         context['formatted_label'] = label_to_text(
             builder.tree['label'], True, True)
-        context['node']['section_id'] = '%s-%s' % (
-            builder.tree['label'][0], builder.tree['label'][1])
+        context['node']['part'] = builder.tree['label'][0]
+        context['node']['section_id'] = builder.tree['label'][1]
         return context
 
 

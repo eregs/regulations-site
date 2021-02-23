@@ -37,7 +37,7 @@ class ChromeView(TemplateView):
     """ Base class for views which wish to include chrome. """
     template_name = 'regulations/chrome.html'
     #   Which view name to use when switching versions
-    version_switch_view = 'chrome_section_view'
+    version_switch_view = 'reader_view'
     sidebar_components = SideBarView.components
     partial_class = None
 
@@ -115,7 +115,6 @@ class ChromeView(TemplateView):
 
         context['version_span'] = version_span(
             context['history'], context['meta']['effective_date'])
-        context['version_switch_view'] = self.version_switch_view
         context['diff_redirect_label'] = self.diff_redirect_label(
             context['label_id'], toc)
 
@@ -136,7 +135,7 @@ class ChromeView(TemplateView):
 
         self.check_tree(context)
         self.add_main_content(context)
-        context['sidebar_content'] = self.sidebar(label_id, version)
+        # context['sidebar_content'] = self.sidebar(label_id, version)
 
         return context
 
@@ -148,7 +147,7 @@ class ChromeView(TemplateView):
                                 version=version)
         self._assert_good(response)
         response.render()
-        return response.content
+        return response.content.decode('utf-8')
 
 
 class ChromeSearchView(ChromeView):
@@ -194,7 +193,7 @@ class ChromeLandingView(ChromeView):
         """Landing page isn't a TemplateView"""
         response = landing_page(self.request, context['reg_part'])
         self._assert_good(response)
-        context['main_content'] = response.content
+        context['main_content'] = response.content.decode('utf-8')
 
     def fill_kwargs(self, kwargs):
         """Add the version and replace the label_id for the chrome context"""
@@ -204,7 +203,7 @@ class ChromeLandingView(ChromeView):
 
         current, _ = get_versions(kwargs['label_id'])
         kwargs['version'] = current['version']
-        kwargs['label_id'] = utils.first_section(reg_part, current['version'])
+        kwargs['label_id'] = f"{reg_part}-{utils.first_section(reg_part, current['version'])}"
         return kwargs
 
 

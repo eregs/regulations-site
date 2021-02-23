@@ -41,4 +41,4 @@ class ChromeSXSView(ChromeBreakawayView):
                                 notice_id=context['notice_id'])
         self._assert_good(response)
         response.render()
-        return response.content
+        return response.content.decode('utf-8')

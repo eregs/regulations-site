@@ -14,7 +14,7 @@ typography.scss contains both global and application specific typography */
 */
 
 body {
-  color: $black;
+  color: $medicare_gray_dark;
   font-family: $body_font;
   font-size: 1em;
   line-height: 1.5; // 24px
@@ -56,7 +56,7 @@ h2 {
 }
 
 h3 {
-  @include sans-font-bold;
+  @include serif-font-bold;
   font-size: 34px;
   line-height: 40px;
 }

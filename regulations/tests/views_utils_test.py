@@ -44,7 +44,7 @@ class UtilsTest(TestCase):
             {'section_id': '204-100', 'index': ['204', '100']},
             {'section_id': '204-101', 'index': ['204', '101']}]
         first = utils.first_section('204', '2')
-        self.assertEqual(first, '204-100')
+        self.assertEqual(first, '100')
 
     def test_make_sortable(self):
         """Verify that strings get decomposed correctly into sortable tuples"""

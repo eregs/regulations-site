@@ -12,7 +12,7 @@ import logging
 from django.http import Http404
 from django.conf import settings
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template.response import TemplateResponse
 from django.views.generic.base import View
 

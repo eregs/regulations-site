@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         py: [36, 38]
-        django: [111]
+        django: [31]
         include:
           - py: 36
             version: 3.6

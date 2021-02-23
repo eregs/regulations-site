@@ -10,7 +10,7 @@
                   New amendments effective: <strong>{{new_version.by_date|date:"n/j/Y"}}</strong>
               </div>
               <div class="alert_view-link">
-                  <a href="{% url 'chrome_section_view' reg_first_section new_version.version %}" class="go">View amended regulation</a></li>
+                  <a href="{% url 'reader_view' reg_part reg_first_section new_version.version %}" class="go">View amended regulation</a></li>
               </div>
             </div><!--/.alert-->
             {% endif %}

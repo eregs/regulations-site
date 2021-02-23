@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from regulations.generator import api_reader, node_types
 from regulations.generator.html_builder import PreambleHTMLBuilder

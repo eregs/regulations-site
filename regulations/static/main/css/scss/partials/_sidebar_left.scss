@@ -1,0 +1,18 @@
+
+//-----------------------------
+// Left Sidebar
+//-----------------------------
+
+@import "../application_settings";
+
+aside.left-sidebar {
+	color: $reverse_text_color;
+
+	a {
+		color: $reverse_link_color;
+
+		&:hover {
+			color: $reverse_link_hover;
+		}
+	}
+}

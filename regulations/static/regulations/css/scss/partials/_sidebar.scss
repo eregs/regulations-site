@@ -142,9 +142,8 @@ Regs Meta contains the sub-content meta data found in the sidebar
     font-size: 1em * $sans_font_scale_factor;
     line-height: 40px;
     margin: 0;
-    letter-spacing: 1px;
-    color: $gray_darkest;
-    @include sans-font-regular;
+    color: $action_color_dark;
+    @include sans-font-semibold;
 
     &.important {
       color: $red;
@@ -393,8 +392,7 @@ Styles for the UI help slide down
   }
 
   .cf-icon-print {
-    float: right;
-    color: $action_color;
+    color: $action_color_dark;
     // The print icon is a bit smaller than chevrons; enlarge it
     font-size: $icon_size + 3;
     line-height: 40px;

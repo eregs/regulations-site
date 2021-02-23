@@ -28,7 +28,6 @@ def get_versions(label_id):
 
 
 def regulation(request, label_id):
-
     context = {}
     current_version, new_version = get_versions(label_id)
     if new_version:

@@ -1,0 +1,31 @@
+
+//-----------------------------
+// Header
+//-----------------------------
+
+@import "../application_settings";
+
+header {
+
+	a {
+		text-decoration: none;
+		color: $secondary_link_color;
+
+		&:hover {
+			color: $secondary_link_hover
+		}
+	}
+
+	.site-title {
+		display: inline-block;
+		border-right: 1px solid $border_color;
+		padding-right: 1em;
+		margin-right: 1em;
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
+
+	.reg-title {
+		display: inline-block;
+	}
+}

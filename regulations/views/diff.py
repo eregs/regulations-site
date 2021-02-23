@@ -2,7 +2,7 @@
 from collections import namedtuple
 
 import six
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from regulations.generator import generator
 from regulations.generator.html_builder import CFRHTMLBuilder
