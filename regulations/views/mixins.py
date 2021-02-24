@@ -32,3 +32,11 @@ class SidebarContextMixin:
             sidebar_class = getattr(import_module(module_name), class_name)
         sidebar = sidebar_class(label_id, version)
         return sidebar.full_context(self.client, self.request)
+
+
+class CitationContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super(CitationContextMixin, self).get_context_data(**kwargs)
+        if 'part' in context and 'section' in context:
+            context['citation'] = f"{context['part']}-{context['section']}"
+        return context
