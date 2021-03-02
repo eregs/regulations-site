@@ -9,9 +9,7 @@ from regulations.generator.sidebar.help import Help as HelpSideBar
 from regulations.generator.toc import fetch_toc
 from regulations.generator.versions import fetch_grouped_history
 from regulations.views import utils
-from regulations.views.reg_landing import regulation_exists, get_versions
-from regulations.views.reg_landing import regulation as landing_page
-from regulations.views.partial import PartialView
+from regulations.generator.versions import get_versions
 from regulations.views.partial_search import PartialSearch
 from regulations.views.sidebar import SideBarView
 from regulations.views import error_handling
@@ -175,36 +173,6 @@ class ChromeSearchView(ChromeView):
         results field"""
         super(ChromeSearchView, self).add_main_content(context)
         context['results'] = context['main_content_context']['results']
-
-
-class ChromeLandingView(ChromeView):
-    """Landing page with chrome"""
-    template_name = 'regulations/landing-chrome.html'
-    partial_class = PartialView
-
-    def check_tree(self, context):
-        pass    # Landing page doesn't perform this check
-
-    def sidebar(self, label_id, version):
-        """Landing pages don't have a sidebar generated this way"""
-        return None
-
-    def add_main_content(self, context):
-        """Landing page isn't a TemplateView"""
-        response = landing_page(self.request, context['reg_part'])
-        self._assert_good(response)
-        context['main_content'] = response.content.decode('utf-8')
-
-    def fill_kwargs(self, kwargs):
-        """Add the version and replace the label_id for the chrome context"""
-        reg_part = kwargs['label_id']
-        if not regulation_exists(reg_part):
-            raise error_handling.MissingContentException()
-
-        current, _ = get_versions(kwargs['label_id'])
-        kwargs['version'] = current['version']
-        kwargs['label_id'] = f"{reg_part}-{utils.first_section(reg_part, current['version'])}"
-        return kwargs
 
 
 class BadComponentException(Exception):

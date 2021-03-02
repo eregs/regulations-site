@@ -4,13 +4,11 @@ from django.http import Http404
 from regulations.generator import api_reader
 from regulations.generator import generator
 from regulations.views import navigation, utils
-from regulations.generator.toc import fetch_toc
-from regulations.generator.section_url import SectionUrl
 from regulations.views import error_handling
-from regulations.views.mixins import SidebarContextMixin, CitationContextMixin
+from regulations.views.mixins import SidebarContextMixin, CitationContextMixin, TableOfContentsMixin
 
 
-class SectionView(SidebarContextMixin, CitationContextMixin, TemplateView):
+class SectionView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin, TemplateView):
 
     template_name = 'regulations/section.html'
 
@@ -61,16 +59,3 @@ class SectionView(SidebarContextMixin, CitationContextMixin, TemplateView):
             p_sect, n_sect = nav_sections
             return {'previous': p_sect, 'next': n_sect,
                     'page_type': 'reg-section'}
-
-    def get_toc(self, reg_part, version):
-        # table of contents
-        toc = fetch_toc(reg_part, version)
-        self.build_urls(toc, version)
-        return toc
-
-    def build_urls(self, toc, version):
-        for el in toc:
-            el['url'] = SectionUrl().of(
-                el['index'], version, self.sectional_links)
-            if 'sub_toc' in el:
-                self.build_urls(el['sub_toc'], version)

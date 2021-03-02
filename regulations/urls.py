@@ -5,7 +5,7 @@ from regulations.url_caches import daily_cache, lt_cache
 from regulations.views.about import about
 from regulations.views.chrome_breakaway import ChromeSXSView
 from regulations.views.chrome import (
-    ChromeView, ChromeLandingView,
+    ChromeView,
     ChromeSearchView)
 from regulations.views.diff import ChromeSectionDiffView
 from regulations.views.diff import PartialSectionDiffView
@@ -26,6 +26,7 @@ from regulations.views.redirect import (
 )
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
+from regulations.views.regulation_landing import RegulationLandingView
 
 # Reusable pattern matching constants to improve readability
 match_version = match_notice = r'[-\d\w_]+'
@@ -111,8 +112,7 @@ urlpatterns = [
 
     # A regulation landing page
     # Example: http://.../201
-    url(rf'^(?P<label_id>{match_reg})$',
-        ChromeLandingView.as_view(), name='regulation_landing_view'),
+    path('<part>/', RegulationLandingView.as_view(), name="regulation_landing_view"),
 
     # Load just the sidebar
     # Example: http://.../partial/sidebar/201-2/2013-10704

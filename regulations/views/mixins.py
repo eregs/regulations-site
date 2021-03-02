@@ -4,6 +4,8 @@ import six
 from django.conf import settings
 
 from regulations.generator import api_reader
+from regulations.generator.toc import fetch_toc
+from regulations.generator.section_url import SectionUrl
 
 
 class SidebarContextMixin:
@@ -40,3 +42,18 @@ class CitationContextMixin:
         if 'part' in context and 'section' in context:
             context['citation'] = f"{context['part']}-{context['section']}"
         return context
+
+
+class TableOfContentsMixin:
+    def get_toc(self, reg_part, version):
+        # table of contents
+        toc = fetch_toc(reg_part, version)
+        self.build_urls(toc, version)
+        return toc
+
+    def build_urls(self, toc, version):
+        for el in toc:
+            el['url'] = SectionUrl().of(
+                el['index'], version, self.sectional_links)
+            if 'sub_toc' in el:
+                self.build_urls(el['sub_toc'], version)

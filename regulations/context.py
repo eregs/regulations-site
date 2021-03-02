@@ -6,7 +6,7 @@ from django.urls import reverse
 
 def eregs_globals(request):
     env = 'source' if getattr(settings, 'JS_DEBUG', False) else 'built'
-    prefix = reverse('regulation_landing_view', kwargs={'label_id': '9999'})
+    prefix = reverse('regulation_landing_view', kwargs={'part': '9999'})
     prefix = prefix.replace('9999', '')
     analytics = getattr(settings, 'ANALYTICS', {})
     if 'DAP' in analytics:
