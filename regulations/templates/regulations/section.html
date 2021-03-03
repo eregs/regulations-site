@@ -7,6 +7,16 @@
 
 {% block body %}
 
+<!-- Temporary: Gives users a way to switch between part, subpart, and section views -->
+<div class="switch-view">
+    <ul>    
+        <li><a>Part View</a></li>
+        <li><a>Subpart View</a></li>
+        <li><a class="active">Section View</a></li>
+    </ul>
+</div>
+<!-- / Temporary -->
+
 <header>
     {% include "regulations/main-header.html" %}
 </header>
@@ -19,24 +29,19 @@
         {% endwith %}
     </aside>
 
-    <main>
-        <section>
-            {% include "regulations/regulation_text.html" with c=tree %}
-            {% include "regulations/navigation.html" %}
-        </section> <!-- /.reg-text -->
+    <main class="reg-text">
+        {% include "regulations/regulation_text.html" with c=tree %}
+        {% include "regulations/navigation.html" %}
     </main>
 
     <aside class="right-sidebar">
-        <div>
-            {%include "regulations/sidebar.html"%}
-        </div>
+        {%include "regulations/sidebar.html"%}
     </aside>
 
 </div>   
 
 <footer>
     <div class="container">
-        <h4>Footer</h4>
         {% include "regulations/footer.html" %}
     </div>
 </footer>

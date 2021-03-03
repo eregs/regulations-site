@@ -1,33 +1,34 @@
 {% comment %}
+    ** We should really rename this HTML file (it's not really navigation) **
     Display the previous, next section links
 {% endcomment %}
 
 {% if navigation %}
-<nav class="section-nav footer-nav" role="navigation">
-    <ul>
-{% if navigation.previous %}
-{% with prev=navigation.previous %}
-        <li class="previous next-prev">
-            <a href="{{ prev.url }}"
-               class="navigation-link backward next-prev-link"
-               data-linked-section="{{prev.section_id}}"
-               data-page-type="{{navigation.page_type}}"
-            ><span class="cf-icon cf-icon-left"></span><span class="next-prev-label">Previous section - </span>{{ prev.markup_prefix|safe }}{{prev.label}} </a> <span class="next-prev-title">{{prev.sub_label}}</span>
-        </li>
-{% endwith %}
-{% endif %}
+<div class="next-previous">
 
-{% if navigation.next %}
-{% with next=navigation.next %}
-        <li class="next next-prev">
-            <a href="{{ next.url }}"
-               class="navigation-link forward next-prev-link"
-               data-linked-section="{{next.section_id}}"
-               data-page-type="{{navigation.page_type}}"
-            ><span class="cf-icon cf-icon-right"></span><span class="next-prev-label">Next section - </span>{{ next.markup_prefix|safe }}{{next.label}}</a> <span class="next-prev-title">{{next.sub_label}}</span>
-        </li>
-{% endwith %}
-{% endif %}
-    </ul>
-</nav>
+  {% if navigation.previous %}
+  {% with prev=navigation.previous %}
+  <a class="next-prev previous" href="{{ prev.url }}" 
+      class="navigation-link backward next-prev-link"
+      data-linked-section="{{prev.section_id}}"
+      data-page-type="{{navigation.page_type}}">
+    <div class="next-prev-label">Previous section: {{ prev.markup_prefix|safe }}{{prev.label}}</div> 
+    <div class="next-prev-title">{{prev.sub_label}}</div>
+  </a>
+  {% endwith %}
+  {% endif %}
+
+  {% if navigation.next %}
+  {% with next=navigation.next %}
+  <a class="next-prev next" href="{{ next.url }}"
+    class="navigation-link forward next-prev-link"
+    data-linked-section="{{next.section_id}}"
+    data-page-type="{{navigation.page_type}}">
+    <div class="next-prev-label">Next section: {{ next.markup_prefix|safe }}{{next.label}}</div>
+    <div class="next-prev-title">{{next.sub_label}}</div>
+  </a>   
+  {% endwith %}
+  {% endif %}
+
+</div>
 {% endif %}

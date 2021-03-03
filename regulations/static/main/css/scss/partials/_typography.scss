@@ -21,6 +21,8 @@ body {
 
 h1 {
   font-size: $base_font_size*1.5;
+  font-family: $secondary_site_font;
+  margin-bottom: 1.5em;
 }
 
 h2 {

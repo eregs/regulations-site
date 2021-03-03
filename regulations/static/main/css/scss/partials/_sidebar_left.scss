@@ -1,7 +1,7 @@
 
-//-----------------------------
-// Left Sidebar
-//-----------------------------
+//-----------------------------------
+// Left Sidebar - Table of Contents
+//-----------------------------------
 
 @import "../application_settings";
 
@@ -14,5 +14,47 @@ aside.left-sidebar {
 		&:hover {
 			color: $reverse_link_hover;
 		}
+	}
+
+	ul {
+		padding: 0;
+
+		&.toggle-toc-menu-sections {
+			padding-left: 1em;
+		}
+
+		li {
+			list-style: none;
+
+			a {
+				text-decoration: none;
+				font-weight: bold;
+			}
+		}
+	}
+
+	.subpart-letter {
+		cursor: pointer;
+	}
+
+	.subpart-range {
+		font-size: .8em;
+	}
+
+	.subpart-name {
+		font-size: .8em;
+		font-weight: normal;
+		padding-right: 2em;
+	}
+
+	.toc-section-number {
+		font-size: .9em;
+	}
+
+	.toc-section-name {
+		color: $reverse_text_color;
+		font-weight: normal;
+		font-size: .9em;
+		margin-bottom: 1em;
 	}
 }

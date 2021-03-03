@@ -28,10 +28,13 @@ $primary_color: $dark_blue;
 $secondary_color: $teal;
 
 $primary_link_color: $mid_blue;
-$primary_link_hover: $light_blue;
+$primary_link_hover: $dark_blue;
 
 $secondary_link_color: $teal;
 $secondary_link_hover: $mid_blue;
+
+$teritary_link_color: $dark_blue;
+$teritary_link_hover: $mid_blue;
 
 $reverse_link_color: $light_blue;
 $reverse_link_hover: $white;
@@ -40,6 +43,7 @@ $visited_link_color: $magenta;
 
 $main_background_color: $white;
 $secondary_background_color: $lightest_gray;
+$teritary_background_color: $lightest_blue;
 $reverse_background_color: $dark_blue;
 
 $border_color: $light_gray;
@@ -53,7 +57,7 @@ $reverse_text_color: $white;
 //--------------------------
 
 $base_font_size: 1rem;
-$site_ratio: 1.5;
+$site_ratio: 1.6;
 
 $primary_site_font: "Open Sans", sans-serif;
 $secondary_site_font: "Merriweather", Georgia, serif;
@@ -81,7 +85,8 @@ a {
 
   &:hover {
     color: $primary_link_hover;
-    @include transition
+    cursor: pointer;
+    @include transition;
   }
 }
 

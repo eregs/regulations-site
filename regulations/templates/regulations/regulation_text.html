@@ -5,7 +5,7 @@
 
 <section id="{{c.label | join:'-'}}" class="reg-section">
     {% if c.title %}
-    <h2 class="section-title" tabindex="0"> {{c.title}} </h2>
+    <h1 class="section-title" tabindex="0"> {{c.title}} </h1> <!-- TO DO: Subpart view: There should only be one H1 - sections titles should be H2 -->
     {% endif %}
     {{c.text | internalcitation:c | safe}}
     <div class="children">
