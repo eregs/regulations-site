@@ -8,7 +8,7 @@ from regulations.views import error_handling
 from regulations.views.mixins import SidebarContextMixin, CitationContextMixin, TableOfContentsMixin
 
 
-class SectionView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin, TemplateView):
+class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin, TemplateView):
 
     template_name = 'regulations/section.html'
 
