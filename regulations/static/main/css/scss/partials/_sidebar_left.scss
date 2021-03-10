@@ -58,3 +58,53 @@ aside.left-sidebar {
 		margin-bottom: 1em;
 	}
 }
+
+.jump-to {
+	border-bottom: 1px solid $secondary_border_color;
+	padding-bottom: 2em;
+
+	.jump-to-label {
+		margin: 1em 0 .5em 0;
+		font-size: 1.1em;
+		font-weight: 600;
+	}
+
+	.jump-to-input {
+		display: inline-block;
+	}
+
+	input {
+
+		&.submit {
+			display: inline-block;
+			padding: .4em 1em;
+			background: $reverse_link_color;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+
+			&:hover {
+				background: $reverse_link_hover;
+				@include transition;
+			}
+		}
+	}
+
+	.number-box {
+		width: 40px;
+		background: none;
+		border: 0;
+		border-bottom: 2px solid $placeholder_color;
+		margin-right: .5em;
+		color: $reverse_text_color;
+
+		&:focus {
+			color: $reverse_text_color;
+		}
+	}
+
+	label {
+		font-weight: 600;
+		font-size: 1.1em;
+	}
+}

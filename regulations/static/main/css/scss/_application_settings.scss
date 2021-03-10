@@ -13,6 +13,7 @@ $lightest_blue: #EEFAFE;
 
 $dark_gray: #212121;
 $mid_gray: #5B616B;
+$mid_gray_2: #C4C4C4;
 $light_gray: #D6D7D9;
 $lightest_gray: #F3F3F3;
 
@@ -41,12 +42,15 @@ $reverse_link_hover: $white;
 
 $visited_link_color: $magenta;
 
+$placeholder_color: $mid_gray_2;
+
 $main_background_color: $white;
 $secondary_background_color: $lightest_gray;
 $teritary_background_color: $lightest_blue;
 $reverse_background_color: $dark_blue;
 
 $border_color: $light_gray;
+$secondary_border_color: $mid_blue;
 
 $primary_text_color: $dark_gray;
 $secondary_text_color: $mid_gray;
