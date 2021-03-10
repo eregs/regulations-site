@@ -8,7 +8,7 @@ from regulations.generator.sidebar import help
 class HelpSidebarTests(TestCase):
     def setUp(self):
         self.req_factory = RequestFactory()
-        self.sidebar = help.Help('111-11', 'vvvv')
+        self.sidebar = help.Help('111-11', 'ver-ver')
 
     def test_context_default_subtemplates(self):
         """No request parameters should include multiple subtemplates"""

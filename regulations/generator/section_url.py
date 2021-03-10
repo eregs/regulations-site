@@ -34,7 +34,7 @@ class SectionUrl(object):
             url = ''
 
             if sectional:
-                view_name = 'reader_view'
+                view_name = 'section_reader_view'
                 part = citation[0]
                 section = citation[1]
 

@@ -7,9 +7,9 @@ def test_print_part(monkeypatch):
     monkeypatch.setattr(print_part, 'regulation_meta', Mock())
     print_part.regulation_meta.return_value = {'cfr_title_number': 12}
 
-    sidebar = print_part.PrintPart('333-44', 'vvvv')
+    sidebar = print_part.PrintPart('333-44', 'ver-ver')
     assert sidebar.context(Mock(), Mock()) == {
         'cfr_title': 12,
         'cfr_part': '333',
-        'version': 'vvvv',
+        'version': 'ver-ver',
     }

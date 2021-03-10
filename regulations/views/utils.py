@@ -57,6 +57,32 @@ def first_section(reg_part, version):
     return toc[0]['index'][1]
 
 
+def first_subpart(reg_part, version):
+    toc = fetch_toc(reg_part, version)
+    for el in toc:
+        if 'Subpart' in el['index']:
+            return '-'.join(el['index'][1:])
+    return None
+
+
+def find_subpart(section, toc, subpart=None):
+    for el in toc:
+        if el['index'][1] == section:
+            return subpart
+        elif 'Subpart' in el['index'] and 'sub_toc' in el:
+            value = find_subpart(section, el['sub_toc'], '-'.join(el['index'][1:]))
+            if value is not None:
+                return value
+    return None
+
+
+def find_subpart_first_section(subpart, toc):
+    for el in toc:
+        if subpart.lower() == '-'.join(el['index'][1:]).lower():
+            return el['sub_toc'][0]['index'][1]
+    return None
+
+
 def make_sortable(string):
     """Split a string into components, converting digits into ints so sorting
     works as we would expect"""

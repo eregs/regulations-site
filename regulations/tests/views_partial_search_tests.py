@@ -15,10 +15,10 @@ def test_get(client, monkeypatch):
     partial_search.api_reader.ApiReader.return_value.search.return_value = {
         'total_hits': 3333,
         'results': [
-            {'label': ['111', '22'], 'text': 'tttt', 'version': 'vvv',
+            {'label': ['111', '22'], 'text': 'tttt', 'version': 'ver-ver',
              'title':"Consumer's"},
-            {'label': ['111', '24', 'a'], 'text': 'o', 'version': 'vvv'},
-            {'label': ['111', '25'], 'text': 'more', 'version': 'vvv'}
+            {'label': ['111', '24', 'a'], 'text': 'o', 'version': 'ver-ver'},
+            {'label': ['111', '25'], 'text': 'more', 'version': 'ver-ver'}
         ]
     }
     partial_search.fetch_grouped_history.return_value = [
@@ -26,11 +26,11 @@ def test_get(client, monkeypatch):
                       'effective_on': date(2012, 12, 12)}]},
         {'notices': [{'document_number': 'ccc',
                       'effective_on': date(2001, 1, 1)},
-                     {'document_number': 'vvv',
+                     {'document_number': 'ver-ver',
                       'effective_on': date(2003, 4, 5)}],
          'timeline': Timeline.past}
     ]
-    response = client.get('/partial/search/111?version=vvv&q=none').content.decode("utf-8")
+    response = client.get('/partial/search/111?version=ver-ver&q=none').content.decode("utf-8")
     assert '111-22' in response
     assert '111-24-a' in response
     assert '111.24(a)' in response
@@ -45,9 +45,9 @@ def test_root_info(client, monkeypatch):
     partial_search.api_reader.ApiReader.return_value.search.return_value = {
         'total_hits': 2,
         'results': [
-            {'label': ['444', '22'], 'text': 'tttt', 'version': 'vvv',
+            {'label': ['444', '22'], 'text': 'tttt', 'version': 'ver-ver',
              'title':"consumer's"},
-            {'label': ['444', '24', 'a'], 'text': 'o', 'version': 'vvv'},
+            {'label': ['444', '24', 'a'], 'text': 'o', 'version': 'ver-ver'},
         ]
     }
     partial_search.fetch_grouped_history.return_value = [
@@ -55,11 +55,11 @@ def test_root_info(client, monkeypatch):
                       'effective_on': date(2012, 12, 12)}]},
         {'notices': [{'document_number': 'ccc',
                       'effective_on': date(2001, 1, 1)},
-                     {'document_number': 'vvv',
+                     {'document_number': 'ver-ver',
                       'effective_on': date(2003, 4, 5)}],
          'timeline': Timeline.past}
     ]
-    response = client.get('/partial/search/444?version=vvv&q=none').content
+    response = client.get('/partial/search/444?version=ver-ver&q=none').content
     assert b'2 results' in response
 
 
@@ -84,9 +84,9 @@ def test_subinterp(client, monkeypatch):
         'total_hits': 3,
         'results': [
             {'label': ['444', '22', 'Interp'], 'text': 'tttt',
-             'version': 'vvv', 'title':"consumer's"},
+             'version': 'ver-ver', 'title':"consumer's"},
             {'label': ['444', 'Interp', 'h1', 'p5'], 'text': 'o',
-             'version': 'vvv'}
+             'version': 'ver-ver'}
         ]
     }
     partial_search.fetch_grouped_history.return_value = [
@@ -94,12 +94,12 @@ def test_subinterp(client, monkeypatch):
                       'effective_on': date(2012, 12, 12)}]},
         {'notices': [{'document_number': 'ccc',
                       'effective_on': date(2001, 1, 1)},
-                     {'document_number': 'vvv',
+                     {'document_number': 'ver-ver',
                       'effective_on': date(2003, 4, 5)}],
          'timeline': Timeline.past}
     ]
 
-    response = client.get('/partial/search/444?version=vvv&q=other').content
+    response = client.get('/partial/search/444?version=ver-ver&q=other').content
     assert b'444-Subpart-B-Interp' in response
     assert b'444-Interp-h1' in response
 
@@ -116,11 +116,11 @@ def test_no_results(client, monkeypatch):
                       'effective_on': date(2012, 12, 12)}]},
         {'notices': [{'document_number': 'ccc',
                       'effective_on': date(2001, 1, 1)},
-                     {'document_number': 'vvv',
+                     {'document_number': 'ver-ver',
                       'effective_on': date(2003, 4, 5)}],
          'timeline': Timeline.past}
     ]
-    response = client.get('/partial/search/121?version=vvv&q=none').content
+    response = client.get('/partial/search/121?version=ver-ver&q=none').content
     assert b'4/5/2003' in response
 
 
@@ -128,10 +128,10 @@ def test_null_params(client, monkeypatch):
     monkeypatch.setattr(partial_search, 'fetch_grouped_history',
                         Mock(return_value=[]))
 
-    response = client.get('/partial/search/111?version=vvv').content
+    response = client.get('/partial/search/111?version=ver-ver').content
     assert b'provide a query' in response
 
-    response = client.get('/partial/search/111?q=vvv').content
+    response = client.get('/partial/search/111?q=ver-ver').content
     assert b'provide a version' in response
 
 

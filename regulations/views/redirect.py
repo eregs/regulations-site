@@ -28,11 +28,11 @@ def redirect_by_date_str(request, label_id, date_str):
     if last_version and len(label_parts) == 2:
         part = label_parts[0]
         section = label_parts[1]
-        return redirect('reader_view', part, section, last_version)
+        return redirect('section_reader_view', part, section, last_version)
     elif last_version and label_parts[-1] == 'Interp':
         return redirect('chrome_interp_view', label_id, last_version)
     elif last_version and len(label_parts) == 1:
-        return redirect('reader_view', label_id, last_version)
+        return redirect('part_reader_view', label_id, last_version)
     else:
         return handle_generic_404(request)
 

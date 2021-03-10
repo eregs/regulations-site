@@ -47,7 +47,7 @@ def test_external_link_is_escaped():
 def test_search_for():
     """Macro should url-encode search terms."""
     anchor = _gen_link(
-        '{% search_for terms="has spaces" reg="1234" version="vvv" %}')
+        '{% search_for terms="has spaces" reg="1234" version="ver-ver" %}')
     assert '1234' in anchor.get('href')
-    assert 'vvv' in anchor.get('href')
+    assert 'ver-ver' in anchor.get('href')
     assert 'has%20spaces' in anchor.get('href')

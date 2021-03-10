@@ -16,9 +16,9 @@ class InternalCitationLayerTest(TestCase):
         self.assertEqual('link', context['citation']['label'])
 
         icl.sectional = True
-        icl.version = 'vvvv'
+        icl.version = 'ver-ver'
         icl.render_url(['888', '123'], 'look')
         context = loader.get_template.return_value.render.call_args[0][0]
 
-        self.assertTrue('888/123/vvvv/#888-123' in context['citation']['url'])
+        self.assertTrue('888/123/ver-ver/#888-123' in context['citation']['url'])
         self.assertEqual('look', context['citation']['label'])

@@ -33,7 +33,7 @@ class ViewsSideBarViewTest(TestCase):
                       'node_type': node_types.REGTEXT}]}
             ]
         }
-        response = Client().get('/partial/sidebar/1111-7/verver')
+        response = Client().get('/partial/sidebar/1111-7/ver-ver')
 
         sxs_start = response.content.find(b'<section id="sxs-list"')
         sxs_end = response.content.find(b'</section>', sxs_start)

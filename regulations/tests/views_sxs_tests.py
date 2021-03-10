@@ -124,6 +124,6 @@ class ParagrasphSXSViewTests(TestCase):
             'paragraphs': ['some', 'content']
         }
         context = psv.get_context_data(label_id='lablab', notice_id='nnnn',
-                                       version='vvv')
+                                       version='ver-ver')
         self.assertTrue('sxs' in context)
         self.assertTrue('label' in context['sxs'])

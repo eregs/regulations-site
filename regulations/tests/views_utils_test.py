@@ -60,4 +60,4 @@ class UtilsTest(TestCase):
         ret_vals = [None, {}, {'111-22': 'something'}]
         for ret_val in ret_vals:
             api_reader.ApiReader.return_value.layer.return_value = ret_val
-            self.assertEqual({}, utils.regulation_meta('111', 'vvv'))
+            self.assertEqual({}, utils.regulation_meta('111', 'ver-ver'))

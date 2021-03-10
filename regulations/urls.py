@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, register_converter
 from django.conf.urls import url
 
 from regulations.url_caches import daily_cache, lt_cache
@@ -11,7 +11,7 @@ from regulations.views.diff import ChromeSectionDiffView
 from regulations.views.diff import PartialSectionDiffView
 from regulations.views.partial import PartialDefinitionView
 from regulations.views.partial import PartialRegulationView
-from regulations.views.reader import ReaderView
+from regulations.views.reader import SubpartReaderView, SectionReaderView, PartReaderView
 from regulations.views import partial_interp
 from regulations.views.partial_search import PartialSearch
 from regulations.views.partial_sxs import ParagraphSXSView
@@ -27,6 +27,7 @@ from regulations.views.redirect import (
 from regulations.views.sidebar import SideBarView
 from regulations.views.universal_landing import universal
 from regulations.views.regulation_landing import RegulationLandingView
+from regulations.views import converters
 
 # Reusable pattern matching constants to improve readability
 match_version = match_notice = r'[-\d\w_]+'
@@ -39,6 +40,10 @@ match_year = r'\d{4}'
 match_day = match_month = r'\d{2}'
 match_interp = r'[-\w]+[-]Interp'
 match_sub_interp = r'[\d]+-(Appendices|Subpart(-[A-Z]+)?)-Interp'
+
+register_converter(converters.NumericConverter, 'numeric')
+register_converter(converters.SubpartConverter, 'subpart')
+register_converter(converters.VersionConverter, 'version')
 
 urlpatterns = [
     # Index page
@@ -94,8 +99,9 @@ urlpatterns = [
     url(rf'^(?P<label_id>{match_paragraph})/CURRENT$',
         redirect_by_current_date, name='redirect_by_current_date'),
 
-    path('<part>/<version>/', ReaderView.as_view(), name='reader_view'),
-    path('<part>/<section>/<version>/', ReaderView.as_view(), name='reader_view'),
+    path('<numeric:part>/<version:version>/', PartReaderView.as_view(), name='part_reader_view'),
+    path('<numeric:part>/<numeric:section>/<version:version>/', SectionReaderView.as_view(), name='section_reader_view'),
+    path('<numeric:part>/<subpart:subpart>/<version:version>/', SubpartReaderView.as_view(), name="subpart_reader_view"),
 
     # Interpretation of a section/paragraph or appendix
     # Example: http://.../201-4-Interp/2013-10704

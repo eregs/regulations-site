@@ -18,7 +18,7 @@ class PartialInterpViewTest(TestCase):
         }
         request = RequestFactory().get('/fake-path')
         view = partial_interp.PartialInterpView.as_view(layers=[])
-        response = view(request, label_id='lablab', version='verver')
+        response = view(request, label_id='lablab', version='ver-ver')
         self.assertEqual(response.context_data['c']['node_type'], INTERP)
         self.assertEqual(response.context_data['c']['children'],
                          [generator.get_tree_paragraph.return_value])
@@ -26,7 +26,7 @@ class PartialInterpViewTest(TestCase):
 
         view = partial_interp.PartialInterpView.as_view(
             inline=True, layers=[])
-        response = view(request, label_id='lablab', version='verver')
+        response = view(request, label_id='lablab', version='ver-ver')
         self.assertEqual(response.context_data['c']['node_type'], INTERP)
         self.assertEqual(response.context_data['c']['children'],
                          [generator.get_tree_paragraph.return_value])

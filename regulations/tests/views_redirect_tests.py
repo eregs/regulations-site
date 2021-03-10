@@ -11,9 +11,9 @@ class ViewsRedirectTest(TestCase):
     @patch('regulations.views.redirect.ApiReader')
     def test_redirect_by_date(self, ApiReader):
         ApiReader.return_value.regversions.return_value = {'versions': [
-            {'by_date': '2000-01-01', 'version': 'aaa'},
-            {'by_date': '2005-05-05', 'version': 'bbb'},
-            {'by_date': '2010-06-07', 'version': 'ccc'},
+            {'by_date': '2000-01-01', 'version': 'aaa-aaa'},
+            {'by_date': '2005-05-05', 'version': 'bbb-bbb'},
+            {'by_date': '2010-06-07', 'version': 'ccc-ccc'},
         ]}
 
         with patch('regulations.views.redirect.handle_generic_404') as handle:
@@ -40,14 +40,14 @@ class ViewsRedirectTest(TestCase):
         last_week = (today - timedelta(7)).isoformat()
         next_week = (today + timedelta(7)).isoformat()
         ApiReader.return_value.regversions.return_value = {'versions': [
-            {'by_date': last_week, 'version': 'last_week'},
-            {'by_date': today.isoformat(), 'version': 'today'},
-            {'by_date': next_week, 'version': 'next_week'},
+            {'by_date': last_week, 'version': 'last-week'},
+            {'by_date': today.isoformat(), 'version': 'to-day'},
+            {'by_date': next_week, 'version': 'next-week'},
         ]}
 
         response = redirect.redirect_by_current_date(None, '8888')
         self.assertEqual(302, response.status_code)
-        self.assertTrue('today' in response['Location'])
+        self.assertTrue('to-day' in response['Location'])
 
     @patch('regulations.views.redirect.redirect_by_date')
     def test_redirect_by_date_get(self, redirect_by_date):
@@ -94,7 +94,7 @@ class ViewsRedirectTest(TestCase):
 
     def test_diff_redirect_bad_version(self):
         request = RequestFactory().get('?new_version=A+Bad+Version')
-        response = redirect.diff_redirect(request, 'lablab', 'verver')
+        response = redirect.diff_redirect(request, 'lablab', 'ver-ver')
         self.assertEqual(404, response.status_code)
 
     @patch('regulations.views.redirect.fetch_grouped_history')

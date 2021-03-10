@@ -16,11 +16,11 @@ class SubterpTest(TestCase):
                  {'label': ['1005', 'A_B', 'Interp']},
                  {'label': ['1005', 'B', 'Interp']}]
         self.assertEqual(nodes[1:4], subterp.filter_by_subterp(
-            nodes, ['1005', 'Subpart', 'Interp'], 'vvvv'))
+            nodes, ['1005', 'Subpart', 'Interp'], 'ver-ver'))
         self.assertFalse(fetch_toc.called)
 
         self.assertEqual(nodes[4:], subterp.filter_by_subterp(
-            nodes, ['1005', 'Appendices', 'Interp'], 'vvvv'))
+            nodes, ['1005', 'Appendices', 'Interp'], 'ver-ver'))
         self.assertFalse(fetch_toc.called)
 
         fetch_toc.return_value = [
@@ -35,6 +35,6 @@ class SubterpTest(TestCase):
                          {'index': ['1005', 'Subpart', 'B', 'Interp']},
                          {'index': ['1005', 'Appendices', 'Interp']}]}]
         self.assertEqual(nodes[1:2], subterp.filter_by_subterp(
-            nodes, ['1005', 'Subpart', 'A', 'Interp'], 'vvvv'))
+            nodes, ['1005', 'Subpart', 'A', 'Interp'], 'ver-ver'))
         self.assertEqual(nodes[2:4], subterp.filter_by_subterp(
-            nodes, ['1005', 'Subpart', 'B', 'Interp'], 'vvvv'))
+            nodes, ['1005', 'Subpart', 'B', 'Interp'], 'ver-ver'))

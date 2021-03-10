@@ -35,7 +35,7 @@ class ChromeView(TemplateView):
     """ Base class for views which wish to include chrome. """
     template_name = 'regulations/chrome.html'
     #   Which view name to use when switching versions
-    version_switch_view = 'reader_view'
+    version_switch_view = 'section_reader_view'
     sidebar_components = SideBarView.components
     partial_class = None
 

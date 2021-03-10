@@ -119,7 +119,7 @@ class InterpretationsLayerTest(TestCase):
     @patch('regulations.generator.layers.interpretations.SectionUrl')
     def test_attach_metadata_cache(self, secturl, generator):
         il = InterpretationsLayer({
-            '1234-56-a': [{'reference': '1234-56-a-Interp'}]}, version='vvvv')
+            '1234-56-a': [{'reference': '1234-56-a-Interp'}]}, version='ver-ver')
         il.root_interp_label = '1234-56-Interp'
         il.partial_view = Mock()
         il.partial_view.return_value.content = b'content'
@@ -131,7 +131,7 @@ class InterpretationsLayerTest(TestCase):
         args = generator.generator.get_tree_paragraph.call_args[0]
         # Note that this is grabbing the section's interps
         self.assertEqual('1234-56-Interp', args[0])
-        self.assertEqual('vvvv', args[1])
+        self.assertEqual('ver-ver', args[1])
 
     @patch('regulations.generator.layers.interpretations.views')
     def test_preprocess_root(self, views):

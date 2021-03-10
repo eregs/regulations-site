@@ -2,19 +2,21 @@ from importlib import import_module
 
 import six
 from django.conf import settings
+from django.urls import reverse, NoReverseMatch
 
 from regulations.generator import api_reader
 from regulations.generator.toc import fetch_toc
-from regulations.generator.section_url import SectionUrl
 
 
 def build_citation(context):
-        citation = []
-        if 'part' in context:
-            citation.append(context["part"])
+    citation = []
+    if 'part' in context:
+        citation.append(context["part"])
         if 'section' in context:
             citation.append(context["section"])
-        return "-".join(citation)
+        elif 'subpart' in context:
+            citation.append(context["subpart"])
+    return "-".join(citation)
 
 
 class CitationContextMixin:
@@ -53,15 +55,28 @@ class SidebarContextMixin():
 
 
 class TableOfContentsMixin:
+    default_view = 'section_reader_view'
+
     def get_toc(self, reg_part, version):
         # table of contents
         toc = fetch_toc(reg_part, version)
         self.build_urls(toc, version)
         return toc
 
-    def build_urls(self, toc, version):
+    def build_urls(self, toc, version, subpart=None):
         for el in toc:
-            el['url'] = SectionUrl().of(
-                el['index'], version, self.sectional_links)
+            try:
+                part = el['index'][0]
+                section = el['index'][1]
+                el['url'] = self.build_toc_url(part, subpart, section, version) + '#' + part + '-' + section
+            except NoReverseMatch:
+                el['url'] = ''
+
             if 'sub_toc' in el:
-                self.build_urls(el['sub_toc'], version)
+                if 'Subpart' in el['index']:
+                    self.build_urls(el['sub_toc'], version, '-'.join(el['index'][1:]))
+                else:
+                    self.build_urls(el['sub_toc'], version)
+
+    def build_toc_url(self, part, subpart, section, version):
+        return reverse(self.default_view, args=(part, section, version))

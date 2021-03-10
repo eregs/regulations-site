@@ -71,7 +71,7 @@
                     {% for amendment in regulation.amendments %}
                         <div class="mini-alert important">
                             New amendment effective {{amendment.by_date|date:'n/j/Y'}}
-                            <a href="{% url 'reader_view' regulation.part regulation.reg_first_section amendment.version %}" class="go">View new amendment</a>
+                            <a href="{% url 'section_reader_view' regulation.part regulation.reg_first_section amendment.version %}" class="go">View new amendment</a>
                         </div>
                     {% endfor %}
                 </li>

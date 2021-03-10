@@ -10,9 +10,9 @@
 <!-- Temporary: Gives users a way to switch between part, subpart, and section views -->
 <div class="switch-view">
     <ul>    
-        <li><a>Part View</a></li>
-        <li><a>Subpart View</a></li>
-        <li><a class="active">Section View</a></li>
+        <li><a {% if part_view_link %}href="{{ part_view_link }}"{% else %}class="active" href="#"{% endif %}>Part View</a></li>
+        <li><a {% if subpart_view_link %}href="{{ subpart_view_link }}"{% else %}class="active" href="#"{% endif %}>Subpart View</a></li>
+        <li><a {% if section_view_link %}href="{{ section_view_link }}"{% else %}class="active" href="#"{% endif %}>Section View</a></li>
     </ul>
 </div>
 <!-- / Temporary -->
