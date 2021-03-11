@@ -26,7 +26,7 @@
     <aside class="left-sidebar">
         <div class="jump-to">
           <div class="jump-to-label">Jump to Regulation Section</div>
-          <form method="GET" action="/goto/">
+          <form method="GET" action="{% url 'goto' %}">
             <input name="part" type="hidden" required value={{ part }}>
             <input name="version" type="hidden" required value={{ version }}>
             <div class="jump-to-input">
