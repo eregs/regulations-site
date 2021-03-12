@@ -1,67 +1,24 @@
-/*
-Main.scss
-==========================================================================
-main.scss imports all supporting scss files
-and includes any non-semantic helper classes
-*/
 
-// Type & Layout
-@import 'base-variables';
+//-----------------------------
+// Main: Base application CSS
+//-----------------------------
+
+@charset "UTF-8";
+
+// Normalize
 @import 'normalize';
-@import 'variables';
-@import 'mixins';
-@import 'fonts';
-@import 'typography';
-@import 'layout';
-@import 'icon_fonts/cf-icons';
-@import 'icon_fonts/font-awesome';
-@import 'helper-classes';
-@import 'browser-warning';
 
-// Partials - styles for elements outside of the main content
-@import 'partials/header';
-@import 'partials/navigation';
-@import 'partials/drawer';
-@import 'partials/drawer-content';
-@import 'partials/sidebar';
-@import 'partials/footer';
-@import 'partials/full-footer';
+// CMS Design System
+// Add here
+@import '@cmsgov/design-system/dist/scss/index';
 
-// Modules
-@import 'module/extract';
-@import 'module/interpretations';
-@import 'module/note';
-@import 'module/sxs';
-@import 'module/search-results';
-@import 'module/forms';
-@import 'module/diffs';
-@import 'module/expandables';
-@import 'module/reg-landing';
-@import 'module/universal-landing';
-@import 'module/about';
-@import 'module/error';
-@import 'module/paragraph-markers';
+// Medicaid and CHIP Regulations Site
 
-// Notice and Comment
-@import 'comment/comment';
-@import 'comment/comment-read';
-@import 'comment/comment-write';
-@import 'comment/comment-review';
-@import 'comment/comment-confirm';
-@import 'comment/comment-media-queries';
-
-// Custom imports
-@import 'module/custom';
-
-/*
- Global
- ==========================================================================
-*/
-
-img {
-  max-width: 100%;
-}
-
-// Import no-js.scss and print.scss at the end, since they override other rules
-@import 'module/no-js';
-@import 'print';
+@import 'application_settings';
+@import 'layout'; 			
+@import "partials/typography";
+@import "partials/header";
+@import "partials/sidebar_left";
+@import "partials/sidebar_right";
+@import 'partials/reg_text'; 
+@import "partials/footer";
