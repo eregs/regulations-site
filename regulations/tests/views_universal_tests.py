@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from mock import patch
 
-from regulations.views import universal_landing as universal
+from regulations.views.homepage import filter_future_amendments, get_regulations_list
 
 
 class UniversalLandingTest(TestCase):
@@ -28,7 +28,7 @@ class UniversalLandingTest(TestCase):
         random.shuffle(versions)
 
         self.assertEqual(len(versions), 6)
-        filtered = universal.filter_future_amendments(versions)
+        filtered = filter_future_amendments(versions)
         self.assertEqual(len(filtered), 4)
         self.assertEqual(futures, filtered)
 
@@ -39,6 +39,6 @@ class UniversalLandingTest(TestCase):
         versions = {'1': version_info, '2': version_info, '100': version_info}
         with patch('regulations.views.utils.regulation_meta'):
             with patch('regulations.views.utils.first_section'):
-                results = universal.get_regulations_list(versions)
+                results = get_regulations_list(versions)
                 self.assertEqual(['1', '2', '100'],
                                  [r['part'] for r in results])

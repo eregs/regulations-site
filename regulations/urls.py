@@ -26,8 +26,8 @@ from regulations.views.redirect import (
     redirect_by_date_get
 )
 from regulations.views.sidebar import SideBarView
-from regulations.views.universal_landing import universal
 from regulations.views.regulation_landing import RegulationLandingView
+from regulations.views.homepage import HomepageView
 from regulations.views import converters
 
 # Reusable pattern matching constants to improve readability
@@ -49,7 +49,7 @@ register_converter(converters.VersionConverter, 'version')
 urlpatterns = [
     # Index page
     # Example http://.../
-    url(rf'^$', universal, name='universal_landing'),
+    path('', HomepageView.as_view(), name='homepage'),
 
     # About page
     # Example http://.../about

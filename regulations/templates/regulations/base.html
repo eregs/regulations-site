@@ -49,7 +49,7 @@ CSS/Javascript etc., should inherit from this template.
     <!--[if IE 7]>         <body class="lt-ie9 lt-ie8"> <![endif]-->
     <!--[if IE 8]>         <body class="lt-ie9"> <![endif]-->
     <!--[if IE 9]>         <body class="lt-ie10"> <![endif]-->
-    <!--[if gt IE 9]><!--><body><!--<![endif]-->
+    <!--[if gt IE 9]><!--><body class="{% block body_class %}{% endblock %}"><!--<![endif]-->
     <!--[if lt IE 8]>
     <div class="browser-warning displayed">
         <h2>Please note that the eRegulations tool does not support Internet Explorer version 7 or below.</h2>

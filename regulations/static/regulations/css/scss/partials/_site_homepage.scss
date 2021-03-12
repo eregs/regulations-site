@@ -1,0 +1,49 @@
+
+//-----------------------------
+// Site Homepage
+//-----------------------------
+
+@import "../application_settings";
+
+.site-homepage {
+
+    .reg-title {
+        h1 {
+            margin-bottom: 0;
+            font-size: 1.7em;
+        }
+    }
+}
+
+.part-names {
+    display: block;
+    margin: 1em 0;
+    padding: 0;
+
+    li {
+        border-bottom: 1px solid $border_color;
+        list-style: none;
+        margin: 0;
+        padding: 1em 0;
+
+        &:last-of-type {
+            border: 0;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .part-number {
+            font-weight: bold;
+            display: table-cell;
+            padding-right: .3em;
+        }
+
+        .part-title {
+            display: table-cell;
+        }
+
+    }
+}

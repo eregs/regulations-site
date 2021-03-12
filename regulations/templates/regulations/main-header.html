@@ -3,14 +3,14 @@
     <div class="flash-demo">
         <img src="http://localhost:8888/regulations/img/feedback.png" alt="Feedback"><!-- replace this with the correct call -->
         This is a demo for feedback - tell us what you think!
-        <a href="{% url 'universal_landing' %}"><button>Learn More</button></a>
+        <a href="{% url 'homepage' %}"><button>Learn More</button></a>
     </div>
 
     <div class="title">
         <a href="https://www.medicaid.gov/" class="site-logo">
             <img src="http://localhost:8888/regulations/img/medicaid-logo@2x.png" alt="Medicaid.gov"><!-- replace this with the correct call -->
         </a>
-        <h1 class="site-title"><a href="{% url 'universal_landing' %}">Regulations</a></h1>
+        <h1 class="site-title"><a href="{% url 'homepage' %}">Regulations</a></h1>
         {% if meta.cfr_title_number %}
         <h2 class="reg-title"><a href="{% url 'regulation_landing_view' reg_part %}">{{ meta.cfr_title_number }} CFR Part {{ reg_part }} {% if meta.reg_letter %}(Regulation {{ meta.reg_letter }}){% endif %}</a></h2>
         {% endif %}
@@ -22,7 +22,7 @@
              <span class="icon-text">Mobile navigation</span>
         </a>
         <!-- <ul class="app-nav-list">
-            <li class="app-nav-list-item"><a href="{% url 'universal_landing' %}">Regulations</a></li>
+            <li class="app-nav-list-item"><a href="{% url 'homepage' %}">Regulations</a></li>
             <li class="app-nav-list-item"><a href="{% url 'about' %}">About</a></li>
             <li class="app-nav-list-item logo-list-item">{% include "regulations/logo.html" %}</li>
             <li class="app-nav-list-item org-title">{% include "regulations/org-title.html" %}</li>
