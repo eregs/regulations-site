@@ -24,17 +24,23 @@ def convert_to_python(data):
     return data
 
 
-def render_template(template, context):
-    return template.render(context).strip('\n')
-
-
-def is_contained_in(child, parent):
-    '''
-        Return True if child is a child node of the parent.
-
-        Node labels are hierarchical paths, with segments separated
-        by '-'. As an edge case, a node label is also a child of itself.
-    '''
-    child_segments = child.split('-')
-    parent_segments = parent.split('-')
-    return child_segments[:len(parent_segments)] == parent_segments
+def roman_nums():
+    """Generator for roman numerals."""
+    mapping = [
+        (1, 'i'), (4, 'iv'), (5, 'v'), (9, 'ix'),
+        (10, 'x'), (40, 'xl'), (50, 'l'), (90, 'xc'),
+        (100, 'c'), (400, 'cd'), (500, 'd'), (900, 'cm'),
+        (1000, 'm')
+        ]
+    i = 1
+    while True:
+        next_str = ''
+        remaining_int = i
+        remaining_mapping = list(mapping)
+        while remaining_mapping:
+            (amount, chars) = remaining_mapping.pop()
+            while remaining_int >= amount:
+                next_str += chars
+                remaining_int -= amount
+        yield next_str
+        i += 1

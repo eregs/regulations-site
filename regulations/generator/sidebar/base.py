@@ -1,7 +1,5 @@
 import abc
 
-from regulations.generator.subterp import filter_by_subterp
-
 
 class SidebarBase(object):
     """Base class for Sidebar components. Provides an interface"""
@@ -31,19 +29,6 @@ class SidebarBase(object):
         return subcontext
 
     def fetch_relevant_trees(self, http_client):
-        """If using subterps, we might be getting a list of relevant trees
-        rather than a single node."""
-        is_interp = 'Interp' in self.label_parts
-        is_complex = set(['Subpart', 'Appendices']) & set(self.label_parts)
-        is_subterp = is_interp and is_complex
-        if is_subterp:
-            interp = http_client.regulation(
-                self.cfr_part + '-Interp', self.version)
-            if interp:
-                for tree_node in filter_by_subterp(
-                        interp['children'], self.label_parts, self.version):
-                    yield tree_node
-        else:
-            node = http_client.regulation(self.label_id, self.version)
-            if node:
-                yield node
+        node = http_client.regulation(self.label_id, self.version)
+        if node:
+            yield node

@@ -228,30 +228,7 @@ LOGGING = {
     }
 }
 
-
-# Where should we look for data?
-DATA_LAYERS = (
-    'regulations.generator.layers.defined.DefinedLayer',
-    'regulations.generator.layers.definitions.DefinitionsLayer',
-    'regulations.generator.layers.external_citation.ExternalCitationLayer',
-    'regulations.generator.layers.footnotes.FootnotesLayer',
-    'regulations.generator.layers.formatting.FormattingLayer',
-    'regulations.generator.layers.internal_citation.InternalCitationLayer',
-    # Should likely be moved to a CFPB-specific module
-    'regulations.generator.layers.interpretations.InterpretationsLayer',
-    'regulations.generator.layers.key_terms.KeyTermsLayer',
-    'regulations.generator.layers.meta.MetaLayer',
-    'regulations.generator.layers.paragraph_markers.MarkerHidingLayer',
-    'regulations.generator.layers.paragraph_markers.MarkerInfoLayer',
-    'regulations.generator.layers.toc_applier.TableOfContentsLayer',
-    'regulations.generator.layers.graphics.GraphicsLayer',
-)
-
-SIDEBARS = (
-    'regulations.generator.sidebar.analyses.Analyses',
-    'regulations.generator.sidebar.help.Help',
-    'regulations.generator.sidebar.print_part.PrintPart',
-)
+SIDEBARS = ()
 
 ATTACHMENT_BUCKET = os.getenv('S3_BUCKET')
 ATTACHMENT_ACCESS_KEY_ID = os.getenv('S3_ACCESS_KEY_ID')

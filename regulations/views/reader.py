@@ -3,9 +3,8 @@ from django.http import Http404
 from django.urls import reverse
 
 from regulations.generator import api_reader
-from regulations.generator import generator
 from regulations.views import navigation, utils
-from regulations.views import error_handling
+from regulations.views import errors
 from regulations.views.mixins import SidebarContextMixin, CitationContextMixin, TableOfContentsMixin
 
 
@@ -30,7 +29,7 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
         tree = self.get_regulation(reg_citation, reg_version)
 
         if not meta:
-            raise error_handling.MissingContentException()
+            raise errors.MissingContentException()
 
         c = {
             'tree':         tree,
@@ -49,12 +48,6 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
         if regulation is None:
             raise Http404
         return regulation
-
-    def determine_layers(self, label_id, version):
-        """Figure out which layers to apply by checking the GET args"""
-        return generator.layers(
-            utils.layer_names(self.request), 'cfr', label_id,
-            self.sectional_links, version)
 
     def get_neighboring_sections(self, label, version):
         nav_sections = navigation.nav_sections(label, version)

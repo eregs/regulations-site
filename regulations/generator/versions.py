@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 
 from regulations.generator import api_reader
-from regulations.generator.layers.utils import convert_to_python
+from regulations.generator.utils import convert_to_python
 
 
 def get_versions(label_id):

@@ -28,18 +28,3 @@ class RegulationsConfigTests(TestCase):
         self.assertEqual(RegulationsConfig.custom_tpls['other'],
                          'regulations/custom_nodes/other.html')
         self.assertFalse('another' in RegulationsConfig.custom_tpls)
-
-    @patch('regulations.apps.get_app_template_dirs')
-    def test_precompute_node_type_templates(self, get_app_template_dirs):
-        """Verify that node-type templates are found and that a default dict is
-        used"""
-        get_app_template_dirs.return_value = [self.tmpdir]
-        open(os.path.join(self.tmpdir, 'a_new_type.html'), 'w').close()
-
-        RegulationsConfig.precompute_node_type_templates()
-        self.assertEqual(RegulationsConfig.node_type_tpls['extract'],
-                         'regulations/tree/extract.html')
-        self.assertEqual(RegulationsConfig.node_type_tpls['a_new_type'],
-                         'regulations/tree/a_new_type.html')
-        self.assertEqual(RegulationsConfig.node_type_tpls['something_else'],
-                         'regulations/tree/default.html')

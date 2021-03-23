@@ -3,7 +3,6 @@ from unittest import TestCase
 from mock import patch
 
 from django.conf import settings
-from django.test import RequestFactory
 
 from regulations.views import utils
 
@@ -22,21 +21,6 @@ class UtilsTest(TestCase):
 
         if hasattr(self, 'old_js_debug'):
             settings.JS_DEBUG = self.old_js_debug
-
-    def test_get_layer_list(self):
-        names = 'meta,meta,GRAPHICS,fakelayer,internal'
-        layer_list = utils.get_layer_list(names)
-        self.assertEquals(set(['meta', 'internal', 'graphics']), layer_list)
-
-    def test_layer_names(self):
-        request = RequestFactory().get('/?layers=graphics,meta,other')
-        self.assertEqual(utils.layer_names(request), set(['graphics', 'meta']))
-
-        request = RequestFactory().get('/?layers=')
-        self.assertEqual(utils.layer_names(request), set())
-
-        request = RequestFactory().get('/')
-        self.assertTrue(len(utils.layer_names(request)) > 4)
 
     @patch('regulations.views.utils.fetch_toc')
     def test_first_section(self, fetch_toc):

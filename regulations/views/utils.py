@@ -3,9 +3,7 @@ import itertools
 import logging
 
 from regulations.generator import api_reader
-from regulations.generator.generator import DATA_LAYERS
-from regulations.generator.layers.tree_builder import roman_nums
-from regulations.generator.layers.utils import convert_to_python
+from regulations.generator.utils import roman_nums, convert_to_python
 from regulations.generator.toc import fetch_toc
 
 
@@ -16,12 +14,6 @@ def to_roman(number):
     """ Convert an integer to a roman numeral """
     romans = list(itertools.islice(roman_nums(), 0, number + 1))
     return romans[number - 1]
-
-
-def get_layer_list(names):
-    requested = {name.lower() for name in names.split(',')}
-    available = set(DATA_LAYERS.keys())
-    return requested & available
 
 
 def regulation_meta(cfr_part, version):
@@ -38,14 +30,6 @@ def regulation_meta(cfr_part, version):
     for data in layer_data.get(cfr_part, []):
         meta.update(data)
     return convert_to_python(meta)
-
-
-def layer_names(request):
-    """Determine which layers are currently active by looking at the request"""
-    if 'layers' in request.GET.keys():
-        return get_layer_list(request.GET['layers'])
-    else:
-        return DATA_LAYERS.keys()
 
 
 def first_section(reg_part, version):
