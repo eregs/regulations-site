@@ -13,9 +13,7 @@
 <div class="box">
 
     <aside class="left-sidebar">
-        {% with nav_class='toc-nav__base toc-nav__cfr-viewer' toc_items=TOC top_toc=True %}
-            {% include "regulations/toc.html" %}
-        {% endwith %}
+        {% include "regulations/toc.html" %}
     </aside>
 
     {% include content %}
@@ -24,7 +22,6 @@
 
 <footer>
     <div class="container">
-        <h4>Footer</h4>
         {% include "regulations/footer.html" %}
     </div>
 </footer>

@@ -12,6 +12,10 @@
 // Add here
 @import '@cmsgov/design-system/dist/scss/index';
 
+$fa-font-path: "../fonts/webfonts";
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import "@fortawesome/fontawesome-free/scss/solid.scss";
+
 // Medicaid and CHIP Regulations Site
 
 @import 'application_settings';

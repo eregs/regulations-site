@@ -4,13 +4,12 @@
 {% load layers %}
 
 <section id="{{c.label | join:'-'}}" class="reg-section">
+    <a class="reference" href="#{{c.label | join:'-'}}"><i class="fa fa-link"></i></a>
     {% if c.title %}
     <h1 class="section-title" tabindex="0"> {{c.title}} </h1> <!-- TO DO: Subpart view: There should only be one H1 - sections titles should be H2 -->
     {% endif %}
     {{c.text | internalcitation:c | safe}}
-    <div class="children">
-    {% for node in c.children %}
-    {% include "regulations/regulation_text.html" with c=node %}
-    {% endfor %}
-    </div>
 </section>
+{% for node in c.children %}
+{% include "regulations/regulation_text.html" with c=node %}
+{% endfor %}

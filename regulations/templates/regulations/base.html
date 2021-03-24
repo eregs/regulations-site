@@ -16,33 +16,7 @@ CSS/Javascript etc., should inherit from this template.
         {% endblock %}
         </title>
         {% include "regulations/favicon.html" %}
-        {% block app_js %}
-        <script>
-          window.APP_PREFIX = "{{ EREGS_GLOBALS.APP_PREFIX }}";
-        </script>
-        {% if EREGS_GLOBALS.ENV == 'built' %}
-          <link rel="stylesheet" href="{%static "regulations/css/regulations.min.css" %}"/>
-          <script src="{%static "regulations/js/built/regulations.min.js" %}"></script>
-        {% else %}
-          <!-- load our CSS -->
-          <link rel="stylesheet" href="{%static "regulations/css/style.css" %}"/>
-
-          <!-- enable livereload and serve non minified js in debug mode -->
-          <script src="//localhost:35729/livereload.js"></script>
-
-          <!-- no need to inline modernizr locally -->
-          <script src="{%static "regulations/js/source/otherlibs/modernizr.js" %}"></script>
-
-          <!-- our app's js -->
-          <script src="{%static "regulations/js/built/regulations.js" %}"></script>
-        {% endif %}
-        {% endblock %}
-
-        <!--[if lt IE 9]>
-            <script src="{%static "regulations/js/built/lib/respond/respond.min.js" %}"></script>
-        <![endif]-->
-        {% block preload %}
-        {% endblock %}
+        <link rel="stylesheet" href="{% static '/css/main.css' %}"/>
 
     </head>
     <!--[if lt IE 7]>      <body class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -59,13 +33,6 @@ CSS/Javascript etc., should inherit from this template.
         </ul>
     </div>
     <![endif]-->
-
-    {% if EREGS_GLOBALS.ANALYTICS.GOOGLE %}
-      {% include "regulations/google_analytics.html" %}
-    {% endif %}
-    {% if EREGS_GLOBALS.ANALYTICS.DAP %}
-      {% include "regulations/dap_analytics.html" %}
-    {% endif %}
 
     {% block body %}
     {% endblock %}

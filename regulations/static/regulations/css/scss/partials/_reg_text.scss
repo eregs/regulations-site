@@ -20,7 +20,7 @@
 }
 
 .reg-section {
-    margin: 1em 0;
+    margin: 1em auto;
     line-height: 1.7em;
     max-width: 75ch;
 
@@ -28,6 +28,22 @@
     &:last-of-type {
     	margin-bottom: 3em;
     }
+
+    &:target {
+        background: $teritary_background_color;
+	padding: 0.5em 0;
+	scroll-margin-top: 2em;
+    }
+
+    .reference {
+       visibility: hidden;
+    }
+
+    &:hover {
+       .reference {
+           visibility: visible;
+       }
+   }
 }
 
 .next-previous {

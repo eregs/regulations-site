@@ -1,21 +1,9 @@
-{% comment %}
-    Display a table of contents.
-{% endcomment %}
-<div {% if top_toc %}class="toc-drawer toc-container current hidden" id="table-of-contents"{% endif %}>
-    {% if top_toc %}
-    {% block header %}
-        <div class="drawer-header">
-            <h2 class="toc-type">Table of Contents</h2>
-        </div><!-- /.drawer-header -->
-    {% endblock %}
-    {% endif %}
-    <nav {% if top_toc %}id="toc" data-toc-version="{{ version }}" {% endif %}class="{{nav_class}} {% if top_toc %}drawer-content{% endif %}" role="navigation">
-        <ol>
-            {% for item in toc_items %}
+<div>
+    <nav role="navigation">
+        <ul>
+            {% for item in TOC %}
                 {% if item.is_section %}
                     {% include "regulations/toc-section.html" %}
-                {% elif item.is_subjgrp %}
-                    {% include "regulations/toc-subjgrp.html" %}
                 {% elif item.is_subpart %}
                     {% include "regulations/toc-subpart.html" %}
                 {% elif item.is_supplement %}
@@ -27,6 +15,6 @@
                     <li><a href="{{item.url}}" data-section-id="{{item.section_id}}"><span class="toc-section-marker">{{item.label|safe}}</span> {{item.sub_label|safe}}</a></li>
                 {% endif %}
             {% endfor %}
-        </ol>
+        </ul>
     </nav>
 </div>

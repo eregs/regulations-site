@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@cmsgov/design-system": "^2.4.0",
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "sass": "^1.32.8"
   }
 }
