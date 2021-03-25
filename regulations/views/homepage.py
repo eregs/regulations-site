@@ -11,20 +11,29 @@ def get_regulations_list(all_versions):
     reg_parts = sorted(all_versions.keys(), key=utils.make_sortable)
 
     for part in reg_parts:
-        version = all_versions[part][0]['version']
-        reg_meta = utils.regulation_meta(part, version)
-        first_section = utils.first_section(part, version)
-        amendments = filter_future_amendments(all_versions.get(part, None))
+        version = get_current_version(all_versions[part])
+        if version is not None:
+            reg_meta = utils.regulation_meta(part, version)
+            first_section = utils.first_section(part, version)
+            amendments = filter_future_amendments(all_versions.get(part, None))
 
-        reg = {
-            'part': part,
-            'meta': reg_meta,
-            'reg_first_section': first_section,
-            'amendments': amendments
-        }
+            reg = {
+                'part': part,
+                'meta': reg_meta,
+                'reg_first_section': first_section,
+                'amendments': amendments
+            }
 
-        regs.append(reg)
+            regs.append(reg)
     return regs
+
+
+def get_current_version(versions):
+    today = datetime.today()
+    for version in versions:
+        if version['by_date'] <= today:
+            return version['version']
+    return None
 
 
 def filter_future_amendments(versions):
