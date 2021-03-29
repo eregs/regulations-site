@@ -1,5 +1,7 @@
 function makeStateful(el) {
-    const state_change_buttons = el.querySelectorAll('[data-set-state]');
+    const state_change_target = el.getAttribute("data-state-name");
+    const state_change_buttons = document.querySelectorAll(`[data-set-state][data-state-name='${state_change_target}']`);
+
     for (const state_change_button of state_change_buttons) {
         state_change_button.addEventListener('click', function() {
             el.setAttribute("data-state", this.getAttribute("data-set-state"));
