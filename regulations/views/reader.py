@@ -1,11 +1,16 @@
-from django.views.generic.base import TemplateView
+from django.views.generic.base import (
+    TemplateView,
+    View,
+)
 from django.http import Http404
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 from regulations.generator import api_reader
-from regulations.views import navigation, utils
+from regulations.views import utils
 from regulations.views import errors
 from regulations.views.mixins import SidebarContextMixin, CitationContextMixin, TableOfContentsMixin
+from regulations.views.utils import find_subpart
 
 
 class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin, TemplateView):
@@ -33,7 +38,6 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
 
         c = {
             'tree':         tree,
-            'navigation':   self.get_neighboring_sections(reg_citation, reg_version),
             'reg_part':     reg_part,
             'meta':         meta,
             'TOC':          toc,
@@ -49,13 +53,6 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
             raise Http404
         return regulation
 
-    def get_neighboring_sections(self, label, version):
-        nav_sections = navigation.nav_sections(label, version)
-        if nav_sections:
-            p_sect, n_sect = nav_sections
-            return {'previous': p_sect, 'next': n_sect,
-                    'page_type': 'reg-section'}
-
     def get_view_links(self, context, toc):
         raise NotImplementedError()
 
@@ -68,12 +65,12 @@ class PartReaderView(ReaderView):
         first_subpart = utils.first_subpart(part, version)
 
         return {
-            'subpart_view_link': reverse('subpart_reader_view', args=(part, first_subpart, version)),
-            'section_view_link': reverse('section_reader_view', args=(part, first_section, version)),
+            'subpart_view_link': reverse('reader_view', args=(part, first_subpart, version)),
+            'section_view_link': reverse('reader_view', args=(part, first_section, version)),
         }
 
     def build_toc_url(self, part, subpart, section, version):
-        return reverse('part_reader_view', args=(part, version))
+        return reverse('reader_view', args=(part, version))
 
 
 class SubpartReaderView(ReaderView):
@@ -87,25 +84,22 @@ class SubpartReaderView(ReaderView):
         citation = part + '-' + section
 
         return {
-            'part_view_link': reverse('part_reader_view', args=(part, version)) + '#' + citation,
-            'section_view_link': reverse('section_reader_view', args=(part, section, version)),
+            'part_view_link': reverse('reader_view', args=(part, version)) + '#' + citation,
+            'section_view_link': reverse('reader_view', args=(part, section, version)),
         }
 
-    def build_toc_url(self, part, subpart, section, version):
-        return reverse('subpart_reader_view', args=(part, subpart, version))
 
-
-class SectionReaderView(ReaderView):
-    def get_view_links(self, context, toc):
-        part = context['part']
-        section = context['section']
-        version = context['version']
-        citation = context['citation']
-        subpart = utils.find_subpart(section, toc)
-        if subpart is None:
-            subpart = utils.first_subpart(part, version)
-
-        return {
-            'part_view_link': reverse('part_reader_view', args=(part, version)) + '#' + citation,
-            'subpart_view_link': reverse('subpart_reader_view', args=(part, subpart, version)) + '#' + citation,
+class SectionReaderView(TableOfContentsMixin, View):
+    def get(self, request, *args, **kwargs):
+        url_kwargs = {
+            "part": kwargs.get("part"),
+            "version": kwargs.get("version"),
         }
+
+        toc = self.get_toc(kwargs.get("part"), kwargs.get("version"))
+        subpart = find_subpart(kwargs.get("section"), toc)
+        if subpart is not None:
+            url_kwargs["subpart"] = subpart
+
+        url = reverse("reader_view", kwargs=url_kwargs)
+        return HttpResponseRedirect(url)

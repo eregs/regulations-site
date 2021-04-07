@@ -59,4 +59,16 @@ header {
 	.reg-title {
 		display: inline-block;
 	}
+
+	.search-header {
+		float: right;
+
+		.search-box {
+			width: 430px;
+
+			input {
+				border: 1px solid $border_color;
+			}
+		}
+	}
 }

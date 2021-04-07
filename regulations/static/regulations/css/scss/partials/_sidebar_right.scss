@@ -4,3 +4,17 @@
 //-----------------------------
 
 @import "../application_settings";
+
+.right-sidebar {
+    max-width: 400px;
+    div {
+        padding-left: 2em;
+        h4 {
+            margin: 0;
+        }
+        p {
+            color: $secondary_text_color;
+            margin: 0;
+        }
+    }
+}

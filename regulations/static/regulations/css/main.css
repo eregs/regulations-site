@@ -808,7 +808,7 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
 }
 
 .ds-c-autocomplete__error-message--clear-btn {
-  width: calc(100% - 110px);
+  width: calc(100% - 100px);
 }
 
 .ds-c-badge {
@@ -999,6 +999,9 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
   border-color: transparent;
   background-color: transparent;
 }
+.ds-c-button--transparent-inverse:disabled, .ds-c-button--inverse.ds-c-button--transparent:disabled, .ds-c-button--transparent.ds-c-button--disabled-inverse:disabled, .ds-c-button--transparent-inverse:hover, .ds-c-button--inverse.ds-c-button--transparent:hover, .ds-c-button--transparent.ds-c-button--disabled-inverse:hover, .ds-c-button--transparent-inverse:active, .ds-c-button--inverse.ds-c-button--transparent:active, .ds-c-button--transparent.ds-c-button--disabled-inverse:active, .ds-c-button--disabled.ds-c-button--transparent-inverse, .ds-c-button--disabled.ds-c-button--inverse.ds-c-button--transparent, .ds-c-button--disabled.ds-c-button--transparent.ds-c-button--disabled-inverse, .ds-c-button--hover.ds-c-button--transparent-inverse, .ds-c-button--hover.ds-c-button--inverse.ds-c-button--transparent, .ds-c-button--hover.ds-c-button--transparent.ds-c-button--disabled-inverse, .ds-c-button--active.ds-c-button--transparent-inverse, .ds-c-button--active.ds-c-button--inverse.ds-c-button--transparent, .ds-c-button--active.ds-c-button--transparent.ds-c-button--disabled-inverse {
+  border-color: transparent;
+}
 
 .ds-c-button--inverse.ds-c-button--transparent:disabled, .ds-c-button--transparent.ds-c-button--disabled-inverse:disabled, .ds-c-button--transparent.ds-c-button--transparent-inverse:disabled,
 .ds-c-button--inverse.ds-c-button--transparent:visited:disabled {
@@ -1036,12 +1039,18 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
   border-color: transparent;
   color: #fff;
 }
-.ds-c-button--primary:hover, .ds-c-button--primary:focus, .ds-c-button--primary:active, .ds-c-button--primary.ds-c-button--hover, .ds-c-button--primary.ds-c-button--focus, .ds-c-button--primary.ds-c-button--active,
+.ds-c-button--primary:disabled, .ds-c-button--primary.ds-c-button--disabled,
+.ds-c-button--primary:visited:disabled,
+.ds-c-button--primary:visited.ds-c-button--disabled {
+  background-color: #d6d7d9;
+  border-color: transparent;
+  color: #323a45;
+  pointer-events: none;
+}
+.ds-c-button--primary:hover, .ds-c-button--primary:active, .ds-c-button--primary.ds-c-button--hover, .ds-c-button--primary.ds-c-button--active,
 .ds-c-button--primary:visited:hover,
-.ds-c-button--primary:visited:focus,
 .ds-c-button--primary:visited:active,
 .ds-c-button--primary:visited.ds-c-button--hover,
-.ds-c-button--primary:visited.ds-c-button--focus,
 .ds-c-button--primary:visited.ds-c-button--active {
   border-color: transparent;
   color: #fff;
@@ -1051,23 +1060,16 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
 .ds-c-button--primary:visited.ds-c-button--hover {
   background-color: #205493;
 }
-.ds-c-button--primary:focus, .ds-c-button--primary.ds-c-button--focus,
-.ds-c-button--primary:visited:focus,
-.ds-c-button--primary:visited.ds-c-button--focus {
-  background-color: #205493;
-}
 .ds-c-button--primary:active, .ds-c-button--primary.ds-c-button--active,
 .ds-c-button--primary:visited:active,
 .ds-c-button--primary:visited.ds-c-button--active {
   background-color: #112e51;
 }
-.ds-c-button--primary:disabled, .ds-c-button--primary.ds-c-button--disabled,
-.ds-c-button--primary:visited:disabled,
-.ds-c-button--primary:visited.ds-c-button--disabled {
-  background-color: #d6d7d9;
+.ds-c-button--primary:focus, .ds-c-button--primary.ds-c-button--focus,
+.ds-c-button--primary:visited:focus,
+.ds-c-button--primary:visited.ds-c-button--focus {
   border-color: transparent;
-  color: #323a45;
-  pointer-events: none;
+  color: #fff;
 }
 
 .ds-c-button--success,
@@ -1075,31 +1077,6 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
   background-color: #2e8540;
   border-color: transparent;
   color: #fff;
-}
-.ds-c-button--success:hover, .ds-c-button--success:focus, .ds-c-button--success:active, .ds-c-button--success.ds-c-button--hover, .ds-c-button--success.ds-c-button--focus, .ds-c-button--success.ds-c-button--active,
-.ds-c-button--success:visited:hover,
-.ds-c-button--success:visited:focus,
-.ds-c-button--success:visited:active,
-.ds-c-button--success:visited.ds-c-button--hover,
-.ds-c-button--success:visited.ds-c-button--focus,
-.ds-c-button--success:visited.ds-c-button--active {
-  border-color: transparent;
-  color: #fff;
-}
-.ds-c-button--success:hover, .ds-c-button--success.ds-c-button--hover,
-.ds-c-button--success:visited:hover,
-.ds-c-button--success:visited.ds-c-button--hover {
-  background-color: #2a7a3b;
-}
-.ds-c-button--success:focus, .ds-c-button--success.ds-c-button--focus,
-.ds-c-button--success:visited:focus,
-.ds-c-button--success:visited.ds-c-button--focus {
-  background-color: #2a7a3b;
-}
-.ds-c-button--success:active, .ds-c-button--success.ds-c-button--active,
-.ds-c-button--success:visited:active,
-.ds-c-button--success:visited.ds-c-button--active {
-  background-color: #266e35;
 }
 .ds-c-button--success:disabled, .ds-c-button--success.ds-c-button--disabled,
 .ds-c-button--success:visited:disabled,
@@ -1109,6 +1086,30 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
   color: #323a45;
   pointer-events: none;
 }
+.ds-c-button--success:hover, .ds-c-button--success:active, .ds-c-button--success.ds-c-button--hover, .ds-c-button--success.ds-c-button--active,
+.ds-c-button--success:visited:hover,
+.ds-c-button--success:visited:active,
+.ds-c-button--success:visited.ds-c-button--hover,
+.ds-c-button--success:visited.ds-c-button--active {
+  border-color: transparent;
+  color: #fff;
+}
+.ds-c-button--success:hover, .ds-c-button--success.ds-c-button--hover,
+.ds-c-button--success:visited:hover,
+.ds-c-button--success:visited.ds-c-button--hover {
+  background-color: #2a7a3b;
+}
+.ds-c-button--success:active, .ds-c-button--success.ds-c-button--active,
+.ds-c-button--success:visited:active,
+.ds-c-button--success:visited.ds-c-button--active {
+  background-color: #266e35;
+}
+.ds-c-button--success:focus, .ds-c-button--success.ds-c-button--focus,
+.ds-c-button--success:visited:focus,
+.ds-c-button--success:visited.ds-c-button--focus {
+  border-color: transparent;
+  color: #fff;
+}
 
 .ds-c-button--danger,
 .ds-c-button--danger:visited {
@@ -1116,12 +1117,18 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
   border-color: transparent;
   color: #fff;
 }
-.ds-c-button--danger:hover, .ds-c-button--danger:focus, .ds-c-button--danger:active, .ds-c-button--danger.ds-c-button--hover, .ds-c-button--danger.ds-c-button--focus, .ds-c-button--danger.ds-c-button--active,
+.ds-c-button--danger:disabled, .ds-c-button--danger.ds-c-button--disabled,
+.ds-c-button--danger:visited:disabled,
+.ds-c-button--danger:visited.ds-c-button--disabled {
+  background-color: #d6d7d9;
+  border-color: transparent;
+  color: #323a45;
+  pointer-events: none;
+}
+.ds-c-button--danger:hover, .ds-c-button--danger:active, .ds-c-button--danger.ds-c-button--hover, .ds-c-button--danger.ds-c-button--active,
 .ds-c-button--danger:visited:hover,
-.ds-c-button--danger:visited:focus,
 .ds-c-button--danger:visited:active,
 .ds-c-button--danger:visited.ds-c-button--hover,
-.ds-c-button--danger:visited.ds-c-button--focus,
 .ds-c-button--danger:visited.ds-c-button--active {
   border-color: transparent;
   color: #fff;
@@ -1131,23 +1138,16 @@ a:active, .ds-c-link:active, .ds-c-usa-banner__button:active {
 .ds-c-button--danger:visited.ds-c-button--hover {
   background-color: #cd2026;
 }
-.ds-c-button--danger:focus, .ds-c-button--danger.ds-c-button--focus,
-.ds-c-button--danger:visited:focus,
-.ds-c-button--danger:visited.ds-c-button--focus {
-  background-color: #cd2026;
-}
 .ds-c-button--danger:active, .ds-c-button--danger.ds-c-button--active,
 .ds-c-button--danger:visited:active,
 .ds-c-button--danger:visited.ds-c-button--active {
   background-color: #981b1e;
 }
-.ds-c-button--danger:disabled, .ds-c-button--danger.ds-c-button--disabled,
-.ds-c-button--danger:visited:disabled,
-.ds-c-button--danger:visited.ds-c-button--disabled {
-  background-color: #d6d7d9;
+.ds-c-button--danger:focus, .ds-c-button--danger.ds-c-button--focus,
+.ds-c-button--danger:visited:focus,
+.ds-c-button--danger:visited.ds-c-button--focus {
   border-color: transparent;
-  color: #323a45;
-  pointer-events: none;
+  color: #fff;
 }
 
 .ds-c-choice {
@@ -1905,8 +1905,15 @@ select.ds-c-field[multiple] {
   text-align: left;
 }
 
-.ds-c-table--stacked thead {
-  display: none;
+.ds-c-table--stacked thead tr {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal;
 }
 .ds-c-table--stacked th,
 .ds-c-table--stacked td {
@@ -1938,8 +1945,15 @@ select.ds-c-field[multiple] {
 }
 
 @media (max-width: 544px) {
-  .ds-c-sm-table--stacked thead {
-    display: none;
+  .ds-c-sm-table--stacked thead tr {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal;
   }
   .ds-c-sm-table--stacked th,
 .ds-c-sm-table--stacked td {
@@ -1972,8 +1986,15 @@ select.ds-c-field[multiple] {
 }
 
 @media (max-width: 768px) {
-  .ds-c-md-table--stacked thead {
-    display: none;
+  .ds-c-md-table--stacked thead tr {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal;
   }
   .ds-c-md-table--stacked th,
 .ds-c-md-table--stacked td {
@@ -2006,8 +2027,15 @@ select.ds-c-field[multiple] {
 }
 
 @media (max-width: 1024px) {
-  .ds-c-lg-table--stacked thead {
-    display: none;
+  .ds-c-lg-table--stacked thead tr {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal;
   }
   .ds-c-lg-table--stacked th,
 .ds-c-lg-table--stacked td {
@@ -2231,12 +2259,16 @@ Inverse theme
 
 .ds-c-tooltip__trigger {
   cursor: pointer;
-  display: inline;
-  font-size: inherit;
-  font-weight: inherit;
+}
+
+.ds-c-tooltip__trigger--click-only-active {
+  pointer-events: none;
 }
 
 .ds-c-tooltip__trigger-icon {
+  align-items: center;
+  display: flex;
+  justify-content: center;
   padding: 4px;
 }
 
@@ -2266,12 +2298,6 @@ Inverse theme
   font-size: 14px;
   font-weight: 400;
   padding: 8px;
-}
-.ds-c-tooltip__content:first-child {
-  margin-top: 0;
-}
-.ds-c-tooltip__content:last-child {
-  margin-bottom: 0;
 }
 
 .ds-c-tooltip__interactive-border {
@@ -2370,7 +2396,6 @@ Inverse theme
   display: inline-block;
   height: 24px;
   position: relative;
-  vertical-align: middle;
   width: 24px;
 }
 .ds-c-tooltip-icon__container:hover {
@@ -13325,6 +13350,11 @@ html {
   scroll-behavior: smooth;
 }
 
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
+}
+
 header {
   padding: 2em;
   border-bottom: 1px solid #17415F;
@@ -13332,6 +13362,7 @@ header {
 
 .box {
   display: flex;
+  width: 100%;
 }
 
 main {
@@ -13381,6 +13412,11 @@ html {
   scroll-behavior: smooth;
 }
 
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
+}
+
 html {
   font-size: 1rem;
   line-height: 1.6;
@@ -13424,6 +13460,11 @@ a:hover {
 
 html {
   scroll-behavior: smooth;
+}
+
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
 }
 
 .site-homepage .reg-title h1 {
@@ -13477,6 +13518,200 @@ html {
   scroll-behavior: smooth;
 }
 
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
+}
+
+.search-page .container {
+  margin: 0;
+}
+.search-page .search-back {
+  margin: 2em 0;
+}
+.search-page .search-back a {
+  text-decoration: none;
+}
+.search-page .search-back a .back-arrow {
+  mask: url("/images/previous.svg") no-repeat center;
+  display: inline-block;
+  width: 16px;
+  height: 30px;
+  background: #046791;
+  margin-right: 10px;
+  vertical-align: bottom;
+}
+.search-page .search-back a:hover .back-arrow {
+  background: #17415F;
+}
+.search-page .search-context {
+  margin-bottom: 1em;
+}
+.search-page .search-displayed-by {
+  font-size: 0.8em;
+  color: #5B616B;
+  margin: 2em 0;
+}
+.search-page .search-options {
+  margin: 1em 0 2em;
+}
+.search-page .search-options a {
+  text-decoration: none;
+  margin-right: 1em;
+  padding: 0 0.9em 0.3em 0;
+}
+.search-page .search-options a.selected {
+  border-bottom: 2px solid #046791;
+}
+.search-page .search-options .fa-search {
+  margin-right: 0.3em;
+}
+.search-page .search-options .fa-angle-down {
+  margin-left: 0.3em;
+}
+.search-page .search-options label {
+  color: #046791;
+  cursor: pointer;
+}
+.search-page .search-options label:hover {
+  color: #17415F;
+}
+.search-page .hierarchy {
+  float: right;
+}
+.search-page .result {
+  margin: 2em 0;
+}
+.search-page .result .results-part {
+  font-size: 0.8em;
+}
+.search-page .result .results-section {
+  font-size: 1.1em;
+  margin-bottom: 0.6em;
+}
+.search-page .result .results-section a {
+  text-decoration: none;
+}
+.search-page .result .results-preview {
+  font-size: 0.9em;
+}
+.search-page .result .search-highlight {
+  font-weight: bold;
+}
+.search-page .right-sidebar h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+.search-page .right-sidebar h4 {
+  margin: 0 0 0 1em;
+  font-weight: 600;
+}
+.search-page .right-sidebar h4 a {
+  text-decoration: none;
+}
+.search-page .right-sidebar p {
+  margin: 0 0 0 1em;
+  color: #5B616B;
+  font-size: 0.9em;
+}
+
+.search-box {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+.search-box input {
+  width: 100%;
+  border: 1px solid #D6D7D9;
+  border-right: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 3px 0 0 3px;
+  outline: none;
+}
+.search-box input:focus {
+  color: #17415F;
+}
+.search-box input::placeholder {
+  color: #212121;
+}
+.search-box input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #212121;
+}
+.search-box input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #212121;
+}
+.search-box input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #212121;
+}
+.search-box input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #212121;
+}
+.search-box .search-reset {
+  border: 1px solid #D6D7D9;
+  border-right: none;
+  border-left: none;
+  background: none;
+  text-align: center;
+  color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 1.5rem;
+  width: 68px;
+  height: 58px;
+}
+.search-box .search-reset:hover .fa {
+  color: #17415F;
+}
+.search-box .search-reset .fa {
+  color: #5B616B;
+}
+.search-box .search-submit {
+  border: 1px solid #D6D7D9;
+  background: none;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 3px 3px 0;
+  cursor: pointer;
+  font-size: 1.5rem;
+  width: 68px;
+  height: 58px;
+}
+.search-box .search-submit:hover .fa {
+  color: #17415F;
+}
+.search-box .search-submit .fa {
+  color: #046791;
+}
+
+a {
+  color: #046791;
+}
+a:hover {
+  color: #17415F;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+
+.container {
+  max-width: 800px;
+  display: block;
+  margin: 0 auto;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
+}
+
 .switch-view {
   background: #EEFAFE;
   padding: 0.5em 0;
@@ -13519,6 +13754,15 @@ header .site-title {
 header .reg-title {
   display: inline-block;
 }
+header .search-header {
+  float: right;
+}
+header .search-header .search-box {
+  width: 430px;
+}
+header .search-header .search-box input {
+  border: 1px solid #D6D7D9;
+}
 
 a {
   color: #046791;
@@ -13537,6 +13781,11 @@ a:hover {
 
 html {
   scroll-behavior: smooth;
+}
+
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
 }
 
 aside.left-sidebar {
@@ -13715,6 +13964,25 @@ html {
   scroll-behavior: smooth;
 }
 
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
+}
+
+.right-sidebar {
+  max-width: 400px;
+}
+.right-sidebar div {
+  padding-left: 2em;
+}
+.right-sidebar div h4 {
+  margin: 0;
+}
+.right-sidebar div p {
+  color: #5B616B;
+  margin: 0;
+}
+
 a {
   color: #046791;
 }
@@ -13732,6 +14000,11 @@ a:hover {
 
 html {
   scroll-behavior: smooth;
+}
+
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
 }
 
 .reg-text h1 {
@@ -13806,6 +14079,11 @@ a:hover {
 
 html {
   scroll-behavior: smooth;
+}
+
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -8,15 +8,15 @@
 // Temporary: Workaround because we're rendering multiple H1s in the subpart view.
 .reg-text {
 
-	h1 {
-		color: $primary_color;
-	}
+    h1 {
+        color: $primary_color;
+    }
 
-	> section > h1 {
-		padding-top: 1em;
-		font-size: 1.8em;
-		color: $primary_text_color;
-	}
+    > section > h1 {
+        padding-top: 1em;
+        font-size: 1.8em;
+        color: $primary_text_color;
+    }
 }
 
 .reg-section {
@@ -26,13 +26,13 @@
 
     // Temporary: Workaround because we're rendering multiple H1s in the subpart view.
     &:last-of-type {
-    	margin-bottom: 3em;
+        margin-bottom: 3em;
     }
 
     &:target {
         background: $teritary_background_color;
-	padding: 0.5em 0;
-	scroll-margin-top: 2em;
+        padding: 0.5em 0;
+        scroll-margin-top: 2em;
     }
 
     .reference {
@@ -47,35 +47,35 @@
 }
 
 .next-previous {
-	display: flex;
-	margin: 4em auto;
+    display: flex;
+    margin: 4em auto;
 
-	.next-prev {
-		direction: table-cell;
-		width: 50%;
-		text-decoration: none;
+    .next-prev {
+        direction: table-cell;
+        width: 50%;
+        text-decoration: none;
 
-		&.previous {
-			&:before {
-				background-image: url('/images/previous.svg');
-			}
-		}
+        &.previous {
+            &:before {
+                background-image: url('/images/previous.svg');
+            }
+        }
 
-		&.next {
-			text-align: right;
+        &.next {
+            text-align: right;
 
-			&:before {
-				background-image: url('/images/next.svg');
-			}
-		}
-	}
+            &:before {
+                background-image: url('/images/next.svg');
+            }
+        }
+    }
 
-	.next-prev-label {
-		font-weight: bold;
-	}
+    .next-prev-label {
+        font-weight: bold;
+    }
 
-	.next-prev-title {
-		font-size: .9em;
-		color: $primary_text_color;
-	}
+    .next-prev-title {
+        font-size: .9em;
+        color: $primary_text_color;
+    }
 }

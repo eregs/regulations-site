@@ -55,7 +55,7 @@ class SidebarContextMixin():
 
 
 class TableOfContentsMixin:
-    default_view = 'section_reader_view'
+    default_view = 'reader_view'
 
     def get_toc(self, reg_part, version):
         # table of contents
@@ -76,7 +76,7 @@ class TableOfContentsMixin:
                 if 'Subpart' in el['index']:
                     self.build_urls(el['sub_toc'], version, '-'.join(el['index'][1:]))
                 else:
-                    self.build_urls(el['sub_toc'], version)
+                    self.build_urls(el['sub_toc'], version, subpart)
 
     def build_toc_url(self, part, subpart, section, version):
-        return reverse(self.default_view, args=(part, section, version))
+        return reverse(self.default_view, args=(part, subpart or section, version))

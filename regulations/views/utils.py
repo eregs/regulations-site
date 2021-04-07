@@ -51,12 +51,17 @@ def first_subpart(reg_part, version):
 
 def find_subpart(section, toc, subpart=None):
     for el in toc:
+        value = None
         if el['index'][1] == section:
             return subpart
         elif 'Subpart' in el['index'] and 'sub_toc' in el:
             value = find_subpart(section, el['sub_toc'], '-'.join(el['index'][1:]))
-            if value is not None:
-                return value
+        elif 'Subjgrp' in el['index'] and 'sub_toc' in el:
+            value = find_subpart(section, el['sub_toc'], subpart)
+
+        if value is not None:
+            return value
+
     return None
 
 

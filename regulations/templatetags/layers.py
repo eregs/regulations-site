@@ -20,7 +20,7 @@ def internalcitation(value, arg):
             original = value[citation["offsets"][0][0]:citation["offsets"][0][1]]
             try:
                 # /433/section/112#433-112-c
-                url = reverse("section_reader_view",
+                url = reverse("reader_view",
                               args=[*citation["citation"][:2], version]) + "#" + "-".join(citation["citation"])
                 context = {
                     "citation": citation["citation"],

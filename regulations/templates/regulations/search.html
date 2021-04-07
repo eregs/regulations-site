@@ -1,0 +1,75 @@
+{% extends "regulations/base.html" %}
+{% load static %}
+{% load search %}}
+{% block app_js %}
+<link rel="stylesheet" href="{% static '/css/main.css' %}"/>
+{% endblock %}
+
+{% block title %}eRegulations{% endblock %}
+
+{% block body %}
+
+  <header>
+      {% include "regulations/main-header.html" %}
+  </header>
+
+  <div class="box search-page">
+    <main>
+      <div class="container">
+        <div class="search-back">
+          <a href="/"><span class="back-arrow"></span>Back to Regulation Text</a>
+        </div>
+        <div class="search-context">This site searches Title 42: Parts 400, 430-460</div>
+
+        <form class="search-box" action="{% url 'search' %}">
+          <input type=search name="q" placeholder="{{ q | default:'Search Regulations'}}"></input>
+          <button type="reset" class="search-reset">
+            <i class="fa fa-times"></i>
+          </button>
+          <button type="submit" class="search-submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+<!-- 
+        <div class="search-options">
+          <a href=""><i class="fa fa-search"></i>All</a>
+          <a href="" class="selected filter-by-part-trigger-js">Part {{part}}<i class="fa fa-angle-down"></i></a>
+          <div class="filter-by-part-js">
+            <h3>Filter by Part</h3>
+            <ul>
+              <li><a href="?q={{q}}&part=433">Part 433<i class="fa fa-angle-down"></i></a></li>
+              <li><a href="?q={{q}}&part=400">Part 400<i class="fa fa-angle-down"></i></a></li>
+            </ul>
+          </div>
+          
+          <!-- We're not launching with this
+          <div class="hierarchy">
+              <input type="checkbox" id="display-hierarchy" name="display-hierarchy" value="hierarchy-view">    
+              <label for="display-hierarchy">Display in Hierarchy</label>
+          </div> --><!--
+        </div> 
+-->
+
+        <div class="search-displayed-by">{{ results | length }} results, displayed by relevance</div>
+
+        <div class="search-results">
+          {% for result in results %}
+          <div class="result">
+              <!-- <div class="results-part">42 CFR Part 433: State Fiscal Administration</div> -->
+              <div class="results-section"><a href="{% url 'reader_view' result.label.0 result.label.1 result.version %}#{{ result.label_string}}">{{ result.title | highlight:q }}</a></div>
+              <div class="results-preview">{{ result.text | highlight:q }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </main>
+    <aside class="right-sidebar">
+      <h3>Search Title 42 (Full)</h3>
+      <h4><a href="https://ecfr.federalregister.gov/search?search%5Bdate%5D=current&search%5Bhierarchy%5D%5Btitle%5D=42&search%5Bquery%5D={{ q }}&view=standard">{{ q | capfirst }} in Beta eCFR<sup><i class="fas fa-external-link-alt"></i></sup></a></h4>
+      <p>Search the entirety of Title 42, including other subchapters, in a different reg tool</p>
+    </aside>
+  </div>
+
+  {% include "regulations/full_footer.html" %}
+
+{% endblock %}
