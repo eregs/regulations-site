@@ -15,6 +15,7 @@
 $fa-font-path: "../fonts/webfonts";
 @import '@fortawesome/fontawesome-free/scss/fontawesome';
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
+@import "@fortawesome/fontawesome-free/scss/brands.scss";
 
 // Medicaid and CHIP Regulations Site
 
@@ -28,3 +29,4 @@ $fa-font-path: "../fonts/webfonts";
 @import "partials/sidebar_right";
 @import 'partials/reg_text'; 
 @import "partials/footer";
+@import "partials/error_pages";

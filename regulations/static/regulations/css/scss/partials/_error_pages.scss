@@ -1,0 +1,49 @@
+
+//-----------------------------
+// Error Pages
+//-----------------------------
+
+@import "../application_settings";
+
+main.error-page {
+    display: flex;
+    width: 75%;
+    height: 100%;
+    padding: 0;
+    max-width: 920px;
+    margin: auto;
+
+    div.error-left {
+        flex: auto;
+        margin: auto;
+        padding-right: 1em;
+    
+        p {
+            font-family: $primary_site_font;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 24px;
+    
+            &.error-code {
+                font-family: $primary_site_font;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 19px;
+            }
+    
+            &.error-header {
+                font-family: $secondary_site_font;
+                font-weight: bold;
+                font-size: 36px;
+                line-height: 46px;
+                margin-top: 0;
+            }
+        }
+    }
+
+    img.error-image {
+        flex: auto;
+        width: 185px;
+        max-width: 185px;
+    }
+}

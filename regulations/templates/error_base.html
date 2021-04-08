@@ -1,0 +1,17 @@
+{% extends "regulations/base.html" %}
+{% load static %}
+
+{% block title %}eRegulations{% endblock %}
+
+{% block body %}
+
+<main class="error-page">
+    <div class="error-left">
+        <p class="error-code">Error {% block error_code %}{% endblock %}</p>
+        <p class="error-header">{% block error_header %}{% endblock %}</p>
+        {% block error_body %}{% endblock %}
+    </div>
+    <img class="error-image" src="{% static 'images/browser.svg' %}" />
+</main>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "error_base.html" %}
+
+{% block error_code %}
+    500
+{% endblock %}
+
+{% block error_header %}
+    Sorry, this page isn't working at the moment.
+{% endblock %}
+
+{% block error_body %}
+    <p>We're experiencing an internal server error, and we're working to fix the problem.</p>
+    <p>Please try reloading the page, going to a different page, or trying again later.</p>
+{% endblock %}

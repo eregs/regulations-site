@@ -1,0 +1,15 @@
+{% extends "error_base.html" %}
+
+{% block error_code %}
+    404
+{% endblock %}
+
+{% block error_header %}
+    Sorry, the page you were looking for doesn't exist.
+{% endblock %}
+
+{% block error_body %}
+    <p>We might have broken this link or deleted this content.
+        It's also possible that the URL is incorrect.</p>
+    <p>Please try search above or return to our <a href="{% url 'homepage' %}">homepage</a>.</p>
+{% endblock %}

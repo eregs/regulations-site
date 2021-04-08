@@ -1,23 +1,20 @@
 {% extends "regulations/base.html" %}
 {% load static %}
-{% block app_js %}
-<link rel="stylesheet" href="{% static '/css/main.css' %}"/>
-{% endblock %}
 
 {% block title %}eRegulations{% endblock %}
 
 {% block body_class %}site-homepage{% endblock %}
 
 {% block body %}
-
-  <header>
-      {% include "regulations/main-header.html" %}
-  </header>
-
   <main class="reg-title">
     <div class="container">
       <h1>
-        Title {{cfr_title_number|upper}} {{cfr_title_text}}
+        Title
+        {% if cfr_title_number and cfr_title_text %}
+          {{cfr_title_number|upper}} {{cfr_title_text}}
+        {% else %}
+          N/A
+        {% endif %}
       </h1>
       
       <ul class="part-names">
@@ -45,9 +42,15 @@
           {% endfor %}
         </li>
         {% endfor %}
+
+        {% if not regulations %}
+          <li>No regulations are currently loaded.</li>
+        {% endif %}
       </ul>
 
-      {% include "regulations/recent-changes.html" %}
+      {% if regulations %}
+        {% include "regulations/recent-changes.html" %}
+      {% endif %}
 
       <div class="disclaimer">
         <h5>Legal Limitations of This Tool</h5>
@@ -58,8 +61,6 @@
       </div>
     </div>
 
-  </main> 
-
-  {% include "regulations/full_footer.html" %}
+  </main>
 
 {% endblock %}

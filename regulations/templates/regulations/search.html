@@ -1,18 +1,10 @@
 {% extends "regulations/base.html" %}
 {% load static %}
-{% load search %}}
-{% block app_js %}
-<link rel="stylesheet" href="{% static '/css/main.css' %}"/>
-{% endblock %}
+{% load search %}
 
 {% block title %}eRegulations{% endblock %}
 
 {% block body %}
-
-  <header>
-      {% include "regulations/main-header.html" %}
-  </header>
-
   <div class="box search-page">
     <main>
       <div class="container">
@@ -69,7 +61,5 @@
       <p>Search the entirety of Title 42, including other subchapters, in a different reg tool</p>
     </aside>
   </div>
-
-  {% include "regulations/full_footer.html" %}
 
 {% endblock %}

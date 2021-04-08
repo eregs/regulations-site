@@ -1,21 +1,19 @@
 {% extends "regulations/base.html" %}
 {% load static %}
 
+{% block pre_header %}
+    <!-- Temporary: Gives users a way to switch between part, subpart, and section views -->
+    <div class="switch-view">
+        <ul>    
+            <li><a {% if part_view_link %}href="{{ part_view_link }}"{% else %}class="active" href="#"{% endif %}>Part View</a></li>
+            <li><a {% if subpart_view_link %}href="{{ subpart_view_link }}"{% else %}class="active" href="#"{% endif %}>Subpart View</a></li>
+            <li><a {% if section_view_link %}href="{{ section_view_link }}"{% else %}class="active" href="#"{% endif %}>Section View</a></li>
+        </ul>
+    </div>
+    <!-- / Temporary -->
+{% endblock %}
+
 {% block body %}
-
-<!-- Temporary: Gives users a way to switch between part, subpart, and section views -->
-<div class="switch-view">
-    <ul>    
-        <li><a {% if part_view_link %}href="{{ part_view_link }}"{% else %}class="active" href="#"{% endif %}>Part View</a></li>
-        <li><a {% if subpart_view_link %}href="{{ subpart_view_link }}"{% else %}class="active" href="#"{% endif %}>Subpart View</a></li>
-        <li><a {% if section_view_link %}href="{{ section_view_link }}"{% else %}class="active" href="#"{% endif %}>Section View</a></li>
-    </ul>
-</div>
-<!-- / Temporary -->
-
-<header>
-    {% include "regulations/main-header.html" %}
-</header>
 
 <div class="box">
 
@@ -44,11 +42,8 @@
 
 </div>   
 
-<footer>
-    <div class="container">
-        {% include "regulations/footer.html" %}
-    </div>
-</footer>
+{% endblock %}
 
-<script src="{% static '/js/main.js'%}"></script>
+{% block post_footer %}
+    <script src="{% static '/js/main.js' %}"></script>
 {% endblock %}

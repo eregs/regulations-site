@@ -1,4 +1,5 @@
 from django.views.generic.base import TemplateView
+from django.http import Http404
 
 from regulations.views.mixins import TableOfContentsMixin
 from regulations.generator.versions import get_versions
@@ -13,7 +14,10 @@ class RegulationLandingView(TableOfContentsMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         reg_part = self.kwargs.get("part")
-        current, _ = get_versions(reg_part)
+        try:
+            current, _ = get_versions(reg_part)
+        except:
+            raise Http404
         reg_version = current['version']
 
         toc = self.get_toc(reg_part, reg_version)
