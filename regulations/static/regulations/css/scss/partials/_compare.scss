@@ -1,0 +1,17 @@
+@import "../application_settings";
+
+.view-and-compare {
+  padding: 20px 0 20px 0px;
+  background-color: $secondary_link_color;
+  color: $reverse_text_color;
+ 
+  .view-container {
+    width: 50%;
+    margin: auto;
+  } 
+
+  span.view-select {
+    display: inline-block;
+  }
+
+}
