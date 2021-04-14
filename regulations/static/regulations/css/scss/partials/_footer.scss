@@ -6,55 +6,55 @@
 @import "../application_settings";
 
 footer {
-  padding: 2em 2em;
-  border-top: 1px solid $border_color;
-  background: $teritary_background_color;
-  flex-shrink: 0;
-  display: flex;  
-  justify-content: space-between;
+    padding: 2em 2em;
+    border-top: 1px solid $border_color;
+    background: $teritary_background_color;
+    flex-shrink: 0;
+    display: flex;  
+    justify-content: space-between;
 
-  p {
-    font-family: $primary_site_font;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 18px;
-    color: $secondary_text_color;
+    p {
+        font-family: $primary_site_font;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 18px;
+        color: $secondary_text_color;
 
-    &.footer-bold {
-      font-family: $secondary_site_font;
-      font-weight: bold;
-      font-size: 14px;
-      line-height: 18px;
-      color: $secondary_text_color;
-    }
-  }
-
-  div {
-    &.footer-left {
-      max-width: calc(400px - 2em);
-      img {
-        width: 100%;
-        max-width: 219px;
-      }
-    }
-
-    &.footer-middle {
-      max-width: calc(100% - 800px - 4em);
-    }
-
-    &.footer-right {
-      max-width: calc(400px - 2em);
-      i {
-        font-size: 30px;
-        line-height: 34px;
-        color: $primary_link_color;
-        padding-right: 0.5em;
-        &:hover {
-          color: $primary_link_hover;
-          cursor: pointer;
-          @include transition;
+        &.footer-bold {
+            font-family: $secondary_site_font;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 18px;
+            color: $secondary_text_color;
         }
-      }
     }
-  }
+
+    div {
+        &.footer-left {
+            max-width: calc(400px - 2em);
+            img {
+                width: 100%;
+                max-width: 219px;
+            }
+        }
+
+        &.footer-middle {
+            max-width: calc(100% - 800px - 4em);
+        }
+
+        &.footer-right {
+            max-width: calc(400px - 2em);
+            i {
+                font-size: 30px;
+                line-height: 34px;
+                color: $primary_link_color;
+                padding-right: 0.5em;
+                &:hover {
+                    color: $primary_link_hover;
+                    cursor: pointer;
+                    @include transition;
+                }
+            }
+        }
+    }
 }

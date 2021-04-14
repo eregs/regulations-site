@@ -77,7 +77,7 @@ $secondary_site_font: "Merriweather", Georgia, serif;
 //--------------------------
 
 @mixin transition {
-  transition: all 0.1s ease-in;
+    transition: all 0.1s ease-in;
 }
 
 // -------------------------
@@ -85,26 +85,26 @@ $secondary_site_font: "Merriweather", Georgia, serif;
 // -------------------------
 
 a {
-  color: $primary_link_color;
+    color: $primary_link_color;
 
-  &:hover {
-    color: $primary_link_hover;
-    cursor: pointer;
-    @include transition;
-  }
+    &:hover {
+        color: $primary_link_hover;
+        cursor: pointer;
+        @include transition;
+    }
 }
 
 .container {
-  max-width: 800px;
-  display: block; 
-  margin: 0 auto;
+    max-width: 800px;
+    display: block; 
+    margin: 0 auto;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 .fa-external-link-alt {
-  font-size: 80%;
-  margin-left: .3rem;
+    font-size: 80%;
+    margin-left: .3rem;
 }

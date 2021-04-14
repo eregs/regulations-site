@@ -25,8 +25,8 @@ class RegulationLandingView(TableOfContentsMixin, TemplateView):
             'TOC': toc,
             'part': reg_part,
             'content': [
-                'regulations/landing_%s.html' % reg_part,
-                'regulations/landing_default.html',
+                'regulations/partials/landing_%s.html' % reg_part,
+                'regulations/partials/landing_default.html',
             ],
         }
         return {**context, **c}

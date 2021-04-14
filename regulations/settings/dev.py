@@ -7,7 +7,6 @@ CACHES['eregs_longterm_cache']['BACKEND'] = 'django.core.cache.backends.dummy.Du
 CACHES['api_cache']['TIMEOUT'] = 5  # roughly per request
 
 ROOT_URLCONF = 'regulations.urls'
-INSTALLED_APPS = INSTALLED_APPS + ('notice_comment',)
 
 try:
     from local_settings import *

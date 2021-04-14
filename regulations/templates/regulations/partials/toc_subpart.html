@@ -1,0 +1,14 @@
+<li data-subpart-heading data-subgroup="subpart-{{item.index|last}}" id="{{item}}" class="subpart-heading-{{item.index|last}} section-subpart" tabindex="0">
+    <h3 class="toc-nav__divider " data-section-id="{{item.section_id}}" id="nav-{{item.section_id}}">
+        <a class="subpart-letter">{{item.label|safe}} <span class="subpart-range">({{ item.sub_toc.0.label }} - {% with item.sub_toc|last as last %}{{ last.label }}{% endwith %})</span></a>
+        <button tabindex="0" data-state="expanded" data-set-state="expanded" data-state-name="{{item.section_id}}"><i class="fa fa-chevron-down"></i></button>
+        <button tabindex="0" data-state="expanded" data-set-state="collapsed" data-state-name="{{item.section_id}}"><i class="fa fa-chevron-up"></i></button>
+        <div class="subpart-name">{{item.sub_label|safe}}</div>
+    </h3>
+</li>
+
+<li data-state="expanded" data-state-name="{{item.section_id}}">
+    {% if item.sub_toc %}
+        {% include "regulations/partials/toc_sub_toc.html" with type="subpart" %}
+    {% endif %}
+</li>

@@ -13,9 +13,6 @@ setup(
         'requests',
         'six',
     ],
-    extras_require={
-        'notice_comment': ['boto3', 'celery', 'requests-toolbelt'],
-    },
     classifiers=[
         'License :: Public Domain',
         'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication'

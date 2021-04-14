@@ -1,0 +1,13 @@
+{% if item.index.0 == '433' %}
+    <li data-subgroup="subpart-D" class="subjgrp-heading-{{item.index|last}} section-subjgrp toggle-toc-menu-subgroups subpart-D" tabindex="0">
+{% else %}
+    <li data-subgroup="subjgrp-{{item.index|last}}" class="subjgrp-heading-{{item.index|last}} section-subjgrp" tabindex="0">
+{% endif %}
+
+<h3 class="toc-nav__divider toc-subjgrp" data-section-id="{{item.section_id}}">{{item.label|safe|upper}}</h3></li>
+
+<li>
+    {% if item.sub_toc %}
+        {% include "regulations/partials/toc_subgrp_toc.html" with type="subjgrp" %}
+    {% endif %}
+</li>

@@ -2,17 +2,13 @@
 {% load static %}
 
 {% block body %}
+    <div class="box">
+        <aside class="left-sidebar">
+            {% include "regulations/partials/toc.html" %}
+        </aside>
 
-<div class="box">
-
-    <aside class="left-sidebar">
-        {% include "regulations/toc.html" %}
-    </aside>
-
-    {% include content %}
-
-</div>
-
+        {% include content %}
+    </div>
 {% endblock %}
 
 {% block post_footer %}

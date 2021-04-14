@@ -12,14 +12,14 @@ CSS/Javascript etc., should inherit from this template.
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
-        {% block title %}
-        {{meta.cfr_title_number}} CFR Part {{reg_part}} | eRegulations
-        {% endblock %}
+            {% block title %}
+                {{meta.cfr_title_number}} CFR Part {{reg_part}} | eRegulations
+            {% endblock %}
         </title>
-        {% include "regulations/favicon.html" %}
-        <link rel="stylesheet" href="{% static '/css/main.css' %}"/>
-
+        {% include "regulations/partials/favicon.html" %}
+        <link rel="stylesheet" href="{% static '/css/main.css' %}" />
     </head>
+    
     <!--[if lt IE 7]>      <body class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
     <!--[if IE 7]>         <body class="lt-ie9 lt-ie8"> <![endif]-->
     <!--[if IE 8]>         <body class="lt-ie9"> <![endif]-->
@@ -35,25 +35,25 @@ CSS/Javascript etc., should inherit from this template.
     </div>
     <![endif]-->
 
-    {% block pre_header %}{% endblock %}
+    <!-- Body tag begins here -->
+        {% block pre_header %}{% endblock %}
 
-    {% block header %}
-    <header>
-        {% include "regulations/main-header.html" %}
-    </header>
-    {% endblock %}
+        {% block header %}
+            <header>
+                {% include "regulations/partials/header.html" %}
+            </header>
+        {% endblock %}
 
-    <div class="body-content">
-        {% block body %}{% endblock %}
-    </div>
+        <div class="body-content">
+            {% block body %}{% endblock %}
+        </div>
 
-    {% block footer %}
-    <footer>
-        {% include "regulations/full_footer.html" %}
-    </footer>
-    {% endblock %}
+        {% block footer %}
+            <footer>
+                {% include "regulations/partials/footer.html" %}
+            </footer>
+        {% endblock %}
 
-    {% block post_footer %}{% endblock %}
-
+        {% block post_footer %}{% endblock %}
     </body>
 </html>

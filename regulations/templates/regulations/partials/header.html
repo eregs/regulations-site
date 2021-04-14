@@ -1,0 +1,17 @@
+{% load static %}
+
+<div class="site-title">
+    <a href="{% url 'homepage' %}">Medicaid &amp; CHIP Regulations</a>
+</div>
+
+<div class="reg-title">
+    {% if meta.cfr_title_number %}
+        <a href="{% url 'regulation_landing_view' reg_part %}">{{ meta.cfr_title_number }} CFR Part {{ reg_part }} {% if meta.reg_letter %}(Regulation {{ meta.reg_letter }}){% endif %}</a>
+    {% endif %}
+</div> 
+
+<div class="search-header">
+    <form class="search-box" action="{% url 'search' %}">
+        <input type=search name="q" placeholder="Search Regulations"></input>
+    </form>
+</div>

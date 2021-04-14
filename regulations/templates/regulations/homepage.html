@@ -6,61 +6,59 @@
 {% block body_class %}site-homepage{% endblock %}
 
 {% block body %}
-  <main class="reg-title">
-    <div class="container">
-      <h1>
-        Title
-        {% if cfr_title_number and cfr_title_text %}
-          {{cfr_title_number|upper}} {{cfr_title_text}}
-        {% else %}
-          N/A
-        {% endif %}
-      </h1>
-      
-      <ul class="part-names">
-        {% for regulation in regulations %}
-        <li>
-          <a href="{% url 'regulation_landing_view' regulation.part %}">
-            <div class="part-number">
-              {{regulation.part}}:
+    <main class="reg-title">
+        <div class="container">
+            <h1>
+                Title
+                {% if cfr_title_number and cfr_title_text %}
+                    {{cfr_title_number|upper}} {{cfr_title_text}}
+                {% else %}
+                    N/A
+                {% endif %}
+            </h1>
+            
+            <ul class="part-names">
+                {% for regulation in regulations %}
+                    <li>
+                        <a href="{% url 'regulation_landing_view' regulation.part %}">
+                            <div class="part-number">
+                                {{regulation.part}}:
+                            </div>
+                            <div class="part-title">
+                                {% if regulation.meta.reg_letter %}
+                                    Regulation {{regulation.meta.reg_letter}}
+                                    {{regulation.meta.statutory_name|title}}
+                                {% else %}
+                                    {{regulation.meta.statutory_name|title}}
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        {% for amendment in regulation.amendments %}
+                            <div>
+                                New amendment effective {{amendment.by_date|date:'n/j/Y'}}
+                                <a href="{% url 'reader_view' regulation.part regulation.reg_first_section amendment.version %}">View new amendment</a>
+                            </div>
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+
+                {% if not regulations %}
+                    <li>No regulations are currently loaded.</li>
+                {% endif %}
+            </ul>
+
+            {% if regulations %}
+                {% include "regulations/partials/recent_changes.html" %}
+            {% endif %}
+
+            <div class="disclaimer">
+                <h5>Legal Limitations of This Tool</h5>
+                <p>The CMS Regulations tool is an editorial compilation of material and not an official legal edition of the Code of Federal Regulations or the Federal Register.
+                    We have made every effort to ensure the material presented in this tool is accurate, but if you are relying on it for legal research you should consult the
+                    official editions of those sources to confirm your findings. Nothing in this tool binds CMS or creates any rights, benefits, or defenses, substantive or
+                    procedural, that are enforceable by any party in any manner.</p>
             </div>
-            <div class="part-title">
-              {% if regulation.meta.reg_letter %}
-                Regulation {{regulation.meta.reg_letter}}
-                {{regulation.meta.statutory_name|title}}
-              {% else %}
-                {{regulation.meta.statutory_name|title}}
-              {% endif %}
-            </div>
-          </a>
-
-          {% for amendment in regulation.amendments %}
-            <div>
-              New amendment effective {{amendment.by_date|date:'n/j/Y'}}
-              <a href="{% url 'reader_view' regulation.part regulation.reg_first_section amendment.version %}">View new amendment</a>
-            </div>
-          {% endfor %}
-        </li>
-        {% endfor %}
-
-        {% if not regulations %}
-          <li>No regulations are currently loaded.</li>
-        {% endif %}
-      </ul>
-
-      {% if regulations %}
-        {% include "regulations/recent-changes.html" %}
-      {% endif %}
-
-      <div class="disclaimer">
-        <h5>Legal Limitations of This Tool</h5>
-        <p>The CMS Regulations tool is an editorial compilation of material and not an official legal edition of the Code of Federal Regulations or the Federal Register.
-          We have made every effort to ensure the material presented in this tool is accurate, but if you are relying on it for legal research you should consult the
-          official editions of those sources to confirm your findings. Nothing in this tool binds CMS or creates any rights, benefits, or defenses, substantive or
-          procedural, that are enforceable by any party in any manner.</p>
-      </div>
-    </div>
-
-  </main>
-
+        </div>
+    </main>
 {% endblock %}

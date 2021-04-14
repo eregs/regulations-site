@@ -6,27 +6,27 @@
 @import "../application_settings";
 
 html {
-  font-size: $base_font_size;
-  line-height: $site_ratio;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+    font-size: $base_font_size;
+    line-height: $site_ratio;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background-color: $white;
-  color: $primary_text_color;
-  font-family: $primary_site_font;
-  line-height: $site-ratio;
+    background-color: $white;
+    color: $primary_text_color;
+    font-family: $primary_site_font;
+    line-height: $site-ratio;
 }
 
 h1 {
-  font-size: $base_font_size*1.5;
-  font-family: $secondary_site_font;
-  margin-bottom: 1.5em;
+    font-size: $base_font_size*1.5;
+    font-family: $secondary_site_font;
+    margin-bottom: 1.5em;
 }
 
 h2 {
-  font-size: $base_font_size*1.4;
-  font-weight: bold;
-  font-family: $secondary_site_font;
+    font-size: $base_font_size*1.4;
+    font-weight: bold;
+    font-family: $secondary_site_font;
 }

@@ -14,7 +14,7 @@ from regulations.views.utils import find_subpart
 
 class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin, TemplateView):
 
-    template_name = 'regulations/section.html'
+    template_name = 'regulations/reader.html'
 
     sectional_links = True
 

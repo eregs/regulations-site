@@ -12,11 +12,9 @@ RUN npm install --quiet -g grunt-cli
 
 COPY ["manage.py", "package.json", "example-config.json", "setup.py", "frontendbuild.sh", "Gruntfile.js", ".babelrc", ".eslintignore", ".eslintrc", "/app/src/"]
 COPY ["regulations", "/app/src/regulations"]
-COPY ["fr_notices", "/app/src/fr_notices"]
-COPY ["notice_comment", "/app/src/notice_comment"]
 WORKDIR /app/src/
 RUN ./frontendbuild.sh
-RUN $PIP_CMD install --no-cache-dir -e .[notice_comment] \
+RUN $PIP_CMD install --no-cache-dir -e . \
     && $PYTHON_CMD manage.py migrate
 
 ENV PYTHONUNBUFFERED="1"
