@@ -13735,6 +13735,43 @@ html {
   margin-left: 0.3rem;
 }
 
+.view-and-compare {
+  padding: 20px 0 20px 0px;
+  background-color: #026666;
+  color: #fff;
+}
+.view-and-compare .view-container {
+  width: 50%;
+  margin: auto;
+}
+.view-and-compare span.view-select {
+  display: inline-block;
+}
+
+a {
+  color: #046791;
+}
+a:hover {
+  color: #17415F;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+
+.container {
+  max-width: 800px;
+  display: block;
+  margin: 0 auto;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.fa-external-link-alt {
+  font-size: 80%;
+  margin-left: 0.3rem;
+}
+
 .switch-view {
   background: #EEFAFE;
   padding: 0.5em 0;

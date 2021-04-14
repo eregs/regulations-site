@@ -27,16 +27,20 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
         # answering the question: what are we looking at?
         reg_version = context["version"]
         reg_part = context["part"]
-        reg_citation = context["citation"]
+        citation = context["citation"]
+        reg_citation = "-".join(citation)
         toc = self.get_toc(reg_part, reg_version)
         meta = utils.regulation_meta(reg_part, reg_version)
         tree = self.get_regulation(reg_citation, reg_version)
+        versions = self.get_versions(reg_part)
 
         if not meta:
             raise Http404
 
         c = {
             'tree':         tree,
+            'versions':     versions,
+            'citation':     citation,
             'reg_part':     reg_part,
             'meta':         meta,
             'TOC':          toc,
@@ -55,6 +59,11 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
     def get_view_links(self, context, toc):
         raise NotImplementedError()
 
+    def get_versions(self, label_id):
+        versions = self.client.regversions(label_id)
+        if versions is None:
+            raise Http404
+        return versions['versions']
 
 class PartReaderView(ReaderView):
     def get_view_links(self, context, toc):

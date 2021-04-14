@@ -16,7 +16,7 @@ def build_citation(context):
             citation.append(context["section"])
         elif 'subpart' in context:
             citation.append(context["subpart"])
-    return "-".join(citation)
+    return citation
 
 
 class CitationContextMixin:
