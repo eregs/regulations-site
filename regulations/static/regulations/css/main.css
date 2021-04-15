@@ -13744,6 +13744,12 @@ html {
   width: 50%;
   margin: auto;
 }
+.view-and-compare .view-title {
+  font-weight: bold;
+  border-right: 1px solid #D6D7D9;
+  padding-right: 1em;
+  margin-right: 1em;
+}
 .view-and-compare span.view-select {
   display: inline-block;
 }
