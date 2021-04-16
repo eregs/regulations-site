@@ -13740,7 +13740,11 @@ html {
   background-color: #026666;
   color: #fff;
 }
+.view-and-compare[data-state=hide] {
+  display: none;
+}
 .view-and-compare .view-container {
+  display: inline-block;
   width: 50%;
   margin: auto;
 }
@@ -13752,6 +13756,17 @@ html {
 }
 .view-and-compare span.view-select {
   display: inline-block;
+}
+.view-and-compare button {
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+.view-and-compare button:hover {
+  color: #fff;
+  transition: all 0.1s ease-in;
 }
 
 a {

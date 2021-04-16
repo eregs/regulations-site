@@ -4,15 +4,20 @@
   padding: 20px 0 20px 0px;
   background-color: $secondary_link_color;
   color: $reverse_text_color;
- 
+
+  &[data-state="hide"] {
+    display: none;
+  }
+
   .view-container {
+    display: inline-block;
     width: 50%;
     margin: auto;
   }
 
   .view-title {
     font-weight: bold;
-    border-right: 1px solid $border_color; 
+    border-right: 1px solid $border_color;
     padding-right: 1em;
     margin-right: 1em;
   }
@@ -21,4 +26,16 @@
     display: inline-block;
   }
 
+  button {
+    border: none;
+    background: none;
+    color: $reverse_text_color;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      color: $reverse_link_hover;
+      @include transition;
+    }
+  }
 }
