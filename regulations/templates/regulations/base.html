@@ -19,23 +19,8 @@ CSS/Javascript etc., should inherit from this template.
         {% include "regulations/partials/favicon.html" %}
         <link rel="stylesheet" href="{% static '/css/main.css' %}" />
     </head>
-    
-    <!--[if lt IE 7]>      <body class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-    <!--[if IE 7]>         <body class="lt-ie9 lt-ie8"> <![endif]-->
-    <!--[if IE 8]>         <body class="lt-ie9"> <![endif]-->
-    <!--[if IE 9]>         <body class="lt-ie10"> <![endif]-->
-    <!--[if gt IE 9]><!--><body class="{% block body_class %}{% endblock %}"><!--<![endif]-->
-    <!--[if lt IE 8]>
-    <div class="browser-warning displayed">
-        <h2>Please note that the eRegulations tool does not support Internet Explorer version 7 or below.</h2>
-        <ul>
-            <li>To improve your experience, please <a href="http://browsehappy.com/">upgrade your browser <span class="cf-icon cf-icon-right"></span></a></li>
-            <li>If you are using IE8 or later, you may need to turn off "Compatibility View."</li>
-        </ul>
-    </div>
-    <![endif]-->
 
-    <!-- Body tag begins here -->
+    <body class="{% block body_class %}{% endblock %}">
         {% block pre_header %}{% endblock %}
 
         {% block header %}
