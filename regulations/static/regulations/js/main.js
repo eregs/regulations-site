@@ -17,6 +17,15 @@ function goToVersion() {
         location.href  = this.options[this.selectedIndex].dataset.url;
     });
 
+    // if not latest version show view div
+    const latest_version = options[0].dataset.url;
+
+    if(!location.href.includes(latest_version)) {
+        const state_change_target = "view"
+        const el = document.querySelector(`[data-state][data-state-name='${state_change_target}']`);
+        el.setAttribute("data-state", "show");
+    }
+
     for(const option of options) {
         const url = option.dataset.url;
         if(location.href.includes(url)) {
