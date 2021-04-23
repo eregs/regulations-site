@@ -4,7 +4,8 @@ function makeStateful(el) {
 
     for (const state_change_button of state_change_buttons) {
         state_change_button.addEventListener('click', function() {
-            el.setAttribute("data-state", this.getAttribute("data-set-state"));
+            const state = this.getAttribute("data-set-state");
+            el.setAttribute("data-state", state);
         });
     }
 }
@@ -22,8 +23,10 @@ function goToVersion() {
 
     if(!location.href.includes(latest_version)) {
         const state_change_target = "view"
-        const el = document.querySelector(`[data-state][data-state-name='${state_change_target}']`);
-        el.setAttribute("data-state", "show");
+        const view_elements = document.querySelectorAll(`[data-state][data-state-name='${state_change_target}']`);
+        for (const el of view_elements) {
+          el.setAttribute("data-state", "show");
+        }
     }
 
     for(const option of options) {

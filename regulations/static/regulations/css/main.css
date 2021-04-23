@@ -13744,9 +13744,10 @@ html {
   display: none;
 }
 .view-and-compare .view-container {
-  display: inline-block;
-  width: 50%;
-  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .view-and-compare .view-title {
   font-weight: bold;
@@ -13755,7 +13756,14 @@ html {
   margin-right: 1em;
 }
 .view-and-compare span.view-select {
+  padding-left: 10px;
   display: inline-block;
+}
+.view-and-compare .close-button {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  height: auto;
 }
 .view-and-compare button {
   border: none;
@@ -14062,6 +14070,37 @@ html {
 .right-sidebar div p {
   color: #5B616B;
   margin: 0;
+}
+.right-sidebar button {
+  font-size: 1rem;
+  font-weight: 700;
+  height: 66px;
+}
+.right-sidebar button[data-state=show] {
+  color: #fff;
+  background: #026666;
+}
+.right-sidebar button[data-state=show] .button-subheader {
+  color: #fff;
+}
+.right-sidebar button .button-inner-container {
+  display: inline-block;
+  padding: 0 0 0 0;
+}
+.right-sidebar button img[data-state=hide][data-img=light] {
+  display: none;
+}
+.right-sidebar button img[data-state=show][data-img=dark] {
+  display: none;
+}
+.right-sidebar button .button-subheader {
+  font-weight: normal;
+  font-size: 0.75rem;
+  color: #212121;
+}
+.right-sidebar button .button-image {
+  display: inline-block;
+  padding: 0;
 }
 
 a {

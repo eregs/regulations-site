@@ -17,4 +17,49 @@
             margin: 0;
         }
     }
+
+    button {
+      font-size: 1rem;
+      font-weight: 700;
+      height: 66px;
+
+      &[data-state="show"] {
+        color: $reverse-text-color;
+        background: $secondary-color;
+
+        .button-subheader {
+          color: $reverse-text-color;
+        }
+      }
+
+      .button-inner-container {
+        display: inline-block;
+        padding: 0 0 0 0;
+
+      }
+
+      img {
+        &[data-state="hide"][data-img="light"] {
+          display: none;
+        }
+        &[data-state="show"][data-img="dark"] {
+          display: none;
+        }
+      }
+
+      .button-subheader {
+        font-weight: normal;
+        font-size: 0.75rem;
+        color: $primary_text_color;
+      }
+
+      .button-image {
+        display: inline-block;
+        padding: 0;
+      }
+
+
+    }
+
 }
+

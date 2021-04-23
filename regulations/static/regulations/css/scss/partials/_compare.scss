@@ -2,7 +2,7 @@
 
 .view-and-compare {
   padding: 20px 0 20px 0px;
-  background-color: $secondary_link_color;
+  background-color: $secondary_color;
   color: $reverse_text_color;
 
   &[data-state="hide"] {
@@ -10,9 +10,10 @@
   }
 
   .view-container {
-    display: inline-block;
-    width: 50%;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
   .view-title {
@@ -23,7 +24,15 @@
   }
 
   span.view-select {
+    padding-left: 10px;
     display: inline-block;
+  }
+
+  .close-button {
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    height: auto;
   }
 
   button {
