@@ -13774,7 +13774,6 @@ html {
 }
 .view-and-compare button:hover {
   color: #fff;
-  transition: all 0.1s ease-in;
 }
 
 a {
@@ -14075,6 +14074,8 @@ html {
   font-size: 1rem;
   font-weight: 700;
   height: 66px;
+  color: #026666;
+  border: 1px solid #026666;
 }
 .right-sidebar button[data-state=show] {
   color: #fff;

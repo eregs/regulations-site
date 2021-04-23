@@ -19,47 +19,45 @@
     }
 
     button {
-      font-size: 1rem;
-      font-weight: 700;
-      height: 66px;
+        font-size: 1rem;
+        font-weight: 700;
+        height: 66px;
+        color: $secondary-color;
+        border: 1px solid $secondary-color;
 
-      &[data-state="show"] {
-        color: $reverse-text-color;
-        background: $secondary-color;
+        &[data-state="show"] {
+            color: $reverse-text-color;
+            background: $secondary-color;
+
+            .button-subheader {
+                color: $reverse-text-color;
+            }
+        }
+
+        .button-inner-container {
+            display: inline-block;
+            padding: 0 0 0 0;
+        }
+
+        img {
+            &[data-state="hide"][data-img="light"] {
+                display: none;
+            }
+            &[data-state="show"][data-img="dark"] {
+                display: none;
+            }
+        }
 
         .button-subheader {
-          color: $reverse-text-color;
+            font-weight: normal;
+            font-size: 0.75rem;
+            color: $primary_text_color;
         }
-      }
 
-      .button-inner-container {
-        display: inline-block;
-        padding: 0 0 0 0;
-
-      }
-
-      img {
-        &[data-state="hide"][data-img="light"] {
-          display: none;
+        .button-image {
+            display: inline-block;
+            padding: 0;
         }
-        &[data-state="show"][data-img="dark"] {
-          display: none;
-        }
-      }
-
-      .button-subheader {
-        font-weight: normal;
-        font-size: 0.75rem;
-        color: $primary_text_color;
-      }
-
-      .button-image {
-        display: inline-block;
-        padding: 0;
-      }
-
-
     }
-
 }
 
