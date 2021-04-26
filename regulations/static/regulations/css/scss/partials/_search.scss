@@ -6,7 +6,14 @@
 @import "../application_settings";
 
 .search-page {
-	min-height: 67vh;
+
+	main {
+		width: calc(100% - 450px);
+	}
+
+	aside.left-sidebar[data-state="expanded"] + main {
+		width: calc(100% - 800px);
+	}
 
 	.container {
 		margin: 0;
