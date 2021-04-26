@@ -13872,30 +13872,6 @@ html {
   margin-left: 0.3rem;
 }
 
-.switch-view {
-  background: #EEFAFE;
-  padding: 0.5em 0;
-  border-bottom: 1px solid #D6D7D9;
-}
-.switch-view ul {
-  margin: 0;
-  text-align: right;
-}
-.switch-view ul li {
-  display: inline;
-  margin-right: 2em;
-}
-.switch-view ul li a {
-  font-weight: 500;
-}
-.switch-view ul li a.active {
-  font-weight: bold;
-  color: #17415F;
-}
-.switch-view ul li a.active:hover {
-  color: #046791;
-}
-
 header a {
   text-decoration: none;
   color: #026666;
