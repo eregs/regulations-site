@@ -1,0 +1,3 @@
+
+class NotInSubpart(Exception):
+    pass

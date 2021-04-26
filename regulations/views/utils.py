@@ -2,6 +2,7 @@
 import itertools
 import logging
 
+from regulations.views.errors import NotInSubpart
 from regulations.generator import api_reader
 from regulations.generator.utils import roman_nums, convert_to_python
 from regulations.generator.toc import fetch_toc
@@ -53,6 +54,8 @@ def find_subpart(section, toc, subpart=None):
     for el in toc:
         value = None
         if el['index'][1] == section:
+            if subpart is None:
+                raise NotInSubpart()
             return subpart
         elif 'Subpart' in el['index'] and 'sub_toc' in el:
             value = find_subpart(section, el['sub_toc'], '-'.join(el['index'][1:]))

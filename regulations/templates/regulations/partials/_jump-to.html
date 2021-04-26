@@ -5,7 +5,7 @@
         <input name="version" type="hidden" required value={{ version }}>
         <div class="jump-to-input">
             <label>§ {{ part }}.</label>
-            <input class="number-box" name="section" placeholder="{{section}}" type="text">
+            <input class="number-box" name="section" placeholder="{{section}}" type="text" pattern="\d+" title="the number of the desired section">
         </div>
         <input class="submit" type="submit" value="Go">
     </form>
