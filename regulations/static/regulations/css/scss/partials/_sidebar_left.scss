@@ -171,7 +171,7 @@ aside.left-sidebar {
 			padding: .4em 1em;
 			background: $reverse_link_color;
 			border: none;
-			border-radius: 3px;
+			border-radius: $border-radius;
 			cursor: pointer;
 
 			&:hover {

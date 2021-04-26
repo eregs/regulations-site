@@ -1,6 +1,6 @@
 
 //-----------------------------------------------------------------------------------------
-// Layout: Working Layout to be Mostly Replaced by the CMS Design System grid
+// Layout
 //-----------------------------------------------------------------------------------------
 
 header {
@@ -18,13 +18,15 @@ body {
     height: 100%;
 }
 
-.box {
-    display: flex;
-    width: 100%;
+.container {
+    max-width: $text-max-width;
+    display: block; 
+    margin: 0 auto;
 }
 
-.body-content {
-    flex: 1 0 auto;
+.flexbox {
+    display: flex;
+    width: 100%;
 }
 
 main {

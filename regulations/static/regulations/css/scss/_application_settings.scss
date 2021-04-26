@@ -1,4 +1,7 @@
 
+// NOTE: Our variables use an _ between words. CMS Design System variables use - between words.
+
+
 //--------------------------
 // Colors
 //--------------------------
@@ -60,17 +63,14 @@ $reverse_text_color: $white;
 // Base Font Settings
 //--------------------------
 
-$base_font_size: 1rem;
-$site_ratio: 1.6;
-
-$primary_site_font: "Open Sans", sans-serif;
+$primary_site_font: $font-sans;  // Open Sans
 $secondary_site_font: "Merriweather", Georgia, serif;
 
 //--------------------------
 // Breakpoints
 //--------------------------
 
-// Add breakpoints here
+// Use CMS Design System
 
 //--------------------------
 // Transitions
@@ -92,12 +92,6 @@ a {
         cursor: pointer;
         @include transition;
     }
-}
-
-.container {
-    max-width: 800px;
-    display: block; 
-    margin: 0 auto;
 }
 
 html {

@@ -20,7 +20,7 @@ CSS/Javascript etc., should inherit from this template.
         <link rel="stylesheet" href="{% static '/css/main.css' %}" />
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="ds-base {% block body_class %}{% endblock %}">
         {% block pre_header %}{% endblock %}
 
         {% block header %}
@@ -28,11 +28,9 @@ CSS/Javascript etc., should inherit from this template.
                 {% include "regulations/partials/header.html" %}
             </header>
         {% endblock %}
-
-        <div class="body-content">
-            {% block body %}{% endblock %}
-        </div>
-
+        
+        {% block body %}{% endblock %}
+       
         {% block footer %}
             <footer>
                 {% include "regulations/partials/footer.html" %}

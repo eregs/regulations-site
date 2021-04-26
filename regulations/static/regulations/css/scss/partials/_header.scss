@@ -11,8 +11,12 @@ header {
 		text-decoration: none;
 		color: $secondary_link_color;
 
+		&:visited {
+			color: $secondary_link_color;
+		}
+
 		&:hover {
-			color: $secondary_link_hover
+			color: $secondary_link_hover;
 		}
 	}
 

@@ -6,6 +6,7 @@
 @import "../application_settings";
 
 .search-page {
+	min-height: 67vh;
 
 	.container {
 		margin: 0;
@@ -43,8 +44,6 @@
 	.search-context {
 		margin-bottom: 1em;
 	}
-
-	
 
 	// i.e. "18 results, displayed by relevance"
 
@@ -161,7 +160,7 @@
 		border-radius: 3px 0 0 3px;
 		outline: none;
 
-		&:focus{
+		&:focus {
 			color: $primary_link_hover;
 		}
 
@@ -178,10 +177,6 @@
 		}
 
 		&:-ms-input-placeholder { /* IE 10+ */
-			color: $primary_text_color;
-		}
-
-		&:-moz-placeholder { /* Firefox 18- */
 			color: $primary_text_color;
 		}
 

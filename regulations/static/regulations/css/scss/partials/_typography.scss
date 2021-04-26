@@ -6,8 +6,6 @@
 @import "../application_settings";
 
 html {
-    font-size: $base_font_size;
-    line-height: $site_ratio;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -16,17 +14,17 @@ body {
     background-color: $white;
     color: $primary_text_color;
     font-family: $primary_site_font;
-    line-height: $site-ratio;
+    line-height: $base-line-height;
 }
 
 h1 {
-    font-size: $base_font_size*1.5;
+    font-size: $font-size-3xl;
     font-family: $secondary_site_font;
     margin-bottom: 1.5em;
 }
 
 h2 {
-    font-size: $base_font_size*1.4;
+    font-size: $font-size-2xl;
     font-weight: bold;
     font-family: $secondary_site_font;
 }

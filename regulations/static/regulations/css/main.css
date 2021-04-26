@@ -13494,12 +13494,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -13524,13 +13518,15 @@ body {
   height: 100%;
 }
 
-.box {
-  display: flex;
-  width: 100%;
+.container {
+  max-width: 53rem;
+  display: block;
+  margin: 0 auto;
 }
 
-.body-content {
-  flex: 1 0 auto;
+.flexbox {
+  display: flex;
+  width: 100%;
 }
 
 main {
@@ -13562,12 +13558,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -13578,8 +13568,6 @@ html {
 }
 
 html {
-  font-size: 1rem;
-  line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -13587,18 +13575,18 @@ html {
 body {
   background-color: #fff;
   color: #212121;
-  font-family: "Open Sans", sans-serif;
-  line-height: 1.6;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  line-height: 1.5;
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 36px;
   font-family: "Merriweather", Georgia, serif;
   margin-bottom: 1.5em;
 }
 
 h2 {
-  font-size: 1.4rem;
+  font-size: 24px;
   font-weight: bold;
   font-family: "Merriweather", Georgia, serif;
 }
@@ -13610,12 +13598,6 @@ a:hover {
   color: #17415F;
   cursor: pointer;
   transition: all 0.1s ease-in;
-}
-
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
 }
 
 html {
@@ -13668,12 +13650,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -13683,6 +13659,9 @@ html {
   margin-left: 0.3rem;
 }
 
+.search-page {
+  min-height: 67vh;
+}
 .search-page .container {
   margin: 0;
 }
@@ -13807,10 +13786,6 @@ html {
   /* IE 10+ */
   color: #212121;
 }
-.search-box input:-moz-placeholder {
-  /* Firefox 18- */
-  color: #212121;
-}
 .search-box .search-reset {
   border: 1px solid #D6D7D9;
   border-right: none;
@@ -13857,12 +13832,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -13874,6 +13843,9 @@ html {
 
 header a {
   text-decoration: none;
+  color: #026666;
+}
+header a:visited {
   color: #026666;
 }
 header a:hover {
@@ -13907,12 +13879,6 @@ a:hover {
   color: #17415F;
   cursor: pointer;
   transition: all 0.1s ease-in;
-}
-
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
 }
 
 html {
@@ -14090,12 +14056,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -14126,12 +14086,6 @@ a:hover {
   color: #17415F;
   cursor: pointer;
   transition: all 0.1s ease-in;
-}
-
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
 }
 
 html {
@@ -14207,12 +14161,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -14231,7 +14179,7 @@ footer {
   justify-content: space-between;
 }
 footer p {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, sans-serif;
   font-weight: normal;
   font-size: 12px;
   line-height: 18px;
@@ -14278,12 +14226,6 @@ a:hover {
   transition: all 0.1s ease-in;
 }
 
-.container {
-  max-width: 800px;
-  display: block;
-  margin: 0 auto;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -14307,13 +14249,13 @@ main.error-page div.error-left {
   padding-right: 1em;
 }
 main.error-page div.error-left p {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, sans-serif;
   font-weight: normal;
   font-size: 16px;
   line-height: 24px;
 }
 main.error-page div.error-left p.error-code {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", Helvetica, sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 19px;
