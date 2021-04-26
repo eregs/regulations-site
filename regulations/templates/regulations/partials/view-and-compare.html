@@ -1,0 +1,19 @@
+<div class="view-and-compare" data-state="hide" data-state-name="view">
+    <div class="view-container">
+        <span class="view-title">View</span>
+        View Effective on
+        <span class="view-select">
+            <select class="ds-c-field" name="view-options" id="view-options">
+                <option value="">Select Date</option>
+                {% for version in versions %}
+                    <option data-url="{% url 'reader_view' citation.0 citation.1 version.version %}">{{version.by_date}}</option>
+                {% endfor %}
+            </select>
+        </span>
+        <span class="close-button">
+            <button tabindex="0" data-set-state="hide" data-state-name="view">
+                <i class="fa fa-times"></i>
+            </button>
+        </span>
+    </div>
+</div>
