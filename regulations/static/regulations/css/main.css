@@ -13984,7 +13984,7 @@ aside.left-sidebar .toc-controls button:hover {
   transition: all 0.1s ease-in;
 }
 aside.left-sidebar .toc-controls button img {
-  height: 1em;
+  height: 16px;
   padding-right: 5px;
 }
 aside.left-sidebar .toc-controls button[data-set-state=expanded] {
@@ -14015,8 +14015,8 @@ aside.left-sidebar[data-state=collapsed] div.toc-controls [data-set-state=expand
   padding-bottom: 2em;
 }
 .jump-to .jump-to-label {
-  margin: 1em 0 0.5em 0;
-  font-size: 1.1em;
+  margin: 16px 0 8px 0;
+  font-size: 18px;
   font-weight: 600;
 }
 .jump-to .jump-to-input {
@@ -14039,7 +14039,7 @@ aside.left-sidebar[data-state=collapsed] div.toc-controls [data-set-state=expand
   background: none;
   border: 0;
   border-bottom: 2px solid #C4C4C4;
-  margin-right: 0.5em;
+  margin-right: 8px;
   color: #fff;
 }
 .jump-to .number-box:focus {
@@ -14047,7 +14047,7 @@ aside.left-sidebar[data-state=collapsed] div.toc-controls [data-set-state=expand
 }
 .jump-to label {
   font-weight: 600;
-  font-size: 1.1em;
+  font-size: 18px;
 }
 
 a {
@@ -14173,7 +14173,7 @@ html {
 }
 
 footer {
-  padding: 2em 2em;
+  padding: 32px;
   border-top: 1px solid #D6D7D9;
   background: #EEFAFE;
   flex-shrink: 0;
@@ -14184,14 +14184,12 @@ footer p {
   font-family: "Open Sans", Helvetica, sans-serif;
   font-weight: normal;
   font-size: 12px;
-  line-height: 18px;
   color: #5B616B;
 }
 footer p.footer-bold {
   font-family: "Merriweather", Georgia, serif;
   font-weight: bold;
   font-size: 14px;
-  line-height: 18px;
   color: #5B616B;
 }
 footer div.footer-left {
@@ -14203,6 +14201,7 @@ footer div.footer-left img {
 }
 footer div.footer-middle {
   max-width: calc(100% - 800px - 4em);
+  padding-left: 48px;
 }
 footer div.footer-right {
   max-width: calc(400px - 2em);
@@ -14211,7 +14210,7 @@ footer div.footer-right i {
   font-size: 30px;
   line-height: 34px;
   color: #046791;
-  padding-right: 0.5em;
+  padding-right: 16px;
 }
 footer div.footer-right i:hover {
   color: #17415F;

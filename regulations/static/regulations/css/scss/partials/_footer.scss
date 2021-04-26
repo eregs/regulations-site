@@ -6,7 +6,7 @@
 @import "../application_settings";
 
 footer {
-    padding: 2em 2em;
+    padding: $spacer-4;
     border-top: 1px solid $border_color;
     background: $teritary_background_color;
     flex-shrink: 0;
@@ -17,14 +17,12 @@ footer {
         font-family: $primary_site_font;
         font-weight: normal;
         font-size: 12px;
-        line-height: 18px;
         color: $secondary_text_color;
 
         &.footer-bold {
             font-family: $secondary_site_font;
             font-weight: bold;
-            font-size: 14px;
-            line-height: 18px;
+            font-size: $font-size-sm;
             color: $secondary_text_color;
         }
     }
@@ -40,6 +38,7 @@ footer {
 
         &.footer-middle {
             max-width: calc(100% - 800px - 4em);
+            padding-left: $spacer-6;
         }
 
         &.footer-right {
@@ -48,7 +47,8 @@ footer {
                 font-size: 30px;
                 line-height: 34px;
                 color: $primary_link_color;
-                padding-right: 0.5em;
+                padding-right: $spacer-2;
+
                 &:hover {
                     color: $primary_link_hover;
                     cursor: pointer;
