@@ -13,26 +13,25 @@
     }
 
     > section > h1 {
-        padding-top: 1em;
+        padding-top: $spacer-2;
         font-size: 1.8em;
         color: $primary_text_color;
     }
 }
 
 .reg-section {
-    margin: 1em auto;
     line-height: 1.7em;
     max-width: 75ch;
 
     // Temporary: Workaround because we're rendering multiple H1s in the subpart view.
     &:last-of-type {
-        margin-bottom: 3em;
+        margin-bottom: $spacer-4;
     }
 
     &:target {
         background: $teritary_background_color;
-        padding: 0.5em 0;
-        scroll-margin-top: 2em;
+        padding: $spacer-1 0;
+        scroll-margin-top: $spacer-4;
     }
 
     .reference {
@@ -48,7 +47,7 @@
 
 .next-previous {
     display: flex;
-    margin: 4em auto;
+    margin: $spacer-7 auto;
 
     .next-prev {
         direction: table-cell;

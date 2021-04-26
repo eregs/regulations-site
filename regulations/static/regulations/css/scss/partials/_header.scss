@@ -23,9 +23,9 @@ header {
 	.site-title {
 		display: inline-block;
 		border-right: 1px solid $border_color;
-		padding-right: 1em;
-		margin-right: 1em;
-		font-size: 1.5rem;
+		padding-right: $spacer-2;
+		margin-right: $spacer-2;
+		font-size: $font-size-2xl;
 		font-weight: bold;
 	}
 

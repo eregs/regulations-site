@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------------------
 
 header {
-    padding: 2em;
+    padding: $spacer-4;
     border-bottom: 1px solid $primary_color;
 }
 
@@ -32,11 +32,11 @@ body {
 main {
     display: table-cell;
     width: calc(100% - 800px);
-    padding: 2em;
+    padding: $spacer-6;
 }
 
 aside {
-    padding: 1em 2em;
+    padding: $spacer-2 $spacer-4;
 
     &.left-sidebar {
         display: table-cell;

@@ -13504,7 +13504,7 @@ html {
 }
 
 header {
-  padding: 2em;
+  padding: 32px;
   border-bottom: 1px solid #17415F;
 }
 
@@ -13532,11 +13532,11 @@ body {
 main {
   display: table-cell;
   width: calc(100% - 800px);
-  padding: 2em;
+  padding: 48px;
 }
 
 aside {
-  padding: 1em 2em;
+  padding: 16px 32px;
 }
 aside.left-sidebar {
   display: table-cell;
@@ -13582,7 +13582,7 @@ body {
 h1 {
   font-size: 36px;
   font-family: "Merriweather", Georgia, serif;
-  margin-bottom: 1.5em;
+  margin-bottom: 40px;
 }
 
 h2 {
@@ -13669,7 +13669,7 @@ html {
   margin: 0;
 }
 .search-page .search-back {
-  margin: 2em 0;
+  margin: 32px 0;
 }
 .search-page .search-back a {
   text-decoration: none;
@@ -13687,19 +13687,19 @@ html {
   background: #17415F;
 }
 .search-page .search-context {
-  margin-bottom: 1em;
+  margin-bottom: 16px;
 }
 .search-page .search-displayed-by {
   font-size: 0.8em;
   color: #5B616B;
-  margin: 2em 0;
+  margin: 24px 0;
 }
 .search-page .search-options {
-  margin: 1em 0 2em;
+  margin: 16px 0 24px;
 }
 .search-page .search-options a {
   text-decoration: none;
-  margin-right: 1em;
+  margin-right: 16px;
   padding: 0 0.9em 0.3em 0;
 }
 .search-page .search-options a.selected {
@@ -13722,40 +13722,40 @@ html {
   float: right;
 }
 .search-page .result {
-  margin: 2em 0;
+  margin: 24px 0;
 }
 .search-page .result .results-part {
-  font-size: 0.8em;
+  font-size: 14px;
 }
 .search-page .result .results-section {
-  font-size: 1.1em;
-  margin-bottom: 0.6em;
+  font-size: 18px;
+  margin-bottom: 8px;
 }
 .search-page .result .results-section a {
   text-decoration: none;
 }
 .search-page .result .results-preview {
-  font-size: 0.9em;
+  font-size: 14px;
 }
 .search-page .result .search-highlight {
   font-weight: bold;
 }
 .search-page .right-sidebar h3 {
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom: 0.5em;
+  margin-bottom: 16px;
 }
 .search-page .right-sidebar h4 {
-  margin: 0 0 0 1em;
+  margin: 0 0 0 16px;
   font-weight: 600;
 }
 .search-page .right-sidebar h4 a {
   text-decoration: none;
 }
 .search-page .right-sidebar p {
-  margin: 0 0 0 1em;
+  margin: 0 0 0 16px;
   color: #5B616B;
-  font-size: 0.9em;
+  font-size: 14px;
 }
 
 .search-box {
@@ -13767,7 +13767,7 @@ html {
   width: 100%;
   border: 1px solid #D6D7D9;
   border-right: none;
-  padding: 0.7rem 1.2rem;
+  padding: 8px 16px;
   border-radius: 3px 0 0 3px;
   outline: none;
 }
@@ -13857,9 +13857,9 @@ header a:hover {
 header .site-title {
   display: inline-block;
   border-right: 1px solid #D6D7D9;
-  padding-right: 1em;
-  margin-right: 1em;
-  font-size: 1.5rem;
+  padding-right: 16px;
+  margin-right: 16px;
+  font-size: 24px;
   font-weight: bold;
 }
 header .reg-title {
@@ -13898,7 +13898,7 @@ aside.left-sidebar {
   height: 100vh;
   overflow-y: scroll;
   position: sticky;
-  top: 0px;
+  top: 0;
   transition: all 0.25s ease-out;
 }
 aside.left-sidebar a {
@@ -13908,16 +13908,16 @@ aside.left-sidebar a:hover {
   color: #fff;
 }
 aside.left-sidebar ul {
-  padding: 1em 0;
+  padding: 16px 0;
 }
 aside.left-sidebar ul.toggle-toc-menu-sections {
-  padding-left: 1em;
+  padding-left: 16px;
 }
 aside.left-sidebar ul li {
   list-style: none;
   overflow: hidden;
   max-height: 500em;
-  transition: all 0.5s ease-out;
+  transition: all 1s ease-out;
 }
 aside.left-sidebar ul li a {
   text-decoration: none;
@@ -13950,25 +13950,25 @@ aside.left-sidebar .subpart-letter {
   cursor: pointer;
 }
 aside.left-sidebar .subpart-range {
-  font-size: 0.8em;
+  font-size: 14px;
 }
 aside.left-sidebar .subpart-name {
-  font-size: 0.8em;
+  font-size: 14px;
   font-weight: normal;
-  padding-right: 2em;
+  padding-right: 32px;
 }
 aside.left-sidebar .toc-section-number {
-  font-size: 0.9em;
+  font-size: 14px;
 }
 aside.left-sidebar .toc-section-name {
   color: #fff;
   font-weight: normal;
-  font-size: 0.9em;
-  margin-bottom: 1em;
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 aside.left-sidebar .toc-controls {
   border-bottom: 1px solid #046791;
-  padding-bottom: 1em;
+  padding-bottom: 16px;
   margin: 0 -2em;
 }
 aside.left-sidebar .toc-controls button {
@@ -13976,7 +13976,7 @@ aside.left-sidebar .toc-controls button {
   color: #A3E8FF;
   border: none;
   background: none;
-  margin-left: 2em;
+  margin-left: 24px;
   cursor: pointer;
 }
 aside.left-sidebar .toc-controls button:hover {
@@ -14068,16 +14068,16 @@ html {
   margin-left: 0.3rem;
 }
 
-.right-sidebar {
+aside.right-sidebar {
   max-width: 400px;
 }
-.right-sidebar div {
-  padding-left: 2em;
+aside.right-sidebar div {
+  padding-left: 24px;
 }
-.right-sidebar div h4 {
+aside.right-sidebar div h4 {
   margin: 0;
 }
-.right-sidebar div p {
+aside.right-sidebar div p {
   color: #5B616B;
   margin: 0;
 }
@@ -14104,23 +14104,22 @@ html {
   color: #17415F;
 }
 .reg-text > section > h1 {
-  padding-top: 1em;
+  padding-top: 16px;
   font-size: 1.8em;
   color: #212121;
 }
 
 .reg-section {
-  margin: 1em auto;
   line-height: 1.7em;
   max-width: 75ch;
 }
 .reg-section:last-of-type {
-  margin-bottom: 3em;
+  margin-bottom: 32px;
 }
 .reg-section:target {
   background: #EEFAFE;
-  padding: 0.5em 0;
-  scroll-margin-top: 2em;
+  padding: 8px 0;
+  scroll-margin-top: 32px;
 }
 .reg-section .reference {
   visibility: hidden;
@@ -14131,7 +14130,7 @@ html {
 
 .next-previous {
   display: flex;
-  margin: 4em auto;
+  margin: 56px auto;
 }
 .next-previous .next-prev {
   direction: table-cell;
@@ -14249,25 +14248,12 @@ main.error-page {
 main.error-page div.error-left {
   flex: auto;
   margin: auto;
-  padding-right: 1em;
+  padding-right: 24px;
 }
 main.error-page div.error-left p {
   font-family: "Open Sans", Helvetica, sans-serif;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
 }
-main.error-page div.error-left p.error-code {
-  font-family: "Open Sans", Helvetica, sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 19px;
-}
-main.error-page div.error-left p.error-header {
-  font-family: "Merriweather", Georgia, serif;
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 46px;
+main.error-page div.error-left h1 {
   margin-top: 0;
 }
 main.error-page img.error-image {

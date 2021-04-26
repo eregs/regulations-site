@@ -16,28 +16,14 @@ main.error-page {
     div.error-left {
         flex: auto;
         margin: auto;
-        padding-right: 1em;
+        padding-right: $spacer-3;
     
         p {
             font-family: $primary_site_font;
-            font-weight: normal;
-            font-size: 16px;
-            line-height: 24px;
-    
-            &.error-code {
-                font-family: $primary_site_font;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 19px;
-            }
-    
-            &.error-header {
-                font-family: $secondary_site_font;
-                font-weight: bold;
-                font-size: 36px;
-                line-height: 46px;
-                margin-top: 0;
-            }
+        }
+
+        h1 {
+            margin-top: 0;
         }
     }
 

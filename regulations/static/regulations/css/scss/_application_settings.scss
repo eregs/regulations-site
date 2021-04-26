@@ -84,6 +84,8 @@ $secondary_site_font: "Merriweather", Georgia, serif;
 // General Settings
 // -------------------------
 
+// For margins and padding: From the CMS Design System, default to $spacer-* where * is a number between 1–7 (i.e. $spacer-2)
+
 a {
     color: $primary_link_color;
 

@@ -1,6 +1,7 @@
 
 //-----------------------------
 // Typography
+// Use CMS Design System Sizes
 //-----------------------------
 
 @import "../application_settings";
@@ -20,7 +21,7 @@ body {
 h1 {
     font-size: $font-size-3xl;
     font-family: $secondary_site_font;
-    margin-bottom: 1.5em;
+    margin-bottom: $spacer-5;
 }
 
 h2 {

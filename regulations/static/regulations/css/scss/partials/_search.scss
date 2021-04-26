@@ -22,7 +22,7 @@
 	// Back to Regulation Text
 
 	.search-back {
-		margin: 2em 0;
+		margin: $spacer-4 0;
 
 		a {
 			text-decoration: none;
@@ -49,7 +49,7 @@
 	// Context for what parts we're searching
 
 	.search-context {
-		margin-bottom: 1em;
+		margin-bottom: $spacer-2;
 	}
 
 	// i.e. "18 results, displayed by relevance"
@@ -57,17 +57,17 @@
 	.search-displayed-by {
 		font-size: .8em;
 		color: $secondary_text_color;
-		margin: 2em 0;
+		margin: $spacer-3 0;
 	}
 
 	// Search Options/Filters
 
 	.search-options {
-		margin: 1em 0 2em;
+		margin: $spacer-2 0 $spacer-3;
 
 		a {
 			text-decoration: none;
-			margin-right: 1em;
+			margin-right: $spacer-2;
 			padding: 0 .9em .3em 0;
 
 			&.selected {
@@ -100,15 +100,15 @@
 	// Results
 
 	.result {
-		margin: 2em 0;
+		margin: $spacer-3 0;
 
 		.results-part {
-			font-size: .8em;
+			font-size: $font-size-sm;
 		}
 
 		.results-section {
-			font-size: 1.1em;
-			margin-bottom: .6em;
+			font-size: $font-size-lg;
+			margin-bottom: $spacer-1;
 
 			a {
 				text-decoration: none;
@@ -116,7 +116,7 @@
 		}
 
 		.results-preview {
-			font-size: .9em;
+			font-size: $font-size-sm;
 		}
 
 		.search-highlight {
@@ -129,13 +129,13 @@
 	.right-sidebar {
 
 		h3 {
-			font-size: 1rem;
+			font-size: $font-size-md;
 			font-weight: 600;
-			margin-bottom: .5em;
+			margin-bottom: $spacer-2;
 		}
 
 		h4 {
-			margin: 0 0 0 1em;
+			margin: 0 0 0 $spacer-2;
 			font-weight: 600;
 
 			a {
@@ -144,9 +144,9 @@
 		}
 
 		p {
-			margin: 0 0 0 1em;
+			margin: 0 0 0 $spacer-2;
 			color: $secondary_text_color;
-			font-size: .9em;
+			font-size: $font-size-sm;
 		}
 
 	}
@@ -163,7 +163,7 @@
 		width: 100%;
 		border: 1px solid $border_color;
 		border-right: none;
-		padding: .7rem 1.2rem;
+		padding: $spacer-1 $spacer-2;
 		border-radius: 3px 0 0 3px;
 		outline: none;
 

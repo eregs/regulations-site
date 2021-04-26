@@ -6,8 +6,8 @@
 {% block body %}
     <main class="error-page">
         <div class="error-left">
-            <p class="error-code">Error {% block error_code %}{% endblock %}</p>
-            <p class="error-header">{% block error_header %}{% endblock %}</p>
+            <h5 class="error-code">Error {% block error_code %}{% endblock %}</h5>
+            <h1 class="error-header">{% block error_header %}{% endblock %}</h1>
             {% block error_body %}{% endblock %}
         </div>
         <img class="error-image" src="{% static 'images/browser.svg' %}" />
