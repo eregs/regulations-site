@@ -7,11 +7,15 @@
 <section id="{{c.label | join:'-'}}" class="reg-section">
     <a class="reference" href="#{{c.label | join:'-'}}"><i class="fa fa-link"></i></a>
     {% if c.title %}
-        <h1 class="section-title" tabindex="0"> {{c.title}} </h1> <!-- TO DO: Subpart view: There should only be one H1 - sections titles should be H2 -->
+        {% if first == "true" %}
+            <h1 class="section-title" tabindex="0"> {{c.title}} </h1>
+        {% else %}
+            <h2 class="section-title" tabindex="0"> {{c.title}} </h2>
+        {% endif %}
     {% endif %}
     {{c.text | internalcitation:c | safe}}
 </section>
 
 {% for node in c.children %}
-    {% include "regulations/partials/regulation_text.html" with c=node %}
+    {% include "regulations/partials/regulation_text.html" with c=node first="false" %}
 {% endfor %}
