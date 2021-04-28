@@ -3,11 +3,15 @@
 
 {% block body %}
     <div class="flexbox">
+
         <aside class="left-sidebar">
             {% include "regulations/partials/toc.html" %}
         </aside>
 
-        {% include content %}
+        <main class="reg-part-homepage">
+	        {% include content %}
+	    </main>
+
     </div>
 {% endblock %}
 
