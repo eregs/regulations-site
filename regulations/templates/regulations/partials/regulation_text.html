@@ -8,12 +8,12 @@
     <a class="reference" href="#{{c.label | join:'-'}}"><i class="fa fa-link"></i></a>
     {% if c.title %}
         {% if first == "true" %}
-            <h1 class="section-title" tabindex="0"> {{c.title}} </h1>
+            <h1 tabindex="0"> {{c.title}} </h1>
         {% else %}
             <h2 class="section-title" tabindex="0"> {{c.title}} </h2>
         {% endif %}
     {% endif %}
-    {{c.text | internalcitation:c | safe}}
+    <div class="section-text">{{c.text | internalcitation:c | safe}}</div>
 </section>
 
 {% for node in c.children %}

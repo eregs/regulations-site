@@ -13583,6 +13583,7 @@ h1 {
   font-size: 36px;
   font-family: "Merriweather", Georgia, serif;
   margin-bottom: 40px;
+  margin-top: 0;
 }
 
 h2 {
@@ -13869,7 +13870,7 @@ header .search-header {
   float: right;
 }
 header .search-header .search-box {
-  width: 430px;
+  width: 380px;
 }
 header .search-header .search-box input {
   border: 1px solid #D6D7D9;
@@ -13908,7 +13909,7 @@ aside.left-sidebar a:hover {
   color: #fff;
 }
 aside.left-sidebar ul {
-  padding: 16px 0;
+  padding: 0 0 16px 0;
 }
 aside.left-sidebar ul.toggle-toc-menu-sections {
   padding-left: 16px;
@@ -14012,7 +14013,7 @@ aside.left-sidebar[data-state=collapsed] div.toc-controls [data-set-state=expand
 
 .jump-to {
   border-bottom: 1px solid #046791;
-  padding-bottom: 2em;
+  padding: 16px 0 32px;
 }
 .jump-to .jump-to-label {
   margin: 16px 0 8px 0;
@@ -14102,19 +14103,15 @@ html {
 
 .reg-text h1 {
   color: #17415F;
+  font-size: 32px;
 }
-.reg-text > section > h1 {
-  padding-top: 16px;
-  font-size: 1.8em;
-  color: #212121;
+.reg-text h2 {
+  color: #17415F;
 }
 
 .reg-section {
-  line-height: 1.7em;
   max-width: 75ch;
-}
-.reg-section:last-of-type {
-  margin-bottom: 32px;
+  margin: 16px;
 }
 .reg-section:target {
   background: #EEFAFE;
@@ -14126,6 +14123,10 @@ html {
 }
 .reg-section:hover .reference {
   visibility: visible;
+}
+.reg-section .section-text {
+  line-height: 1.8em;
+  display: inline;
 }
 
 .next-previous {
@@ -14150,7 +14151,7 @@ html {
   font-weight: bold;
 }
 .next-previous .next-prev-title {
-  font-size: 0.9em;
+  font-size: 14px;
   color: #212121;
 }
 

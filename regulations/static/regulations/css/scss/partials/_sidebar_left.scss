@@ -21,7 +21,7 @@ aside.left-sidebar {
 	}
 
 	ul {
-		padding: $spacer-2 0;
+		padding: 0  0 $spacer-2 0;
 
 		&.toggle-toc-menu-sections {
 			padding-left: $spacer-2;
@@ -150,9 +150,11 @@ aside.left-sidebar {
 	transition: all .25s ease-out;
 }
 
+// Jump To Regulation Section
+
 .jump-to {
 	border-bottom: 1px solid $secondary_border_color;
-	padding-bottom: 2em;
+	padding: $spacer-2 0 $spacer-4;
 
 	.jump-to-label {
 		margin: $spacer-2 0 $spacer-1 0;
