@@ -4,7 +4,8 @@ function makeStateful(el) {
 
     for (const state_change_button of state_change_buttons) {
         state_change_button.addEventListener('click', function() {
-            el.setAttribute("data-state", this.getAttribute("data-set-state"));
+            const state = this.getAttribute("data-set-state");
+            el.setAttribute("data-state", state);
         });
     }
 }

@@ -1,0 +1,41 @@
+@import "../application_settings";
+
+.view-and-compare {
+    padding: 20px 0 20px 0px;
+    background-color: $secondary_color;
+    color: $reverse_text_color;
+
+    &[data-state="hide"] {
+        display: none;
+    }
+
+    .view-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .view-title {
+        font-weight: bold;
+        border-right: 1px solid $border_color;
+        padding-right: 1em;
+        margin-right: 1em;
+    }
+
+    span.view-select {
+        padding-left: 10px;
+        display: inline-block;
+    }
+
+    .close-button {
+        position: absolute;
+        right: 20px;
+        cursor: pointer;
+        height: auto;
+
+        a {
+          color: $reverse_text_color;
+        }
+    }
+}

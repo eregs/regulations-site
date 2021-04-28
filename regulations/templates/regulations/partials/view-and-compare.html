@@ -1,0 +1,28 @@
+<div class="view-and-compare" data-state="hide" data-state-name="view">
+    <div class="view-container">
+        <span class="view-title">View</span>
+        View Effective on
+        <span class="view-select">
+            <select class="ds-c-field" name="view-options" id="view-options">
+                <option value="">Select Date</option>
+                {% for version in versions %}
+                    {% if citation.1 %}
+                        <option data-url="{% url 'reader_view' citation.0 citation.1 version.version %}">{{version.by_date}}</option>
+                    {% else %}
+                        <option data-url="{% url 'reader_view' citation.0 version.version %}">{{version.by_date}}</option>
+                    {% endif %}
+
+                {% endfor %}
+            </select>
+        </span>
+        <span class="close-button">
+            {% if citation.1 %}
+            <a href="{% url 'reader_view' citation.0 citation.1 versions.0.version  %}">
+            {% else %}
+            <a href="{% url 'reader_view' citation.0 versions.0.version  %}">
+            {% endif %}
+                <i class="fa fa-times"></i>
+            </a>
+        </span>
+    </div>
+</div>

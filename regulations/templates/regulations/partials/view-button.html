@@ -1,0 +1,25 @@
+{% load static %}
+
+<button 
+  id="view-button"
+  class="ds-c-button" 
+  data-state="not-selected"
+  data-set-state="show"
+  data-state-name="view">
+    <img 
+      data-state="hide" 
+      data-state-name="view" 
+      data-img="dark"
+      src="{% static 'images/calendar.svg' %}" 
+    />
+    <img 
+      data-state="hide" 
+      data-state-name="view" 
+      data-img="light"
+      src="{% static 'images/calendar-light.svg' %}"
+    />
+    <div class="button-inner-container">
+        View and Compare
+        <div class="button-subheader">Regulation History & Proposals</div>
+    </div>
+</button>

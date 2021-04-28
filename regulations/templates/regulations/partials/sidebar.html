@@ -1,6 +1,7 @@
 {% load render_nested %}
 
 <section data-cache-key="sidebar" data-cache-value="{{label_id}}">
+    {% include "regulations/partials/view-button.html" %}
     {% for sidebar in sidebars %}
         {% render_nested template=sidebar.template_name context=sidebar %}
     {% endfor %}

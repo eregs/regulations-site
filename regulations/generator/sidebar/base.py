@@ -5,9 +5,9 @@ class SidebarBase(object):
     """Base class for Sidebar components. Provides an interface"""
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, label_id, version):
-        self.label_id = label_id
-        self.label_parts = label_id.split('-')
+    def __init__(self, label_parts, version):
+        self.label_parts = label_parts
+        self.label_id = "-".join(label_parts)
         self.cfr_part = self.label_parts[0]
         self.version = version
 
