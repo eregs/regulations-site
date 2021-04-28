@@ -18,42 +18,56 @@ footer {
         font-weight: normal;
         font-size: 12px;
         color: $secondary_text_color;
+    }
 
-        &.footer-bold {
-            font-family: $secondary_site_font;
-            font-weight: bold;
-            font-size: $font-size-sm;
-            color: $secondary_text_color;
+    h5 {
+        font-family: $secondary_site_font;
+        color: $secondary_text_color;
+        margin-bottom: 0;
+    }
+
+    .footer-left {
+        display: table-cell;
+        width: 400px;
+        padding: 0 $spacer-4;
+
+        a:hover {
+            opacity: .8;
+        }
+
+        img {
+            width: 100%;
+            max-width: 219px;
         }
     }
 
-    div {
-        &.footer-left {
-            max-width: calc(400px - 2em);
-            img {
-                width: 100%;
-                max-width: 219px;
-            }
+     .footer-middle {
+        display: table-cell;
+        width: calc(100% - 800px);
+        padding: 0 $spacer-6;
+
+        h4 {
+            font-family: $secondary_site_font;
+            color: $secondary_text_color;
+            margin-top: 0;
         }
+    }
 
-        &.footer-middle {
-            max-width: calc(100% - 800px - 4em);
-            padding-left: $spacer-6;
-        }
+     .footer-right {
+        display: table-cell;
+        width: 400px;
+        padding: 0 $spacer-4;
 
-        &.footer-right {
-            max-width: calc(400px - 2em);
-            i {
-                font-size: 30px;
-                line-height: 34px;
-                color: $primary_link_color;
-                padding-right: $spacer-2;
+        i {
+            font-size: 30px;
+            line-height: 34px;
+            color: $primary_link_color;
+            padding-right: $spacer-2;
 
-                &:hover {
-                    color: $primary_link_hover;
-                    cursor: pointer;
-                    @include transition;
-                }
+            &:hover {
+                color: $primary_link_hover;
+                cursor: pointer;
+                @include transition;
             }
         }
     }

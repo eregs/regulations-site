@@ -14187,33 +14187,45 @@ footer p {
   font-size: 12px;
   color: #5B616B;
 }
-footer p.footer-bold {
+footer h5 {
   font-family: "Merriweather", Georgia, serif;
-  font-weight: bold;
-  font-size: 14px;
   color: #5B616B;
+  margin-bottom: 0;
 }
-footer div.footer-left {
-  max-width: calc(400px - 2em);
+footer .footer-left {
+  display: table-cell;
+  width: 400px;
+  padding: 0 32px;
 }
-footer div.footer-left img {
+footer .footer-left a:hover {
+  opacity: 0.8;
+}
+footer .footer-left img {
   width: 100%;
   max-width: 219px;
 }
-footer div.footer-middle {
-  max-width: calc(100% - 800px - 4em);
-  padding-left: 48px;
+footer .footer-middle {
+  display: table-cell;
+  width: calc(100% - 800px);
+  padding: 0 48px;
 }
-footer div.footer-right {
-  max-width: calc(400px - 2em);
+footer .footer-middle h4 {
+  font-family: "Merriweather", Georgia, serif;
+  color: #5B616B;
+  margin-top: 0;
 }
-footer div.footer-right i {
+footer .footer-right {
+  display: table-cell;
+  width: 400px;
+  padding: 0 32px;
+}
+footer .footer-right i {
   font-size: 30px;
   line-height: 34px;
   color: #046791;
   padding-right: 16px;
 }
-footer div.footer-right i:hover {
+footer .footer-right i:hover {
   color: #17415F;
   cursor: pointer;
   transition: all 0.1s ease-in;
