@@ -5,7 +5,22 @@
 {% block title %}eRegulations{% endblock %}
 
 {% block body %}
-    <div class="box search-page">
+    <div class="flexbox search-page">
+
+        <aside class="left-sidebar" data-state="collapsed" data-state-name="left-sidebar">
+            <div class="toc-controls">
+                <button data-set-state="collapsed" data-state-name="left-sidebar">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    COLLAPSE
+                </button>
+                <button data-set-state="expanded" data-state-name="left-sidebar">
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+            {% include "regulations/partials/_jump-to.html" %}
+            {% include "regulations/partials/toc.html" %}
+        </aside>
+
         <main>
             <div class="container">
                 <div class="search-back">

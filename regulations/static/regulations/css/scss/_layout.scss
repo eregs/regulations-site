@@ -1,10 +1,10 @@
 
 //-----------------------------------------------------------------------------------------
-// Layout: Working Layout to be Mostly Replaced by the CMS Design System grid
+// Layout
 //-----------------------------------------------------------------------------------------
 
 header {
-    padding: 2em;
+    padding: $spacer-4;
     border-bottom: 1px solid $primary_color;
 }
 
@@ -18,23 +18,25 @@ body {
     height: 100%;
 }
 
-.box {
-    display: flex;
-    width: 100%;
+.container {
+    max-width: $text-max-width;
+    display: block; 
+    margin: 0 auto;
 }
 
-.body-content {
-    flex: 1 0 auto;
+.flexbox {
+    display: flex;
+    width: 100%;
 }
 
 main {
     display: table-cell;
     width: calc(100% - 800px);
-    padding: 2em;
+    padding: $spacer-6;
 }
 
 aside {
-    padding: 1em 2em;
+    padding: $spacer-2 $spacer-4;
 
     &.left-sidebar {
         display: table-cell;

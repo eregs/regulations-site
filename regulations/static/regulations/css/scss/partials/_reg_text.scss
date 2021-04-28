@@ -5,34 +5,26 @@
 
 @import "../application_settings";
 
-// Temporary: Workaround because we're rendering multiple H1s in the subpart view.
 .reg-text {
 
     h1 {
         color: $primary_color;
+        font-size: $base-font-size * 2;
     }
 
-    > section > h1 {
-        padding-top: 1em;
-        font-size: 1.8em;
-        color: $primary_text_color;
+    h2 {
+       color: $primary_color; 
     }
 }
 
 .reg-section {
-    margin: 1em auto;
-    line-height: 1.7em;
     max-width: 75ch;
-
-    // Temporary: Workaround because we're rendering multiple H1s in the subpart view.
-    &:last-of-type {
-        margin-bottom: 3em;
-    }
+    margin: $spacer-2;
 
     &:target {
         background: $teritary_background_color;
-        padding: 0.5em 0;
-        scroll-margin-top: 2em;
+        padding: $spacer-1 0;
+        scroll-margin-top: $spacer-4;
     }
 
     .reference {
@@ -44,11 +36,16 @@
            visibility: visible;
        }
    }
+
+   .section-text {
+        line-height: 1.8em;
+        display: inline;
+    }
 }
 
 .next-previous {
     display: flex;
-    margin: 4em auto;
+    margin: $spacer-7 auto;
 
     .next-prev {
         direction: table-cell;
@@ -75,7 +72,7 @@
     }
 
     .next-prev-title {
-        font-size: .9em;
+        font-size: $font-size-sm;
         color: $primary_text_color;
     }
 }

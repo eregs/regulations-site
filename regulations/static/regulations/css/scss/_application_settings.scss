@@ -1,4 +1,7 @@
 
+// NOTE: Our variables use _ between words. CMS Design System variables use - between words. Sass will treat this the same, but it will help at a glance to know where the variable is coming from.
+
+
 //--------------------------
 // Colors
 //--------------------------
@@ -60,17 +63,14 @@ $reverse_text_color: $white;
 // Base Font Settings
 //--------------------------
 
-$base_font_size: 1rem;
-$site_ratio: 1.6;
-
-$primary_site_font: "Open Sans", sans-serif;
+$primary_site_font: $font-sans;  // Open Sans
 $secondary_site_font: "Merriweather", Georgia, serif;
 
 //--------------------------
 // Breakpoints
 //--------------------------
 
-// Add breakpoints here
+// Use CMS Design System
 
 //--------------------------
 // Transitions
@@ -84,6 +84,8 @@ $secondary_site_font: "Merriweather", Georgia, serif;
 // General Settings
 // -------------------------
 
+// For margins and padding: From the CMS Design System, default to $spacer-* where * is a number between 1–7 (i.e. $spacer-2)
+
 a {
     color: $primary_link_color;
 
@@ -92,12 +94,6 @@ a {
         cursor: pointer;
         @include transition;
     }
-}
-
-.container {
-    max-width: 800px;
-    display: block; 
-    margin: 0 auto;
 }
 
 html {

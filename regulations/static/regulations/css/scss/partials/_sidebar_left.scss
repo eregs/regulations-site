@@ -10,7 +10,7 @@ aside.left-sidebar {
 	height: 100vh;
 	overflow-y: scroll;
 	position: sticky;
-	top: 0px;
+	top: 0;
 
 	a {
 		color: $reverse_link_color;
@@ -21,10 +21,10 @@ aside.left-sidebar {
 	}
 
 	ul {
-		padding: 1em 0;
+		padding: 0  0 $spacer-2 0;
 
 		&.toggle-toc-menu-sections {
-			padding-left: 1em;
+			padding-left: $spacer-2;
 		}
 
 		li {
@@ -41,7 +41,7 @@ aside.left-sidebar {
 				max-height: 0;
 			}
 
-			transition: all .5s ease-out;
+			transition: all 1s ease-out;
 		}
 
 		button {
@@ -74,29 +74,29 @@ aside.left-sidebar {
 	}
 
 	.subpart-range {
-		font-size: .8em;
+		font-size: $font-size-sm;
 	}
 
 	.subpart-name {
-		font-size: .8em;
+		font-size: $font-size-sm;
 		font-weight: normal;
-		padding-right: 2em;
+		padding-right: $spacer-4;
 	}
 
 	.toc-section-number {
-		font-size: .9em;
+		font-size: $font-size-sm;
 	}
 
 	.toc-section-name {
 		color: $reverse_text_color;
 		font-weight: normal;
-		font-size: .9em;
-		margin-bottom: 1em;
+		font-size: $font-size-sm;
+		margin-bottom: $spacer-2;
 	}
 
 	.toc-controls {
 		border-bottom: 1px solid $secondary_border_color;
-		padding-bottom: 1em;
+		padding-bottom: $spacer-2;
 		margin: 0 -2em;
 
 		button {
@@ -104,7 +104,7 @@ aside.left-sidebar {
 			color: $reverse_link_color;
 			border: none;
 			background: none;
-			margin-left: 2em;
+			margin-left: $spacer-3;
 			cursor: pointer;
 
 			&:hover {
@@ -113,7 +113,7 @@ aside.left-sidebar {
 			}
 
 			img {
-				height: 1em;
+				height: $base-font-size;
 				padding-right: 5px;
 			}
 
@@ -150,13 +150,15 @@ aside.left-sidebar {
 	transition: all .25s ease-out;
 }
 
+// Jump To Regulation Section
+
 .jump-to {
 	border-bottom: 1px solid $secondary_border_color;
-	padding-bottom: 2em;
+	padding: $spacer-2 0 $spacer-4;
 
 	.jump-to-label {
-		margin: 1em 0 .5em 0;
-		font-size: 1.1em;
+		margin: $spacer-2 0 $spacer-1 0;
+		font-size: $font-size-lg;
 		font-weight: 600;
 	}
 
@@ -171,7 +173,7 @@ aside.left-sidebar {
 			padding: .4em 1em;
 			background: $reverse_link_color;
 			border: none;
-			border-radius: 3px;
+			border-radius: $border-radius;
 			cursor: pointer;
 
 			&:hover {
@@ -186,7 +188,7 @@ aside.left-sidebar {
 		background: none;
 		border: 0;
 		border-bottom: 2px solid $placeholder_color;
-		margin-right: .5em;
+		margin-right: $spacer-1;
 		color: $reverse_text_color;
 
 		&:focus {
@@ -196,6 +198,6 @@ aside.left-sidebar {
 
 	label {
 		font-weight: 600;
-		font-size: 1.1em;
+		font-size: $font-size-lg;
 	}
 }

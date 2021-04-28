@@ -1,20 +1,9 @@
 {% extends "regulations/base.html" %}
 {% load static %}
 
-{% block pre_header %}
-    <!-- Temporary: Gives users a way to switch between part, subpart, and section views -->
-    <div class="switch-view">
-        <ul>
-            <li><a {% if part_view_link %}href="{{ part_view_link }}"{% else %}class="active" href="#"{% endif %}>Part View</a></li>
-            <li><a {% if subpart_view_link %}href="{{ subpart_view_link }}"{% else %}class="active" href="#"{% endif %}>Subpart View</a></li>
-        </ul>
-    </div>
-    <!-- / Temporary -->
-{% endblock %}
-
 {% block body %}
     {% include "regulations/partials/view-and-compare.html" %}
-    <div class="box">
+    <div class="flexbox">
         <aside class="left-sidebar" data-state="expanded" data-state-name="left-sidebar">
             <div class="toc-controls">
                 <button data-set-state="collapsed" data-state-name="left-sidebar">
@@ -30,7 +19,7 @@
         </aside>
 
         <main class="reg-text">
-            {% include "regulations/partials/regulation_text.html" with c=tree %}
+            {% include "regulations/partials/regulation_text.html" with c=tree first="true" %}
             {% include "regulations/partials/navigation.html" %}
         </main>
 

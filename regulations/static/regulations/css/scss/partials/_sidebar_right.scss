@@ -5,13 +5,16 @@
 
 @import "../application_settings";
 
-.right-sidebar {
+aside.right-sidebar {
     max-width: 400px;
+
     div {
-        padding-left: 2em;
+        padding-left: $spacer-3;
+
         h4 {
             margin: 0;
         }
+
         p {
             color: $secondary_text_color;
             margin: 0;
