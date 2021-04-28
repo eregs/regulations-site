@@ -3,7 +3,9 @@
   "description": "",
   "scripts": {
     "css": "npx sass -I node_modules regulations/css/scss/main.scss regulations/css/main.css",
-    "watch-css": "npx sass --watch -I node_modules regulations/css/scss/main.scss regulations/css/main.css"
+    "watch-css": "npx sass --watch -I node_modules regulations/css/scss/main.scss regulations/css/main.css",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "license": "CC",
   "private": true,
@@ -13,6 +15,17 @@
   "dependencies": {
     "@cmsgov/design-system": "^2.5.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "sass": "^1.32.8"
+    "react": "16.x",
+    "react-dom": "16.x",
+    "sass": "^1.32.8",
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/vue": "^6.2.9",
+    "babel-loader": "^8.2.2"
   }
 }
