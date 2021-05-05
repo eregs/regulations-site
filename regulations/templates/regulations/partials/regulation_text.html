@@ -13,7 +13,7 @@
             <h2 class="section-title" tabindex="0"> {{c.title}} </h2>
         {% endif %}
     {% endif %}
-    <div class="section-text">{{c.text | internalcitation:c | safe}}</div>
+    {{c.text | safe}}
 </section>
 
 {% for node in c.children %}

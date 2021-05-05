@@ -8,45 +8,18 @@
 {% block body %}
     <main class="reg-title">
         <div class="container">
-            <h1>
-                Title
-                {% if cfr_title_number and cfr_title_text %}
-                    {{cfr_title_number|upper}} {{cfr_title_text}}
-                {% else %}
-                    N/A
-                {% endif %}
-            </h1>
+            {% for title in structure %}
+
+            <h1> {{title.label}} </h1>
             
-            <ul class="part-names">
-                {% for regulation in regulations %}
-                    <li>
-                        <a href="{% url 'regulation_landing_view' regulation.part %}">
-                            <div class="part-number">
-                                {{regulation.part}}:
-                            </div>
-                            <div class="part-title">
-                                {% if regulation.meta.reg_letter %}
-                                    Regulation {{regulation.meta.reg_letter}}
-                                    {{regulation.meta.statutory_name|title}}
-                                {% else %}
-                                    {{regulation.meta.statutory_name|title}}
-                                {% endif %}
-                            </div>
-                        </a>
+            {% for child in title.children %}
+                {% with "regulations/homepage/"|add:child.type|add:".html regulations/homepage/child.html" as templates %}
+                    {% include templates.split %}
+                {% endwith %}
+            {% endfor %}
+            
 
-                        {% for amendment in regulation.amendments %}
-                            <div>
-                                New amendment effective {{amendment.by_date|date:'n/j/Y'}}
-                                <a href="{% url 'reader_view' regulation.part regulation.reg_first_section amendment.version %}">View new amendment</a>
-                            </div>
-                        {% endfor %}
-                    </li>
-                {% endfor %}
-
-                {% if not regulations %}
-                    <li>No regulations are currently loaded.</li>
-                {% endif %}
-            </ul>
+            {% endfor %}
 
             {% if regulations %}
                 {% include "regulations/partials/recent_changes.html" %}

@@ -1,0 +1,9 @@
+<div class="subchapter">
+    <h3>{{ child.label }}</h3>
+
+    {% for child in child.children %}
+        {% with "regulations/homepage/"|add:child.type|add:".html regulations/homepage/child.html" as templates %}
+            {% include templates.split %}
+        {% endwith %}
+    {% endfor %}
+</div>

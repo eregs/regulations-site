@@ -15,25 +15,19 @@
     }
 }
 
+.subchapter {
+    border-bottom: 1px solid $border_color;
+    padding: 1em 0;
+}
+
 .part-names {
     display: block;
     margin: 1em 0;
     padding: 0;
 
-    li {
-        border-bottom: 1px solid $border_color;
-        list-style: none;
-        margin: 0;
-        padding: 1em 0;
-
-        &:last-of-type {
-            border: 0;
-        }
-
-        a {
-            text-decoration: none;
-            font-size: 1.2em;
-        }
+    a {
+        text-decoration: none;
+        font-size: 1.2em;
 
         .part-number {
             font-weight: bold;

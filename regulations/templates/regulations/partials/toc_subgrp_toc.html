@@ -1,10 +1,10 @@
 <ol class="{{type}}">
-    {% for sub_toc_item in item.sub_toc %}
-        {% if sub_toc_item.is_section %}
-            {% include "regulations/partials/toc_section.html" with section="subpart" group=item.index item=sub_toc_item %}
+    {% for sub_toc_item in item.children %}
+        {% if sub_toc_item.type == "section" %}
+            {% include "regulations/partials/toc_section.html" with item=sub_toc_item %}
         {% else %}
             <li>
-                <a href="{{sub_toc_item.url}}" data-section-id="{{sub_toc_item.section_id}}">
+                <a href="{{sub_toc_item.url}}">
                     {{sub_toc_item.label|safe}}
                 </a>
             </li>

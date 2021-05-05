@@ -1,8 +1,8 @@
 <div>
     <nav role="navigation">
         <ul>
-            {% for item in TOC %}
-                {% if item.is_section %}
+            {% for item in structure.children %}
+                {% if item.type == "section" %}
                     {% include "regulations/partials/toc_section.html" %}
                 {% else %}
                     {% include "regulations/partials/toc_subpart.html" %}

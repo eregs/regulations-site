@@ -18,4 +18,4 @@ class SubpartConverter(PathConverter):
 
 
 class VersionConverter(PathConverter):
-    regex = r'[\d\w]+-(annual-)?[\d\w]+'
+    regex = r'[\d\w]+-[\d\w]+(?:-\d+)?'
