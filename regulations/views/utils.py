@@ -2,10 +2,10 @@
 import itertools
 import logging
 
-from regulations.views.errors import NotInSubpart
 from regulations.generator import api_reader
 from regulations.generator.utils import roman_nums, convert_to_python
 from regulations.generator.toc import fetch_toc
+from regulations.views.errors import NotInSubpart
 
 
 logger = logging.getLogger(__name__)
@@ -50,22 +50,23 @@ def first_subpart(reg_part, version):
     return None
 
 
-def find_subpart(section, toc, subpart=None):
-    for el in toc:
-        value = None
-        if el['index'][1] == section:
-            if subpart is None:
-                raise NotInSubpart()
-            return subpart
-        elif 'Subpart' in el['index'] and 'sub_toc' in el:
-            value = find_subpart(section, el['sub_toc'], '-'.join(el['index'][1:]))
-        elif 'Subjgrp' in el['index'] and 'sub_toc' in el:
-            value = find_subpart(section, el['sub_toc'], subpart)
-
-        if value is not None:
-            return value
-
-    return None
+def find_subpart(section, node, subpart=None):
+    value = None
+    if node['type'] == 'section' and node['identifier'][1] == section:
+        if subpart is None:
+            raise NotInSubpart()
+        return subpart
+    elif node['type'] == 'subpart' and node['children'] is not None:
+        for child in node['children']:
+            value = find_subpart(section, child, node['identifier'][0])
+            if value is not None:
+                break
+    elif node['children'] is not None:
+        for child in node['children']:
+            value = find_subpart(section, child, subpart)
+            if value is not None:
+                break
+    return value
 
 
 def find_subpart_first_section(subpart, toc):

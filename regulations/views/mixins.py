@@ -2,10 +2,9 @@ from importlib import import_module
 
 import six
 from django.conf import settings
-from django.urls import reverse, NoReverseMatch
+from django.urls import NoReverseMatch
 
 from regulations.generator import api_reader
-from regulations.generator.toc import fetch_toc
 
 
 def build_citation(context):
@@ -55,28 +54,19 @@ class SidebarContextMixin():
 
 
 class TableOfContentsMixin:
-    default_view = 'reader_view'
+    def build_toc_urls(self, context, toc, node=None):
+        if node is None:
+            node = toc
 
-    def get_toc(self, reg_part, version):
-        # table of contents
-        toc = fetch_toc(reg_part, version)
-        self.build_urls(toc, version)
-        return toc
-
-    def build_urls(self, toc, version, subpart=None):
-        for el in toc:
+        if any(node['type'] == x for x in ['subpart', 'section', 'subject_group']):
             try:
-                part = el['index'][0]
-                section = el['index'][1]
-                el['url'] = self.build_toc_url(part, subpart, section, version) + '#' + part + '-' + section
+                identifier = '-'.join(node['identifier'])
+                node['url'] = self.build_toc_url(context, toc, node) + "#" + identifier
             except NoReverseMatch:
-                el['url'] = ''
+                pass
+        if node['children'] is not None:
+            for child in node['children']:
+                self.build_toc_urls(context, toc, child)
 
-            if 'sub_toc' in el:
-                if 'Subpart' in el['index']:
-                    self.build_urls(el['sub_toc'], version, '-'.join(el['index'][1:]))
-                else:
-                    self.build_urls(el['sub_toc'], version, subpart)
-
-    def build_toc_url(self, part, subpart, section, version):
-        return reverse(self.default_view, args=(part, subpart or section, version))
+    def build_toc_url(self, context, toc, node):
+        raise NotImplementedError()

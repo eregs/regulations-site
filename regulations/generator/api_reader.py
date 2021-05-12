@@ -39,6 +39,9 @@ class ApiReader(object):
     def v2_part(self, date, title, part):
         return self._get("v2/{}/title/{}/part/{}".format(date, title, part))
 
+    def v2_toc(self, date, title, part):
+        return self._get("v2/{}/title/{}/part/{}/toc".format(date, title, part))
+
     def v2_regversions(self, title, part):
         return self._get("v2/title/{}/part/{}".format(title, part))
 
