@@ -28,11 +28,13 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
         reg_version = context["version"]
         reg_part = context["part"]
         tree = self.client.v2_part(reg_version, 42, reg_part)
+        versions = self.get_versions(42, reg_part)
 
         c = {
             'tree':         tree['document'],
             'reg_part':     reg_part,
             'structure':    tree['structure']['children'][0]['children'][0]['children'][0],
+            'versions':     versions,
         }
 
         links = {}
@@ -48,11 +50,11 @@ class ReaderView(TableOfContentsMixin, SidebarContextMixin, CitationContextMixin
     def get_view_links(self, context, toc):
         raise NotImplementedError()
 
-    def get_versions(self, label_id):
-        versions = self.client.regversions(label_id)
+    def get_versions(self, title, part):
+        versions = self.client.v2_regversions(title, part)
         if versions is None:
             raise Http404
-        return versions['versions']
+        return versions
 
 
 class PartReaderView(ReaderView):
