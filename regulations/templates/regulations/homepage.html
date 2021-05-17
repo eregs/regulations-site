@@ -1,37 +1,84 @@
 {% extends "regulations/base.html" %}
 {% load static %}
 
-{% block title %}eRegulations{% endblock %}
+{% block title %}Medicaid &amp; CHIP Regulations - A CMCS Pilot Project{% endblock %}
 
 {% block body_class %}site-homepage{% endblock %}
 
+{% block header %}{% endblock %}
+
 {% block body %}
-    <main class="reg-title">
-        <div class="container">
-            {% for title in structure %}
+    <div class="hero-banner">
+        <div class="site-container">
 
-            <h1> {{title.label}} </h1>
-            
-            {% for child in title.children %}
-                {% with "regulations/homepage/"|add:child.type|add:".html regulations/homepage/child.html" as templates %}
-                    {% include templates.split %}
-                {% endwith %}
-            {% endfor %}
-            
+            <div class="hero-search">
+                {% include "regulations/partials/header-search.html" %}
+            </div>
 
-            {% endfor %}
+            <div class="hero-text">
+                <h1>Medicaid &amp; CHIP Regulations</h1>
+                <h4>Look up policy with context.</h4>
+                <p>This is a pilot project in the Center for Medicaid and CHIP Services (CMCS). Learn more about <a href="/about">using this tool</a> and <a href="">how this tool is updated</a>, or explore the site as a supplement to existing policy tools.</p>
+            </div>
 
-            {% if regulations %}
-                {% include "regulations/partials/recent_changes.html" %}
-            {% endif %}
+            <div class="hero-image">
+                <img src="{% static 'images/hero-graphic.svg' %}" alt="Flat illustration of two doctors and a man in a wheelchair holding his smartphone. In the background, there is a tall plant and a heart with a monitor line."/>
+            </div>
 
-            <div class="disclaimer">
-                <h5>Legal Limitations of This Tool</h5>
-                <p>The CMS Regulations tool is an editorial compilation of material and not an official legal edition of the Code of Federal Regulations or the Federal Register.
-                    We have made every effort to ensure the material presented in this tool is accurate, but if you are relying on it for legal research you should consult the
-                    official editions of those sources to confirm your findings. Nothing in this tool binds CMS or creates any rights, benefits, or defenses, substantive or
-                    procedural, that are enforceable by any party in any manner.</p>
+        </div>    
+    </div>
+
+    <div class="site-features">
+        <div class="site-container">
+            <div class="ds-l-row">
+
+                <div class="feature ds-l-col--4">
+                    <h3>Sub-Regulatory Guidance</h3>
+                    <p>See related State Medicaid Director Letters, CMCS Informational Bulletins, and more. <a href="/about">Learn more.</a></p>
+                </div>
+
+                <div class="feature ds-l-col--4">
+                    <h3>Regulation History</h3>
+                    <p>View current and past versions and compare them to find changes over time. <a href="/about">Learn more.</a></p>
+                </div>
+
+                <div class="feature ds-l-col--4">
+                    <h3>Cross-References</h3>
+                    <p>Use direct links to jump to cited statutes, regulations, and rules. <a href="/about">Learn more.</a></p>
+                </div>
+
             </div>
         </div>
-    </main>
+    </div>
+
+    <div class="site-container">
+        <div class="ds-l-row">
+
+            <main class="homepage-toc ds-l-col--8">
+
+                {% for title in structure %}
+
+                    <h1> {{title.label}} </h1>
+                    
+                    {% for child in title.children %}
+                        {% with "regulations/homepage/"|add:child.type|add:".html regulations/homepage/child.html" as templates %}
+                            {% include templates.split %}
+                        {% endwith %}
+                    {% endfor %}
+                
+                {% endfor %}
+
+                <p class="toc-external-ref">For subsequent subchapters (F-I), see <a href="https://ecfr.federalregister.gov/current/title-42/chapter-IV" target="_blank" class="external">Title 42 Chapter IV in eCFR</a></p>
+
+            </main>
+
+            <aside class="homepage-updates ds-l-col--4">
+                {% if regulations %}
+                    {% include "regulations/partials/recent_changes.html" %}
+                {% endif %}
+            </aside>
+
+        </div>    
+    </div>
+
 {% endblock %}

@@ -25,11 +25,16 @@ $magenta: #862074;
 $white: #fff;
 $black: #000;
 
-// Usage
-// Call This Section in Your CSS, Not the Color Names
+//// Usage ////
+//// Call This Section in Your CSS, Not the Color Names ////
+
+// Colors
 
 $primary_color: $dark_blue;
 $secondary_color: $teal;
+
+
+// Links
 
 $primary_link_color: $mid_blue;
 $primary_link_hover: $dark_blue;
@@ -45,32 +50,103 @@ $reverse_link_hover: $white;
 
 $visited_link_color: $magenta;
 
+// Forms
+
 $placeholder_color: $mid_gray_2;
+
+// Backgrounds
 
 $main_background_color: $white;
 $secondary_background_color: $lightest_gray;
 $teritary_background_color: $lightest_blue;
 $reverse_background_color: $dark_blue;
 
+$hero_background_color: $teal;
+$hero_link_color: $white;
+$hero_link_hover: $light_blue;
+
+//Borders
+
 $border_color: $light_gray;
 $secondary_border_color: $mid_blue;
+
+// Text
 
 $primary_text_color: $dark_gray;
 $secondary_text_color: $mid_gray;
 $reverse_text_color: $white;
 
+// Indicators
+
+$primary_indicator_background: $teal;
+$primary_indicator_text: $white;
+
 //--------------------------
-// Base Font Settings
+// Fonts
 //--------------------------
 
 $primary_site_font: $font-sans;  // Open Sans
 $secondary_site_font: "Merriweather", Georgia, serif;
 
+// More font sizes are in the CMS Design System
+
+$font-size-xs: 12px;
+
 //--------------------------
 // Breakpoints
 //--------------------------
 
-// Use CMS Design System
+// Uses CMS Design System + a larger screen size
+
+$width-xxl: 1440px;  // The largest the site container will get
+
+// 544px 
+@mixin screen-sm {
+   @media (min-width: #{$width-sm}) {
+       @content;
+   }
+}
+
+// 768px
+@mixin screen-md {
+   @media (min-width: #{$width-md}) {
+       @content;
+   }
+}
+
+// 1024px
+@mixin screen-lg {
+   @media (min-width: #{$width-lg}) {
+       @content;
+   }
+}
+
+// 1280px
+@mixin screen-xl {
+   @media (min-width: #{$width-xl}) {
+       @content;
+   }
+}
+
+// 1440px - eRegs-specific breakpoint 
+@mixin screen-xxl {
+   @media (min-width: #{$width-xxl}) {
+       @content;
+   }
+}
+
+// For adjustments that don't fit into the usual breakpoints
+@mixin custom-min($screen) {
+   @media (min-width: $screen+'px') {
+       @content;
+   }
+}
+
+@mixin custom-max($screen) {
+   @media (max-width: $screen+'px') {
+       @content;
+   }
+}
 
 //--------------------------
 // Transitions
@@ -81,10 +157,44 @@ $secondary_site_font: "Merriweather", Georgia, serif;
 }
 
 // -------------------------
+// Indicators
+// -------------------------
+
+.indicator {
+    background: $primary_indicator_background;
+    text-transform: uppercase;
+    color: $primary_indicator_text;
+    font-size: 11px;
+    padding: 2px 5px;
+    border-radius: $border-radius;
+    margin-right: 4px;
+}
+
+// -------------------------
+// External Links
+// -------------------------
+
+@mixin external-link {
+  content: url('../images/external-link.svg');
+  padding-left: 5px;
+}
+
+a {
+    &.external {
+
+      &:after {
+        @include external-link;
+      }
+    }
+}
+
+// -------------------------
 // General Settings
 // -------------------------
 
 // For margins and padding: From the CMS Design System, default to $spacer-* where * is a number between 1–7 (i.e. $spacer-2)
+
+
 
 a {
     color: $primary_link_color;
@@ -100,7 +210,4 @@ html {
     scroll-behavior: smooth;
 }
 
-.fa-external-link-alt {
-    font-size: 80%;
-    margin-left: .3rem;
-}
+

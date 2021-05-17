@@ -13,7 +13,7 @@ CSS/Javascript etc., should inherit from this template.
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
             {% block title %}
-                {{meta.cfr_title_number}} CFR Part {{reg_part}} | eRegulations
+                {{meta.cfr_title_number}} CFR Part {{reg_part}} | Medicaid &amp; CHIP Regulations
             {% endblock %}
         </title>
         {% include "regulations/partials/favicon.html" %}
@@ -22,6 +22,8 @@ CSS/Javascript etc., should inherit from this template.
 
     <body class="ds-base {% block body_class %}{% endblock %}">
         {% block pre_header %}{% endblock %}
+
+        {% include "regulations/partials/flash_banner.html" %}
 
         {% block header %}
             <header>

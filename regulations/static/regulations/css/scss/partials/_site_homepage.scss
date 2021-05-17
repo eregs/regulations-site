@@ -7,37 +7,260 @@
 
 .site-homepage {
 
-    .reg-title {
+    .site-container {
+
+        @include custom-max(1350) {
+            padding-top: 0; 
+        }
+    }
+
+    // Hero Banner
+
+    .hero-banner {
+        background: $hero_background_color;
+        color: $reverse_text_color;
+        padding: $spacer-4 0;
+
+        .hero-search {
+            height: 42px;           // Height of the search box
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text {
+            width: 50%;
+            height: 276px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 3px 1px 5px $secondary_color;
+
+            @include custom-min(1350) {
+                height: 260px;
+            }
+
+            a {
+                color: $hero_link_color;
+
+                &:visited {
+                    color: $hero_link_color;
+                }
+
+                &:hover {
+                    color: $hero_link_hover;
+                }
+            }
+        }
+
+        .hero-image {
+            position: absolute;
+            right: 0;
+            width: 50%;
+            top: -85px;
+            text-align: right;
+
+            // All of these media queries are needed to get the overlapping effect without overlapping the text smoothly at different screen sizes (I know, I designed a mildly ridiculous-to-code homepage because it looked awesome)
+
+            @include screen-lg {
+                width: 56%;
+                top: -60px;
+                right: -45px;
+            }
+
+            @include custom-min(1050) {
+                width: 54%;
+                right: -34px;
+            }
+
+            @include custom-min(1100) {
+                width: 54%;
+                right: -40px;
+                top: -70px;
+            }
+
+            @include custom-min(1120) {
+                width: 52%;
+                right: -30px;
+                top: -75px;
+            }
+
+            @include custom-min(1170) {
+                width: 50%;
+                top: -60px;
+            }
+
+            @include custom-min(1190) {
+                width: 50%;
+                top: -70px;
+            }
+
+            @include custom-min(1235) {
+                width: 50%;
+                top: -86px;
+                right: -30px;
+            }
+
+            @include screen-xl {
+                width: 49%;
+                top: -98px;
+                right: 0;
+            }
+
+            @include custom-min(1300) {
+                top: -98px;
+                width: 49%;
+                right: 0;
+            }
+
+            @include screen-xxl {
+                top: -85px;
+                width: 50%;
+                right: 0;
+            }
+
+            img {
+                max-width: 100%;
+            }
+        }
+
         h1 {
             margin-bottom: 0;
-            font-size: 1.7em;
+            font-family: $primary_site_font;
+            font-size: $font-size-4xl;
+
+            @include custom-max(1490) {     // Deliberately non-conforming
+                font-size: 2.7em;        
+                line-height: 1.1em;
+                margin-bottom: $spacer-1;
+            }
+        }
+
+        h4 {
+            margin-top: 0;
+        }
+
+    }
+
+    // Features
+
+    .site-features {
+        background: $teritary_background_color;
+    }
+
+    .feature {
+        padding: $spacer-2;
+
+        h3 {
+            font-family: $secondary_site_font;
+            font-weight: normal;
         }
     }
 }
 
-.subchapter {
-    border-bottom: 1px solid $border_color;
-    padding: 1em 0;
+// Table of Contents
+
+.homepage-toc {
+
+    h1 {
+        margin-bottom: 0;
+    }
+
+    h4 {
+        font-family: $secondary_site_font;
+    }
+
+    h4 + .toc-external-ref {
+        margin: $spacer-4 0 0;
+    }
+
+    .toc-external-ref {
+        font-style: italic;
+        margin: $spacer-5 0;
+    }
+
+    .subchapter {
+        border-bottom: 1px solid $border_color;
+        padding: 1em 0;
+    }
+
+    .part-names {
+        display: flex;
+        margin: $spacer-3 0;
+        padding: 0;
+        font-size: $font-size-lg;
+
+        a {
+            text-decoration: none;
+
+            .part-number {
+                font-weight: bold;
+                display: inline;
+            }
+
+            .part-title {
+                display: inline;
+            }
+
+        }
+    }
 }
 
-.part-names {
-    display: block;
-    margin: 1em 0;
-    padding: 0;
+// Aside - Latest Updates
 
-    a {
-        text-decoration: none;
-        font-size: 1.2em;
+.homepage-updates {
 
-        .part-number {
-            font-weight: bold;
-            display: table-cell;
-            padding-right: .3em;
-        }
-
-        .part-title {
-            display: table-cell;
-        }
-
+    .last-update-external {
+        font-style: italic;
+        font-weight: 600;
+        margin: 0 0 $spacer-5 0;
     }
+
+
+    .latest-changes {
+        background: $secondary_background_color;
+        padding: $spacer-4;
+
+        @include screen-xl {
+            padding: $spacer-4 $spacer-6;
+        }
+
+        h3 {
+            font-family: $secondary_site_font;
+            font-size: $font-size-md;
+            margin-bottom: $spacer-5;
+        }
+
+        .recent-change {
+            margin: $spacer-2 0;
+            font-size: $font-size-sm;
+
+            a {
+                text-decoration: none;
+            }
+
+            .recent-flag {
+            }
+
+            .recent-date {
+                font-weight: bold;
+            }
+
+            .recent-fr {
+                font-weight: bold;
+            }
+
+            .recent-title {
+                margin-top: .2em;
+
+                &:after {
+                    @include external-link;
+                }
+            }
+        }
+
+        .see-fr {
+            font-style: italic;
+            font-size: $font-size-xs;
+        }
+    }
+
 }

@@ -1,4 +1,8 @@
 <h4>{{ child.label }}</h4>
+
+<p class="toc-external-ref">For preceding subchapters (A-B), see <a href="https://ecfr.federalregister.gov/current/title-42/chapter-IV" target="_blank" class="external">Title 42 Chapter IV in eCFR</a></p>
+
+
 {% for child in child.children %}
     {% with "regulations/homepage/"|add:child.type|add:".html regulations/homepage/child.html" as templates %}
         {% include templates.split %}

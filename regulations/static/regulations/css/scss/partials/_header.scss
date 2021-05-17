@@ -32,16 +32,16 @@ header {
 	.reg-title {
 		display: inline-block;
 	}
+}
 
-	.search-header {
-		float: right;
+.search-header {
+	float: right;
 
-		.search-box {
-			width: 380px;
+	.search-box {
+		width: 380px;
 
-			input {
-				border: 1px solid $border_color;
-			}
+		input {
+			border: 1px solid $border_color;
 		}
 	}
 }

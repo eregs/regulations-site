@@ -3,6 +3,8 @@
 // Layout
 //-----------------------------------------------------------------------------------------
 
+// We loosely use the CMS Design System grid: https://design.cms.gov/utilities/grid
+
 header {
     padding: $spacer-4;
     border-bottom: 1px solid $primary_color;
@@ -18,7 +20,23 @@ body {
     height: 100%;
 }
 
-.container {
+.site-container {               // This is good to target for different screen sizes
+    display: block; 
+    margin: 0 auto;
+    position: relative;
+    padding: $spacer-3 $spacer-5;
+
+    @include screen-xl {
+        max-width: $width-xl;
+        padding: $spacer-3;
+    }
+
+    @include screen-xxl {
+        max-width: $width-xxl;
+    }
+}
+
+.container {                    // Width set for optimal readability of text
     max-width: $text-max-width;
     display: block; 
     margin: 0 auto;
@@ -48,6 +66,10 @@ aside {
         display: table-cell;
         width: 400px;
         border-left: 1px solid $border_color;
+    }
+
+    &.homepage-updates {
+        padding-top: $spacer-6;
     }
 
 }

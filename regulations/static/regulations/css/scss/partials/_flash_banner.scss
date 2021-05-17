@@ -1,0 +1,28 @@
+
+//-----------------------------
+// Flash Banner
+//-----------------------------
+
+@import "../application_settings";
+
+.flash-banner {
+    background: $teritary_background_color;
+    text-align: center;
+    font-size: $font-size-sm;
+    padding: $spacer-1;
+    position: relative;
+    z-index: 100;
+
+    a {
+        text-decoration: none;
+        font-weight: bold;
+
+        &:visited {
+            color: $primary_link_color;
+
+            &:hover {
+                color: $primary_link_hover; 
+            }
+        }
+    }
+}

@@ -9,21 +9,33 @@ footer {
     padding: $spacer-4;
     border-top: 1px solid $border_color;
     background: $teritary_background_color;
-    flex-shrink: 0;
-    display: flex;  
-    justify-content: space-between;
 
     p {
-        font-family: $primary_site_font;
-        font-weight: normal;
-        font-size: 12px;
+        font-size: $font-size-xs;
         color: $secondary_text_color;
     }
 
     h5 {
         font-family: $secondary_site_font;
         color: $secondary_text_color;
-        margin-bottom: 0;
+        margin: $spacer-1 0 0 0;
+        font-size: $font-size-sm;
+    }
+
+    .address {
+        margin-bottom: $spacer-3;
+        font-size: $font-size-xs;
+    }
+
+    .last-update-footer {
+        font-family: $secondary_site_font;
+        font-weight: 600;
+        font-size: $font-size-sm;
+        margin-bottom: $spacer-2;
+    }
+
+    .about-footer {
+        font-size: $font-size-sm;
     }
 
     .footer-left {
