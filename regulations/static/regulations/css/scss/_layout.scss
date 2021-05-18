@@ -54,17 +54,19 @@ main {
 }
 
 aside {
-    padding: $spacer-2 $spacer-4;
 
     &.left-sidebar {
         display: table-cell;
         width: 400px;
         background: $reverse_background_color;
+        flex-shrink: 0;
+        padding: 0 $spacer-4;
     }
 
     &.right-sidebar {
         display: table-cell;
         width: 400px;
+        padding: $spacer-2 $spacer-4;
         border-left: 1px solid $border_color;
     }
 

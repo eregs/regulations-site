@@ -13563,17 +13563,17 @@ main {
   padding: 48px;
 }
 
-aside {
-  padding: 16px 32px;
-}
 aside.left-sidebar {
   display: table-cell;
   width: 400px;
   background: #17415F;
+  flex-shrink: 0;
+  padding: 0 32px;
 }
 aside.right-sidebar {
   display: table-cell;
   width: 400px;
+  padding: 16px 32px;
   border-left: 1px solid #D6D7D9;
 }
 aside.homepage-updates {
@@ -14276,97 +14276,9 @@ aside.left-sidebar {
   overflow-y: scroll;
   position: sticky;
   top: 0;
+  padding-left: 0;
+  padding-right: 0;
   transition: all 0.25s ease-out;
-}
-aside.left-sidebar a {
-  color: #A3E8FF;
-}
-aside.left-sidebar a:hover {
-  color: #fff;
-}
-aside.left-sidebar ul {
-  padding: 0 0 16px 0;
-}
-aside.left-sidebar ul.toggle-toc-menu-sections {
-  padding-left: 16px;
-}
-aside.left-sidebar ul li {
-  list-style: none;
-  overflow: hidden;
-  max-height: 500em;
-  transition: all 1s ease-out;
-}
-aside.left-sidebar ul li a {
-  text-decoration: none;
-  font-weight: bold;
-}
-aside.left-sidebar ul li[data-state=collapsed] {
-  max-height: 0;
-}
-aside.left-sidebar ul button {
-  border: none;
-  background: none;
-  color: #A3E8FF;
-  cursor: pointer;
-  outline: none;
-}
-aside.left-sidebar ul button:hover {
-  color: #fff;
-  transition: all 0.1s ease-in;
-}
-aside.left-sidebar ul button[data-set-state=expanded][data-state=expanded] {
-  display: none;
-}
-aside.left-sidebar ul button[data-set-state=collapsed][data-state=collapsed] {
-  display: none;
-}
-aside.left-sidebar ul button:focus-visible {
-  outline: 2px solid black;
-}
-aside.left-sidebar .subpart-letter {
-  cursor: pointer;
-}
-aside.left-sidebar .subpart-range {
-  font-size: 14px;
-}
-aside.left-sidebar .subpart-name {
-  font-size: 14px;
-  font-weight: normal;
-  padding-right: 32px;
-}
-aside.left-sidebar .toc-section-number {
-  font-size: 14px;
-}
-aside.left-sidebar .toc-section-name {
-  color: #fff;
-  font-weight: normal;
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-aside.left-sidebar .toc-controls {
-  border-bottom: 1px solid #046791;
-  padding-bottom: 16px;
-  margin: 0 -2em;
-}
-aside.left-sidebar .toc-controls button {
-  outline: none;
-  color: #A3E8FF;
-  border: none;
-  background: none;
-  margin-left: 24px;
-  cursor: pointer;
-}
-aside.left-sidebar .toc-controls button:hover {
-  color: #fff;
-  transition: all 0.1s ease-in;
-}
-aside.left-sidebar .toc-controls button img {
-  height: 16px;
-  padding-right: 5px;
-}
-aside.left-sidebar .toc-controls button[data-set-state=expanded] {
-  margin: 0 auto;
-  display: none;
 }
 aside.left-sidebar[data-state=collapsed] {
   width: 1em;
@@ -14386,10 +14298,173 @@ aside.left-sidebar[data-state=collapsed] div.toc-controls [data-set-state=collap
 aside.left-sidebar[data-state=collapsed] div.toc-controls [data-set-state=expanded] {
   display: block;
 }
+aside.left-sidebar[data-state=collapsed] ul li.subtoc.active {
+  background: none;
+}
+aside.left-sidebar .toc-titles {
+  border-radius: 3px;
+  padding: 8px 0;
+  margin: 0 16px;
+}
+aside.left-sidebar .toc-titles h3 {
+  margin: 8px 8px 8px 16px;
+}
+aside.left-sidebar .subpart-range {
+  font-size: 14px;
+}
+aside.left-sidebar .subpart-name {
+  font-size: 14px;
+  font-weight: normal;
+  color: #fff;
+  padding-right: 32px;
+}
+aside.left-sidebar .toc-subgroup-list {
+  padding-left: 0;
+}
+aside.left-sidebar .toc-subgroup-name {
+  margin-left: 32px;
+  margin-right: 16px;
+  font-size: 16px;
+}
+aside.left-sidebar .toc-section-number {
+  font-size: 14px;
+}
+aside.left-sidebar .toc-section-name {
+  color: #fff;
+  font-weight: normal;
+  font-size: 14px;
+}
+aside.left-sidebar .toc-toggles {
+  width: 64px;
+  display: table-cell;
+}
+aside.left-sidebar .toc-toggles:hover button {
+  color: #fff;
+  background: #205982;
+  transition: all 0.1s ease-in;
+}
+aside.left-sidebar .toc-toggles button {
+  background: none;
+  border: none;
+  color: #A3E8FF;
+  cursor: pointer;
+  margin-top: 4px;
+  display: block;
+  padding: 16px;
+  margin-right: 16px;
+  border-radius: 3px;
+}
+aside.left-sidebar .toc-toggles button[data-set-state=expanded][data-state=expanded] {
+  display: none;
+}
+aside.left-sidebar .toc-toggles button[data-set-state=collapsed][data-state=collapsed] {
+  display: none;
+}
+aside.left-sidebar ul {
+  padding: 0 0 16px 0;
+}
+aside.left-sidebar ul li {
+  list-style: none;
+  overflow: hidden;
+}
+aside.left-sidebar ul li.active {
+  background: #102E43;
+}
+aside.left-sidebar ul li.active .subpart-info {
+  color: #fff;
+}
+aside.left-sidebar ul li a {
+  text-decoration: none;
+  font-weight: bold;
+}
+aside.left-sidebar ul li.orphan .menu-section {
+  margin-left: 16px;
+  padding-left: 16px;
+}
+aside.left-sidebar ul li.subtoc {
+  transition-property: max-height;
+  transition-duration: 1s;
+  transition-timing-function: ease-in;
+  max-height: 250vh;
+}
+aside.left-sidebar ul li.subtoc.active {
+  background: #102E43;
+}
+aside.left-sidebar ul li.subtoc[data-state=collapsed] {
+  max-height: 0;
+}
+aside.left-sidebar a {
+  color: #A3E8FF;
+}
+aside.left-sidebar a:hover {
+  color: #fff;
+}
+aside.left-sidebar a.subpart-info {
+  display: table-cell;
+  width: calc(100% - 64px);
+}
+aside.left-sidebar a.subpart-info:hover .toc-titles {
+  background: #205982;
+  transition: all 0.1s ease-in;
+}
+aside.left-sidebar .menu-section {
+  display: block;
+  padding: 8px 32px 8px 32px;
+  margin: 0 16px;
+  border-radius: 3px;
+}
+aside.left-sidebar .menu-section:not(li.active ul a.menu-section):hover {
+  background: #205982;
+}
+aside.left-sidebar .menu-section li {
+  padding: 0 16px;
+}
+aside.left-sidebar li.active ul a.menu-section:hover {
+  background: #205982;
+}
+
+.toc-controls {
+  border-bottom: 1px solid #046791;
+}
+.toc-controls button {
+  outline: none;
+  color: #A3E8FF;
+  border: none;
+  background: none;
+  margin-left: 24px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 16px;
+  border-radius: 3px;
+}
+.toc-controls button:hover {
+  background: #046791;
+  color: #fff;
+  transition: all 0.1s ease-in;
+}
+.toc-controls button img {
+  height: 16px;
+  padding-right: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 16px;
+}
+.toc-controls button span {
+  font-size: 12px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 16px;
+}
+.toc-controls button[data-set-state=expanded] {
+  margin: 0 auto;
+  display: none;
+}
 
 .jump-to {
   border-bottom: 1px solid #046791;
   padding: 16px 0 32px;
+  margin: 0 32px;
 }
 .jump-to .jump-to-label {
   margin: 16px 0 8px 0;

@@ -9,7 +9,9 @@
 // Base Colors
 
 $teal: #026666;
+$darkest_blue: #102E43;
 $dark_blue: #17415F;
+$mid_dark_blue: #205982;
 $mid_blue: #046791;
 $light_blue: #A3E8FF;
 $lightest_blue: #EEFAFE;
@@ -60,6 +62,8 @@ $main_background_color: $white;
 $secondary_background_color: $lightest_gray;
 $teritary_background_color: $lightest_blue;
 $reverse_background_color: $dark_blue;
+$reverse_background_darker: $darkest_blue;
+$reverse_background_lighter: $mid_dark_blue;
 
 $hero_background_color: $teal;
 $hero_link_color: $white;
@@ -69,6 +73,7 @@ $hero_link_hover: $light_blue;
 
 $border_color: $light_gray;
 $secondary_border_color: $mid_blue;
+$hover_border_color: $light_blue;
 
 // Text
 
@@ -87,10 +92,7 @@ $primary_indicator_text: $white;
 
 $primary_site_font: $font-sans;  // Open Sans
 $secondary_site_font: "Merriweather", Georgia, serif;
-
-// More font sizes are in the CMS Design System
-
-$font-size-xs: 12px;
+$font_size_xs: 12px;
 
 //--------------------------
 // Breakpoints

@@ -1,9 +1,9 @@
-<li class="section-subjgrp toggle-toc-menu-subgroups" tabindex="0">
+<li class="toc-subgroup toggle-toc-menu-subgroups" tabindex="0">
 
-<h3 class="toc-nav__divider toc-subjgrp" >{{item.label|safe|upper}}</h3></li>
+    <h3 class="toc-subgroup-name" >{{item.label|safe|upper}}</h3></li>
 
-<li>
-    {% if item.children %}
-        {% include "regulations/partials/toc_subgrp_toc.html" with type="subjgrp" %}
-    {% endif %}
-</li>
+    <li>
+        {% if item.children %}
+            {% include "regulations/partials/toc_subgrp_toc.html" with type="toc-subgroup-list" %}
+        {% endif %}
+    </li>

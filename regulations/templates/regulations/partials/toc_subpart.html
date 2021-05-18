@@ -1,17 +1,29 @@
-<li id="{{item.type}}-{{item.identifier.0}}" class="section-subpart" tabindex="0">
-    <h3 class="toc-nav__divider">
-        <a href="{{ item.url }}" class="subpart-letter">{{item.label_level|safe}}
-            {% if item.descendant_range %}
-                <span class="subpart-range">({{ item.descendant_range.0 }} - {{ item.descendant_range.1 }})</span></a>
-        <button tabindex="0" data-state="expanded" data-set-state="expanded" data-state-name="{{item.type}}-{{item.identifier.0}}"><i class="fa fa-chevron-down"></i></button>
-        <button tabindex="0" data-state="expanded" data-set-state="collapsed" data-state-name="{{item.type}}-{{item.identifier.0}}"><i class="fa fa-chevron-up"></i></button>
-                <div class="subpart-name">{{item.label_description|safe}}</div>
+<li data-state="{{ collapse_state }}" data-state-name="{{item.type}}-{{item.identifier.0}}" id="{{item.type}}-{{item.identifier.0}}" class="section-subpart {% if subpart and collapse_state == 'expanded' %}active{% endif %}" tabindex="0">
+    <div class="flexbox">
+        <a href="{{ item.url }}" class="subpart-info"> <!-- This is what should link to a new page that is the top of the relevant subpart -->
+            <div class="toc-titles">
+                <h3 data-section-id="{{item.type}}-{{item.identifier.0}}" id="nav-{{item.type}}-{{item.identifier.0}}">
+                    <span class="subpart-letter">{{item.label_level|safe}}</span> 
+                    <span class="subpart-range">({{ item.descendant_range.0 }} - {{ item.descendant_range.1 }})</span>
+                    <div class="subpart-name">{{item.label_description|safe}}</div>
+                </h3>
+            </div>
+        </a>
+
+        <div class="toc-toggles">
+            {% if item.children %}
+                <button tabindex="0" data-state="{{ collapse_state }}" data-set-state="expanded" data-state-name="{{item.type}}-{{item.identifier.0}}"><i class="fa fa-chevron-down"></i></button>
+                <button tabindex="0" data-state="{{ collapse_state }}" data-set-state="collapsed" data-state-name="{{item.type}}-{{item.identifier.0}}"><i class="fa fa-chevron-up"></i></button>
             {% endif %}
-    </h3>
+        </div>
+
+    </div>    
+
 </li>
 
-<li data-state="expanded" data-state-name="{{item.type}}-{{item.identifier.0}}">
+<li class="subtoc {% if subpart and collapse_state == 'expanded' %}active{% endif %}" data-state="{{ collapse_state }}" data-state-name="{{item.type}}-{{item.identifier.0}}">
     {% if item.children %}
         {% include "regulations/partials/toc_sub_toc.html" with type="subpart" %}
     {% endif %}
 </li>
+

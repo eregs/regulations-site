@@ -5,17 +5,7 @@
     {% include "regulations/partials/view-and-compare.html" %}
     <div class="flexbox">
         <aside class="left-sidebar" data-state="expanded" data-state-name="left-sidebar">
-            <div class="toc-controls">
-                <button data-set-state="collapsed" data-state-name="left-sidebar">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    COLLAPSE
-                </button>
-                <button data-set-state="expanded" data-state-name="left-sidebar">
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </button>
-            </div>
-            {% include "regulations/partials/_jump-to.html" %}
-            {% include "regulations/partials/toc.html" %}
+            {% include "regulations/partials/sidebar_left.html" %}
         </aside>
 
         <main class="reg-text">
@@ -24,7 +14,7 @@
         </main>
 
         <aside class="right-sidebar">
-            {% include "regulations/partials/sidebar.html" %}
+            {% include "regulations/partials/sidebar_right.html" %}
         </aside>
     </div>
 {% endblock %}

@@ -5,124 +5,23 @@
 
 @import "../application_settings";
 
+// Partial-Specific Variables
+
+$toc_toggles_width: 64px;
+
+// Sidebar
+
 aside.left-sidebar {
 	color: $reverse_text_color;
 	height: 100vh;
 	overflow-y: scroll;
 	position: sticky;
 	top: 0;
+	padding-left: 0;
+	padding-right: 0;
+	transition: all .25s ease-out;
 
-	a {
-		color: $reverse_link_color;
-
-		&:hover {
-			color: $reverse_link_hover;
-		}
-	}
-
-	ul {
-		padding: 0  0 $spacer-2 0;
-
-		&.toggle-toc-menu-sections {
-			padding-left: $spacer-2;
-		}
-
-		li {
-			list-style: none;
-			overflow: hidden;
-			max-height: 500em;
-
-			a {
-				text-decoration: none;
-				font-weight: bold;
-			}
-
-			&[data-state="collapsed"] {
-				max-height: 0;
-			}
-
-			transition: all 1s ease-out;
-		}
-
-		button {
-			border: none;
-			background: none;
-			color: $reverse_link_color;
-			cursor: pointer;
-			outline: none;
-
-			&:hover {
-				color: $reverse_link_hover;
-				@include transition;
-			}
-
-			&[data-set-state="expanded"][data-state="expanded"] {
-				display: none;
-			}
-			&[data-set-state="collapsed"][data-state="collapsed"] {
-				display: none;
-			}
-		}
-
-		button:focus-visible {
-			outline: 2px solid black;
-		}
-	}
-
-	.subpart-letter {
-		cursor: pointer;
-	}
-
-	.subpart-range {
-		font-size: $font-size-sm;
-	}
-
-	.subpart-name {
-		font-size: $font-size-sm;
-		font-weight: normal;
-		padding-right: $spacer-4;
-	}
-
-	.toc-section-number {
-		font-size: $font-size-sm;
-	}
-
-	.toc-section-name {
-		color: $reverse_text_color;
-		font-weight: normal;
-		font-size: $font-size-sm;
-		margin-bottom: $spacer-2;
-	}
-
-	.toc-controls {
-		border-bottom: 1px solid $secondary_border_color;
-		padding-bottom: $spacer-2;
-		margin: 0 -2em;
-
-		button {
-			outline: none;
-			color: $reverse_link_color;
-			border: none;
-			background: none;
-			margin-left: $spacer-3;
-			cursor: pointer;
-
-			&:hover {
-				color: $reverse_link_hover;
-				@include transition;
-			}
-
-			img {
-				height: $base-font-size;
-				padding-right: 5px;
-			}
-
-			&[data-set-state="expanded"] {
-				margin: 0 auto;
-				display: none;
-			}
-		}
-	}
+	// Entire Sidebar Collapsed
 
 	&[data-state="collapsed"] {
 		width: 1em;
@@ -133,7 +32,7 @@ aside.left-sidebar {
 			display: none;
 		}
 
-		div.toc-controls {
+		div.toc-controls {		// Buttons in the sidebar collapsed state - do not style the open state button here
 			margin: 0 -1em;
 			display: block;
 
@@ -145,9 +44,222 @@ aside.left-sidebar {
 				display: block;
 			}
 		}
+
+		ul li.subtoc.active {
+    		background: none;
+    	}
 	}
 
-	transition: all .25s ease-out;
+	// Titles, Numbers
+
+	.toc-titles {
+		border-radius: $border-radius;
+		padding: $spacer-1 0;
+		margin: 0 $spacer-2;
+
+		h3 {
+			margin: $spacer-1 $spacer-1 $spacer-1 $spacer-2;
+		}
+	}
+
+	.subpart-range {
+		font-size: $font-size-sm;
+	}
+
+	.subpart-name {
+		font-size: $font-size-sm;
+		font-weight: normal;
+		color: $reverse_text_color;
+		padding-right: $spacer-4;
+	}
+
+	.toc-subgroup-list {
+		padding-left: 0;
+	}
+
+	.toc-subgroup-name {
+		margin-left: $spacer-4;
+		margin-right: $spacer-2;
+		font-size: $font-size-md;
+	}
+
+	.toc-section-number {
+		font-size: $font-size-sm;
+	}
+
+	.toc-section-name {
+		color: $reverse_text_color;
+		font-weight: normal;
+		font-size: $font-size-sm;
+	}
+
+	// Toggle Icons
+
+	.toc-toggles {
+		width: $toc_toggles_width;			
+		display: table-cell;
+
+		&:hover {
+			button {
+				color: $reverse_link_hover;
+				background: $reverse_background_lighter;
+				@include transition;
+			}
+		}
+
+		button {
+			background: none;
+			border: none;
+			color: $reverse_link_color;
+			cursor: pointer;
+			margin-top: 4px;
+			display: block;
+			padding: $spacer-2;  // Helps users by making the toggle target bigger, ~42px square
+			margin-right: $spacer-2;
+			border-radius: $border-radius;
+
+			&[data-set-state="expanded"][data-state="expanded"] {
+				display: none;
+			}
+
+			&[data-set-state="collapsed"][data-state="collapsed"] {
+				display: none;
+			}
+		}
+	}
+
+	// Ridiculous Nested Lists and Links
+
+	ul {
+		padding: 0  0 $spacer-2 0;
+
+		li {
+			list-style: none;
+			overflow: hidden;
+
+			&.active {
+				background: $reverse_background_darker;
+
+				.subpart-info {
+					color: $reverse_text_color;
+				}
+			}
+
+			a {
+				text-decoration: none;
+				font-weight: bold;
+			}
+
+			&.orphan {
+				.menu-section {
+					margin-left: $spacer-2;
+					padding-left: $spacer-2;
+				}
+			}
+
+			&.subtoc {
+				transition-property: max-height;
+				transition-duration: 1s;
+				transition-timing-function: ease-in;
+				max-height: 250vh;
+
+				&.active {
+					background: $reverse_background_darker;	
+				}					
+			
+				&[data-state="collapsed"] {
+					max-height: 0;
+				}
+			}
+		}
+	}
+
+	a {
+		color: $reverse_link_color;
+
+		&:hover {
+			color: $reverse_link_hover;
+		}
+
+		&.subpart-info {
+			display: table-cell;
+			width: calc(100% - #{$toc_toggles_width});
+
+			&:hover {
+
+				.toc-titles {
+					background: $reverse_background_lighter;
+					@include transition;
+				}
+			}
+		}
+	}
+
+	.menu-section {
+		display: block;
+		padding: $spacer-1 $spacer-4 $spacer-1 $spacer-4;
+		margin: 0 $spacer-2;
+		border-radius: $border-radius;
+
+		&:not(li.active ul a.menu-section) {
+			&:hover {
+				background: $reverse_background_lighter;
+			}
+		}
+
+		li {
+			padding: 0 $spacer-2;
+		}
+	}
+
+	li.active ul a.menu-section:hover {
+		background: $reverse_background_lighter;
+	}
+}
+
+// Controls (i.e. Collapse)
+
+.toc-controls {
+	border-bottom: 1px solid $secondary_border_color;
+
+	button {
+		outline: none;
+		color: $reverse_link_color;
+		border: none;
+		background: none;
+		margin-left: $spacer-3;
+		cursor: pointer;
+		text-transform: uppercase;
+		font-weight: 600;
+		padding: $spacer-2;
+		border-radius: $border_radius;
+
+		&:hover {
+			background: $secondary_link_hover; 
+			color: $reverse_text_color;
+			@include transition;
+		}
+
+		img {
+			height: $base-font-size;
+			padding-right: 5px;
+			display: inline-block;
+			vertical-align: middle;
+			line-height: $font-size-md;
+		}
+
+		span {
+			font-size: $font_size_xs;
+			display: inline-block;
+			vertical-align: middle;
+			line-height: $font-size-md;
+		}
+
+		&[data-set-state="expanded"] {
+			margin: 0 auto;
+			display: none;
+		}
+	}
 }
 
 // Jump To Regulation Section
@@ -155,6 +267,7 @@ aside.left-sidebar {
 .jump-to {
 	border-bottom: 1px solid $secondary_border_color;
 	padding: $spacer-2 0 $spacer-4;
+	margin: 0 $spacer-4;
 
 	.jump-to-label {
 		margin: $spacer-2 0 $spacer-1 0;

@@ -1,11 +1,14 @@
-<li>
+<li class="{{ extra_class }}">
     {% if item.reserved %}
-        <div class="toc-section-number">{{item.identifier|join:'.' }}</div>
-        <div class="toc-section-name">[Reserved]</div>
+        <span class="menu-section">
+            <div class="toc-section-number">{{item.identifier|join:'.' }}</div>
+            <div class="toc-section-name">[Reserved]</div>
+        </span>
     {% else %}
-    <a href="{{ item.url }}" data-section-id="{{item.identifier|join:'-' }}" id="nav-{{item.identifier|join:'-'}}">
-        <div class="toc-section-number">{{item.identifier|join:'.' }}</div>
-        <div class="toc-section-name">{{item.label_description|safe}}</div>
-    </a>
+        <a class="menu-section" href="{{ item.url }}" data-section-id="{{item.identifier|join:'-' }}" id="nav-{{item.identifier|join:'-'}}">
+            <div class="toc-section-number">{{item.identifier|join:'.' }}</div>
+            <div class="toc-section-name">{{item.label_description|safe}}</div>
+        </a>
     {% endif %}
 </li>
+
