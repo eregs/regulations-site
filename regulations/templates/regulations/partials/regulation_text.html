@@ -3,6 +3,7 @@
 {% endcomment %}
 
 {% load layers %}
+{% load citation %}
 
 <section id="{{c.label | join:'-'}}" class="reg-section">
     <a class="reference" href="#{{c.label | join:'-'}}"><i class="fa fa-link"></i></a>
@@ -14,6 +15,9 @@
         {% endif %}
     {% endif %}
     {{c.text | safe}}
+    {% if c.Type == "Citation" %}
+        {{c.Content | citation}}
+    {% endif %}
 </section>
 
 {% for node in c.children %}
