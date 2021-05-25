@@ -1,7 +1,12 @@
 <template>
-  <div>
-    <h2><a :href="html_url">{{ title }}</a></h2>
-    <p>{{ abstract }}</p>
+  <div class="related-rule">
+    <div class="related-rule-header">
+      <span class="related-rule-type ds-c-badge ds-c-badge--final">{{ expandedType }}</span>
+      <span class="related-rule-date" v-if="effective_on">{{ effective_on|formatDate }}</span><span class="related-rule-citation">{{ citation }}</span>
+    </div>
+    <div>
+      <a class="related-rule-title" :href="html_url">{{ title }} <i class="fas fa-external-link-alt"></i></a>
+    </div>
   </div>
 </template>
 
@@ -15,18 +20,42 @@ export default {
       type: String,
       required: true,
     },
-    html_url: {
+    type: {
       type: String,
       required: true,
     },
-    abstract: {
+    citation: {
+      type: String,
+      required: true,
+    },
+    effective_on: String,
+    document_number: {
+      type: String,
+      required: true,
+    },
+    html_url: {
       type: String,
       required: true,
     },
   },
 
-  computed: {},
+  computed: {
+    expandedType: function() {
+      if(this.type === "Rule") {
+        return "Final";
+      }
+      return "Unknown";
+    },
+  },
 
   methods: {},
+  filters: {
+    formatDate: function(value) {
+      const date = new Date(value);
+      const options = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
+      const format = new Intl.DateTimeFormat("en-US", options);
+      return format.format(date);
+    } 
+  }
 };
 </script>

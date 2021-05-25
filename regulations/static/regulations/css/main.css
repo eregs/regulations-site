@@ -14533,16 +14533,6 @@ html {
 aside.right-sidebar {
   max-width: 400px;
 }
-aside.right-sidebar div {
-  padding-left: 24px;
-}
-aside.right-sidebar div h4 {
-  margin: 0;
-}
-aside.right-sidebar div p {
-  color: #5B616B;
-  margin: 0;
-}
 aside.right-sidebar button {
   font-size: 1rem;
   font-weight: 700;
@@ -14575,6 +14565,57 @@ aside.right-sidebar button .button-subheader {
 aside.right-sidebar button .button-image {
   display: inline-block;
   padding: 0;
+}
+aside.right-sidebar ul {
+  list-style: none;
+  padding: 0 0 16px 0;
+}
+aside.right-sidebar .resource-info {
+  font-size: 14px;
+  font-weight: normal;
+  color: #212121;
+  padding-right: 32px;
+}
+
+.related-rule-type {
+  border-radius: 3px;
+}
+
+.ds-c-badge--final {
+  background: #026666;
+}
+
+.related-rule-header {
+  margin-bottom: 8px;
+}
+
+.related-rule-date {
+  color: #046791;
+  font-weight: bold;
+  padding-right: 8px;
+  margin-right: 8px;
+  border-right: 1px solid #000;
+}
+
+.related-rule-citation {
+  color: #046791;
+  font-weight: bold;
+}
+
+.related-rule-title {
+  color: #046791;
+  text-decoration: none;
+}
+
+.related-rule-list {
+  padding-left: 16px;
+}
+.related-rule-list .related-rule {
+  margin-bottom: 24px;
+}
+
+.rules-with-preamble {
+  max-height: 1000em;
 }
 
 .indicator {

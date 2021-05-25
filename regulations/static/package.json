@@ -5,7 +5,9 @@
     "css": "npx sass -I node_modules regulations/css/scss/main.scss regulations/css/main.css",
     "watch-css": "npx sass --watch -I node_modules regulations/css/scss/main.scss regulations/css/main.css",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "js": "npx rollup -o regulations/js/main.build.js -f iife regulations/js/main.js",
+    "vue": "npx rollup -c"
   },
   "license": "CC",
   "private": true,
@@ -17,8 +19,11 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "react": "16.x",
     "react-dom": "16.x",
+    "rollup": "^2.48.0",
+    "rollup-plugin-vue": "^5.1.9",
     "sass": "^1.32.8",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",

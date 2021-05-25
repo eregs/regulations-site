@@ -1,3 +1,6 @@
+import RelatedRules from './RelatedRules.js';
+import Vue from "../../node_modules/vue/dist/vue.esm.browser.js";
+
 function makeStateful(el) {
     const state_change_target = el.getAttribute("data-state-name");
     const state_change_buttons = document.querySelectorAll(`[data-set-state][data-state-name='${state_change_target}']`);
@@ -16,6 +19,13 @@ function main() {
     for (const el of stateful_elements) {
         makeStateful(el);
     }
+
+    
+    new Vue({
+        components: {
+            RelatedRules,
+        }
+    }).$mount("#related-rules")
 }
 
 main();

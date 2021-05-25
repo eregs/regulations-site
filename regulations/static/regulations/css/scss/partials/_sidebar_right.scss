@@ -8,19 +8,6 @@
 aside.right-sidebar {
     max-width: 400px;
 
-    div {
-        padding-left: $spacer-3;
-
-        h4 {
-            margin: 0;
-        }
-
-        p {
-            color: $secondary_text_color;
-            margin: 0;
-        }
-    }
-
     button {
         font-size: 1rem;
         font-weight: 700;
@@ -62,5 +49,58 @@ aside.right-sidebar {
             padding: 0;
         }
     }
+
+    ul {
+        list-style: none;
+        padding: 0  0 $spacer-2 0;
+    }
+
+    .resource-info {
+        font-size: $font-size-sm;
+        font-weight: normal;
+        color: $primary_text_color;
+        padding-right: $spacer-4;
+    }
+
 }
 
+.related-rule-type {
+    border-radius: 3px;
+}
+
+.ds-c-badge--final {
+    background: $secondary_color;
+}
+
+.related-rule-header {
+    margin-bottom: $spacer-1;
+}
+
+.related-rule-date {
+    color: $primary_link_color;
+    font-weight: bold;
+    padding-right: $spacer-1;
+    margin-right: $spacer-1;
+    border-right: 1px solid $black;
+}
+
+.related-rule-citation {
+    color: $primary_link_color;
+    font-weight: bold;
+}
+
+.related-rule-title {
+    color: $primary_link_color;
+    text-decoration: none;
+}
+
+.related-rule-list {
+    padding-left: $spacer-2;
+    .related-rule {
+        margin-bottom: $spacer-3;
+    }
+}
+
+.rules-with-preamble {
+    max-height: 1000em;
+}

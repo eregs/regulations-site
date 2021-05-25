@@ -1,7 +1,22 @@
 {% load render_nested %}
 
-<section data-cache-key="sidebar" data-cache-value="{{label_id}}">
+<section id="right-sidebar" data-cache-key="sidebar" data-cache-value="{{label_id}}">
     {% include "regulations/partials/view-button.html" %}
+
+    <h2>Subpart Resources</h2>
+
+    <ul>
+        <li data-state="expanded" data-state-name="rules-with-preambles">
+            <h3>
+                <span>Rules with Preambles</span>
+                <div class="resource-info">Final Rules</div>
+            </h3>
+        </li>
+        <li id ="related-rules" class="rules-with-preamble" data-state="expanded" data-state-name="rules-with-preambles">
+            <related-rules class="related-rules" title="42" part="{{ reg_part }}"></related-rules>
+        </li>
+    </ul>
+
     {% for sidebar in sidebars %}
         {% render_nested template=sidebar.template_name context=sidebar %}
     {% endfor %}
