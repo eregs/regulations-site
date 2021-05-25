@@ -4,7 +4,7 @@
         View Effective on
         <span class="view-select">
             <select class="ds-c-field" name="view-options" id="view-options">
-                <option value="">Select Date</option>
+                <option value="" disabled>Select Date</option>
                 {% for version in versions %}
                     {% if citation.1 %}
                         <option data-url="{% url 'reader_view' citation.0 citation.1 version.date %}">{{version.date}}</option>
