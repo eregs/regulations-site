@@ -15,4 +15,4 @@ class SearchView(TemplateView):
 
 
 def get_data(query):
-    return ApiReader().v2_search(query)
+    return ApiReader().search(query)

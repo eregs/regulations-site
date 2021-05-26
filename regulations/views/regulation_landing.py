@@ -23,7 +23,7 @@ class RegulationLandingView(TableOfContentsMixin, TemplateView):
         reg_part = self.kwargs.get("part")
 
         try:
-            current = client.v2_toc(date.today(), 42, reg_part)
+            current = client.toc(date.today(), 42, reg_part)
         except HTTPError:
             raise Http404
 

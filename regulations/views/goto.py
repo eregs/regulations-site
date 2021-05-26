@@ -25,7 +25,7 @@ class GoToRedirectView(TableOfContentsMixin, RedirectView):
         }
 
         try:
-            toc = client.v2_toc(url_kwargs['version'], 42, url_kwargs['part'])['toc']
+            toc = client.toc(url_kwargs['version'], 42, url_kwargs['part'])['toc']
         except HTTPError:
             raise Http404
 

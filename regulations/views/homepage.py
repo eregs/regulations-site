@@ -22,7 +22,7 @@ class HomepageView(TemplateView):
         c = {}
         try:
             today = date.today()
-            parts = client.v2_effective_parts(today)
+            parts = client.effective_parts(today)
             if not parts:
                 return context
 
