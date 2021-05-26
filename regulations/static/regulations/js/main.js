@@ -1,5 +1,5 @@
 import RelatedRules from './RelatedRules.js';
-import Vue from "../../node_modules/vue/dist/vue.esm.browser.js";
+import Vue from "../../node_modules/vue/dist/vue.esm.browser.min.js";
 
 function makeStateful(el) {
     const state_change_target = el.getAttribute("data-state-name");
