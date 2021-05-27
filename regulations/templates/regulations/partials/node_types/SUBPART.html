@@ -1,0 +1,16 @@
+
+{% load render_nested %}
+{% comment %}
+    Used once per section. Contained by subparts at the top level.
+{% endcomment %}
+<article>
+    <h1 tabindex="0">
+        <a class="reference" href="#{{node.label | join:'-'}}"><i class="fa fa-link"></i></a>
+        {{node.title}}
+    </h1>
+    {{node.text | safe}}
+
+    {% for node in node.children %}
+        {% include "regulations/partials/node_types/node.html" %}
+    {% endfor %}
+</article>

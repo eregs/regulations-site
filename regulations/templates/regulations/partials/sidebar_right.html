@@ -18,7 +18,7 @@
     </ul>
 
     {% for sidebar in sidebars %}
-        {% render_nested template=sidebar.template_name context=sidebar %}
+        {% render_nested sidebar.template_name context=sidebar %}
     {% endfor %}
 
     {% block additional-rhs %}{% endblock %}

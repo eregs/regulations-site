@@ -1,5 +1,6 @@
 {% extends "regulations/base.html" %}
 {% load static %}
+{% load render_nested %}
 
 {% block body %}
     {% include "regulations/partials/view-and-compare.html" %}
@@ -9,7 +10,7 @@
         </aside>
 
         <main class="reg-text">
-            {% include "regulations/partials/regulation_text.html" with c=tree first="true" %}
+            {% include "regulations/partials/node_types/node.html" with node=tree %}
             {% include "regulations/partials/navigation.html" %}
         </main>
 

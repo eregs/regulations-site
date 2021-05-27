@@ -4,5 +4,13 @@ register = Library()
 
 
 @register.simple_tag()
-def render_nested(template, context=None):
-    return loader.get_template(template).render(context or {})
+def render_nested(*templates, context=None, **kwargs):
+    return loader.select_template(templates).render(context or kwargs)
+
+
+@register.filter
+def interpolate(value, arg):
+    try:
+        return value.format(**arg)
+    except:
+        return value

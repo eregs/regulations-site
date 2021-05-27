@@ -1,0 +1,14 @@
+{% comment %}
+    Used once per section. Contained by subparts at the top level.
+{% endcomment %}
+
+<section id="{{node.label | join:'-'}}" class="reg-section">
+    {% if node.title %}
+        <h2 tabindex="0"> {{node.title}} </h2>
+    {% endif %}
+    {{node.text | safe}}
+</section>
+
+{% for node in node.children %}
+    {% include "regulations/partials/node_types/node.html" %}
+{% endfor %}
