@@ -1,0 +1,9 @@
+.dropdown-item {
+  color: $primary_text_color; 
+  text-decoration: none;
+  padding: $spacer-1;
+
+  &:hover {
+    background-color: $secondary_background_color;
+  }
+}
