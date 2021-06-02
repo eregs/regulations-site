@@ -14416,6 +14416,11 @@ aside.left-sidebar .menu-section {
 aside.left-sidebar .menu-section:not(li.active ul a.menu-section):hover {
   background: #205982;
 }
+aside.left-sidebar .menu-section.active {
+  background: #205982;
+  border-left-color: #A3E8FF;
+  border-left-style: solid;
+}
 aside.left-sidebar .menu-section li {
   padding: 0 16px;
 }

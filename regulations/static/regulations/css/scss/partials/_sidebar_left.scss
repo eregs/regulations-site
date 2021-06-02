@@ -207,6 +207,12 @@ aside.left-sidebar {
 			}
 		}
 
+		&.active {
+			background: $reverse_background_lighter;
+			border-left-color: $light_blue;
+			border-left-style: solid;
+		}
+
 		li {
 			padding: 0 $spacer-2;
 		}
