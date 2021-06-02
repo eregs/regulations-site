@@ -1,7 +1,9 @@
 <template>
-  <a v-bind:href="url" class="dropdown-item">
-    <slot />
-  </a>
+  <li class="dropdown-item">
+    <a v-bind:href="href" class="dropdown-link">
+      <slot />
+    </a>
+  </li>
 </template>
 
 <script>

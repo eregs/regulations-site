@@ -1,7 +1,7 @@
 <template>
   <div>
     <slot name="toggler">
-      <button @click="toggle">Toggle</button>
+      <button class="ds-c-field" @click="toggle">Toggle</button>
     </slot>
     <slot v-bind:active="active"/>
   </div> 

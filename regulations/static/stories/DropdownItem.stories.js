@@ -13,6 +13,6 @@ const Template = (args, { argTypes }) => ({
 
 export const Basic = Template.bind({});
 Basic.args = {
-  url: "/433/Subpart-A/2021-03-01",
-  slotcontent: "2020-03-01"
+  href: "/433/Subpart-A/2021-03-01",
+  slotcontent: "Mar 1, 2021"
 };

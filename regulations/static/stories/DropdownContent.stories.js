@@ -1,4 +1,5 @@
 import DropdownContent from '../components/DropdownContent.vue';
+import DropdownHeader from '../components/DropdownHeader.vue';
 import DropdownItem from '../components/DropdownItem.vue'
 
 export default {
@@ -8,8 +9,15 @@ export default {
 
 const Template = (args, { argTypes }) => ({
   props: Object.keys(argTypes),
-  components: { DropdownContent, DropdownItem },
-  template: '<dropdown-content v-bind="$props"><dropdown-item>2020-03-01</dropdown-item><dropdown-item>2020-01-01</dropdown-item></dropdown-content>',
+  components: { DropdownContent, DropdownHeader, DropdownItem },
+  template: `
+  <dropdown-content v-bind="$props">
+    <dropdown-header>Regulation Change</dropdown-header>
+    <dropdown-item>Mar 1, 2021</dropdown-item>
+    <dropdown-item>Jan 1, 2020</dropdown-item>
+    <dropdown-item>May 3, 2019</dropdown-item>
+  </dropdown-content>
+  `,
 });
 
 export const Basic = Template.bind({});

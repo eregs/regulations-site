@@ -1,6 +1,8 @@
 <template>
   <div v-if="active" class="dropdown-content">
-    <slot />
+    <ul class="dropdown-list">
+      <slot />
+    </ul>
   </div>
 </template>
 

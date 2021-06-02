@@ -1,9 +1,36 @@
+.dropdown-list {
+  padding: 0;
+}
+
+.dropdown-header {
+  list-style: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: $spacer-2;
+}
+
 .dropdown-item {
-  color: $primary_text_color; 
-  text-decoration: none;
-  padding: $spacer-1;
+  color: $primary_text_color;
+  list-style: none;
+  padding-left: $spacer-2;
+  padding-top: $spacer-1;
+  padding-bottom: $spacer-1;
 
   &:hover {
-    background-color: $secondary_background_color;
+    color: $primary_link_hover;
   }
+}
+
+.dropdown-link {
+  text-decoration: none;
+  color: $primary_text_color;
+  font-size: 1em;
+}
+
+.dropdown-content {
+  background-color: $secondary_background_color;
+  width: 20%;
+  border-radius: 10px;
+  padding-top: $spacer-2;
+  padding-bottom: $spacer-2;
 }
