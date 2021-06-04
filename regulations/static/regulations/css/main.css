@@ -14630,6 +14630,14 @@ html {
 aside.right-sidebar {
   max-width: 400px;
 }
+aside.right-sidebar h2 {
+  font-size: 21px;
+}
+@media (min-width: 1280px) {
+  aside.right-sidebar h2 {
+    font-size: 24px;
+  }
+}
 aside.right-sidebar button {
   font-size: 1rem;
   font-weight: 700;

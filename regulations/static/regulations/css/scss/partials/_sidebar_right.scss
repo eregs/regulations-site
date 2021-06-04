@@ -8,6 +8,14 @@
 aside.right-sidebar {
     max-width: 400px;
 
+    h2 {
+        font-size: $font-size-xl;
+
+       @include screen-xl {
+            font-size: $font-size-2xl;
+        }
+    }
+
     button {
         font-size: 1rem;
         font-weight: 700;
