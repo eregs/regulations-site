@@ -53,6 +53,16 @@ aside.right-sidebar {
     ul {
         list-style: none;
         padding: 0  0 $spacer-2 0;
+
+        li {
+            font-size: $font-size-sm;
+            line-height: 1.4;
+
+            @include screen-xl {
+                font-size: $font-size-md;
+                line-height: 1.5;
+            }
+        }
     }
 
     .resource-info {
@@ -70,6 +80,12 @@ aside.right-sidebar {
 
 .ds-c-badge--final {
     background: $secondary_color;
+    font-size: $font_size_xs;
+    text-transform: uppercase;
+
+    @include screen-xl {
+        font-size: $font-size-sm;
+    }
 }
 
 .related-rule-header {

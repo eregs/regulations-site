@@ -13863,6 +13863,9 @@ html {
   }
 }
 
+.homepage-toc {
+  margin-top: 32px;
+}
 .homepage-toc h1 {
   margin-bottom: 0;
 }
@@ -14639,6 +14642,16 @@ aside.right-sidebar ul {
   list-style: none;
   padding: 0 0 16px 0;
 }
+aside.right-sidebar ul li {
+  font-size: 14px;
+  line-height: 1.4;
+}
+@media (min-width: 1280px) {
+  aside.right-sidebar ul li {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}
 aside.right-sidebar .resource-info {
   font-size: 14px;
   font-weight: normal;
@@ -14652,6 +14665,13 @@ aside.right-sidebar .resource-info {
 
 .ds-c-badge--final {
   background: #026666;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+@media (min-width: 1280px) {
+  .ds-c-badge--final {
+    font-size: 14px;
+  }
 }
 
 .related-rule-header {
