@@ -166,10 +166,9 @@
       _c("div", [
         _c(
           "a",
-          { staticClass: "related-rule-title", attrs: { href: _vm.html_url } },
+          { staticClass: "related-rule-title external", attrs: { href: _vm.html_url } },
           [
-            _vm._v(_vm._s(_vm.title) + " "),
-            _c("i", { staticClass: "fas fa-external-link-alt" })
+            _vm._v(_vm._s(_vm.title) + " ")
           ]
         )
       ])

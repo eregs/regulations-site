@@ -5,7 +5,7 @@
       <span class="related-rule-date" v-if="effective_on">{{ effective_on|formatDate }}</span><span class="related-rule-citation">{{ citation }}</span>
     </div>
     <div>
-      <a class="related-rule-title" :href="html_url">{{ title }} <i class="fas fa-external-link-alt"></i></a>
+      <a class="related-rule-title external" :href="html_url">{{ title }}</a>
     </div>
   </div>
 </template>
