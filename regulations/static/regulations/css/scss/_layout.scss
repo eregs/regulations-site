@@ -5,6 +5,8 @@
 
 // We loosely use the CMS Design System grid: https://design.cms.gov/utilities/grid
 
+$collapsed-sidebar-width: 32px;       // Update here if the left sidebar collapsed width changes
+
 header {
     padding: $spacer-4;
     border-bottom: 1px solid $primary_color;
@@ -102,6 +104,24 @@ aside {
 
         @include screen-xl {
             padding: $spacer-2 $spacer-4;
+        }
+    }
+
+    &[data-state="collapsed"] + .match-middle {
+        width: calc(100% - 260px - #{$collapsed-sidebar-width}); 
+        padding: 0 $spacer-4;
+
+        @include screen-lg {
+            width: calc(100% - 300px - #{$collapsed-sidebar-width});
+        }
+
+        @include screen-xl {
+            width: calc(100% - 400px - #{$collapsed-sidebar-width});
+            padding: 0 $spacer-6;
+        }
+
+        @include screen-3xl {
+            width: calc(100% - 500px - #{$collapsed-sidebar-width});
         }
     }
 }

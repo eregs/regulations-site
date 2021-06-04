@@ -13617,6 +13617,26 @@ aside.right-sidebar {
     padding: 16px 32px;
   }
 }
+aside[data-state=collapsed] + .match-middle {
+  width: calc(100% - 260px - 32px);
+  padding: 0 32px;
+}
+@media (min-width: 1024px) {
+  aside[data-state=collapsed] + .match-middle {
+    width: calc(100% - 300px - 32px);
+  }
+}
+@media (min-width: 1280px) {
+  aside[data-state=collapsed] + .match-middle {
+    width: calc(100% - 400px - 32px);
+    padding: 0 48px;
+  }
+}
+@media (min-width: 1920px) {
+  aside[data-state=collapsed] + .match-middle {
+    width: calc(100% - 500px - 32px);
+  }
+}
 
 footer .footer-left {
   padding: 0;
