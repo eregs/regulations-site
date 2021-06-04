@@ -39,9 +39,6 @@ footer {
     }
 
     .footer-left {
-        display: table-cell;
-        width: 400px;
-        padding: 0 $spacer-4;
 
         a:hover {
             opacity: .8;
@@ -54,9 +51,6 @@ footer {
     }
 
      .footer-middle {
-        display: table-cell;
-        width: calc(100% - 800px);
-        padding: 0 $spacer-6;
 
         h4 {
             font-family: $secondary_site_font;
@@ -66,9 +60,6 @@ footer {
     }
 
      .footer-right {
-        display: table-cell;
-        width: 400px;
-        padding: 0 $spacer-4;
 
         i {
             font-size: 30px;

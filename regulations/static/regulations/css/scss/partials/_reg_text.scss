@@ -18,7 +18,7 @@
 }
 
 article {
-    max-width: 75ch;
+    max-width: $text-max-width;
     margin: $spacer-4;
 
     i {

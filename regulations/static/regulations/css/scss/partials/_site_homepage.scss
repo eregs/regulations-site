@@ -6,6 +6,7 @@
 @import "../application_settings";
 
 .site-homepage {
+    overflow-x: hidden;
 
     .site-container {
 
@@ -154,6 +155,23 @@
             font-weight: normal;
         }
     }
+
+    // Footer 
+
+    footer {
+
+        .flexbox {
+            margin: $spacer-3 auto;
+
+            @include screen-xl {
+                max-width: $width-xl;
+            }
+
+            @include screen-xxl {
+                max-width: $width-xxl;
+            }
+        }
+    }
 }
 
 // Table of Contents
@@ -207,6 +225,7 @@
 // Aside - Latest Updates
 
 .homepage-updates {
+    padding-top: $spacer-6;
 
     .last-update-external {
         font-style: italic;

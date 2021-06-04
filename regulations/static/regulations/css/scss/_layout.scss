@@ -49,18 +49,32 @@ body {
 
 main {
     display: table-cell;
-    width: calc(100% - 800px);
     padding: $spacer-6;
+
+    @include screen-lg {
+        width: calc(100% - 500px);
+    }
+
+    @include screen-xl {
+        width: calc(100% - 800px);
+    }
 }
 
 aside {
 
     &.left-sidebar {
         display: table-cell;
-        width: 400px;
         background: $reverse_background_color;
         flex-shrink: 0;
-        padding: 0 $spacer-4;
+        padding: 0;
+
+        @include screen-lg {
+            width: 250px;
+        }
+
+        @include screen-xl {
+            width: 400px;
+        }
     }
 
     &.right-sidebar {
@@ -68,10 +82,56 @@ aside {
         width: 400px;
         padding: $spacer-2 $spacer-4;
         border-left: 1px solid $border_color;
+
+        @include screen-lg {
+            width: 250px;
+        }
+
+        @include screen-xl {
+            width: 400px;
+        }
+    }
+}
+
+footer {
+
+    .footer-left {
+        display: table-cell;
+        padding: 0;
+
+        @include screen-lg {
+            width: 250px;
+        }
+
+        @include screen-xl {
+            width: 400px;
+        }
     }
 
-    &.homepage-updates {
-        padding-top: $spacer-6;
+    .footer-middle {
+        display: table-cell;
+
+        @include screen-lg {
+            width: calc(100% - 500px);
+            padding: 0 $spacer-3;
+        }
+
+        @include screen-xl {
+            width: calc(100% - 800px);
+            padding: 0 $spacer-6;
+        }
     }
 
+    .footer-right {
+        display: table-cell;
+        
+        @include screen-lg {
+            width: 250px;
+        }
+
+        @include screen-xl {
+            width: 400px;
+            padding-left: $spacer-4;
+        }
+    }
 }
