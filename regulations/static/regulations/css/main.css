@@ -14496,9 +14496,14 @@ aside.left-sidebar a.subpart-info:hover .toc-titles {
 }
 aside.left-sidebar .menu-section {
   display: block;
-  padding: 8px 32px 8px 32px;
   margin: 0 16px;
   border-radius: 3px;
+  padding: 0.25em 1.6em;
+}
+@media (min-width: 1280px) {
+  aside.left-sidebar .menu-section {
+    padding: 8px 32px 8px 32px;
+  }
 }
 aside.left-sidebar .menu-section:not(li.active ul a.menu-section):hover {
   background: #205982;
@@ -14746,20 +14751,38 @@ html {
 
 .reg-text h1 {
   color: #17415F;
-  font-size: 28px;
+  font-size: 24px;
+  line-height: 1.4;
+}
+@media (min-width: 1280px) {
+  .reg-text h1 {
+    font-size: 28px;
+  }
 }
 @media (min-width: 1440px) {
   .reg-text h1 {
     font-size: 32px;
+    line-height: 1.5;
   }
 }
 .reg-text h2 {
   color: #17415F;
+  font-size: 21px;
+}
+@media (min-width: 1280px) {
+  .reg-text h2 {
+    font-size: 24px;
+  }
 }
 
 article {
   max-width: 53rem;
-  margin: 32px;
+  margin: 32px 0 32px 32px;
+}
+@media (min-width: 1440px) {
+  article {
+    margin: 32px;
+  }
 }
 article i {
   font-weight: bold;
@@ -14808,6 +14831,14 @@ article .reg-section h2 {
 }
 article .paragraphs {
   margin-left: -27px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+@media (min-width: 1280px) {
+  article .paragraphs {
+    font-size: 16px;
+    line-height: 1.5;
+  }
 }
 article .reference {
   position: absolute;

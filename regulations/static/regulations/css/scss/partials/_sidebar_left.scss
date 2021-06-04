@@ -195,9 +195,13 @@ aside.left-sidebar {
 
 	.menu-section {
 		display: block;
-		padding: $spacer-1 $spacer-4 $spacer-1 $spacer-4;
 		margin: 0 $spacer-2;
 		border-radius: $border-radius;
+		padding: .25em 1.6em;
+
+		@include screen-xl {
+			padding: $spacer-1 $spacer-4 $spacer-1 $spacer-4;
+		}
 
 		&:not(li.active ul a.menu-section) {
 			&:hover {
