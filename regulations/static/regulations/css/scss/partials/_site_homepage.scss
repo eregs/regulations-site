@@ -171,6 +171,13 @@
                 max-width: $width-xxl;
             }
         }
+
+        .footer-middle {
+
+            @include screen-xl {
+                width: 100%;
+            }
+        }
     }
 }
 

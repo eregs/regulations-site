@@ -100,7 +100,8 @@ $font_size_xs: 12px;
 
 // Uses CMS Design System + a larger screen size
 
-$width-xxl: 1440px;  // The largest the site container will get
+$width-xxl: 1440px;  
+$width-3xl: 1920px;  // The largest the site container will get
 
 // 544px 
 @mixin screen-sm {
@@ -133,6 +134,13 @@ $width-xxl: 1440px;  // The largest the site container will get
 // 1440px - eRegs-specific breakpoint 
 @mixin screen-xxl {
    @media (min-width: #{$width-xxl}) {
+       @content;
+   }
+}
+
+// 1440px - eRegs-specific breakpoint 
+@mixin screen-3xl {
+   @media (min-width: #{$width-3xl}) {
        @content;
    }
 }

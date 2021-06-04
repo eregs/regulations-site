@@ -9,7 +9,11 @@
 
     h1 {
         color: $primary_color;
-        font-size: $base-font-size * 2;
+        font-size: $base-font-size * 1.75;
+
+        @include screen-xxl {
+            font-size: $base-font-size * 2;
+        }
     }
 
     h2 {
@@ -56,6 +60,15 @@ article {
        position: absolute;
        margin-left: -1.5em;
        visibility: hidden;
+    }
+
+    h1 > .reference,
+    h2 > .reference {
+        margin-left: -1.2em;
+
+        @include screen-xxl {
+            margin-left: -1.4em;
+        }
     }
 
     :hover {
