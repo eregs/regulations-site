@@ -14663,17 +14663,6 @@ aside.right-sidebar .resource-info {
   border-radius: 3px;
 }
 
-.ds-c-badge--final {
-  background: #026666;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-@media (min-width: 1280px) {
-  .ds-c-badge--final {
-    font-size: 14px;
-  }
-}
-
 .related-rule-header {
   margin-bottom: 8px;
 }

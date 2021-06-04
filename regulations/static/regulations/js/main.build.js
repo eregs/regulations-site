@@ -149,7 +149,7 @@
       _c("div", { staticClass: "related-rule-header" }, [
         _c(
           "span",
-          { staticClass: "related-rule-type ds-c-badge ds-c-badge--final" },
+          { staticClass: "related-rule-type indicator" },
           [_vm._v(_vm._s(_vm.expandedType))]
         ),
         _vm._v(" "),

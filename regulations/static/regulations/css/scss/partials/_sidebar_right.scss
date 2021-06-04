@@ -78,16 +78,6 @@ aside.right-sidebar {
     border-radius: 3px;
 }
 
-.ds-c-badge--final {
-    background: $secondary_color;
-    font-size: $font_size_xs;
-    text-transform: uppercase;
-
-    @include screen-xl {
-        font-size: $font-size-sm;
-    }
-}
-
 .related-rule-header {
     margin-bottom: $spacer-1;
 }
