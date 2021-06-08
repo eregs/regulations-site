@@ -20,7 +20,7 @@ $fa-font-path: "../fonts/webfonts";
 // Medicaid and CHIP Regulations Site
 
 @import 'application_settings';
-@import 'layout'; 			
+@import 'layout';
 @import "partials/typography";
 @import "partials/site_homepage";
 @import "partials/search";
@@ -32,3 +32,4 @@ $fa-font-path: "../fonts/webfonts";
 @import 'partials/reg_text';
 @import "partials/footer";
 @import "partials/error_pages";
+@import "partials/dropdown";

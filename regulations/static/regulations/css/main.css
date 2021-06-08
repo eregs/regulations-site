@@ -14848,4 +14848,52 @@ main.error-page img.error-image {
   max-width: 185px;
 }
 
+.dropdown-list {
+  padding: 0;
+}
+
+.dropdown-header {
+  list-style: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 16px;
+}
+
+.dropdown-item {
+  color: #212121;
+  list-style: none;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.dropdown-item:hover {
+  color: #17415F;
+}
+
+.dropdown-link {
+  text-decoration: none;
+  color: #212121;
+  font-size: 1em;
+}
+
+.dropdown-content {
+  background-color: #F3F3F3;
+  width: 20%;
+  border-radius: 10px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.dropdown-button {
+  background: none;
+  text-align: left;
+}
+
+.dropdown-part-button {
+  color: #026666;
+  border: none;
+  background: none;
+  font-size: 1em;
+}
+
 /*# sourceMappingURL=main.css.map */

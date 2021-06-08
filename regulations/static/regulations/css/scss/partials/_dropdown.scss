@@ -34,3 +34,15 @@
   padding-top: $spacer-2;
   padding-bottom: $spacer-2;
 }
+
+.dropdown-button {
+  background: none;
+  text-align: left;
+}
+
+.dropdown-part-button {
+  color: $secondary-color;
+  border: none;
+  background: none;
+  font-size: 1em;
+}

@@ -23,6 +23,7 @@
     "rollup-plugin-vue": "^5.1.9",
     "sass": "^1.32.8",
     "vue": "^2.6.12",
+    "vue-loader": "^15.9.7",
     "vue-template-compiler": "^2.6.12"
   },
   "devDependencies": {
