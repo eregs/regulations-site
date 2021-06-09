@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot name="toggler">
+    <slot name="toggler" v-bind:toggle="toggle">
       <button
         v-on-clickaway="away"
         class="dropdown-button ds-c-field" 
